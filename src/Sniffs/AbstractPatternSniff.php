@@ -133,11 +133,13 @@ abstract class AbstractPatternSniff implements Sniff
     {
         $tokenTypes = [];
         foreach ($pattern as $pos => $patternInfo) {
-            if ($patternInfo['type'] === 'token') {
-                if (isset($tokenTypes[$patternInfo['token']]) === false) {
-                    $tokenTypes[$patternInfo['token']] = $pos;
-                }
+            if ($patternInfo['type'] !== 'token') {
+                continue;
             }
+            if (isset($tokenTypes[$patternInfo['token']]) !== false) {
+                continue;
+            }
+            $tokenTypes[$patternInfo['token']] = $pos;
         }
 
         return $tokenTypes;
@@ -218,7 +220,8 @@ abstract class AbstractPatternSniff implements Sniff
             if ($errors === false) {
                 // The pattern didn't match.
                 continue;
-            } else if (empty($errors) === true) {
+            }
+            if (empty($errors) === true) {
                 // The pattern matched, but there were no errors.
                 break;
             }
@@ -252,7 +255,7 @@ abstract class AbstractPatternSniff implements Sniff
      *
      * @return array
      */
-    protected function processPattern($patternInfo, File $phpcsFile, $stackPtr)
+    protected function processPattern(array $patternInfo, File $phpcsFile, $stackPtr)
     {
         $tokens      = $phpcsFile->getTokens();
         $pattern     = $patternInfo['pattern'];
@@ -707,9 +710,7 @@ abstract class AbstractPatternSniff implements Sniff
         $found    = str_replace('EOL', '\n', $found);
         $expected = str_replace('EOL', '\n', $patternCode);
 
-        $error = "Expected \"$expected\"; found \"$found\"";
-
-        return $error;
+        return "Expected \"$expected\"; found \"$found\"";
 
     }//end prepareError()
 

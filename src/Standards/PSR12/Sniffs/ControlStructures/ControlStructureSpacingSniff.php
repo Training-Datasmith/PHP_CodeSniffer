@@ -94,21 +94,23 @@ class ControlStructureSpacingSniff implements Sniff
         $first          = $phpcsFile->findFirstOnLine(T_WHITESPACE, $stackPtr, true);
         $requiredIndent = ($tokens[$first]['column'] + $this->indent - 1);
         for ($i = $parenOpener; $i < $parenCloser; $i++) {
-            if ($tokens[$i]['column'] !== 1
-                || $tokens[($i + 1)]['line'] > $tokens[$i]['line']
-                || isset(Tokens::$commentTokens[$tokens[$i]['code']]) === true
-            ) {
+            if ($tokens[$i]['column'] !== 1) {
                 continue;
             }
-
+            if ($tokens[($i + 1)]['line'] > $tokens[$i]['line']) {
+                continue;
+            }
+            if (isset(Tokens::$commentTokens[$tokens[$i]['code']]) === true) {
+                continue;
+            }
             if (($i + 1) === $parenCloser) {
                 break;
             }
-
             // Leave indentation inside multi-line strings.
-            if (isset(Tokens::$textStringTokens[$tokens[$i]['code']]) === true
-                || isset(Tokens::$heredocTokens[$tokens[$i]['code']]) === true
-            ) {
+            if (isset(Tokens::$textStringTokens[$tokens[$i]['code']]) === true) {
+                continue;
+            }
+            if (isset(Tokens::$heredocTokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
 

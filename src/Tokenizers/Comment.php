@@ -152,9 +152,6 @@ class Comment
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             $content = Util\Common::prepareForOutput($closeTag['content']);
             echo "\t\tCreate comment token: T_DOC_COMMENT_CLOSE_TAG => $content".PHP_EOL;
-        }
-
-        if (PHP_CODESNIFFER_VERBOSITY > 1) {
             echo "\t\t*** END COMMENT TOKENIZING ***".PHP_EOL;
         }
 
@@ -263,13 +260,11 @@ class Comment
             return null;
         }
 
-        $token = [
+        return [
             'content' => $space,
             'code'    => T_DOC_COMMENT_WHITESPACE,
             'type'    => 'T_DOC_COMMENT_WHITESPACE',
         ];
-
-        return $token;
 
     }//end collectWhitespace()
 

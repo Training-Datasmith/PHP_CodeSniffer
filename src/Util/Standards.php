@@ -235,29 +235,26 @@ class Standards
         $path = self::getInstalledStandardPath($standard);
         if ($path !== null && strpos($path, 'ruleset.xml') !== false) {
             return true;
-        } else {
-            // This could be a custom standard, installed outside our
-            // standards directory.
-            $standard = Common::realPath($standard);
-            if ($standard === false) {
-                return false;
-            }
-
-            // Might be an actual ruleset file itUtil.
-            // If it has an XML extension, let's at least try it.
-            if (is_file($standard) === true
-                && (substr(strtolower($standard), -4) === '.xml'
-                || substr(strtolower($standard), -9) === '.xml.dist')
-            ) {
-                return true;
-            }
-
-            // If it is a directory with a ruleset.xml file in it,
-            // it is a standard.
-            $ruleset = rtrim($standard, ' /\\').DIRECTORY_SEPARATOR.'ruleset.xml';
-            if (is_file($ruleset) === true) {
-                return true;
-            }
+        }
+        // This could be a custom standard, installed outside our
+        // standards directory.
+        $standard = Common::realPath($standard);
+        if ($standard === false) {
+            return false;
+        }
+        // Might be an actual ruleset file itUtil.
+        // If it has an XML extension, let's at least try it.
+        if (is_file($standard) === true
+            && (substr(strtolower($standard), -4) === '.xml'
+            || substr(strtolower($standard), -9) === '.xml.dist')
+        ) {
+            return true;
+        }
+        // If it is a directory with a ruleset.xml file in it,
+        // it is a standard.
+        $ruleset = rtrim($standard, ' /\\').DIRECTORY_SEPARATOR.'ruleset.xml';
+        if (is_file($ruleset) === true) {
+            return true;
         }//end if
 
         return false;
@@ -297,7 +294,8 @@ class Standards
 
             if ($path !== false && is_file($path) === true) {
                 return $path;
-            } else if (Common::isPharFile($standardPath) === true) {
+            }
+            if (Common::isPharFile($standardPath) === true) {
                 $path = Common::realpath($standardPath);
                 if ($path !== false) {
                     return $path;

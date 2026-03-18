@@ -179,7 +179,7 @@ class FunctionCallSignatureSniff implements Sniff
      *
      * @return bool
      */
-    public function isMultiLineCall(File $phpcsFile, $stackPtr, $openBracket, $tokens)
+    public function isMultiLineCall(File $phpcsFile, $stackPtr, $openBracket, array $tokens)
     {
         $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
         if ($tokens[$openBracket]['line'] !== $tokens[$closeBracket]['line']) {
@@ -204,7 +204,7 @@ class FunctionCallSignatureSniff implements Sniff
      *
      * @return void
      */
-    public function processSingleLineCall(File $phpcsFile, $stackPtr, $openBracket, $tokens)
+    public function processSingleLineCall(File $phpcsFile, $stackPtr, $openBracket, array $tokens)
     {
         $closer = $tokens[$openBracket]['parenthesis_closer'];
         if ($openBracket === ($closer - 1)) {
@@ -334,7 +334,7 @@ class FunctionCallSignatureSniff implements Sniff
      *
      * @return void
      */
-    public function processMultiLineCall(File $phpcsFile, $stackPtr, $openBracket, $tokens)
+    public function processMultiLineCall(File $phpcsFile, $stackPtr, $openBracket, array $tokens)
     {
         // We need to work out how far indented the function
         // call itself is, so we can work out how far to

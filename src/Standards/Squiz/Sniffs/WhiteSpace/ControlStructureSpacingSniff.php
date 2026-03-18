@@ -120,11 +120,11 @@ class ControlStructureSpacingSniff implements Sniff
 
         for ($firstContent = ($scopeOpener + 1); $firstContent < $phpcsFile->numTokens; $firstContent++) {
             $code = $tokens[$firstContent]['code'];
-
-            if ($code === T_WHITESPACE
-                || ($code === T_INLINE_HTML
-                && trim($tokens[$firstContent]['content']) === '')
-            ) {
+            if ($code === T_WHITESPACE) {
+                continue;
+            }
+            if ($code === T_INLINE_HTML
+            && trim($tokens[$firstContent]['content']) === '') {
                 continue;
             }
 

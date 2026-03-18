@@ -81,7 +81,10 @@ class CodeAnalyzerSniff implements Sniff
                 // > Analyzing <filename>...
                 // So skip these...
                 $res = preg_match("/^.+\(line ([0-9]+)\):(.+)$/", $finding, $regs);
-                if (empty($regs) === true || $res === false) {
+                if (empty($regs) === true) {
+                    continue;
+                }
+                if ($res === false) {
                     continue;
                 }
 

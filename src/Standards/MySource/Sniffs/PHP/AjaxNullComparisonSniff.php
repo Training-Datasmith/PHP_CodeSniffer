@@ -75,12 +75,12 @@ class AjaxNullComparisonSniff implements Sniff
         $start = $tokens[$stackPtr]['scope_opener'];
         $end   = $tokens[$stackPtr]['scope_closer'];
         for ($i = ($start + 1); $i < $end; $i++) {
-            if ($tokens[$i]['code'] !== T_VARIABLE
-                || isset($foundVars[$tokens[$i]['content']]) === false
-            ) {
+            if ($tokens[$i]['code'] !== T_VARIABLE) {
                 continue;
             }
-
+            if (isset($foundVars[$tokens[$i]['content']]) === false) {
+                continue;
+            }
             $operator = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), null, true);
             if ($tokens[$operator]['code'] !== T_IS_IDENTICAL
                 && $tokens[$operator]['code'] !== T_IS_NOT_IDENTICAL

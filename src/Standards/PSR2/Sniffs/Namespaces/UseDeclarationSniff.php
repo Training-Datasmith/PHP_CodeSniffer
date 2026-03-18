@@ -274,7 +274,7 @@ class UseDeclarationSniff implements Sniff
      *
      * @return bool
      */
-    private function shouldIgnoreUse($phpcsFile, $stackPtr)
+    private function shouldIgnoreUse(\PHP_CodeSniffer\Files\File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

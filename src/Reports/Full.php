@@ -62,7 +62,7 @@ class Full implements Report
         // Make sure the report width isn't too big.
         $maxErrorLength = 0;
         foreach ($report['messages'] as $line => $lineErrors) {
-            foreach ($lineErrors as $column => $colErrors) {
+            foreach ($lineErrors as $colErrors) {
                 foreach ($colErrors as $error) {
                     $length = strlen($error['message']);
                     if ($showSources === true) {
@@ -116,7 +116,7 @@ class Full implements Report
         $maxErrorSpace = ($width - $paddingLength - 1);
 
         foreach ($report['messages'] as $line => $lineErrors) {
-            foreach ($lineErrors as $column => $colErrors) {
+            foreach ($lineErrors as $colErrors) {
                 foreach ($colErrors as $error) {
                     $message  = $error['message'];
                     $msgLines = [$message];

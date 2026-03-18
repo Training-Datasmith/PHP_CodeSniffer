@@ -23,7 +23,7 @@ class Reporter
      *
      * @var \PHP_CodeSniffer\Config
      */
-    public $config = null;
+    public $config;
 
     /**
      * Total number of files that contain errors or warnings.
@@ -91,7 +91,6 @@ class Reporter
      *
      * @param \PHP_CodeSniffer\Config $config The config data for the run.
      *
-     * @return void
      * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If a custom report class could not be found.
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException  If a report class is incorrectly set up.
      */

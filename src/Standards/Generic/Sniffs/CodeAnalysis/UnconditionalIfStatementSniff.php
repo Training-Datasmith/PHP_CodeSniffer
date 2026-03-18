@@ -77,7 +77,8 @@ class UnconditionalIfStatementSniff implements Sniff
 
             if (isset(Tokens::$emptyTokens[$code]) === true) {
                 continue;
-            } else if ($code !== T_TRUE && $code !== T_FALSE) {
+            }
+            if ($code !== T_TRUE && $code !== T_FALSE) {
                 $goodCondition = true;
             }
         }

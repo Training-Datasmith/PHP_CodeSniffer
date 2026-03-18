@@ -42,7 +42,7 @@ class FunctionSpacingSniff implements Sniff
      *
      * @var array|null
      */
-    private $rulesetProperties = null;
+    private $rulesetProperties;
 
 
     /**

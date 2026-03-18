@@ -129,7 +129,8 @@ class DocCommentSniff implements Sniff
                     for ($i = $stackPtr; $i < $short; $i++) {
                         if ($tokens[$i]['line'] === $tokens[$stackPtr]['line']) {
                             continue;
-                        } else if ($tokens[$i]['line'] === $tokens[$short]['line']) {
+                        }
+                        if ($tokens[$i]['line'] === $tokens[$short]['line']) {
                             break;
                         }
 
@@ -170,7 +171,8 @@ class DocCommentSniff implements Sniff
                         for ($i = ($shortEnd + 1); $i < $long; $i++) {
                             if ($tokens[$i]['line'] === $tokens[$shortEnd]['line']) {
                                 continue;
-                            } else if ($tokens[$i]['line'] === ($tokens[$long]['line'] - 1)) {
+                            }
+                            if ($tokens[$i]['line'] === ($tokens[$long]['line'] - 1)) {
                                 break;
                             }
 

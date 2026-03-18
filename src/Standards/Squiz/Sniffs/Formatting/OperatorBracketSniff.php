@@ -230,33 +230,25 @@ class OperatorBracketSniff implements Sniff
             // It is not in a bracketed statement at all.
             $this->addMissingBracketsError($phpcsFile, $stackPtr);
             return;
-        } else if ($tokens[$lastBracket]['parenthesis_closer'] < $stackPtr) {
+        }
+        if ($tokens[$lastBracket]['parenthesis_closer'] < $stackPtr) {
             // There are a set of brackets in front of it that don't include it.
             $this->addMissingBracketsError($phpcsFile, $stackPtr);
             return;
-        } else {
-            // We are enclosed in a set of bracket, so the last thing to
-            // check is that we are not also enclosed in square brackets
-            // like this: ($array[$index + 1]), which is invalid.
-            $brackets = [
-                T_OPEN_SQUARE_BRACKET,
-                T_CLOSE_SQUARE_BRACKET,
-            ];
-
-            $squareBracket = $phpcsFile->findPrevious($brackets, ($stackPtr - 1), $lastBracket);
-            if ($squareBracket !== false && $tokens[$squareBracket]['code'] === T_OPEN_SQUARE_BRACKET) {
-                $closeSquareBracket = $phpcsFile->findNext($brackets, ($stackPtr + 1));
-                if ($closeSquareBracket !== false && $tokens[$closeSquareBracket]['code'] === T_CLOSE_SQUARE_BRACKET) {
-                    $this->addMissingBracketsError($phpcsFile, $stackPtr);
-                }
+        }
+        // We are enclosed in a set of bracket, so the last thing to
+        // check is that we are not also enclosed in square brackets
+        // like this: ($array[$index + 1]), which is invalid.
+        $brackets = [
+            T_OPEN_SQUARE_BRACKET,
+            T_CLOSE_SQUARE_BRACKET,
+        ];
+        $squareBracket = $phpcsFile->findPrevious($brackets, ($stackPtr - 1), $lastBracket);
+        if ($squareBracket !== false && $tokens[$squareBracket]['code'] === T_OPEN_SQUARE_BRACKET) {
+            $closeSquareBracket = $phpcsFile->findNext($brackets, ($stackPtr + 1));
+            if ($closeSquareBracket !== false && $tokens[$closeSquareBracket]['code'] === T_CLOSE_SQUARE_BRACKET) {
+                $this->addMissingBracketsError($phpcsFile, $stackPtr);
             }
-
-            return;
-        }//end if
-
-        $lastAssignment = $phpcsFile->findPrevious(Tokens::$assignmentTokens, $stackPtr, null, false, null, true);
-        if ($lastAssignment !== false && $lastAssignment > $lastBracket) {
-            $this->addMissingBracketsError($phpcsFile, $stackPtr);
         }
 
     }//end process()
@@ -304,12 +296,16 @@ class OperatorBracketSniff implements Sniff
             if ($phpcsFile->tokenizerType === 'JS' && $tokens[$before]['code'] === T_PLUS) {
                 break;
             }
-
-            if (isset(Tokens::$emptyTokens[$tokens[$before]['code']]) === true
-                || isset(Tokens::$operators[$tokens[$before]['code']]) === true
-                || isset(Tokens::$castTokens[$tokens[$before]['code']]) === true
-                || isset($allowed[$tokens[$before]['code']]) === true
-            ) {
+            if (isset(Tokens::$emptyTokens[$tokens[$before]['code']]) === true) {
+                continue;
+            }
+            if (isset(Tokens::$operators[$tokens[$before]['code']]) === true) {
+                continue;
+            }
+            if (isset(Tokens::$castTokens[$tokens[$before]['code']]) === true) {
+                continue;
+            }
+            if (isset($allowed[$tokens[$before]['code']]) === true) {
                 continue;
             }
 
@@ -344,12 +340,16 @@ class OperatorBracketSniff implements Sniff
             if ($phpcsFile->tokenizerType === 'JS' && $tokens[$after]['code'] === T_PLUS) {
                 break;
             }
-
-            if (isset(Tokens::$emptyTokens[$tokens[$after]['code']]) === true
-                || isset(Tokens::$operators[$tokens[$after]['code']]) === true
-                || isset(Tokens::$castTokens[$tokens[$after]['code']]) === true
-                || isset($allowed[$tokens[$after]['code']]) === true
-            ) {
+            if (isset(Tokens::$emptyTokens[$tokens[$after]['code']]) === true) {
+                continue;
+            }
+            if (isset(Tokens::$operators[$tokens[$after]['code']]) === true) {
+                continue;
+            }
+            if (isset(Tokens::$castTokens[$tokens[$after]['code']]) === true) {
+                continue;
+            }
+            if (isset($allowed[$tokens[$after]['code']]) === true) {
                 continue;
             }
 

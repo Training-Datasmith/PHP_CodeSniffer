@@ -29,7 +29,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
      *
      * @var integer
      */
-    private $phpVersion = null;
+    private $phpVersion;
 
 
     /**
@@ -86,7 +86,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 // Check return type (can be multiple, separated by '|').
                 $typeNames      = explode('|', $returnType);
                 $suggestedNames = [];
-                foreach ($typeNames as $i => $typeName) {
+                foreach ($typeNames as $typeName) {
                     $suggestedName = Common::suggestType($typeName);
                     if (in_array($suggestedName, $suggestedNames, true) === false) {
                         $suggestedNames[] = $suggestedName;
@@ -529,12 +529,12 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                     // Fix up the indent of additional comment lines.
                     foreach ($param['commentLines'] as $lineNum => $line) {
-                        if ($lineNum === 0
-                            || $param['commentLines'][$lineNum]['indent'] === 0
-                        ) {
+                        if ($lineNum === 0) {
                             continue;
                         }
-
+                        if ($param['commentLines'][$lineNum]['indent'] === 0) {
+                            continue;
+                        }
                         $diff      = (strlen($param['type']) - strlen($suggestedType));
                         $newIndent = ($param['commentLines'][$lineNum]['indent'] - $diff);
                         $phpcsFile->fixer->replaceToken(
@@ -650,7 +650,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
      *
      * @return void
      */
-    protected function checkSpacingAfterParamType(File $phpcsFile, $param, $maxType, $spacing=1)
+    protected function checkSpacingAfterParamType(File $phpcsFile, array $param, $maxType, $spacing=1)
     {
         // Check number of spaces after the type.
         $spaces = ($maxType - strlen($param['type']) + $spacing);
@@ -675,12 +675,12 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
                 // Fix up the indent of additional comment lines.
                 $diff = ($param['type_space'] - $spaces);
                 foreach ($param['commentLines'] as $lineNum => $line) {
-                    if ($lineNum === 0
-                        || $param['commentLines'][$lineNum]['indent'] === 0
-                    ) {
+                    if ($lineNum === 0) {
                         continue;
                     }
-
+                    if ($param['commentLines'][$lineNum]['indent'] === 0) {
+                        continue;
+                    }
                     $newIndent = ($param['commentLines'][$lineNum]['indent'] - $diff);
                     if ($newIndent <= 0) {
                         continue;
@@ -709,7 +709,7 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
      *
      * @return void
      */
-    protected function checkSpacingAfterParamName(File $phpcsFile, $param, $maxVar, $spacing=1)
+    protected function checkSpacingAfterParamName(File $phpcsFile, array $param, $maxVar, $spacing=1)
     {
         // Check number of spaces after the var name.
         $spaces = ($maxVar - strlen($param['var']) + $spacing);
@@ -733,12 +733,12 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                 // Fix up the indent of additional comment lines.
                 foreach ($param['commentLines'] as $lineNum => $line) {
-                    if ($lineNum === 0
-                        || $param['commentLines'][$lineNum]['indent'] === 0
-                    ) {
+                    if ($lineNum === 0) {
                         continue;
                     }
-
+                    if ($param['commentLines'][$lineNum]['indent'] === 0) {
+                        continue;
+                    }
                     $diff      = ($param['var_space'] - $spaces);
                     $newIndent = ($param['commentLines'][$lineNum]['indent'] - $diff);
                     if ($newIndent <= 0) {
@@ -783,9 +783,8 @@ class FunctionCommentSniff extends PEARFunctionCommentSniff
 
                 if ($trimmedContent === '{@inheritdoc}') {
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             }
         }
 

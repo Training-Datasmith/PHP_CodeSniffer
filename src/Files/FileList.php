@@ -40,14 +40,14 @@ class FileList implements \Iterator, \Countable
      *
      * @var \PHP_CodeSniffer\Config
      */
-    public $config = null;
+    public $config;
 
     /**
      * The ruleset used for the run.
      *
      * @var \PHP_CodeSniffer\Ruleset
      */
-    public $ruleset = null;
+    public $ruleset;
 
     /**
      * An array of patterns to use for skipping files.
@@ -62,8 +62,6 @@ class FileList implements \Iterator, \Countable
      *
      * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
      * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     *
-     * @return void
      */
     public function __construct(Config $config, Ruleset $ruleset)
     {

@@ -217,7 +217,8 @@ class MultipleStatementAlignmentSniff implements Sniff
                 }//end if
 
                 continue;
-            } else if ($assign !== $stackPtr && $tokens[$assign]['line'] === $lastLine) {
+            }
+            if ($assign !== $stackPtr && $tokens[$assign]['line'] === $lastLine) {
                 // Skip multiple assignments on the same line. We only need to
                 // try and align the first assignment.
                 continue;
@@ -230,7 +231,8 @@ class MultipleStatementAlignmentSniff implements Sniff
                     $assign   = $this->checkAlignment($phpcsFile, $assign);
                     $lastCode = $assign;
                     continue;
-                } else if ($tokens[$assign]['level'] < $tokens[$stackPtr]['level']) {
+                }
+                if ($tokens[$assign]['level'] < $tokens[$stackPtr]['level']) {
                     // We've gone one level up, so the block we are processing is done.
                     break;
                 } else if ($arrayEnd !== null) {
@@ -416,9 +418,8 @@ class MultipleStatementAlignmentSniff implements Sniff
 
         if ($stopped !== null) {
             return $this->checkAlignment($phpcsFile, $stopped);
-        } else {
-            return $assign;
         }
+        return $assign;
 
     }//end checkAlignment()
 

@@ -77,7 +77,8 @@ class UselessOverridingMethodSniff implements Sniff
 
             if (isset(Tokens::$emptyTokens[$code]) === true) {
                 continue;
-            } else if ($code === T_RETURN) {
+            }
+            if ($code === T_RETURN) {
                 continue;
             }
 

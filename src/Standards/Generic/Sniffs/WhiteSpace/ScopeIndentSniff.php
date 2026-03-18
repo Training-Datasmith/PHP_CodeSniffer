@@ -60,7 +60,7 @@ class ScopeIndentSniff implements Sniff
      *
      * @var integer
      */
-    private $tabWidth = null;
+    private $tabWidth;
 
     /**
      * List of tokens not needing to be checked for indentation.
@@ -1286,9 +1286,6 @@ class ScopeIndentSniff implements Sniff
                         $conditionLine  = $tokens[$conditionToken]['line'];
                         $conditionType  = $tokens[$conditionToken]['type'];
                         echo "\t=> added open scope $closerToken ($closerType) on line $closerLine, pointing to condition $conditionToken ($conditionType) on line $conditionLine".PHP_EOL;
-                    }
-
-                    if ($this->debug === true) {
                         $type = $tokens[$i]['type'];
                         echo "\t=> indent set to $currentIndent by token $i ($type)".PHP_EOL;
                     }

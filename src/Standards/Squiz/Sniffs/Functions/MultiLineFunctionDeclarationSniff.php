@@ -106,7 +106,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
      *
      * @return void
      */
-    public function processSingleLineDeclaration($phpcsFile, $stackPtr, $tokens)
+    public function processSingleLineDeclaration($phpcsFile, $stackPtr, array $tokens)
     {
         // We do everything the parent sniff does, and a bit more because we
         // define multi-line declarations a bit differently.
@@ -152,7 +152,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
      *
      * @return void
      */
-    public function processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens)
+    public function processMultiLineDeclaration($phpcsFile, $stackPtr, array $tokens)
     {
         // We do everything the parent sniff does, and a bit more.
         parent::processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens);
@@ -169,7 +169,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
             return;
         }
 
-        $openBracket = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($use + 1), null);
+        $openBracket = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($use + 1));
         $this->processBracket($phpcsFile, $openBracket, $tokens, 'use');
 
     }//end processMultiLineDeclaration()
@@ -188,7 +188,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
      *
      * @return void
      */
-    public function processBracket($phpcsFile, $openBracket, $tokens, $type='function')
+    public function processBracket($phpcsFile, $openBracket, array $tokens, $type='function')
     {
         $errorPrefix = '';
         if ($type === 'use') {
@@ -222,10 +222,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
                     }
                 }
             }//end if
-        }//end if
-
-        // Each line between the brackets should contain a single parameter.
-        $lastComma = null;
+        }
         for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
             // Skip brackets, like arrays, as they can contain commas.
             if (isset($tokens[$i]['bracket_opener']) === true) {

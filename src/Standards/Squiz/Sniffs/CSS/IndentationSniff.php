@@ -60,13 +60,14 @@ class IndentationSniff implements Sniff
         $indentLevel  = 0;
         $nestingLevel = 0;
         for ($i = 1; $i < $numTokens; $i++) {
-            if ($tokens[$i]['code'] === T_COMMENT
-                || isset(Tokens::$phpcsCommentTokens[$tokens[$i]['code']]) === true
-            ) {
+            if ($tokens[$i]['code'] === T_COMMENT) {
                 // Don't check the indent of comments.
                 continue;
             }
-
+            if (isset(Tokens::$phpcsCommentTokens[$tokens[$i]['code']]) === true) {
+                // Don't check the indent of comments.
+                continue;
+            }
             if ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET) {
                 $indentLevel++;
 
@@ -98,11 +99,13 @@ class IndentationSniff implements Sniff
                     $nestingLevel = 0;
                 }
             }
-
-            if ($tokens[$i]['column'] !== 1
-                || $tokens[$i]['code'] === T_OPEN_CURLY_BRACKET
-                || $tokens[$i]['code'] === T_CLOSE_CURLY_BRACKET
-            ) {
+            if ($tokens[$i]['column'] !== 1) {
+                continue;
+            }
+            if ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET) {
+                continue;
+            }
+            if ($tokens[$i]['code'] === T_CLOSE_CURLY_BRACKET) {
                 continue;
             }
 

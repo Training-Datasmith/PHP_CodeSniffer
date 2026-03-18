@@ -191,11 +191,11 @@ class ControlSignatureSniff implements Sniff
             $opener = $tokens[$stackPtr]['scope_opener'];
             for ($next = ($opener + 1); $next < $phpcsFile->numTokens; $next++) {
                 $code = $tokens[$next]['code'];
-
-                if ($code === T_WHITESPACE
-                    || ($code === T_INLINE_HTML
-                    && trim($tokens[$next]['content']) === '')
-                ) {
+                if ($code === T_WHITESPACE) {
+                    continue;
+                }
+                if ($code === T_INLINE_HTML
+                && trim($tokens[$next]['content']) === '') {
                     continue;
                 }
 

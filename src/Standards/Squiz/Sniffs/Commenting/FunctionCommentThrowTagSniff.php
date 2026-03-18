@@ -191,7 +191,8 @@ class FunctionCommentThrowTagSniff implements Sniff
             $error = 'Missing @throws tag in function comment';
             $phpcsFile->addError($error, $commentEnd, 'Missing');
             return;
-        } else if (empty($thrownExceptions) === true) {
+        }
+        if (empty($thrownExceptions) === true) {
             // If token count is zero, it means that only variables are being
             // thrown, so we need at least one @throws tag (checked above).
             // Nothing more to do.

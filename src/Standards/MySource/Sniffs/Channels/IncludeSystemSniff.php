@@ -125,7 +125,7 @@ class IncludeSystemSniff extends AbstractScopeSniff
         // class. If we are not, look outside the function.
         $condPtr = $currScope;
         if ($phpcsFile->hasCondition($stackPtr, T_CLASS) === true) {
-            foreach ($tokens[$stackPtr]['conditions'] as $condPtr => $condType) {
+            foreach ($tokens[$stackPtr]['conditions'] as $condType) {
                 if ($condType === T_CLASS) {
                     break;
                 }
@@ -294,11 +294,13 @@ class IncludeSystemSniff extends AbstractScopeSniff
             $systemName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1));
             $systemName = trim($tokens[$systemName]['content'], " '");
             return strtolower($systemName);
-        } else if (strtolower($tokens[$stackPtr]['content']) === 'includeasset') {
+        }
+        if (strtolower($tokens[$stackPtr]['content']) === 'includeasset') {
             $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1));
             $typeName = trim($tokens[$typeName]['content'], " '");
             return strtolower($typeName).'assettype';
-        } else if (isset(Tokens::$includeTokens[$tokens[$stackPtr]['code']]) === true) {
+        }
+        if (isset(Tokens::$includeTokens[$tokens[$stackPtr]['code']]) === true) {
             $filePath = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1));
             $filePath = $tokens[$filePath]['content'];
             $filePath = trim($filePath, " '");

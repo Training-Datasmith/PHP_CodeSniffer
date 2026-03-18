@@ -69,10 +69,9 @@ class GetRequestDataSniff implements Sniff
                 if (strtolower($funcName) === 'getrequestdata') {
                     // This is valid.
                     return;
-                } else {
-                    // We don't have nested functions.
-                    break;
                 }
+                // We don't have nested functions.
+                break;
             }//end if
         }//end foreach
 

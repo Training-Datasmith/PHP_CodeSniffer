@@ -88,19 +88,22 @@ class DisallowSizeFunctionsInLoopsSniff implements Sniff
                 if ($tokenizer === 'JS') {
                     // Needs to be in the form object.function to be valid.
                     $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($i - 1), null, true);
-                    if ($prev === false || $tokens[$prev]['code'] !== T_OBJECT_OPERATOR) {
+                    if ($prev === false) {
+                        continue;
+                    }
+                    if ($tokens[$prev]['code'] !== T_OBJECT_OPERATOR) {
                         continue;
                     }
 
                     $functionName = 'object.'.$functionName;
                 } else {
                     // Make sure it isn't a member var.
-                    if ($tokens[($i - 1)]['code'] === T_OBJECT_OPERATOR
-                        || $tokens[($i - 1)]['code'] === T_NULLSAFE_OBJECT_OPERATOR
-                    ) {
+                    if ($tokens[($i - 1)]['code'] === T_OBJECT_OPERATOR) {
                         continue;
                     }
-
+                    if ($tokens[($i - 1)]['code'] === T_NULLSAFE_OBJECT_OPERATOR) {
+                        continue;
+                    }
                     $functionName .= '()';
                 }
 

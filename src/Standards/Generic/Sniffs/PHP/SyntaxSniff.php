@@ -23,7 +23,7 @@ class SyntaxSniff implements Sniff
      *
      * @var string
      */
-    private $phpPath = null;
+    private $phpPath;
 
 
     /**

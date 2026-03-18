@@ -99,7 +99,8 @@ class NonExecutableCodeSniff implements Sniff
             if ($tokens[$i]['code'] === T_CLOSE_PARENTHESIS) {
                 $i = $tokens[$i]['parenthesis_opener'];
                 continue;
-            } else if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
+            }
+            if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
 
@@ -273,13 +274,15 @@ class NonExecutableCodeSniff implements Sniff
 
         $lastLine = $tokens[$start]['line'];
         for ($i = ($start + 1); $i < $end; $i++) {
-            if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true
-                || isset(Tokens::$bracketTokens[$tokens[$i]['code']]) === true
-                || $tokens[$i]['code'] === T_SEMICOLON
-            ) {
+            if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
-
+            if (isset(Tokens::$bracketTokens[$tokens[$i]['code']]) === true) {
+                continue;
+            }
+            if ($tokens[$i]['code'] === T_SEMICOLON) {
+                continue;
+            }
             // Skip whole functions and classes/interfaces because they are not
             // technically executed code, but rather declarations that may be used.
             if (isset(Tokens::$ooScopeTokens[$tokens[$i]['code']]) === true

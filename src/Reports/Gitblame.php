@@ -51,8 +51,7 @@ class Gitblame extends VersionControl
         }
 
         $parts  = array_slice($parts, 0, (count($parts) - 2));
-        $author = preg_replace('|\(|', '', implode(' ', $parts));
-        return $author;
+        return preg_replace('|\(|', '', implode(' ', $parts));
 
     }//end getAuthor()
 

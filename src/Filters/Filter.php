@@ -22,35 +22,35 @@ class Filter extends \RecursiveFilterIterator
      *
      * @var string
      */
-    protected $basedir = null;
+    protected $basedir;
 
     /**
      * The config data for the run.
      *
      * @var \PHP_CodeSniffer\Config
      */
-    protected $config = null;
+    protected $config;
 
     /**
      * The ruleset used for the run.
      *
      * @var \PHP_CodeSniffer\Ruleset
      */
-    protected $ruleset = null;
+    protected $ruleset;
 
     /**
      * A list of ignore patterns that apply to directories only.
      *
      * @var array
      */
-    protected $ignoreDirPatterns = null;
+    protected $ignoreDirPatterns;
 
     /**
      * A list of ignore patterns that apply to files only.
      *
      * @var array
      */
-    protected $ignoreFilePatterns = null;
+    protected $ignoreFilePatterns;
 
     /**
      * A list of file paths we've already accepted.
@@ -69,10 +69,8 @@ class Filter extends \RecursiveFilterIterator
      * @param string                   $basedir  The top-level path we are filtering.
      * @param \PHP_CodeSniffer\Config  $config   The config data for the run.
      * @param \PHP_CodeSniffer\Ruleset $ruleset  The ruleset used for the run.
-     *
-     * @return void
      */
-    public function __construct($iterator, $basedir, Config $config, Ruleset $ruleset)
+    public function __construct(\RecursiveIterator $iterator, $basedir, Config $config, Ruleset $ruleset)
     {
         parent::__construct($iterator);
         $this->basedir = $basedir;

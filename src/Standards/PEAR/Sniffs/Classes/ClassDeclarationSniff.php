@@ -72,33 +72,33 @@ class ClassDeclarationSniff implements Sniff
             }
 
             return;
-        } else {
-            $phpcsFile->recordMetric($stackPtr, 'Class opening brace placement', 'new line');
-
-            if ($braceLine > ($classLine + 1)) {
-                $error = 'Opening brace of a %s must be on the line following the %s declaration; found %s line(s)';
-                $data  = [
-                    $tokens[$stackPtr]['content'],
-                    $tokens[$stackPtr]['content'],
-                    ($braceLine - $classLine - 1),
-                ];
-                $fix   = $phpcsFile->addFixableError($error, $curlyBrace, 'OpenBraceWrongLine', $data);
-                if ($fix === true) {
-                    $phpcsFile->fixer->beginChangeset();
-                    for ($i = ($curlyBrace - 1); $i > $lastContent; $i--) {
-                        if ($tokens[$i]['line'] === ($tokens[$curlyBrace]['line'] + 1)) {
-                            break;
-                        }
-
-                        $phpcsFile->fixer->replaceToken($i, '');
+        }
+        $phpcsFile->recordMetric($stackPtr, 'Class opening brace placement', 'new line');
+        if ($braceLine > ($classLine + 1)) {
+            $error = 'Opening brace of a %s must be on the line following the %s declaration; found %s line(s)';
+            $data  = [
+                $tokens[$stackPtr]['content'],
+                $tokens[$stackPtr]['content'],
+                ($braceLine - $classLine - 1),
+            ];
+            $fix   = $phpcsFile->addFixableError($error, $curlyBrace, 'OpenBraceWrongLine', $data);
+            if ($fix === true) {
+                $phpcsFile->fixer->beginChangeset();
+                for ($i = ($curlyBrace - 1); $i > $lastContent; $i--) {
+                    if ($tokens[$i]['line'] === ($tokens[$curlyBrace]['line'] + 1)) {
+                        break;
                     }
 
-                    $phpcsFile->fixer->endChangeset();
+                    $phpcsFile->fixer->replaceToken($i, '');
                 }
 
-                return;
-            }//end if
-        }//end if
+                $phpcsFile->fixer->endChangeset();
+            }
+
+            return;
+        }
+        //end if
+        //end if
 
         if ($tokens[($curlyBrace + 1)]['content'] !== $phpcsFile->eolChar) {
             $error = 'Opening %s brace must be on a line by itself';

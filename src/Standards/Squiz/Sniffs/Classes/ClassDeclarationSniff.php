@@ -189,7 +189,8 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
                     for ($i = ($closeBrace + 1); $i < $nextContent; $i++) {
                         if ($tokens[$i]['line'] <= ($tokens[$closeBrace]['line'] + 1)) {
                             continue;
-                        } else if ($tokens[$i]['line'] === $tokens[$nextContent]['line']) {
+                        }
+                        if ($tokens[$i]['line'] === $tokens[$nextContent]['line']) {
                             break;
                         }
 

@@ -140,8 +140,6 @@ class DisallowYodaConditionsSniff implements Sniff
     public function isArrayStatic(File $phpcsFile, $arrayToken)
     {
         $tokens = $phpcsFile->getTokens();
-
-        $arrayEnd = null;
         if ($tokens[$arrayToken]['code'] === T_OPEN_SHORT_ARRAY) {
             $start = $arrayToken;
             $end   = $tokens[$arrayToken]['bracket_closer'];

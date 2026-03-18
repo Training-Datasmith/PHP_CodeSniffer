@@ -49,7 +49,7 @@ class Notifysend implements Report
      *
      * @var string
      */
-    protected $version = null;
+    protected $version;
 
 
     /**
@@ -156,7 +156,7 @@ class Notifysend implements Report
      *
      * @return string Error message or NULL if no error/warning found.
      */
-    protected function generateMessage($checkedFiles, $totalErrors, $totalWarnings)
+    protected function generateMessage(array $checkedFiles, $totalErrors, $totalWarnings)
     {
         if ($totalErrors === 0 && $totalWarnings === 0) {
             // Nothing to print.

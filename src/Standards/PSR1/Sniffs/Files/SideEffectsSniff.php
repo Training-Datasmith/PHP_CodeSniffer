@@ -76,7 +76,7 @@ class SideEffectsSniff implements Sniff
      *
      * @return array
      */
-    private function searchForConflict($phpcsFile, $start, $end, $tokens)
+    private function searchForConflict($phpcsFile, $start, $end, array $tokens)
     {
         $symbols = [
             T_CLASS     => T_CLASS,
@@ -126,11 +126,11 @@ class SideEffectsSniff implements Sniff
             if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
-
             // Ignore PHP tags.
-            if ($tokens[$i]['code'] === T_OPEN_TAG
-                || $tokens[$i]['code'] === T_CLOSE_TAG
-            ) {
+            if ($tokens[$i]['code'] === T_OPEN_TAG) {
+                continue;
+            }
+            if ($tokens[$i]['code'] === T_CLOSE_TAG) {
                 continue;
             }
 
@@ -167,11 +167,11 @@ class SideEffectsSniff implements Sniff
 
                 continue;
             }
-
             // Ignore function/class prefixes.
-            if (isset(Tokens::$methodPrefixes[$tokens[$i]['code']]) === true
-                || $tokens[$i]['code'] === T_READONLY
-            ) {
+            if (isset(Tokens::$methodPrefixes[$tokens[$i]['code']]) === true) {
+                continue;
+            }
+            if ($tokens[$i]['code'] === T_READONLY) {
                 continue;
             }
 
@@ -199,7 +199,8 @@ class SideEffectsSniff implements Sniff
 
                 $i = $tokens[$i]['scope_closer'];
                 continue;
-            } else if ($tokens[$i]['code'] === T_STRING
+            }
+            if ($tokens[$i]['code'] === T_STRING
                 && strtolower($tokens[$i]['content']) === 'define'
             ) {
                 $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($i - 1), null, true);

@@ -29,21 +29,21 @@ class Runner
      *
      * @var \PHP_CodeSniffer\Config
      */
-    public $config = null;
+    public $config;
 
     /**
      * The ruleset used for the run.
      *
      * @var \PHP_CodeSniffer\Ruleset
      */
-    public $ruleset = null;
+    public $ruleset;
 
     /**
      * The reporter used for generating reports after the run.
      *
      * @var \PHP_CodeSniffer\Reporter
      */
-    public $reporter = null;
+    public $reporter;
 
 
     /**
@@ -137,13 +137,13 @@ class Runner
         if ($numErrors === 0) {
             // No errors found.
             return 0;
-        } else if ($this->reporter->totalFixable === 0) {
+        }
+        if ($this->reporter->totalFixable === 0) {
             // Errors found, but none of them can be fixed by PHPCBF.
             return 1;
-        } else {
-            // Errors found, and some can be fixed by PHPCBF.
-            return 2;
         }
+        // Errors found, and some can be fixed by PHPCBF.
+        return 2;
 
     }//end runPHPCS()
 
@@ -216,10 +216,9 @@ class Runner
             if ($this->reporter->totalFixable === 0) {
                 // Nothing found that could be fixed.
                 return 0;
-            } else {
-                // Something failed to fix.
-                return 2;
             }
+            // Something failed to fix.
+            return 2;
         }
 
         if ($this->reporter->totalFixable === 0) {
@@ -241,12 +240,6 @@ class Runner
      */
     public function checkRequirements()
     {
-        // Check the PHP version.
-        if (PHP_VERSION_ID < 50400) {
-            $error = 'ERROR: PHP_CodeSniffer requires PHP version 5.4.0 or greater.'.PHP_EOL;
-            throw new DeepExitException($error, 3);
-        }
-
         $requiredExtensions = [
             'tokenizer',
             'xmlwriter',
@@ -322,11 +315,11 @@ class Runner
 
         // Create this class so it is autoloaded and sets up a bunch
         // of PHP_CodeSniffer-specific token type constants.
-        $tokens = new Util\Tokens();
+        new Util\Tokens();
 
         // Allow autoloading of custom files inside installed standards.
         $installedStandards = Standards::getInstalledStandardDetails();
-        foreach ($installedStandards as $name => $details) {
+        foreach ($installedStandards as $details) {
             Autoload::addSearchPath($details['path'], $details['namespace']);
         }
 
@@ -463,7 +456,8 @@ class Runner
                 $pid = pcntl_fork();
                 if ($pid === -1) {
                     throw new RuntimeException('Failed to create child process');
-                } else if ($pid !== 0) {
+                }
+                if ($pid !== 0) {
                     $childProcs[$pid] = $childOutFilename;
                 } else {
                     // Move forward to the start of the batch.
@@ -618,7 +612,7 @@ class Runner
      * @return void
      * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
      */
-    public function processFile($file)
+    public function processFile(\PHP_CodeSniffer\Files\File $file)
     {
         if (PHP_CODESNIFFER_VERBOSITY > 0) {
             $startTime = microtime(true);
@@ -745,7 +739,7 @@ class Runner
      *
      * @return bool
      */
-    private function processChildProcs($childProcs)
+    private function processChildProcs(array $childProcs)
     {
         $numProcessed = 0;
         $totalBatches = count($childProcs);

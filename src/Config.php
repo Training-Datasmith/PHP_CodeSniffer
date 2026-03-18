@@ -176,14 +176,14 @@ class Config
      *
      * @var array<string, string>
      */
-    private static $configData = null;
+    private static $configData;
 
     /**
      * The full path to the config data file that has been loaded.
      *
      * @var string
      */
-    private static $configDataFile = null;
+    private static $configDataFile;
 
     /**
      * Automatically discovered executable utility paths.
@@ -326,16 +326,12 @@ class Config
         return $this->settings = $settings;
 
     }//end setSettings()
-
-
     /**
      * Creates a Config object and populates it with command line values.
      *
      * @param array $cliArgs         An array of values gathered from CLI args.
      * @param bool  $dieOnUnknownArg Whether or not to kill the process when an
      *                               unknown command line arg is found.
-     *
-     * @return void
      */
     public function __construct(array $cliArgs=[], $dieOnUnknownArg=true)
     {
@@ -1292,14 +1288,13 @@ class Config
             $error  = 'ERROR: The file "'.$path.'" does not exist.'.PHP_EOL.PHP_EOL;
             $error .= $this->printShortUsage(true);
             throw new DeepExitException($error, 3);
-        } else {
-            // Can't modify the files array directly because it's not a real
-            // class member, so need to use this little get/modify/set trick.
-            $files       = $this->files;
-            $files[]     = $file;
-            $this->files = $files;
-            self::$overriddenDefaults['files'] = true;
         }
+        // Can't modify the files array directly because it's not a real
+        // class member, so need to use this little get/modify/set trick.
+        $files       = $this->files;
+        $files[]     = $file;
+        $this->files = $files;
+        self::$overriddenDefaults['files'] = true;
 
     }//end processFilePath()
 
@@ -1627,7 +1622,7 @@ class Config
         // standards paths are added to the autoloader.
         if ($key === 'installed_paths') {
             $installedStandards = Util\Standards::getInstalledStandardDetails();
-            foreach ($installedStandards as $name => $details) {
+            foreach ($installedStandards as $details) {
                 Autoload::addSearchPath($details['path'], $details['namespace']);
             }
         }

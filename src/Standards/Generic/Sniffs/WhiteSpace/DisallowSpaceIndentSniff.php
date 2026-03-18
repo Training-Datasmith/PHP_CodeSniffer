@@ -31,7 +31,7 @@ class DisallowSpaceIndentSniff implements Sniff
      *
      * @var integer
      */
-    private $tabWidth = null;
+    private $tabWidth;
 
 
     /**
@@ -84,10 +84,12 @@ class DisallowSpaceIndentSniff implements Sniff
 
         $tokens = $phpcsFile->getTokens();
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
-            if ($tokens[$i]['column'] !== 1 || isset($checkTokens[$tokens[$i]['code']]) === false) {
+            if ($tokens[$i]['column'] !== 1) {
                 continue;
             }
-
+            if (isset($checkTokens[$tokens[$i]['code']]) === false) {
+                continue;
+            }
             // If the tokenizer hasn't replaced tabs with spaces, we need to do it manually.
             $token = $tokens[$i];
             if ($tabsReplaced === false) {

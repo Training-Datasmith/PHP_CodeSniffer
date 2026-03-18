@@ -31,7 +31,7 @@ class DisallowTabIndentSniff implements Sniff
      *
      * @var integer
      */
-    private $tabWidth = null;
+    private $tabWidth;
 
 
     /**

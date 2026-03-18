@@ -38,14 +38,14 @@ class File
      *
      * @var \PHP_CodeSniffer\Config
      */
-    public $config = null;
+    public $config;
 
     /**
      * The ruleset used for the run.
      *
      * @var \PHP_CodeSniffer\Ruleset
      */
-    public $ruleset = null;
+    public $ruleset;
 
     /**
      * If TRUE, the entire file is being ignored.
@@ -66,14 +66,14 @@ class File
      *
      * @var \PHP_CodeSniffer\Fixer
      */
-    public $fixer = null;
+    public $fixer;
 
     /**
      * The tokenizer being used for this file.
      *
      * @var \PHP_CodeSniffer\Tokenizers\Tokenizer
      */
-    public $tokenizer = null;
+    public $tokenizer;
 
     /**
      * The name of the tokenizer being used for this file.
@@ -228,8 +228,6 @@ class File
      * @param string                   $path    The absolute path to the file to process.
      * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
      * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
-     *
-     * @return void
      */
     public function __construct($path, Ruleset $ruleset, Config $config)
     {
@@ -367,7 +365,8 @@ class File
                         $this->warningCount = 0;
                         $this->fixableCount = 0;
                         return;
-                    } else if (strpos($commentText, '@codingStandardsChangeSetting') !== false) {
+                    }
+                    if (strpos($commentText, '@codingStandardsChangeSetting') !== false) {
                         $start   = strpos($commentText, '@codingStandardsChangeSetting');
                         $comment = substr($commentText, ($start + 30));
                         $parts   = explode(' ', $comment);
@@ -389,29 +388,32 @@ class File
                             }
                         }
                     }//end if
-                } else if (substr($commentTextLower, 0, 16) === 'phpcs:ignorefile'
-                    || substr($commentTextLower, 0, 17) === '@phpcs:ignorefile'
-                ) {
-                    // Ignoring the whole file, just a little late.
-                    $this->errors       = [];
-                    $this->warnings     = [];
-                    $this->errorCount   = 0;
-                    $this->warningCount = 0;
-                    $this->fixableCount = 0;
-                    return;
-                } else if (substr($commentTextLower, 0, 9) === 'phpcs:set'
-                    || substr($commentTextLower, 0, 10) === '@phpcs:set'
-                ) {
-                    if (isset($token['sniffCode']) === true) {
-                        $listenerCode = $token['sniffCode'];
-                        if (isset($this->ruleset->sniffCodes[$listenerCode]) === true) {
-                            $propertyCode  = $token['sniffProperty'];
-                            $settings      = [
-                                'value' => $token['sniffPropertyValue'],
-                                'scope' => 'sniff',
-                            ];
-                            $listenerClass = $this->ruleset->sniffCodes[$listenerCode];
-                            $this->ruleset->setSniffProperty($listenerClass, $propertyCode, $settings);
+                } else {
+                    if (substr($commentTextLower, 0, 16) === 'phpcs:ignorefile'
+                        || substr($commentTextLower, 0, 17) === '@phpcs:ignorefile'
+                    ) {
+                        // Ignoring the whole file, just a little late.
+                        $this->errors       = [];
+                        $this->warnings     = [];
+                        $this->errorCount   = 0;
+                        $this->warningCount = 0;
+                        $this->fixableCount = 0;
+                        return;
+                    }
+                    if (substr($commentTextLower, 0, 9) === 'phpcs:set'
+                        || substr($commentTextLower, 0, 10) === '@phpcs:set'
+                    ) {
+                        if (isset($token['sniffCode']) === true) {
+                            $listenerCode = $token['sniffCode'];
+                            if (isset($this->ruleset->sniffCodes[$listenerCode]) === true) {
+                                $propertyCode  = $token['sniffProperty'];
+                                $settings      = [
+                                    'value' => $token['sniffPropertyValue'],
+                                    'scope' => 'sniff',
+                                ];
+                                $listenerClass = $this->ruleset->sniffCodes[$listenerCode];
+                                $this->ruleset->setSniffProperty($listenerClass, $propertyCode, $settings);
+                            }
                         }
                     }
                 }//end if
@@ -432,14 +434,15 @@ class File
             }
 
             foreach ($this->ruleset->tokenListeners[$token['code']] as $listenerData) {
-                if (isset($this->ignoredListeners[$listenerData['class']]) === true
-                    || (isset($listenerIgnoreTo[$listenerData['class']]) === true
-                    && $listenerIgnoreTo[$listenerData['class']] > $stackPtr)
-                ) {
+                if (isset($this->ignoredListeners[$listenerData['class']]) === true) {
                     // This sniff is ignoring past this token, or the whole file.
                     continue;
                 }
-
+                if (isset($listenerIgnoreTo[$listenerData['class']]) === true
+                && $listenerIgnoreTo[$listenerData['class']] > $stackPtr) {
+                    // This sniff is ignoring past this token, or the whole file.
+                    continue;
+                }
                 // Make sure this sniff supports the tokenizer
                 // we are currently using.
                 $class = $listenerData['class'];
@@ -2117,25 +2120,23 @@ class File
         ) {
             if ($this->tokens[$tokenAfter]['code'] === T_VARIABLE) {
                 return true;
-            } else {
-                $skip   = Util\Tokens::$emptyTokens;
-                $skip[] = T_NS_SEPARATOR;
-                $skip[] = T_SELF;
-                $skip[] = T_PARENT;
-                $skip[] = T_STATIC;
-                $skip[] = T_STRING;
-                $skip[] = T_NAMESPACE;
-                $skip[] = T_DOUBLE_COLON;
-
-                $nextSignificantAfter = $this->findNext(
-                    $skip,
-                    ($stackPtr + 1),
-                    null,
-                    true
-                );
-                if ($this->tokens[$nextSignificantAfter]['code'] === T_VARIABLE) {
-                    return true;
-                }
+            }
+            $skip   = Util\Tokens::$emptyTokens;
+            $skip[] = T_NS_SEPARATOR;
+            $skip[] = T_SELF;
+            $skip[] = T_PARENT;
+            $skip[] = T_STATIC;
+            $skip[] = T_STRING;
+            $skip[] = T_NAMESPACE;
+            $skip[] = T_DOUBLE_COLON;
+            $nextSignificantAfter = $this->findNext(
+                $skip,
+                ($stackPtr + 1),
+                null,
+                true
+            );
+            if ($this->tokens[$nextSignificantAfter]['code'] === T_VARIABLE) {
+                return true;
             }//end if
         }//end if
 
@@ -2239,7 +2240,8 @@ class File
             if ($found === true) {
                 if ($value === null) {
                     return $i;
-                } else if ($this->tokens[$i]['content'] === $value) {
+                }
+                if ($this->tokens[$i]['content'] === $value) {
                     return $i;
                 }
             }
@@ -2320,7 +2322,8 @@ class File
             if ($found === true) {
                 if ($value === null) {
                     return $i;
-                } else if ($this->tokens[$i]['content'] === $value) {
+                }
+                if ($this->tokens[$i]['content'] === $value) {
                     return $i;
                 }
             }
@@ -2417,8 +2420,7 @@ class File
                 }
 
                 $end  = $this->findEndOfStatement($prevMatchArrow);
-                $next = $this->findNext(Util\Tokens::$emptyTokens, ($end + 1), null, true);
-                return $next;
+                return $this->findNext(Util\Tokens::$emptyTokens, ($end + 1), null, true);
             }
         }//end if
 
@@ -2838,11 +2840,9 @@ class File
 
         if ($name === '') {
             return false;
-        } else {
-            $names = explode(',', $name);
-            $names = array_map('trim', $names);
-            return $names;
         }
+        $names = explode(',', $name);
+        return array_map('trim', $names);
 
     }//end findImplementedInterfaceNames()
 

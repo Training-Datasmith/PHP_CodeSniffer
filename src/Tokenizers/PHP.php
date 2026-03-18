@@ -1693,7 +1693,8 @@ class PHP extends Tokenizer
                     $finalTokens[$newStackPtr] = $newToken;
                     $newStackPtr++;
                     continue;
-                } else if ($isMatch === false && $token[0] === T_MATCH) {
+                }
+                if ($isMatch === false && $token[0] === T_MATCH) {
                     // PHP 8.0, match keyword, but not a match expression.
                     $newToken            = [];
                     $newToken['code']    = T_STRING;
@@ -2461,7 +2462,8 @@ class PHP extends Tokenizer
                 }//end if
 
                 continue;
-            } else if ($this->tokens[$i]['code'] === T_CLASS && isset($this->tokens[$i]['scope_opener']) === true) {
+            }
+            if ($this->tokens[$i]['code'] === T_CLASS && isset($this->tokens[$i]['scope_opener']) === true) {
                 /*
                     Detect anonymous classes and assign them a different token.
                 */
@@ -2515,7 +2517,8 @@ class PHP extends Tokenizer
                 }//end if
 
                 continue;
-            } else if ($this->tokens[$i]['code'] === T_FN && isset($this->tokens[($i + 1)]) === true) {
+            }
+            if ($this->tokens[$i]['code'] === T_FN && isset($this->tokens[($i + 1)]) === true) {
                 // Possible arrow function.
                 for ($x = ($i + 1); $x < $numTokens; $x++) {
                     if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false
@@ -2711,367 +2714,379 @@ class PHP extends Tokenizer
                     $this->tokens[$i]['code'] = T_STRING;
                     $this->tokens[$i]['type'] = 'T_STRING';
                 }
-            } else if ($this->tokens[$i]['code'] === T_OPEN_SQUARE_BRACKET) {
-                if (isset($this->tokens[$i]['bracket_closer']) === false) {
-                    continue;
-                }
-
-                // Unless there is a variable or a bracket before this token,
-                // it is the start of an array being defined using the short syntax.
-                $isShortArray = false;
-                $allowed      = [
-                    T_CLOSE_SQUARE_BRACKET     => T_CLOSE_SQUARE_BRACKET,
-                    T_CLOSE_CURLY_BRACKET      => T_CLOSE_CURLY_BRACKET,
-                    T_CLOSE_PARENTHESIS        => T_CLOSE_PARENTHESIS,
-                    T_VARIABLE                 => T_VARIABLE,
-                    T_OBJECT_OPERATOR          => T_OBJECT_OPERATOR,
-                    T_NULLSAFE_OBJECT_OPERATOR => T_NULLSAFE_OBJECT_OPERATOR,
-                    T_STRING                   => T_STRING,
-                    T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
-                    T_DOUBLE_QUOTED_STRING     => T_DOUBLE_QUOTED_STRING,
-                ];
-                $allowed     += Util\Tokens::$magicConstants;
-
-                for ($x = ($i - 1); $x >= 0; $x--) {
-                    // If we hit a scope opener, the statement has ended
-                    // without finding anything, so it's probably an array
-                    // using PHP 7.1 short list syntax.
-                    if (isset($this->tokens[$x]['scope_opener']) === true) {
-                        $isShortArray = true;
-                        break;
+            } else {
+                if ($this->tokens[$i]['code'] === T_OPEN_SQUARE_BRACKET) {
+                    if (isset($this->tokens[$i]['bracket_closer']) === false) {
+                        continue;
                     }
 
-                    if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
-                        // Allow for control structures without braces.
-                        if (($this->tokens[$x]['code'] === T_CLOSE_PARENTHESIS
-                            && isset($this->tokens[$x]['parenthesis_owner']) === true
-                            && isset(Util\Tokens::$scopeOpeners[$this->tokens[$this->tokens[$x]['parenthesis_owner']]['code']]) === true)
-                            || isset($allowed[$this->tokens[$x]['code']]) === false
-                        ) {
-                            $isShortArray = true;
-                        }
-
-                        break;
-                    }
-                }//end for
-
-                if ($isShortArray === true) {
-                    $this->tokens[$i]['code'] = T_OPEN_SHORT_ARRAY;
-                    $this->tokens[$i]['type'] = 'T_OPEN_SHORT_ARRAY';
-
-                    $closer = $this->tokens[$i]['bracket_closer'];
-                    $this->tokens[$closer]['code'] = T_CLOSE_SHORT_ARRAY;
-                    $this->tokens[$closer]['type'] = 'T_CLOSE_SHORT_ARRAY';
-                    if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                        $line = $this->tokens[$i]['line'];
-                        echo "\t* token $i on line $line changed from T_OPEN_SQUARE_BRACKET to T_OPEN_SHORT_ARRAY".PHP_EOL;
-                        $line = $this->tokens[$closer]['line'];
-                        echo "\t* token $closer on line $line changed from T_CLOSE_SQUARE_BRACKET to T_CLOSE_SHORT_ARRAY".PHP_EOL;
-                    }
-                }
-
-                continue;
-            } else if ($this->tokens[$i]['code'] === T_MATCH) {
-                if (isset($this->tokens[$i]['scope_opener'], $this->tokens[$i]['scope_closer']) === false) {
-                    // Not a match expression after all.
-                    $this->tokens[$i]['code'] = T_STRING;
-                    $this->tokens[$i]['type'] = 'T_STRING';
-
-                    if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                        echo "\t\t* token $i changed from T_MATCH to T_STRING".PHP_EOL;
-                    }
-
-                    if (isset($this->tokens[$i]['parenthesis_opener'], $this->tokens[$i]['parenthesis_closer']) === true) {
-                        $opener = $this->tokens[$i]['parenthesis_opener'];
-                        $closer = $this->tokens[$i]['parenthesis_closer'];
-                        unset(
-                            $this->tokens[$opener]['parenthesis_owner'],
-                            $this->tokens[$closer]['parenthesis_owner']
-                        );
-                        unset(
-                            $this->tokens[$i]['parenthesis_opener'],
-                            $this->tokens[$i]['parenthesis_closer'],
-                            $this->tokens[$i]['parenthesis_owner']
-                        );
-
-                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            echo "\t\t* cleaned parenthesis of token $i *".PHP_EOL;
-                        }
-                    }
-                } else {
-                    // Retokenize the double arrows for match expression cases to `T_MATCH_ARROW`.
-                    $searchFor  = [
-                        T_OPEN_CURLY_BRACKET  => T_OPEN_CURLY_BRACKET,
-                        T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET,
-                        T_OPEN_PARENTHESIS    => T_OPEN_PARENTHESIS,
-                        T_OPEN_SHORT_ARRAY    => T_OPEN_SHORT_ARRAY,
-                        T_DOUBLE_ARROW        => T_DOUBLE_ARROW,
+                    // Unless there is a variable or a bracket before this token,
+                    // it is the start of an array being defined using the short syntax.
+                    $isShortArray = false;
+                    $allowed      = [
+                        T_CLOSE_SQUARE_BRACKET     => T_CLOSE_SQUARE_BRACKET,
+                        T_CLOSE_CURLY_BRACKET      => T_CLOSE_CURLY_BRACKET,
+                        T_CLOSE_PARENTHESIS        => T_CLOSE_PARENTHESIS,
+                        T_VARIABLE                 => T_VARIABLE,
+                        T_OBJECT_OPERATOR          => T_OBJECT_OPERATOR,
+                        T_NULLSAFE_OBJECT_OPERATOR => T_NULLSAFE_OBJECT_OPERATOR,
+                        T_STRING                   => T_STRING,
+                        T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
+                        T_DOUBLE_QUOTED_STRING     => T_DOUBLE_QUOTED_STRING,
                     ];
-                    $searchFor += Util\Tokens::$scopeOpeners;
+                    $allowed     += Util\Tokens::$magicConstants;
 
-                    for ($x = ($this->tokens[$i]['scope_opener'] + 1); $x < $this->tokens[$i]['scope_closer']; $x++) {
-                        if (isset($searchFor[$this->tokens[$x]['code']]) === false) {
-                            continue;
+                    for ($x = ($i - 1); $x >= 0; $x--) {
+                        // If we hit a scope opener, the statement has ended
+                        // without finding anything, so it's probably an array
+                        // using PHP 7.1 short list syntax.
+                        if (isset($this->tokens[$x]['scope_opener']) === true) {
+                            $isShortArray = true;
+                            break;
                         }
 
-                        if (isset($this->tokens[$x]['scope_closer']) === true) {
-                            $x = $this->tokens[$x]['scope_closer'];
-                            continue;
-                        }
-
-                        if (isset($this->tokens[$x]['parenthesis_closer']) === true) {
-                            $x = $this->tokens[$x]['parenthesis_closer'];
-                            continue;
-                        }
-
-                        if (isset($this->tokens[$x]['bracket_closer']) === true) {
-                            $x = $this->tokens[$x]['bracket_closer'];
-                            continue;
-                        }
-
-                        // This must be a double arrow, but make sure anyhow.
-                        if ($this->tokens[$x]['code'] === T_DOUBLE_ARROW) {
-                            $this->tokens[$x]['code'] = T_MATCH_ARROW;
-                            $this->tokens[$x]['type'] = 'T_MATCH_ARROW';
-
-                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                                echo "\t\t* token $x changed from T_DOUBLE_ARROW to T_MATCH_ARROW".PHP_EOL;
+                        if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
+                            // Allow for control structures without braces.
+                            if (($this->tokens[$x]['code'] === T_CLOSE_PARENTHESIS
+                                && isset($this->tokens[$x]['parenthesis_owner']) === true
+                                && isset(Util\Tokens::$scopeOpeners[$this->tokens[$this->tokens[$x]['parenthesis_owner']]['code']]) === true)
+                                || isset($allowed[$this->tokens[$x]['code']]) === false
+                            ) {
+                                $isShortArray = true;
                             }
+
+                            break;
                         }
                     }//end for
-                }//end if
 
-                continue;
-            } else if ($this->tokens[$i]['code'] === T_BITWISE_OR
-                || $this->tokens[$i]['code'] === T_BITWISE_AND
-            ) {
-                /*
-                    Convert "|" to T_TYPE_UNION or leave as T_BITWISE_OR.
-                    Convert "&" to T_TYPE_INTERSECTION or leave as T_BITWISE_AND.
-                */
+                    if ($isShortArray === true) {
+                        $this->tokens[$i]['code'] = T_OPEN_SHORT_ARRAY;
+                        $this->tokens[$i]['type'] = 'T_OPEN_SHORT_ARRAY';
 
-                $allowed = [
-                    T_STRING       => T_STRING,
-                    T_CALLABLE     => T_CALLABLE,
-                    T_SELF         => T_SELF,
-                    T_PARENT       => T_PARENT,
-                    T_STATIC       => T_STATIC,
-                    T_FALSE        => T_FALSE,
-                    T_NULL         => T_NULL,
-                    T_NAMESPACE    => T_NAMESPACE,
-                    T_NS_SEPARATOR => T_NS_SEPARATOR,
-                ];
-
-                $suspectedType  = null;
-                $typeTokenCount = 0;
-
-                for ($x = ($i + 1); $x < $numTokens; $x++) {
-                    if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
-                        continue;
+                        $closer = $this->tokens[$i]['bracket_closer'];
+                        $this->tokens[$closer]['code'] = T_CLOSE_SHORT_ARRAY;
+                        $this->tokens[$closer]['type'] = 'T_CLOSE_SHORT_ARRAY';
+                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                            $line = $this->tokens[$i]['line'];
+                            echo "\t* token $i on line $line changed from T_OPEN_SQUARE_BRACKET to T_OPEN_SHORT_ARRAY".PHP_EOL;
+                            $line = $this->tokens[$closer]['line'];
+                            echo "\t* token $closer on line $line changed from T_CLOSE_SQUARE_BRACKET to T_CLOSE_SHORT_ARRAY".PHP_EOL;
+                        }
                     }
 
-                    if (isset($allowed[$this->tokens[$x]['code']]) === true) {
-                        ++$typeTokenCount;
-                        continue;
-                    }
-
-                    if ($typeTokenCount > 0
-                        && ($this->tokens[$x]['code'] === T_BITWISE_AND
-                        || $this->tokens[$x]['code'] === T_ELLIPSIS)
-                    ) {
-                        // Skip past reference and variadic indicators for parameter types.
-                        continue;
-                    }
-
-                    if ($this->tokens[$x]['code'] === T_VARIABLE) {
-                        // Parameter/Property defaults can not contain variables, so this could be a type.
-                        $suspectedType = 'property or parameter';
-                        break;
-                    }
-
-                    if ($this->tokens[$x]['code'] === T_DOUBLE_ARROW) {
-                        // Possible arrow function.
-                        $suspectedType = 'return';
-                        break;
-                    }
-
-                    if ($this->tokens[$x]['code'] === T_SEMICOLON) {
-                        // Possible abstract method or interface method.
-                        $suspectedType = 'return';
-                        break;
-                    }
-
-                    if ($this->tokens[$x]['code'] === T_OPEN_CURLY_BRACKET
-                        && isset($this->tokens[$x]['scope_condition']) === true
-                        && $this->tokens[$this->tokens[$x]['scope_condition']]['code'] === T_FUNCTION
-                    ) {
-                        $suspectedType = 'return';
-                    }
-
-                    break;
-                }//end for
-
-                if ($typeTokenCount === 0 || isset($suspectedType) === false) {
-                    // Definitely not a union or intersection type, move on.
                     continue;
                 }
+                if ($this->tokens[$i]['code'] === T_MATCH) {
+                    if (isset($this->tokens[$i]['scope_opener'], $this->tokens[$i]['scope_closer']) === false) {
+                        // Not a match expression after all.
+                        $this->tokens[$i]['code'] = T_STRING;
+                        $this->tokens[$i]['type'] = 'T_STRING';
 
-                $typeTokenCount = 0;
-                $typeOperators  = [$i];
-                $confirmed      = false;
+                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                            echo "\t\t* token $i changed from T_MATCH to T_STRING".PHP_EOL;
+                        }
 
-                for ($x = ($i - 1); $x >= 0; $x--) {
-                    if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
-                        continue;
-                    }
+                        if (isset($this->tokens[$i]['parenthesis_opener'], $this->tokens[$i]['parenthesis_closer']) === true) {
+                            $opener = $this->tokens[$i]['parenthesis_opener'];
+                            $closer = $this->tokens[$i]['parenthesis_closer'];
+                            unset(
+                                $this->tokens[$opener]['parenthesis_owner'],
+                                $this->tokens[$closer]['parenthesis_owner']
+                            );
+                            unset(
+                                $this->tokens[$i]['parenthesis_opener'],
+                                $this->tokens[$i]['parenthesis_closer'],
+                                $this->tokens[$i]['parenthesis_owner']
+                            );
 
-                    if (isset($allowed[$this->tokens[$x]['code']]) === true) {
-                        ++$typeTokenCount;
-                        continue;
-                    }
-
-                    // Union and intersection types can't use the nullable operator, but be tolerant to parse errors.
-                    if ($typeTokenCount > 0 && $this->tokens[$x]['code'] === T_NULLABLE) {
-                        continue;
-                    }
-
-                    if ($this->tokens[$x]['code'] === T_BITWISE_OR || $this->tokens[$x]['code'] === T_BITWISE_AND) {
-                        $typeOperators[] = $x;
-                        continue;
-                    }
-
-                    if ($suspectedType === 'return' && $this->tokens[$x]['code'] === T_COLON) {
-                        $confirmed = true;
-                        break;
-                    }
-
-                    if ($suspectedType === 'property or parameter'
-                        && (isset(Util\Tokens::$scopeModifiers[$this->tokens[$x]['code']]) === true
-                        || $this->tokens[$x]['code'] === T_VAR
-                        || $this->tokens[$x]['code'] === T_READONLY)
-                    ) {
-                        // This will also confirm constructor property promotion parameters, but that's fine.
-                        $confirmed = true;
-                    }
-
-                    break;
-                }//end for
-
-                if ($confirmed === false
-                    && $suspectedType === 'property or parameter'
-                    && isset($this->tokens[$i]['nested_parenthesis']) === true
-                ) {
-                    $parens = $this->tokens[$i]['nested_parenthesis'];
-                    $last   = end($parens);
-
-                    if (isset($this->tokens[$last]['parenthesis_owner']) === true
-                        && $this->tokens[$this->tokens[$last]['parenthesis_owner']]['code'] === T_FUNCTION
-                    ) {
-                        $confirmed = true;
+                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                echo "\t\t* cleaned parenthesis of token $i *".PHP_EOL;
+                            }
+                        }
                     } else {
-                        // No parenthesis owner set, this may be an arrow function which has not yet
-                        // had additional processing done.
-                        if (isset($this->tokens[$last]['parenthesis_opener']) === true) {
-                            for ($x = ($this->tokens[$last]['parenthesis_opener'] - 1); $x >= 0; $x--) {
-                                if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
-                                    continue;
-                                }
+                        // Retokenize the double arrows for match expression cases to `T_MATCH_ARROW`.
+                        $searchFor  = [
+                            T_OPEN_CURLY_BRACKET  => T_OPEN_CURLY_BRACKET,
+                            T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET,
+                            T_OPEN_PARENTHESIS    => T_OPEN_PARENTHESIS,
+                            T_OPEN_SHORT_ARRAY    => T_OPEN_SHORT_ARRAY,
+                            T_DOUBLE_ARROW        => T_DOUBLE_ARROW,
+                        ];
+                        $searchFor += Util\Tokens::$scopeOpeners;
 
-                                break;
+                        for ($x = ($this->tokens[$i]['scope_opener'] + 1); $x < $this->tokens[$i]['scope_closer']; $x++) {
+                            if (isset($searchFor[$this->tokens[$x]['code']]) === false) {
+                                continue;
                             }
 
-                            if ($this->tokens[$x]['code'] === T_FN) {
-                                for (--$x; $x >= 0; $x--) {
-                                    if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true
-                                        || $this->tokens[$x]['code'] === T_BITWISE_AND
-                                    ) {
+                            if (isset($this->tokens[$x]['scope_closer']) === true) {
+                                $x = $this->tokens[$x]['scope_closer'];
+                                continue;
+                            }
+
+                            if (isset($this->tokens[$x]['parenthesis_closer']) === true) {
+                                $x = $this->tokens[$x]['parenthesis_closer'];
+                                continue;
+                            }
+
+                            if (isset($this->tokens[$x]['bracket_closer']) === true) {
+                                $x = $this->tokens[$x]['bracket_closer'];
+                                continue;
+                            }
+
+                            // This must be a double arrow, but make sure anyhow.
+                            if ($this->tokens[$x]['code'] === T_DOUBLE_ARROW) {
+                                $this->tokens[$x]['code'] = T_MATCH_ARROW;
+                                $this->tokens[$x]['type'] = 'T_MATCH_ARROW';
+
+                                if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                    echo "\t\t* token $x changed from T_DOUBLE_ARROW to T_MATCH_ARROW".PHP_EOL;
+                                }
+                            }
+                        }//end for
+                    }//end if
+
+                    continue;
+                }
+                if ($this->tokens[$i]['code'] === T_BITWISE_OR
+                    || $this->tokens[$i]['code'] === T_BITWISE_AND
+                ) {
+                    /*
+                        Convert "|" to T_TYPE_UNION or leave as T_BITWISE_OR.
+                        Convert "&" to T_TYPE_INTERSECTION or leave as T_BITWISE_AND.
+                    */
+
+                    $allowed = [
+                        T_STRING       => T_STRING,
+                        T_CALLABLE     => T_CALLABLE,
+                        T_SELF         => T_SELF,
+                        T_PARENT       => T_PARENT,
+                        T_STATIC       => T_STATIC,
+                        T_FALSE        => T_FALSE,
+                        T_NULL         => T_NULL,
+                        T_NAMESPACE    => T_NAMESPACE,
+                        T_NS_SEPARATOR => T_NS_SEPARATOR,
+                    ];
+
+                    $suspectedType  = null;
+                    $typeTokenCount = 0;
+
+                    for ($x = ($i + 1); $x < $numTokens; $x++) {
+                        if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
+                            continue;
+                        }
+
+                        if (isset($allowed[$this->tokens[$x]['code']]) === true) {
+                            ++$typeTokenCount;
+                            continue;
+                        }
+
+                        if ($typeTokenCount > 0
+                            && ($this->tokens[$x]['code'] === T_BITWISE_AND
+                            || $this->tokens[$x]['code'] === T_ELLIPSIS)
+                        ) {
+                            // Skip past reference and variadic indicators for parameter types.
+                            continue;
+                        }
+
+                        if ($this->tokens[$x]['code'] === T_VARIABLE) {
+                            // Parameter/Property defaults can not contain variables, so this could be a type.
+                            $suspectedType = 'property or parameter';
+                            break;
+                        }
+
+                        if ($this->tokens[$x]['code'] === T_DOUBLE_ARROW) {
+                            // Possible arrow function.
+                            $suspectedType = 'return';
+                            break;
+                        }
+
+                        if ($this->tokens[$x]['code'] === T_SEMICOLON) {
+                            // Possible abstract method or interface method.
+                            $suspectedType = 'return';
+                            break;
+                        }
+
+                        if ($this->tokens[$x]['code'] === T_OPEN_CURLY_BRACKET
+                            && isset($this->tokens[$x]['scope_condition']) === true
+                            && $this->tokens[$this->tokens[$x]['scope_condition']]['code'] === T_FUNCTION
+                        ) {
+                            $suspectedType = 'return';
+                        }
+
+                        break;
+                    }
+                    //end for
+                    if ($typeTokenCount === 0) {
+                        // Definitely not a union or intersection type, move on.
+                        continue;
+                    }
+                    if (isset($suspectedType) === false) {
+                        // Definitely not a union or intersection type, move on.
+                        continue;
+                    }
+
+                    $typeTokenCount = 0;
+                    $typeOperators  = [$i];
+                    $confirmed      = false;
+
+                    for ($x = ($i - 1); $x >= 0; $x--) {
+                        if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
+                            continue;
+                        }
+
+                        if (isset($allowed[$this->tokens[$x]['code']]) === true) {
+                            ++$typeTokenCount;
+                            continue;
+                        }
+
+                        // Union and intersection types can't use the nullable operator, but be tolerant to parse errors.
+                        if ($typeTokenCount > 0 && $this->tokens[$x]['code'] === T_NULLABLE) {
+                            continue;
+                        }
+
+                        if ($this->tokens[$x]['code'] === T_BITWISE_OR || $this->tokens[$x]['code'] === T_BITWISE_AND) {
+                            $typeOperators[] = $x;
+                            continue;
+                        }
+
+                        if ($suspectedType === 'return' && $this->tokens[$x]['code'] === T_COLON) {
+                            $confirmed = true;
+                            break;
+                        }
+
+                        if ($suspectedType === 'property or parameter'
+                            && (isset(Util\Tokens::$scopeModifiers[$this->tokens[$x]['code']]) === true
+                            || $this->tokens[$x]['code'] === T_VAR
+                            || $this->tokens[$x]['code'] === T_READONLY)
+                        ) {
+                            // This will also confirm constructor property promotion parameters, but that's fine.
+                            $confirmed = true;
+                        }
+
+                        break;
+                    }//end for
+
+                    if ($confirmed === false
+                        && $suspectedType === 'property or parameter'
+                        && isset($this->tokens[$i]['nested_parenthesis']) === true
+                    ) {
+                        $parens = $this->tokens[$i]['nested_parenthesis'];
+                        $last   = end($parens);
+
+                        if (isset($this->tokens[$last]['parenthesis_owner']) === true
+                            && $this->tokens[$this->tokens[$last]['parenthesis_owner']]['code'] === T_FUNCTION
+                        ) {
+                            $confirmed = true;
+                        } else {
+                            // No parenthesis owner set, this may be an arrow function which has not yet
+                            // had additional processing done.
+                            if (isset($this->tokens[$last]['parenthesis_opener']) === true) {
+                                for ($x = ($this->tokens[$last]['parenthesis_opener'] - 1); $x >= 0; $x--) {
+                                    if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
                                         continue;
                                     }
 
                                     break;
                                 }
 
-                                if ($this->tokens[$x]['code'] !== T_FUNCTION) {
-                                    $confirmed = true;
+                                if ($this->tokens[$x]['code'] === T_FN) {
+                                    for (--$x; $x >= 0; $x--) {
+                                        if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === true) {
+                                            continue;
+                                        }
+                                        if ($this->tokens[$x]['code'] === T_BITWISE_AND) {
+                                            continue;
+                                        }
+                                        break;
+                                    }
+
+                                    if ($this->tokens[$x]['code'] !== T_FUNCTION) {
+                                        $confirmed = true;
+                                    }
                                 }
-                            }
+                            }//end if
                         }//end if
+
+                        unset($parens, $last);
                     }//end if
 
-                    unset($parens, $last);
-                }//end if
+                    if ($confirmed === false) {
+                        // Not a union or intersection type after all, move on.
+                        continue;
+                    }
 
-                if ($confirmed === false) {
-                    // Not a union or intersection type after all, move on.
+                    foreach ($typeOperators as $x) {
+                        if ($this->tokens[$x]['code'] === T_BITWISE_OR) {
+                            $this->tokens[$x]['code'] = T_TYPE_UNION;
+                            $this->tokens[$x]['type'] = 'T_TYPE_UNION';
+
+                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                $line = $this->tokens[$x]['line'];
+                                echo "\t* token $x on line $line changed from T_BITWISE_OR to T_TYPE_UNION".PHP_EOL;
+                            }
+                        } else {
+                            $this->tokens[$x]['code'] = T_TYPE_INTERSECTION;
+                            $this->tokens[$x]['type'] = 'T_TYPE_INTERSECTION';
+
+                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                $line = $this->tokens[$x]['line'];
+                                echo "\t* token $x on line $line changed from T_BITWISE_AND to T_TYPE_INTERSECTION".PHP_EOL;
+                            }
+                        }
+                    }
+
                     continue;
                 }
-
-                foreach ($typeOperators as $x) {
-                    if ($this->tokens[$x]['code'] === T_BITWISE_OR) {
-                        $this->tokens[$x]['code'] = T_TYPE_UNION;
-                        $this->tokens[$x]['type'] = 'T_TYPE_UNION';
-
-                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            $line = $this->tokens[$x]['line'];
-                            echo "\t* token $x on line $line changed from T_BITWISE_OR to T_TYPE_UNION".PHP_EOL;
-                        }
-                    } else {
-                        $this->tokens[$x]['code'] = T_TYPE_INTERSECTION;
-                        $this->tokens[$x]['type'] = 'T_TYPE_INTERSECTION';
-
-                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            $line = $this->tokens[$x]['line'];
-                            echo "\t* token $x on line $line changed from T_BITWISE_AND to T_TYPE_INTERSECTION".PHP_EOL;
+                if ($this->tokens[$i]['code'] === T_STATIC) {
+                    for ($x = ($i - 1); $x > 0; $x--) {
+                        if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
+                            break;
                         }
                     }
-                }
 
+                    if ($this->tokens[$x]['code'] === T_INSTANCEOF) {
+                        $this->tokens[$i]['code'] = T_STRING;
+                        $this->tokens[$i]['type'] = 'T_STRING';
+
+                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                            $line = $this->tokens[$i]['line'];
+                            echo "\t* token $i on line $line changed from T_STATIC to T_STRING".PHP_EOL;
+                        }
+                    }
+
+                    continue;
+                }
+                if ($this->tokens[$i]['code'] === T_TRUE
+                    || $this->tokens[$i]['code'] === T_FALSE
+                    || $this->tokens[$i]['code'] === T_NULL
+                ) {
+                    for ($x = ($i + 1); $i < $numTokens; $x++) {
+                        if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
+                            // Non-whitespace content.
+                            break;
+                        }
+                    }
+
+                    if (isset($this->tstringContexts[$this->tokens[$x]['code']]) === true) {
+                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                            $line = $this->tokens[$i]['line'];
+                            $type = $this->tokens[$i]['type'];
+                            echo "\t* token $i on line $line changed from $type to T_STRING".PHP_EOL;
+                        }
+
+                        $this->tokens[$i]['code'] = T_STRING;
+                        $this->tokens[$i]['type'] = 'T_STRING';
+                    }
+                }
+            }
+            //end if
+            if ($this->tokens[$i]['code'] !== T_CASE
+                && $this->tokens[$i]['code'] !== T_DEFAULT) {
+                // Only interested in CASE and DEFAULT statements from here on in.
                 continue;
-            } else if ($this->tokens[$i]['code'] === T_STATIC) {
-                for ($x = ($i - 1); $x > 0; $x--) {
-                    if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
-                        break;
-                    }
-                }
-
-                if ($this->tokens[$x]['code'] === T_INSTANCEOF) {
-                    $this->tokens[$i]['code'] = T_STRING;
-                    $this->tokens[$i]['type'] = 'T_STRING';
-
-                    if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                        $line = $this->tokens[$i]['line'];
-                        echo "\t* token $i on line $line changed from T_STATIC to T_STRING".PHP_EOL;
-                    }
-                }
-
-                continue;
-            } else if ($this->tokens[$i]['code'] === T_TRUE
-                || $this->tokens[$i]['code'] === T_FALSE
-                || $this->tokens[$i]['code'] === T_NULL
-            ) {
-                for ($x = ($i + 1); $i < $numTokens; $x++) {
-                    if (isset(Util\Tokens::$emptyTokens[$this->tokens[$x]['code']]) === false) {
-                        // Non-whitespace content.
-                        break;
-                    }
-                }
-
-                if (isset($this->tstringContexts[$this->tokens[$x]['code']]) === true) {
-                    if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                        $line = $this->tokens[$i]['line'];
-                        $type = $this->tokens[$i]['type'];
-                        echo "\t* token $i on line $line changed from $type to T_STRING".PHP_EOL;
-                    }
-
-                    $this->tokens[$i]['code'] = T_STRING;
-                    $this->tokens[$i]['type'] = 'T_STRING';
-                }
-            }//end if
-
-            if (($this->tokens[$i]['code'] !== T_CASE
-                && $this->tokens[$i]['code'] !== T_DEFAULT)
-                || isset($this->tokens[$i]['scope_opener']) === false
-            ) {
+            }
+            if (isset($this->tokens[$i]['scope_opener']) === false) {
                 // Only interested in CASE and DEFAULT statements from here on in.
                 continue;
             }
@@ -3106,10 +3121,11 @@ class PHP extends Tokenizer
 
                 continue;
             }
-
-            if ($this->tokens[$x]['code'] !== T_OPEN_CURLY_BRACKET
-                || isset($this->tokens[$x]['scope_condition']) === true
-            ) {
+            if ($this->tokens[$x]['code'] !== T_OPEN_CURLY_BRACKET) {
+                // Not a CASE/DEFAULT with a curly brace opener.
+                continue;
+            }
+            if (isset($this->tokens[$x]['scope_condition']) === true) {
                 // Not a CASE/DEFAULT with a curly brace opener.
                 continue;
             }
@@ -3225,7 +3241,7 @@ class PHP extends Tokenizer
      *
      * @return array The new token.
      */
-    public static function standardiseToken($token)
+    public static function standardiseToken(array $token)
     {
         if (isset($token[1]) === false) {
             if (isset(self::$resolveTokenCache[$token[0]]) === true) {

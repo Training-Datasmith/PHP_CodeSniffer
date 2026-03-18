@@ -30,7 +30,7 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      *
      * @var integer
      */
-    private $phpVersion = null;
+    private $phpVersion;
 
 
     /**
@@ -202,7 +202,7 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      *
      * @return int|false Pointer to the position in the stack for the closing tag or false if not found.
      */
-    protected function findClosingTag(File $phpcsFile, $tokens, $stackPtr, $content)
+    protected function findClosingTag(File $phpcsFile, array $tokens, $stackPtr, $content)
     {
         $closer = $phpcsFile->findNext(T_CLOSE_TAG, ($stackPtr + 1));
 
@@ -226,7 +226,7 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      *
      * @return void
      */
-    protected function addChangeset(File $phpcsFile, $tokens, $openTagPointer, $closeTagPointer, $echo=false)
+    protected function addChangeset(File $phpcsFile, array $tokens, $openTagPointer, $closeTagPointer, $echo=false)
     {
         // Build up the open tag replacement and make sure there's always whitespace behind it.
         $openReplacement = '<?php';

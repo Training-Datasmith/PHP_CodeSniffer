@@ -151,7 +151,7 @@ class Common
 
         $path = ltrim($path, DIRECTORY_SEPARATOR);
         if ($path === '') {
-            $path = '.';
+            return '.';
         }
 
         return $path;
@@ -170,12 +170,10 @@ class Common
     {
         if (preg_match("/\r\n?|\n/", $contents, $matches) !== 1) {
             // Assume there are no newlines.
-            $eolChar = "\n";
-        } else {
-            $eolChar = $matches[0];
+            return "\n";
         }
 
-        return $eolChar;
+        return $matches[0];
 
     }//end detectLineEndings()
 
@@ -253,7 +251,7 @@ class Common
         if (stripos(PHP_OS, 'WIN') === 0) {
             // Spaces are not escaped by escapeshellcmd on Windows, but need to be
             // for the command to be able to execute.
-            $cmd = preg_replace('`(?<!^) `', '^ ', $cmd);
+            return preg_replace('`(?<!^) `', '^ ', $cmd);
         }
 
         return $cmd;
@@ -451,58 +449,59 @@ class Common
 
         if (in_array($varType, self::$allowedTypes, true) === true) {
             return $varType;
+        }
+        $lowerVarType = strtolower($varType);
+        switch ($lowerVarType) {
+        case 'bool':
+        case 'boolean':
+            return 'boolean';
+        case 'double':
+        case 'real':
+        case 'float':
+            return 'float';
+        case 'int':
+        case 'integer':
+            return 'integer';
+        case 'array()':
+        case 'array':
+            return 'array';
+        }
+        //end switch
+        if (strpos($lowerVarType, 'array(') !== false) {
+            // Valid array declaration:
+            // array, array(type), array(type1 => type2).
+            $matches = [];
+            $pattern = '/^array\(\s*([^\s^=^>]*)(\s*=>\s*(.*))?\s*\)/i';
+            if (preg_match($pattern, $varType, $matches) !== 0) {
+                $type1 = '';
+                if (isset($matches[1]) === true) {
+                    $type1 = $matches[1];
+                }
+
+                $type2 = '';
+                if (isset($matches[3]) === true) {
+                    $type2 = $matches[3];
+                }
+
+                $type1 = self::suggestType($type1);
+                $type2 = self::suggestType($type2);
+                if ($type2 !== '') {
+                    $type2 = ' => '.$type2;
+                }
+
+                return "array($type1$type2)";
+            }
+            return 'array';//end if
         } else {
-            $lowerVarType = strtolower($varType);
-            switch ($lowerVarType) {
-            case 'bool':
-            case 'boolean':
-                return 'boolean';
-            case 'double':
-            case 'real':
-            case 'float':
-                return 'float';
-            case 'int':
-            case 'integer':
-                return 'integer';
-            case 'array()':
-            case 'array':
-                return 'array';
-            }//end switch
-
-            if (strpos($lowerVarType, 'array(') !== false) {
-                // Valid array declaration:
-                // array, array(type), array(type1 => type2).
-                $matches = [];
-                $pattern = '/^array\(\s*([^\s^=^>]*)(\s*=>\s*(.*))?\s*\)/i';
-                if (preg_match($pattern, $varType, $matches) !== 0) {
-                    $type1 = '';
-                    if (isset($matches[1]) === true) {
-                        $type1 = $matches[1];
-                    }
-
-                    $type2 = '';
-                    if (isset($matches[3]) === true) {
-                        $type2 = $matches[3];
-                    }
-
-                    $type1 = self::suggestType($type1);
-                    $type2 = self::suggestType($type2);
-                    if ($type2 !== '') {
-                        $type2 = ' => '.$type2;
-                    }
-
-                    return "array($type1$type2)";
-                } else {
-                    return 'array';
-                }//end if
-            } else if (in_array($lowerVarType, self::$allowedTypes, true) === true) {
+            if (in_array($lowerVarType, self::$allowedTypes, true) === true) {
                 // A valid type, but not lower cased.
                 return $lowerVarType;
-            } else {
-                // Must be a custom type name.
-                return $varType;
-            }//end if
-        }//end if
+            }
+            // Must be a custom type name.
+            return $varType;
+        }
+        //end if
+        //end if
 
     }//end suggestType()
 
@@ -528,10 +527,9 @@ class Common
         }
 
         $category = array_pop($parts);
-        $sniffDir = array_pop($parts);
+        array_pop($parts);
         $standard = array_pop($parts);
-        $code     = $standard.'.'.$category.'.'.$sniff;
-        return $code;
+        return $standard.'.'.$category.'.'.$sniff;
 
     }//end getSniffCode()
 
@@ -560,9 +558,7 @@ class Common
             // Nothing needs to be cleaned.
             return $newName;
         }
-
-        $newName = substr($newName, ($start + 1));
-        return $newName;
+        return substr($newName, ($start + 1));
 
     }//end cleanSniffClass()
 

@@ -22,7 +22,7 @@ class BooleanOperatorPlacementSniff implements Sniff
      *
      * @var string|null
      */
-    public $allowOnly = null;
+    public $allowOnly;
 
 
     /**

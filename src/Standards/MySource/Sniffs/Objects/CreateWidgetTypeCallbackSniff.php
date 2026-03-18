@@ -112,9 +112,11 @@ class CreateWidgetTypeCallbackSniff implements Sniff
                 }
 
                 continue;
-            } else if ($tokens[$i]['code'] !== T_STRING
-                || $tokens[$i]['content'] !== 'callback'
-            ) {
+            }
+            if ($tokens[$i]['code'] !== T_STRING) {
+                continue;
+            }
+            if ($tokens[$i]['content'] !== 'callback') {
                 continue;
             }
 
@@ -162,6 +164,7 @@ class CreateWidgetTypeCallbackSniff implements Sniff
 
             $foundCallback = true;
 
+            // Now it must be followed by a return statement or the end of the function.
             if ($passedCallback === false) {
                 // The first argument must be "this" or "self".
                 $arg = $phpcsFile->findNext(T_WHITESPACE, ($i + 4), null, true);
@@ -171,10 +174,6 @@ class CreateWidgetTypeCallbackSniff implements Sniff
                     $error = 'The first argument passed to the callback function must be "this" or "self"';
                     $phpcsFile->addError($error, $arg, 'FirstArgNotSelf');
                 }
-            }
-
-            // Now it must be followed by a return statement or the end of the function.
-            if ($passedCallback === false) {
                 $endBracket = $tokens[($i + 3)]['parenthesis_closer'];
             }
 

@@ -255,7 +255,6 @@ class JS extends Tokenizer
      * @param \PHP_CodeSniffer\Config $config  The config data for the run.
      * @param string                  $eolChar The EOL char used in the content.
      *
-     * @return void
      * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the file appears to be minified.
      */
     public function __construct($content, Config $config, $eolChar='\n')
@@ -805,11 +804,10 @@ class JS extends Tokenizer
                     }
 
                     continue;
-                } else {
-                    // Save the new content in the current token so
-                    // the code below can chop it up on newlines.
-                    $token['content'] = $newContent.$tokenContent;
                 }
+                // Save the new content in the current token so
+                // the code below can chop it up on newlines.
+                $token['content'] = $newContent.$tokenContent;
             }//end if
 
             /*
@@ -866,9 +864,8 @@ class JS extends Tokenizer
 
                     $stackPtr--;
                     continue;
-                } else {
-                    $stackPtr = $oldStackPtr;
                 }
+                $stackPtr = $oldStackPtr;
             }//end if
 
             // Convert the token after an object operator into a string, in most cases.
@@ -1031,13 +1028,11 @@ class JS extends Tokenizer
             $content .= $chars[$x];
         }
 
-        $token = [
+        return [
             'start'   => $char,
             'end'     => $regexEnd,
             'content' => $content,
         ];
-
-        return $token;
 
     }//end getRegexToken()
 
@@ -1099,7 +1094,8 @@ class JS extends Tokenizer
                 }//end if
 
                 continue;
-            } else if ($this->tokens[$i]['code'] === T_OPEN_CURLY_BRACKET
+            }
+            if ($this->tokens[$i]['code'] === T_OPEN_CURLY_BRACKET
                 && isset($this->tokens[$i]['scope_condition']) === false
                 && isset($this->tokens[$i]['bracket_closer']) === true
             ) {
@@ -1208,7 +1204,8 @@ class JS extends Tokenizer
                         }
 
                         continue(2);
-                    } else if ($this->tokens[$x]['line'] < $this->tokens[$i]['line']) {
+                    }
+                    if ($this->tokens[$x]['line'] < $this->tokens[$i]['line']) {
                         break;
                     }
                 }

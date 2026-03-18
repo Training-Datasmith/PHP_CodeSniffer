@@ -216,7 +216,7 @@ class FunctionDeclarationSniff implements Sniff
      *
      * @return bool
      */
-    public function isMultiLineDeclaration($phpcsFile, $stackPtr, $openBracket, $tokens)
+    public function isMultiLineDeclaration($phpcsFile, $stackPtr, $openBracket, array $tokens)
     {
         $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
         if ($tokens[$openBracket]['line'] !== $tokens[$closeBracket]['line']) {
@@ -255,7 +255,7 @@ class FunctionDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function processSingleLineDeclaration($phpcsFile, $stackPtr, $tokens)
+    public function processSingleLineDeclaration($phpcsFile, $stackPtr, array $tokens)
     {
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
             $sniff = new OpeningFunctionBraceKernighanRitchieSniff();
@@ -280,7 +280,7 @@ class FunctionDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens)
+    public function processMultiLineDeclaration($phpcsFile, $stackPtr, array $tokens)
     {
         $this->processArgumentList($phpcsFile, $stackPtr, $this->indent);
 
@@ -468,7 +468,8 @@ class FunctionDeclarationSniff implements Sniff
 
                     // This is an empty line, so don't check the indent.
                     continue;
-                } else if ($tokens[$i]['code'] === T_WHITESPACE) {
+                }
+                if ($tokens[$i]['code'] === T_WHITESPACE) {
                     $foundIndent = $tokens[$i]['length'];
                 } else if ($tokens[$i]['code'] === T_DOC_COMMENT_WHITESPACE) {
                     $foundIndent = $tokens[$i]['length'];

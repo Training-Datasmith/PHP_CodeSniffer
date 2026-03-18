@@ -63,9 +63,7 @@ class Svnblame extends VersionControl
         $rawContent = stream_get_contents($handle);
         pclose($handle);
 
-        $blames = explode("\n", $rawContent);
-
-        return $blames;
+        return explode("\n", $rawContent);
 
     }//end getBlameContent()
 

@@ -203,7 +203,7 @@ class Cbf implements Report
 
             if ($data['fixed'] !== 0) {
                 echo $data['fixed'];
-                echo str_repeat(' ', (7 - strlen((string) $data['fixed'])));
+                echo str_repeat(' ', (7 - strlen($data['fixed'])));
             } else {
                 echo '0      ';
             }

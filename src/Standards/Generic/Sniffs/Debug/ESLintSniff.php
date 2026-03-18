@@ -29,7 +29,7 @@ class ESLintSniff implements Sniff
      *
      * @var string|null Path to eslintrc. Null to autodetect.
      */
-    public $configFile = null;
+    public $configFile;
 
 
     /**

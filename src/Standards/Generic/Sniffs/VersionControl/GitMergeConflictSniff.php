@@ -73,10 +73,12 @@ class GitMergeConflictSniff implements Sniff
         ];
 
         for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
-            if ($tokens[$i]['column'] !== 1 || isset($checkTokens[$tokens[$i]['code']]) === false) {
+            if ($tokens[$i]['column'] !== 1) {
                 continue;
             }
-
+            if (isset($checkTokens[$tokens[$i]['code']]) === false) {
+                continue;
+            }
             if ($phpcsFile->tokenizerType !== 'JS') {
                 switch ($tokens[$i]['code']) {
                 // Check for first non-comment, non-heredoc/nowdoc, non-inline HTML merge conflict opener.

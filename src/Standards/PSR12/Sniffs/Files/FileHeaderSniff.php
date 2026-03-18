@@ -286,7 +286,7 @@ class FileHeaderSniff implements Sniff
      *
      * @return int|null
      */
-    public function processHeaderLines(File $phpcsFile, $headerLines)
+    public function processHeaderLines(File $phpcsFile, array $headerLines)
     {
         $tokens = $phpcsFile->getTokens();
 

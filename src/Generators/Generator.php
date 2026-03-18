@@ -23,7 +23,7 @@ abstract class Generator
      *
      * @var \PHP_CodeSniffer\Ruleset
      */
-    public $ruleset = null;
+    public $ruleset;
 
     /**
      * XML documentation files used to produce the final output.

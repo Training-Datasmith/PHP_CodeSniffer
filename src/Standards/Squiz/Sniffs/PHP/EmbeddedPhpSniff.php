@@ -63,7 +63,7 @@ class EmbeddedPhpSniff implements Sniff
      *
      * @return void
      */
-    private function validateMultilineEmbeddedPhp($phpcsFile, $stackPtr)
+    private function validateMultilineEmbeddedPhp(\PHP_CodeSniffer\Files\File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -128,12 +128,12 @@ class EmbeddedPhpSniff implements Sniff
                     if ($fix === true) {
                         $phpcsFile->fixer->beginChangeset();
                         for ($i = ($stackPtr + 1); $i < $firstContent; $i++) {
-                            if ($tokens[$i]['line'] === $tokens[$firstContent]['line']
-                                || $tokens[$i]['line'] === $tokens[$stackPtr]['line']
-                            ) {
+                            if ($tokens[$i]['line'] === $tokens[$firstContent]['line']) {
                                 continue;
                             }
-
+                            if ($tokens[$i]['line'] === $tokens[$stackPtr]['line']) {
+                                continue;
+                            }
                             $phpcsFile->fixer->replaceToken($i, '');
                         }
 
@@ -191,7 +191,8 @@ class EmbeddedPhpSniff implements Sniff
             for ($first = ($stackPtr - 1); $first > 0; $first--) {
                 if ($tokens[$first]['line'] === $tokens[$stackPtr]['line']) {
                     continue;
-                } else if (trim($tokens[$first]['content']) !== '') {
+                }
+                if (trim($tokens[$first]['content']) !== '') {
                     $first = $phpcsFile->findFirstOnLine([], $first, true);
                     break;
                 }
@@ -271,12 +272,12 @@ class EmbeddedPhpSniff implements Sniff
             if ($fix === true) {
                 $phpcsFile->fixer->beginChangeset();
                 for ($i = ($lastContent + 1); $i < $closingTag; $i++) {
-                    if ($tokens[$i]['line'] === $tokens[$lastContent]['line']
-                        || $tokens[$i]['line'] === $tokens[$closingTag]['line']
-                    ) {
+                    if ($tokens[$i]['line'] === $tokens[$lastContent]['line']) {
                         continue;
                     }
-
+                    if ($tokens[$i]['line'] === $tokens[$closingTag]['line']) {
+                        continue;
+                    }
                     $phpcsFile->fixer->replaceToken($i, '');
                 }
 
@@ -296,7 +297,7 @@ class EmbeddedPhpSniff implements Sniff
      *
      * @return void
      */
-    private function validateInlineEmbeddedPhp($phpcsFile, $stackPtr)
+    private function validateInlineEmbeddedPhp(\PHP_CodeSniffer\Files\File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 

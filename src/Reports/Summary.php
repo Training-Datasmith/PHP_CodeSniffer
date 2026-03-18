@@ -108,11 +108,11 @@ class Summary implements Report
 
                 if (empty($pathPartsA) === false && empty($pathPartsB) === true) {
                     return 1;
-                } else if (empty($pathPartsA) === true && empty($pathPartsB) === false) {
-                    return -1;
-                } else {
-                    return strcasecmp($partA, $partB);
                 }
+                if (empty($pathPartsA) === true && empty($pathPartsB) === false) {
+                    return -1;
+                }
+                return strcasecmp($partA, $partB);
             }
         );
 
@@ -134,7 +134,7 @@ class Summary implements Report
             echo $file.str_repeat(' ', $padding).'  ';
             if ($data['errors'] !== 0) {
                 echo "\033[31m".$data['errors']."\033[0m";
-                echo str_repeat(' ', (8 - strlen((string) $data['errors'])));
+                echo str_repeat(' ', (8 - strlen($data['errors'])));
             } else {
                 echo '0       ';
             }

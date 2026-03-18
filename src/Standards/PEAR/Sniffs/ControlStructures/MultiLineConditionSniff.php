@@ -81,11 +81,7 @@ class MultiLineConditionSniff implements Sniff
             $error = 'First condition of a multi-line IF statement must directly follow the opening parenthesis';
             $fix   = $phpcsFile->addFixableError($error, ($openBracket + 1), 'SpacingAfterOpenBrace');
             if ($fix === true) {
-                if ($spaceAfterOpen === 'newline') {
-                    $phpcsFile->fixer->replaceToken(($openBracket + 1), '');
-                } else {
-                    $phpcsFile->fixer->replaceToken(($openBracket + 1), '');
-                }
+                $phpcsFile->fixer->replaceToken(($openBracket + 1), '');
             }
         }
 

@@ -21,7 +21,7 @@ class BlockCommentSniff implements Sniff
      *
      * @var integer
      */
-    private $tabWidth = null;
+    private $tabWidth;
 
 
     /**
@@ -274,10 +274,12 @@ class BlockCommentSniff implements Sniff
         // Check that each line of the comment is indented past the star.
         foreach ($commentLines as $line) {
             // First and last lines (comment opener and closer) are handled separately.
-            if ($line === $commentLines[(count($commentLines) - 1)] || $line === $commentLines[0]) {
+            if ($line === $commentLines[(count($commentLines) - 1)]) {
                 continue;
             }
-
+            if ($line === $commentLines[0]) {
+                continue;
+            }
             // First comment line was handled above.
             if ($line === $commentLines[1]) {
                 continue;

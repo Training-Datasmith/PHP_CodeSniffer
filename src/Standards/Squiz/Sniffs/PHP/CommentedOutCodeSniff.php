@@ -200,20 +200,18 @@ class CommentedOutCodeSniff implements Sniff
         // First token is always the opening tag.
         if ($stringTokens[0]['code'] !== T_OPEN_TAG) {
             return ($lastCommentBlockToken + 1);
-        } else {
-            array_shift($stringTokens);
-            --$numTokens;
         }
+        array_shift($stringTokens);
+        --$numTokens;
 
         // Last token is always the closing tag, unless something went wrong.
         if (isset($stringTokens[($numTokens - 1)]) === false
             || $stringTokens[($numTokens - 1)]['code'] !== T_CLOSE_TAG
         ) {
             return ($lastCommentBlockToken + 1);
-        } else {
-            array_pop($stringTokens);
-            --$numTokens;
         }
+        array_pop($stringTokens);
+        --$numTokens;
 
         // Second last token is always whitespace or a comment, depending
         // on the code inside the comment.

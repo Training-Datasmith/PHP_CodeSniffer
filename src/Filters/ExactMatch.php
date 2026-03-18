@@ -21,7 +21,7 @@ abstract class ExactMatch extends Filter
      *
      * @var array
      */
-    private $blacklist = null;
+    private $blacklist;
 
     /**
      * A list of files to include.
@@ -30,7 +30,7 @@ abstract class ExactMatch extends Filter
      *
      * @var array
      */
-    private $whitelist = null;
+    private $whitelist;
 
 
     /**

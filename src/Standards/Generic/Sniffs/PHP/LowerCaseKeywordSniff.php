@@ -26,7 +26,8 @@ class LowerCaseKeywordSniff implements Sniff
     public function register()
     {
         $targets  = Tokens::$contextSensitiveKeywords;
-        $targets += [
+
+        return $targets + [
             T_CLOSURE       => T_CLOSURE,
             T_EMPTY         => T_EMPTY,
             T_ENUM_CASE     => T_ENUM_CASE,
@@ -37,8 +38,6 @@ class LowerCaseKeywordSniff implements Sniff
             T_SELF          => T_SELF,
             T_UNSET         => T_UNSET,
         ];
-
-        return $targets;
 
     }//end register()
 

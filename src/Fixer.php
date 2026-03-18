@@ -41,7 +41,7 @@ class Fixer
      *
      * @var \PHP_CodeSniffer\Files\File
      */
-    private $currentFile = null;
+    private $currentFile;
 
     /**
      * The list of tokens that make up the file contents.
@@ -288,9 +288,7 @@ class Fixer
             }
         }
 
-        $diff = implode(PHP_EOL, $diff);
-
-        return $diff;
+        return implode(PHP_EOL, $diff);
 
     }//end generateDiff()
 
@@ -317,8 +315,7 @@ class Fixer
      */
     public function getContents()
     {
-        $contents = implode($this->tokens);
-        return $contents;
+        return implode('', $this->tokens);
 
     }//end getContents()
 
@@ -339,9 +336,8 @@ class Fixer
             && isset($this->changeset[$stackPtr]) === true
         ) {
             return $this->changeset[$stackPtr];
-        } else {
-            return $this->tokens[$stackPtr];
         }
+        return $this->tokens[$stackPtr];
 
     }//end getTokenContent()
 
@@ -769,12 +765,12 @@ class Fixer
         }
 
         for ($i = $start; $i <= $end; $i++) {
-            if ($tokens[$i]['column'] !== 1
-                || $tokens[($i + 1)]['line'] !== $tokens[$i]['line']
-            ) {
+            if ($tokens[$i]['column'] !== 1) {
                 continue;
             }
-
+            if ($tokens[($i + 1)]['line'] !== $tokens[$i]['line']) {
+                continue;
+            }
             $length = 0;
             if ($tokens[$i]['code'] === T_WHITESPACE
                 || $tokens[$i]['code'] === T_DOC_COMMENT_WHITESPACE
