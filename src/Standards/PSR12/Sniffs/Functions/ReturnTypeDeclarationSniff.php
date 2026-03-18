@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure return types are defined correctly for functions and closures.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ReturnTypeDeclarationSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -30,7 +30,6 @@ class ReturnTypeDeclarationSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test when one of its tokens is encountered.
@@ -75,7 +74,7 @@ class ReturnTypeDeclarationSniff implements Sniff
                 if ($fix === true) {
                     $phpcsFile->fixer->replaceToken(($returnType - 1), ' ');
                 }
-            } else if ($tokens[($returnType - 1)]['code'] === T_COLON) {
+            } elseif ($tokens[($returnType - 1)]['code'] === T_COLON) {
                 $fix = $phpcsFile->addFixableError($error, $returnType, 'SpaceBeforeReturnType');
                 if ($fix === true) {
                     $phpcsFile->fixer->addContentBefore($returnType, ' ');
@@ -105,6 +104,5 @@ class ReturnTypeDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

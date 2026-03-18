@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Stops inline IF statements from being used.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowInlineIfSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -24,7 +25,6 @@ class DisallowInlineIfSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -36,7 +36,6 @@ class DisallowInlineIfSniff implements Sniff
         return [T_INLINE_THEN];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -52,6 +51,5 @@ class DisallowInlineIfSniff implements Sniff
         $phpcsFile->addError('Inline IF statements are not allowed', $stackPtr, 'Found');
 
     }//end process()
-
 
 }//end class

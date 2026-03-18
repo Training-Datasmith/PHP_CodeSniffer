@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Responsible for running PHPCS and PHPCBF.
  *
@@ -23,7 +25,6 @@ use PHP_CodeSniffer\Util\Standards;
 
 class Runner
 {
-
     /**
      * The config data for the run.
      *
@@ -44,7 +45,6 @@ class Runner
      * @var \PHP_CodeSniffer\Reporter
      */
     public $reporter;
-
 
     /**
      * Run the PHPCS script.
@@ -147,7 +147,6 @@ class Runner
 
     }//end runPHPCS()
 
-
     /**
      * Run the PHPCBF script.
      *
@@ -231,7 +230,6 @@ class Runner
 
     }//end runPHPCBF()
 
-
     /**
      * Exits if the minimum requirements of PHP_CodeSniffer are not met.
      *
@@ -272,7 +270,6 @@ class Runner
         }
 
     }//end checkRequirements()
-
 
     /**
      * Init the rulesets and other high-level settings.
@@ -334,7 +331,6 @@ class Runner
         }
 
     }//end init()
-
 
     /**
      * Performs the run.
@@ -429,7 +425,7 @@ class Runner
                     }
 
                     $this->processFile($file);
-                } else if (PHP_CODESNIFFER_VERBOSITY > 0) {
+                } elseif (PHP_CODESNIFFER_VERBOSITY > 0) {
                     echo 'Skipping '.basename($file->path).PHP_EOL;
                 }
 
@@ -576,7 +572,6 @@ class Runner
 
     }//end run()
 
-
     /**
      * Converts all PHP errors into exceptions.
      *
@@ -602,7 +597,6 @@ class Runner
         throw new RuntimeException("$message in $file on line $line");
 
     }//end handleErrors()
-
 
     /**
      * Processes a single file, including checking and fixing.
@@ -706,19 +700,19 @@ class Runner
                 $input = trim($input);
 
                 switch ($input) {
-                case 's':
-                    break(2);
-                case 'q':
-                    throw new DeepExitException('', 0);
-                default:
-                    // Repopulate the sniffs because some of them save their state
-                    // and only clear it when the file changes, but we are rechecking
-                    // the same file.
-                    $file->ruleset->populateTokenListeners();
-                    $file->reloadContent();
-                    $file->process();
-                    $this->reporter->cacheFileReport($file, $this->config);
-                    break;
+                    case 's':
+                        break(2);
+                    case 'q':
+                        throw new DeepExitException('', 0);
+                    default:
+                        // Repopulate the sniffs because some of them save their state
+                        // and only clear it when the file changes, but we are rechecking
+                        // the same file.
+                        $file->ruleset->populateTokenListeners();
+                        $file->reloadContent();
+                        $file->process();
+                        $this->reporter->cacheFileReport($file, $this->config);
+                        break;
                 }
             }//end while
         }//end if
@@ -727,7 +721,6 @@ class Runner
         $file->cleanUp();
 
     }//end processFile()
-
 
     /**
      * Waits for child processes to complete and cleans up after them.
@@ -808,7 +801,6 @@ class Runner
 
     }//end processChildProcs()
 
-
     /**
      * Print progress information for a single processed file.
      *
@@ -850,7 +842,7 @@ class Runner
                     if ($this->config->colors === true) {
                         echo "\033[0m";
                     }
-                } else if ($fixed > 0) {
+                } elseif ($fixed > 0) {
                     if ($this->config->colors === true) {
                         echo "\033[32m";
                     }
@@ -883,7 +875,7 @@ class Runner
                     if ($this->config->colors === true) {
                         echo "\033[0m";
                     }
-                } else if ($warnings > 0) {
+                } elseif ($warnings > 0) {
                     if ($this->config->colors === true) {
                         if ($fixable > 0) {
                             echo "\033[32m";
@@ -921,7 +913,6 @@ class Runner
 
     }//end printProgress()
 
-
     /**
      * Registers a PHP shutdown function to provide a more informative out of memory error.
      *
@@ -958,6 +949,5 @@ class Runner
         );
 
     }//end registerOutOfMemoryShutdownMessage()
-
 
 }//end class

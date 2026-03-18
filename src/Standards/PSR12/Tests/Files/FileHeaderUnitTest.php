@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the FileHeader sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class FileHeaderUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,44 +25,43 @@ class FileHeaderUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'FileHeaderUnitTest.2.inc':
-            return [
-                1  => 1,
-                6  => 1,
-                7  => 1,
-                18 => 1,
-                20 => 1,
-                24 => 1,
-            ];
-        case 'FileHeaderUnitTest.3.inc':
-            return [
-                9  => 1,
-                18 => 1,
-            ];
-        case 'FileHeaderUnitTest.4.inc':
-            return [
-                1 => 1,
-                2 => 1,
-                3 => 1,
-                7 => 1,
-            ];
-        case 'FileHeaderUnitTest.5.inc':
-            return [4 => 1];
-        case 'FileHeaderUnitTest.7.inc':
-        case 'FileHeaderUnitTest.10.inc':
-        case 'FileHeaderUnitTest.11.inc':
-            return [1 => 1];
-        case 'FileHeaderUnitTest.12.inc':
-            return [4 => 2];
-        default:
-            return [];
+            case 'FileHeaderUnitTest.2.inc':
+                return [
+                    1  => 1,
+                    6  => 1,
+                    7  => 1,
+                    18 => 1,
+                    20 => 1,
+                    24 => 1,
+                ];
+            case 'FileHeaderUnitTest.3.inc':
+                return [
+                    9  => 1,
+                    18 => 1,
+                ];
+            case 'FileHeaderUnitTest.4.inc':
+                return [
+                    1 => 1,
+                    2 => 1,
+                    3 => 1,
+                    7 => 1,
+                ];
+            case 'FileHeaderUnitTest.5.inc':
+                return [4 => 1];
+            case 'FileHeaderUnitTest.7.inc':
+            case 'FileHeaderUnitTest.10.inc':
+            case 'FileHeaderUnitTest.11.inc':
+                return [1 => 1];
+            case 'FileHeaderUnitTest.12.inc':
+                return [4 => 2];
+            default:
+                return [];
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -77,6 +76,5 @@ class FileHeaderUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

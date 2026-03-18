@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that array are indented one tab stop.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ArrayIndentSniff extends AbstractArraySniff
 {
-
     /**
      * The number of spaces each array key should be indented.
      *
      * @var integer
      */
     public $indent = 4;
-
 
     /**
      * Processes a single-line array definition.
@@ -40,7 +40,6 @@ class ArrayIndentSniff extends AbstractArraySniff
     {
 
     }//end processSingleLineArray()
-
 
     /**
      * Processes a multi-line array definition.
@@ -172,6 +171,5 @@ class ArrayIndentSniff extends AbstractArraySniff
         }
 
     }//end processMultiLineArray()
-
 
 }//end class

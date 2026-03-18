@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tokenizes JS code.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util;
 
 class JS extends Tokenizer
 {
-
     /**
      * A list of tokens that are allowed to open a scope.
      *
@@ -245,7 +246,6 @@ class JS extends Tokenizer
         '/**' => '*/',
     ];
 
-
     /**
      * Initialise the tokenizer.
      *
@@ -257,7 +257,7 @@ class JS extends Tokenizer
      *
      * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the file appears to be minified.
      */
-    public function __construct($content, Config $config, $eolChar='\n')
+    public function __construct($content, Config $config, $eolChar = '\n')
     {
         if ($this->isMinifiedContent($content, $eolChar) === true) {
             throw new TokenizerException('File appears to be minified and cannot be processed');
@@ -266,7 +266,6 @@ class JS extends Tokenizer
         parent::__construct($content, $config, $eolChar);
 
     }//end __construct()
-
 
     /**
      * Creates an array of tokens when given some JS code.
@@ -403,7 +402,7 @@ class JS extends Tokenizer
                         $stringChar      = null;
                         continue;
                     }//end if
-                } else if ($inString === '') {
+                } elseif ($inString === '') {
                     $inString        = $char;
                     $stringChar      = $i;
                     $preStringBuffer = $buffer;
@@ -548,7 +547,7 @@ class JS extends Tokenizer
 
                     $cleanBuffer = true;
                 }//end if
-            } else if (isset($this->tokenValues[strtolower($char)]) === true) {
+            } elseif (isset($this->tokenValues[strtolower($char)]) === true) {
                 // No matter what token we end up using, we don't
                 // need the content in the buffer any more because we have
                 // found a valid token.
@@ -659,7 +658,7 @@ class JS extends Tokenizer
                         echo "\t\t* looking for end of comment *".PHP_EOL;
                     }
                 }//end if
-            } else if ($inComment !== '') {
+            } elseif ($inComment !== '') {
                 if ($this->commentTokens[$inComment] === null) {
                     // Comment ends at the next newline.
                     if (strpos($buffer, "\n") !== false) {
@@ -896,7 +895,6 @@ class JS extends Tokenizer
 
     }//end tokenize()
 
-
     /**
      * Tokenizes a regular expression if one is found.
      *
@@ -967,7 +965,7 @@ class JS extends Tokenizer
                 if ($chars[($next - 1)] !== '\\') {
                     // In the simple form: /.../ so we found the end.
                     break;
-                } else if ($chars[($next - 2)] === '\\') {
+                } elseif ($chars[($next - 2)] === '\\') {
                     // In the form: /...\\/ so we found the end.
                     break;
                 }
@@ -1035,7 +1033,6 @@ class JS extends Tokenizer
         ];
 
     }//end getRegexToken()
-
 
     /**
      * Performs additional processing after main tokenizing.
@@ -1183,9 +1180,9 @@ class JS extends Tokenizer
                         echo "\t\t* added T_OBJECT condition to $x ($type) *".PHP_EOL;
                     }
                 }
-            } else if ($this->tokens[$i]['code'] === T_CLOSE_OBJECT) {
+            } elseif ($this->tokens[$i]['code'] === T_CLOSE_OBJECT) {
                 $opener = array_pop($classStack);
-            } else if ($this->tokens[$i]['code'] === T_COLON) {
+            } elseif ($this->tokens[$i]['code'] === T_COLON) {
                 // If it is a scope opener, it belongs to a
                 // DEFAULT or CASE statement.
                 if (isset($this->tokens[$i]['scope_condition']) === true) {
@@ -1248,6 +1245,5 @@ class JS extends Tokenizer
         }
 
     }//end processAdditional()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Warns about FIXME comments.
  *
@@ -16,7 +18,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class FixmeSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -26,7 +27,6 @@ class FixmeSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -38,7 +38,6 @@ class FixmeSniff implements Sniff
         return array_diff(Tokens::$commentTokens, Tokens::$phpcsCommentTokens);
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -73,6 +72,5 @@ class FixmeSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

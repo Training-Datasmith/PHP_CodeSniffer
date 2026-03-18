@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checkstyle report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Files\File;
 
 class Checkstyle implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,9 +30,9 @@ class Checkstyle implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
-        $out = new \XMLWriter;
+        $out = new \XMLWriter();
         $out->openMemory();
         $out->setIndent(true);
 
@@ -70,7 +70,6 @@ class Checkstyle implements Report
 
     }//end generateFileReport()
 
-
     /**
      * Prints all violations for processed files, in a Checkstyle format.
      *
@@ -93,10 +92,10 @@ class Checkstyle implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
         echo '<checkstyle version="'.Config::VERSION.'">'.PHP_EOL;
@@ -104,6 +103,5 @@ class Checkstyle implements Report
         echo '</checkstyle>'.PHP_EOL;
 
     }//end generate()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the Syntax sniff.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class SyntaxUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -26,20 +26,19 @@ class SyntaxUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'SyntaxUnitTest.1.inc':
-        case 'SyntaxUnitTest.2.inc':
-            return [3 => 1];
-            break;
-        default:
-            return [];
-            break;
+            case 'SyntaxUnitTest.1.inc':
+            case 'SyntaxUnitTest.2.inc':
+                return [3 => 1];
+                break;
+            default:
+                return [];
+                break;
         }
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -54,6 +53,5 @@ class SyntaxUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

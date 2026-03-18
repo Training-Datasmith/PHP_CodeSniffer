@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that a @throws tag exists for each exception type a function throws.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class FunctionCommentThrowTagSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class FunctionCommentThrowTagSniff implements Sniff
         return [T_FUNCTION];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -130,7 +129,7 @@ class FunctionCommentThrowTagSniff implements Sniff
                         $thrownExceptions[] = $phpcsFile->getTokensAsString($currException, ($endException - $currException));
                     }
                 }//end if
-            } else if ($tokens[$nextToken]['code'] === T_VARIABLE) {
+            } elseif ($tokens[$nextToken]['code'] === T_VARIABLE) {
                 // Find the nearest catch block in this scope and, if the caught var
                 // matches our re-thrown var, use the exception types being caught as
                 // exception types that are being thrown as well.
@@ -229,6 +228,5 @@ class FunctionCommentThrowTagSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

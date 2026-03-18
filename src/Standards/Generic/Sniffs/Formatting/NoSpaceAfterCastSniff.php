@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures there is no space after cast tokens.
  *
@@ -18,8 +20,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class NoSpaceAfterCastSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -30,7 +30,6 @@ class NoSpaceAfterCastSniff implements Sniff
         return Tokens::$castTokens;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -56,6 +55,5 @@ class NoSpaceAfterCastSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

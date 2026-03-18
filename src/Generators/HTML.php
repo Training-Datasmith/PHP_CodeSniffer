@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A doc generator that outputs documentation in one big HTML file.
  *
@@ -17,8 +19,6 @@ use PHP_CodeSniffer\Config;
 
 class HTML extends Generator
 {
-
-
     /**
      * Generates the documentation for a standard.
      *
@@ -46,7 +46,6 @@ class HTML extends Generator
         echo $content;
 
     }//end generate()
-
 
     /**
      * Print the header of the HTML page.
@@ -131,7 +130,6 @@ class HTML extends Generator
 
     }//end printHeader()
 
-
     /**
      * Print the table of contents for the standard.
      *
@@ -156,7 +154,6 @@ class HTML extends Generator
 
     }//end printToc()
 
-
     /**
      * Print the footer of the HTML page.
      *
@@ -178,7 +175,6 @@ class HTML extends Generator
 
     }//end printFooter()
 
-
     /**
      * Process the documentation for a single sniff.
      *
@@ -197,13 +193,12 @@ class HTML extends Generator
         foreach ($doc->childNodes as $node) {
             if ($node->nodeName === 'standard') {
                 $this->printTextBlock($node);
-            } else if ($node->nodeName === 'code_comparison') {
+            } elseif ($node->nodeName === 'code_comparison') {
                 $this->printCodeComparisonBlock($node);
             }
         }
 
     }//end processSniff()
-
 
     /**
      * Print a text block found in a standard.
@@ -224,7 +219,6 @@ class HTML extends Generator
         echo "  <p class=\"text\">$content</p>".PHP_EOL;
 
     }//end printTextBlock()
-
 
     /**
      * Print a code comparison block found in a standard.
@@ -265,6 +259,5 @@ class HTML extends Generator
         echo '  </table>'.PHP_EOL;
 
     }//end printCodeComparisonBlock()
-
 
 }//end class

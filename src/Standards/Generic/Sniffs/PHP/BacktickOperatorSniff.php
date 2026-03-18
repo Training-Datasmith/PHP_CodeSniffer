@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Bans the use of the backtick execution operator.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class BacktickOperatorSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class BacktickOperatorSniff implements Sniff
         return [T_BACKTICK];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -43,6 +42,5 @@ class BacktickOperatorSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'Found');
 
     }//end process()
-
 
 }//end class

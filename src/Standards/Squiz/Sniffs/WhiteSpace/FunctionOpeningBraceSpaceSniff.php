@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that there is no empty line after the opening brace of a function.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class FunctionOpeningBraceSpaceSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -24,7 +25,6 @@ class FunctionOpeningBraceSpaceSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -39,7 +39,6 @@ class FunctionOpeningBraceSpaceSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -63,9 +62,9 @@ class FunctionOpeningBraceSpaceSniff implements Sniff
         $nextContent = $phpcsFile->findNext(T_WHITESPACE, ($openBrace + 1), null, true);
 
         if ($nextContent === $tokens[$stackPtr]['scope_closer']) {
-             // The next bit of content is the closing brace, so this
-             // is an empty function and should have a blank line
-             // between the opening and closing braces.
+            // The next bit of content is the closing brace, so this
+            // is an empty function and should have a blank line
+            // between the opening and closing braces.
             return;
         }
 
@@ -93,6 +92,5 @@ class FunctionOpeningBraceSpaceSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

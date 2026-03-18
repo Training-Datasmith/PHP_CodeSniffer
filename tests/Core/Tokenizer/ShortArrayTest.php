@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the conversion of square bracket tokens to short array tokens.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class ShortArrayTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that real square brackets are still tokenized as square brackets.
      *
@@ -40,7 +40,6 @@ class ShortArrayTest extends AbstractMethodUnitTest
         }
 
     }//end testSquareBrackets()
-
 
     /**
      * Data provider.
@@ -79,7 +78,6 @@ class ShortArrayTest extends AbstractMethodUnitTest
 
     }//end dataSquareBrackets()
 
-
     /**
      * Test that short arrays and short lists are still tokenized as short arrays.
      *
@@ -106,7 +104,6 @@ class ShortArrayTest extends AbstractMethodUnitTest
 
     }//end testShortArrays()
 
-
     /**
      * Data provider.
      *
@@ -130,6 +127,5 @@ class ShortArrayTest extends AbstractMethodUnitTest
         ];
 
     }//end dataShortArrays()
-
 
 }//end class

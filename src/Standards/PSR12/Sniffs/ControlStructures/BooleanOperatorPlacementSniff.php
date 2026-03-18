@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that control structures have boolean operators in the correct place.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class BooleanOperatorPlacementSniff implements Sniff
 {
-
     /**
      * Used to restrict the placement of the boolean operator.
      *
@@ -23,7 +24,6 @@ class BooleanOperatorPlacementSniff implements Sniff
      * @var string|null
      */
     public $allowOnly;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -41,7 +41,6 @@ class BooleanOperatorPlacementSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -156,14 +155,14 @@ class BooleanOperatorPlacementSniff implements Sniff
         }
 
         switch ($this->allowOnly) {
-        case 'first':
-            $error = 'Boolean operators between conditions must be at the beginning of the line';
-            break;
-        case 'last':
-            $error = 'Boolean operators between conditions must be at the end of the line';
-            break;
-        default:
-            $error = 'Boolean operators between conditions must be at the beginning or end of the line, but not both';
+            case 'first':
+                $error = 'Boolean operators between conditions must be at the beginning of the line';
+                break;
+            case 'last':
+                $error = 'Boolean operators between conditions must be at the end of the line';
+                break;
+            default:
+                $error = 'Boolean operators between conditions must be at the beginning or end of the line, but not both';
         }
 
         $fix = $phpcsFile->addFixableError($error, $stackPtr, 'FoundMixed');
@@ -224,6 +223,5 @@ class BooleanOperatorPlacementSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
 
     }//end process()
-
 
 }//end class

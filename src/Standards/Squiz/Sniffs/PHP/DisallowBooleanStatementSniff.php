@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that boolean operators are only used inside control structure conditions.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class DisallowBooleanStatementSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class DisallowBooleanStatementSniff implements Sniff
         return Tokens::$booleanOperators;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -54,6 +53,5 @@ class DisallowBooleanStatementSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'Found');
 
     }//end process()
-
 
 }//end class

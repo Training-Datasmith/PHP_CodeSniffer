@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the InlineHTML sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class InlineHTMLUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,25 +25,24 @@ class InlineHTMLUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'InlineHTMLUnitTest.3.inc':
-            return [4 => 1];
-            break;
-        case 'InlineHTMLUnitTest.4.inc':
-            return [1 => 1];
-            break;
-        case 'InlineHTMLUnitTest.7.inc':
-            return [1 => 1];
-            break;
-        default:
-            return [];
-            break;
+            case 'InlineHTMLUnitTest.3.inc':
+                return [4 => 1];
+                break;
+            case 'InlineHTMLUnitTest.4.inc':
+                return [1 => 1];
+                break;
+            case 'InlineHTMLUnitTest.7.inc':
+                return [1 => 1];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -55,11 +54,10 @@ class InlineHTMLUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getWarningList($testFile='')
+    public function getWarningList($testFile = '')
     {
         return [];
 
     }//end getWarningList()
-
 
 }//end class

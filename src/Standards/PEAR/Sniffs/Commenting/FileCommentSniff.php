@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Parses and verifies the doc comments for files.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class FileCommentSniff implements Sniff
 {
-
     /**
      * Tags in correct order and related info.
      *
@@ -68,7 +69,6 @@ class FileCommentSniff implements Sniff
         ],
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -79,7 +79,6 @@ class FileCommentSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -190,7 +189,7 @@ class FileCommentSniff implements Sniff
         for ($i = ($commentStart + 1); $i < $commentEnd; $i++) {
             if ($tokens[$i]['code'] === T_DOC_COMMENT_TAG) {
                 break;
-            } else if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING
+            } elseif ($tokens[$i]['code'] === T_DOC_COMMENT_STRING
                 && strstr(strtolower($tokens[$i]['content']), 'php version') !== false
             ) {
                 $found = true;
@@ -210,7 +209,6 @@ class FileCommentSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
     /**
      * Processes each required or optional tag.
@@ -309,7 +307,6 @@ class FileCommentSniff implements Sniff
 
     }//end processTags()
 
-
     /**
      * Process the category tag.
      *
@@ -350,7 +347,6 @@ class FileCommentSniff implements Sniff
         }//end foreach
 
     }//end processCategory()
-
 
     /**
      * Process the package tag.
@@ -404,7 +400,6 @@ class FileCommentSniff implements Sniff
 
     }//end processPackage()
 
-
     /**
      * Process the subpackage tag.
      *
@@ -448,7 +443,6 @@ class FileCommentSniff implements Sniff
 
     }//end processSubpackage()
 
-
     /**
      * Process the author tag(s) that this header comment has.
      *
@@ -477,7 +471,6 @@ class FileCommentSniff implements Sniff
         }
 
     }//end processAuthor()
-
 
     /**
      * Process the copyright tags.
@@ -519,7 +512,6 @@ class FileCommentSniff implements Sniff
 
     }//end processCopyright()
 
-
     /**
      * Process the license tag.
      *
@@ -547,7 +539,6 @@ class FileCommentSniff implements Sniff
         }
 
     }//end processLicense()
-
 
     /**
      * Process the version tag.
@@ -579,6 +570,5 @@ class FileCommentSniff implements Sniff
         }
 
     }//end processVersion()
-
 
 }//end class

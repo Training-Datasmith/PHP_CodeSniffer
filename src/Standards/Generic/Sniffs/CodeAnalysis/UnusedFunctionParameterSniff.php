@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks for unused function parameters.
  *
@@ -22,14 +24,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class UnusedFunctionParameterSniff implements Sniff
 {
-
     /**
      * The list of class type hints which will be ignored.
      *
      * @var array
      */
     public $ignoreTypeHints = [];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -45,7 +45,6 @@ class UnusedFunctionParameterSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -75,7 +74,7 @@ class UnusedFunctionParameterSniff implements Sniff
             $extends    = $phpcsFile->findExtendedClassName($classPtr);
             if ($extends !== false) {
                 $errorCode .= 'InExtendedClass';
-            } else if ($implements !== false) {
+            } elseif ($implements !== false) {
                 $errorCode .= 'InImplementedInterface';
             }
         }
@@ -157,7 +156,7 @@ class UnusedFunctionParameterSniff implements Sniff
 
             if ($code === T_VARIABLE && isset($params[$token['content']]) === true) {
                 unset($params[$token['content']]);
-            } else if ($code === T_DOLLAR) {
+            } elseif ($code === T_DOLLAR) {
                 $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($next + 1), null, true);
                 if ($tokens[$nextToken]['code'] === T_OPEN_CURLY_BRACKET) {
                     $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($nextToken + 1), null, true);
@@ -168,7 +167,7 @@ class UnusedFunctionParameterSniff implements Sniff
                         }
                     }
                 }
-            } else if ($code === T_DOUBLE_QUOTED_STRING
+            } elseif ($code === T_DOUBLE_QUOTED_STRING
                 || $code === T_START_HEREDOC
                 || $code === T_START_NOWDOC
             ) {
@@ -193,7 +192,7 @@ class UnusedFunctionParameterSniff implements Sniff
                     $varContent = '';
                     if ($stringToken[0] === T_DOLLAR_OPEN_CURLY_BRACES) {
                         $varContent = '$'.$stringTokens[($stringPtr + 1)][1];
-                    } else if ($stringToken[0] === T_VARIABLE) {
+                    } elseif ($stringToken[0] === T_VARIABLE) {
                         $varContent = $stringToken[1];
                     }
 
@@ -260,6 +259,5 @@ class UnusedFunctionParameterSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

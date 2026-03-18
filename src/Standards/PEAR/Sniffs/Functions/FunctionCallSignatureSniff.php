@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures function calls are formatted correctly.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class FunctionCallSignatureSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -54,7 +55,6 @@ class FunctionCallSignatureSniff implements Sniff
      */
     public $requiredSpacesBeforeClose = 0;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -72,7 +72,6 @@ class FunctionCallSignatureSniff implements Sniff
         return $tokens;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -165,7 +164,6 @@ class FunctionCallSignatureSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Determine if this is a multi-line function call.
      *
@@ -189,7 +187,6 @@ class FunctionCallSignatureSniff implements Sniff
         return false;
 
     }//end isMultiLineCall()
-
 
     /**
      * Processes single-line calls.
@@ -228,7 +225,7 @@ class FunctionCallSignatureSniff implements Sniff
             if ($fix === true) {
                 $phpcsFile->fixer->replaceToken(($openBracket + 1), '');
             }
-        } else if ($requiredSpacesAfterOpen > 0) {
+        } elseif ($requiredSpacesAfterOpen > 0) {
             $spaceAfterOpen = 0;
             if ($tokens[($openBracket + 1)]['code'] === T_WHITESPACE) {
                 $spaceAfterOpen = $tokens[($openBracket + 1)]['length'];
@@ -262,7 +259,7 @@ class FunctionCallSignatureSniff implements Sniff
 
         if ($tokens[$prev]['line'] !== $tokens[$closer]['line']) {
             $spaceBeforeClose = 'newline';
-        } else if ($tokens[($closer - 1)]['code'] === T_WHITESPACE) {
+        } elseif ($tokens[($closer - 1)]['code'] === T_WHITESPACE) {
             $spaceBeforeClose = $tokens[($closer - 1)]['length'];
         }
 
@@ -278,7 +275,7 @@ class FunctionCallSignatureSniff implements Sniff
 
                 if ($spaceBeforeClose === 0) {
                     $phpcsFile->fixer->addContentBefore($closer, $padding);
-                } else if ($spaceBeforeClose === 'newline') {
+                } elseif ($spaceBeforeClose === 'newline') {
                     $phpcsFile->fixer->beginChangeset();
 
                     $closingContent = ')';
@@ -319,7 +316,6 @@ class FunctionCallSignatureSniff implements Sniff
         }//end if
 
     }//end processSingleLineCall()
-
 
     /**
      * Processes multi-line calls.
@@ -390,7 +386,7 @@ class FunctionCallSignatureSniff implements Sniff
                 $padding    = str_repeat(' ', $functionIndent);
                 if ($foundFunctionIndent === 0) {
                     $phpcsFile->fixer->addContentBefore($first, $padding);
-                } else if ($tokens[$first]['code'] === T_INLINE_HTML) {
+                } elseif ($tokens[$first]['code'] === T_INLINE_HTML) {
                     $newContent = $padding.ltrim($tokens[$first]['content']);
                     $phpcsFile->fixer->replaceToken($first, $newContent);
                 } else {
@@ -626,6 +622,5 @@ class FunctionCallSignatureSniff implements Sniff
         }//end for
 
     }//end processMultiLineCall()
-
 
 }//end class

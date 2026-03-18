@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Warns when function values are returned directly.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\PHP;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ReturnFunctionValueSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class ReturnFunctionValueSniff implements Sniff
         return [T_RETURN];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -58,6 +57,5 @@ class ReturnFunctionValueSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

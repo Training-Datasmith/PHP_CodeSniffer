@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that opening braces are not followed by blank lines.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class OpeningBraceSpaceSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class OpeningBraceSpaceSniff implements Sniff
         return Tokens::$ooScopeTokens;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -75,6 +74,5 @@ class OpeningBraceSpaceSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
 
     }//end process()
-
 
 }//end class

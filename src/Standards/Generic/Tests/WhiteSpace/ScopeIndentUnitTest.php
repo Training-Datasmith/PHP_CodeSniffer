@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the ScopeIndent sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class ScopeIndentUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Get a list of CLI values to set before the file is tested.
      *
@@ -34,7 +34,6 @@ class ScopeIndentUnitTest extends AbstractSniffUnitTest
 
     }//end setCliValues()
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -45,7 +44,7 @@ class ScopeIndentUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='ScopeIndentUnitTest.inc')
+    public function getErrorList($testFile = 'ScopeIndentUnitTest.inc')
     {
         if ($testFile === 'ScopeIndentUnitTest.1.js') {
             return [
@@ -195,7 +194,6 @@ class ScopeIndentUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -209,6 +207,5 @@ class ScopeIndentUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the SuperfluousWhitespace sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class SuperfluousWhitespaceUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,75 +25,74 @@ class SuperfluousWhitespaceUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='SuperfluousWhitespaceUnitTest.inc')
+    public function getErrorList($testFile = 'SuperfluousWhitespaceUnitTest.inc')
     {
         switch ($testFile) {
-        case 'SuperfluousWhitespaceUnitTest.1.inc':
-            return [
-                2  => 1,
-                4  => 1,
-                5  => 1,
-                6  => 1,
-                7  => 1,
-                16 => 1,
-                23 => 1,
-                28 => 1,
-                33 => 1,
-                49 => 1,
-                62 => 1,
-                65 => 1,
-                73 => 1,
-            ];
-            break;
-        case 'SuperfluousWhitespaceUnitTest.2.inc':
-            return [
-                2 => 1,
-                8 => 1,
-            ];
-            break;
-        case 'SuperfluousWhitespaceUnitTest.3.inc':
-            return [
-                6  => 1,
-                10 => 1,
-            ];
-            break;
-        case 'SuperfluousWhitespaceUnitTest.4.inc':
-        case 'SuperfluousWhitespaceUnitTest.5.inc':
-            return [
-                1 => 1,
-                4 => 1,
-            ];
-            break;
-        case 'SuperfluousWhitespaceUnitTest.1.js':
-            return [
-                1  => 1,
-                3  => 1,
-                4  => 1,
-                5  => 1,
-                6  => 1,
-                15 => 1,
-                22 => 1,
-                29 => 1,
-                38 => 1,
-                56 => 1,
-            ];
-            break;
-        case 'SuperfluousWhitespaceUnitTest.1.css':
-            return [
-                1  => 1,
-                8  => 1,
-                9  => 1,
-                11 => 1,
-                32 => 1,
-            ];
-            break;
-        default:
-            return [];
-            break;
+            case 'SuperfluousWhitespaceUnitTest.1.inc':
+                return [
+                    2  => 1,
+                    4  => 1,
+                    5  => 1,
+                    6  => 1,
+                    7  => 1,
+                    16 => 1,
+                    23 => 1,
+                    28 => 1,
+                    33 => 1,
+                    49 => 1,
+                    62 => 1,
+                    65 => 1,
+                    73 => 1,
+                ];
+                break;
+            case 'SuperfluousWhitespaceUnitTest.2.inc':
+                return [
+                    2 => 1,
+                    8 => 1,
+                ];
+                break;
+            case 'SuperfluousWhitespaceUnitTest.3.inc':
+                return [
+                    6  => 1,
+                    10 => 1,
+                ];
+                break;
+            case 'SuperfluousWhitespaceUnitTest.4.inc':
+            case 'SuperfluousWhitespaceUnitTest.5.inc':
+                return [
+                    1 => 1,
+                    4 => 1,
+                ];
+                break;
+            case 'SuperfluousWhitespaceUnitTest.1.js':
+                return [
+                    1  => 1,
+                    3  => 1,
+                    4  => 1,
+                    5  => 1,
+                    6  => 1,
+                    15 => 1,
+                    22 => 1,
+                    29 => 1,
+                    38 => 1,
+                    56 => 1,
+                ];
+                break;
+            case 'SuperfluousWhitespaceUnitTest.1.css':
+                return [
+                    1  => 1,
+                    8  => 1,
+                    9  => 1,
+                    11 => 1,
+                    32 => 1,
+                ];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -108,6 +107,5 @@ class SuperfluousWhitespaceUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

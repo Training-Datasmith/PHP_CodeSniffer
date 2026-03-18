@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that inline control statements are not present.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class InlineControlStructureSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -32,7 +33,6 @@ class InlineControlStructureSniff implements Sniff
      * @var boolean
      */
     public $error = true;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -53,7 +53,6 @@ class InlineControlStructureSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -244,7 +243,7 @@ class InlineControlStructureSniff implements Sniff
                     if ($type === T_DO && $nextType === T_WHILE) {
                         $end = $phpcsFile->findNext(T_SEMICOLON, ($next + 1));
                     }
-                } else if ($type === T_CLOSURE) {
+                } elseif ($type === T_CLOSURE) {
                     // There should be a semicolon after the closing brace.
                     $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
                     if ($next !== false && $tokens[$next]['code'] === T_SEMICOLON) {
@@ -332,7 +331,7 @@ class InlineControlStructureSniff implements Sniff
 
                 if ($tokens[$first]['code'] === T_WHITESPACE) {
                     $indent = $tokens[$first]['content'];
-                } else if ($tokens[$first]['code'] === T_INLINE_HTML
+                } elseif ($tokens[$first]['code'] === T_INLINE_HTML
                     || $tokens[$first]['code'] === T_OPEN_TAG
                 ) {
                     $addedContent = '';
@@ -376,6 +375,5 @@ class InlineControlStructureSniff implements Sniff
         $phpcsFile->fixer->endChangeset();
 
     }//end process()
-
 
 }//end class

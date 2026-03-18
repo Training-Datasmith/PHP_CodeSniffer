@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that class members are spaced correctly.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class MemberVarSpacingSniff extends AbstractVariableSniff
 {
-
     /**
      * The number of blank lines between member vars.
      *
@@ -29,7 +30,6 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
      * @var integer
      */
     public $spacingBeforeFirst = 1;
-
 
     /**
      * Processes the function tokens within the class.
@@ -137,7 +137,7 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
             if ($first === false) {
                 $first = $start;
             }
-        } else if ($tokens[$start]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
+        } elseif ($tokens[$start]['code'] === T_DOC_COMMENT_CLOSE_TAG) {
             $first = $tokens[$start]['comment_opener'];
         } else {
             $first = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($start - 1), null, true);
@@ -214,7 +214,6 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
 
     }//end processMemberVar()
 
-
     /**
      * Processes normal variables.
      *
@@ -231,7 +230,6 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
 
     }//end processVariable()
 
-
     /**
      * Processes variables in double quoted strings.
      *
@@ -247,6 +245,5 @@ class MemberVarSpacingSniff extends AbstractVariableSniff
         */
 
     }//end processVariableInString()
-
 
 }//end class

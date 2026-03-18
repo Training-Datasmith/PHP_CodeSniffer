@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that import statements are defined correctly.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ImportStatementSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class ImportStatementSniff implements Sniff
         return [T_USE];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -72,6 +71,5 @@ class ImportStatementSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

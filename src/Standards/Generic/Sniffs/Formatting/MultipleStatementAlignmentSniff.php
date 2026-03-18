@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks alignment of assignments.
  *
@@ -18,7 +20,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class MultipleStatementAlignmentSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -54,7 +55,6 @@ class MultipleStatementAlignmentSniff implements Sniff
      */
     public $alignAtEnd = true;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -67,7 +67,6 @@ class MultipleStatementAlignmentSniff implements Sniff
         return $tokens;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -85,7 +84,6 @@ class MultipleStatementAlignmentSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -97,7 +95,7 @@ class MultipleStatementAlignmentSniff implements Sniff
      *
      * @return int
      */
-    public function checkAlignment($phpcsFile, $stackPtr, $end=null)
+    public function checkAlignment($phpcsFile, $stackPtr, $end = null)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -209,7 +207,7 @@ class MultipleStatementAlignmentSniff implements Sniff
                             } else {
                                 $lastSemi = $assign;
                             }
-                        } else if ($tokens[$assign]['level'] < $tokens[$stackPtr]['level']) {
+                        } elseif ($tokens[$assign]['level'] < $tokens[$stackPtr]['level']) {
                             // Statement is in a different context, so the block is over.
                             break;
                         }
@@ -235,7 +233,7 @@ class MultipleStatementAlignmentSniff implements Sniff
                 if ($tokens[$assign]['level'] < $tokens[$stackPtr]['level']) {
                     // We've gone one level up, so the block we are processing is done.
                     break;
-                } else if ($arrayEnd !== null) {
+                } elseif ($arrayEnd !== null) {
                     // Assignments inside arrays are not part of
                     // the original block, so process this new block.
                     $assign   = ($this->checkAlignment($phpcsFile, $assign, $arrayEnd) - 1);
@@ -321,7 +319,7 @@ class MultipleStatementAlignmentSniff implements Sniff
                         $padding      = 1;
                         $assignColumn = ($varEnd + 1);
                     }
-                } else if ($padding > $assignments[$maxPadding]['expected']) {
+                } elseif ($padding > $assignments[$maxPadding]['expected']) {
                     $maxPadding = $assign;
                 }//end if
             } else {
@@ -422,6 +420,5 @@ class MultipleStatementAlignmentSniff implements Sniff
         return $assign;
 
     }//end checkAlignment()
-
 
 }//end class

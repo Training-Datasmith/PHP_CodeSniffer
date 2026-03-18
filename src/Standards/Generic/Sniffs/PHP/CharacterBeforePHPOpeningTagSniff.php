@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the opening PHP tag is the first content in a file.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class CharacterBeforePHPOpeningTagSniff implements Sniff
 {
-
     /**
      * List of supported BOM definitions.
      *
@@ -28,7 +29,6 @@ class CharacterBeforePHPOpeningTagSniff implements Sniff
         'UTF-16 (LE)' => 'fffe',
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -39,7 +39,6 @@ class CharacterBeforePHPOpeningTagSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -81,6 +80,5 @@ class CharacterBeforePHPOpeningTagSniff implements Sniff
         return $phpcsFile->numTokens;
 
     }//end process()
-
 
 }//end class

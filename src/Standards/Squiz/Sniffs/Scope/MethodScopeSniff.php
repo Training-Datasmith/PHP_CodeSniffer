@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that class methods have scope modifiers.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class MethodScopeSniff extends AbstractScopeSniff
 {
-
-
     /**
      * Constructs a Squiz_Sniffs_Scope_MethodScopeSniff.
      */
@@ -25,7 +25,6 @@ class MethodScopeSniff extends AbstractScopeSniff
         parent::__construct(Tokens::$ooScopeTokens, [T_FUNCTION]);
 
     }//end __construct()
-
 
     /**
      * Processes the function tokens within the class.
@@ -63,7 +62,6 @@ class MethodScopeSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -78,6 +76,5 @@ class MethodScopeSniff extends AbstractScopeSniff
     {
 
     }//end processTokenOutsideScope()
-
 
 }//end class

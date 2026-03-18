@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure that opacity values start with a 0 if it is not a whole number.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class OpacitySniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class OpacitySniff implements Sniff
         return [T_STYLE];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -75,27 +74,26 @@ class OpacitySniff implements Sniff
             if (strlen($value) > 3) {
                 $error = 'Opacity values must have a single value after the decimal point';
                 $phpcsFile->addError($error, $next, 'DecimalPrecision');
-            } else if ($value === '0.0' || $value === '1.0') {
+            } elseif ($value === '0.0' || $value === '1.0') {
                 $error = 'Opacity value does not require decimal point; use %s instead';
                 $data  = [$value[0]];
                 $fix   = $phpcsFile->addFixableError($error, $next, 'PointNotRequired', $data);
                 if ($fix === true) {
                     $phpcsFile->fixer->replaceToken($next, $value[0]);
                 }
-            } else if ($value[0] === '.') {
+            } elseif ($value[0] === '.') {
                 $error = 'Opacity values must not start with a decimal point; use 0%s instead';
                 $data  = [$value];
                 $fix   = $phpcsFile->addFixableError($error, $next, 'StartWithPoint', $data);
                 if ($fix === true) {
                     $phpcsFile->fixer->replaceToken($next, '0'.$value);
                 }
-            } else if ($value[0] !== '0') {
+            } elseif ($value[0] !== '0') {
                 $error = 'Opacity values must be between 0 and 1';
                 $phpcsFile->addError($error, $next, 'Invalid');
             }//end if
         }//end if
 
     }//end process()
-
 
 }//end class

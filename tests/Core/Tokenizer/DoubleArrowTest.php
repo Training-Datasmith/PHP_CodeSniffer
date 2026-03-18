@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the retokenization of the double arrow to T_MATCH_ARROW for PHP 8.0 match structures
  * and makes sure that the tokenization of other double arrows (array, arrow function, yield)
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class DoubleArrowTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that "normal" double arrows are correctly tokenized as `T_DOUBLE_ARROW`.
      *
@@ -38,7 +38,6 @@ class DoubleArrowTest extends AbstractMethodUnitTest
         $this->assertSame('T_DOUBLE_ARROW', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_DOUBLE_ARROW (type)');
 
     }//end testDoubleArrow()
-
 
     /**
      * Data provider.
@@ -100,7 +99,6 @@ class DoubleArrowTest extends AbstractMethodUnitTest
 
     }//end dataDoubleArrow()
 
-
     /**
      * Test that double arrows in match expressions which are the demarkation between a case and the return value
      * are correctly tokenized as `T_MATCH_ARROW`.
@@ -123,7 +121,6 @@ class DoubleArrowTest extends AbstractMethodUnitTest
         $this->assertSame('T_MATCH_ARROW', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_MATCH_ARROW (type)');
 
     }//end testMatchArrow()
-
 
     /**
      * Data provider.
@@ -187,7 +184,6 @@ class DoubleArrowTest extends AbstractMethodUnitTest
 
     }//end dataMatchArrow()
 
-
     /**
      * Test that double arrows used as the scope opener for an arrow function
      * are correctly tokenized as `T_FN_ARROW`.
@@ -211,7 +207,6 @@ class DoubleArrowTest extends AbstractMethodUnitTest
 
     }//end testFnArrow()
 
-
     /**
      * Data provider.
      *
@@ -232,6 +227,5 @@ class DoubleArrowTest extends AbstractMethodUnitTest
         ];
 
     }//end dataFnArrow()
-
 
 }//end class

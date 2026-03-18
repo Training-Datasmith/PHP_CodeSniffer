@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the opening brace of a function is on the same line as the function declaration.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
 {
-
     /**
      * Should this sniff check function braces?
      *
@@ -30,7 +31,6 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
      */
     public $checkClosures = false;
 
-
     /**
      * Registers the tokens that this sniff wants to listen for.
      *
@@ -44,7 +44,6 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -159,7 +158,7 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
 
         if ($tokens[($openingBrace - 1)]['code'] !== T_WHITESPACE) {
             $length = 0;
-        } else if ($spacing === "\t") {
+        } elseif ($spacing === "\t") {
             $length = '\t';
         } else {
             $length = strlen($spacing);
@@ -179,6 +178,5 @@ class OpeningFunctionBraceKernighanRitchieSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

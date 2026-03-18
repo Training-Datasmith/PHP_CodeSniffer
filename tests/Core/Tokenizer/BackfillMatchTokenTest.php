@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the backfilling of the T_MATCH token to PHP < 8.0, as well as the
  * setting of parenthesis/scopes for match control structures across PHP versions.
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class BackfillMatchTokenTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test tokenization of match expressions.
      *
@@ -30,7 +30,7 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testMatchExpression($testMarker, $openerOffset, $closerOffset, $testContent='match')
+    public function testMatchExpression($testMarker, $openerOffset, $closerOffset, $testContent = 'match')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -44,7 +44,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
         $this->parenthesisTestHelper($token);
 
     }//end testMatchExpression()
-
 
     /**
      * Data provider.
@@ -197,7 +196,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
 
     }//end dataMatchExpression()
 
-
     /**
      * Verify that "match" keywords which are not match control structures get tokenized as T_STRING
      * and don't have the extra token array indexes.
@@ -211,7 +209,7 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testNotAMatchStructure($testMarker, $testContent='match')
+    public function testNotAMatchStructure($testMarker, $testContent = 'match')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -234,7 +232,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
         }
 
     }//end testNotAMatchStructure()
-
 
     /**
      * Data provider.
@@ -315,7 +312,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
 
     }//end dataNotAMatchStructure()
 
-
     /**
      * Verify that the tokenization of switch structures is not affected by the backfill.
      *
@@ -337,7 +333,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
         $this->parenthesisTestHelper($token);
 
     }//end testSwitchExpression()
-
 
     /**
      * Data provider.
@@ -368,7 +363,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
 
     }//end dataSwitchExpression()
 
-
     /**
      * Verify that the tokenization of a switch case/default structure containing a match structure
      * or contained *in* a match structure is not affected by the backfill.
@@ -390,7 +384,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
         $this->scopeTestHelper($token, $openerOffset, $closerOffset);
 
     }//end testSwitchCaseVersusMatch()
-
 
     /**
      * Data provider.
@@ -431,7 +424,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
 
     }//end dataSwitchCaseVersusMatch()
 
-
     /**
      * Helper function to verify that all scope related array indexes for a control structure
      * are set correctly.
@@ -449,7 +441,7 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    private function scopeTestHelper($token, $openerOffset, $closerOffset, $skipScopeCloserCheck=false)
+    private function scopeTestHelper($token, $openerOffset, $closerOffset, $skipScopeCloserCheck = false)
     {
         $tokens     = self::$phpcsFile->getTokens();
         $tokenArray = $tokens[$token];
@@ -495,7 +487,6 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
 
     }//end scopeTestHelper()
 
-
     /**
      * Helper function to verify that all parenthesis related array indexes for a control structure
      * token are set correctly.
@@ -524,6 +515,5 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
         $this->assertSame($token, $tokens[$closer]['parenthesis_owner'], 'Closing parenthesis owner is not the '.$tokenType.' token');
 
     }//end parenthesisTestHelper()
-
 
 }//end class

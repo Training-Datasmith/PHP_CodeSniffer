@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Makes sure that any strings that are "echoed" are not enclosed in brackets.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class EchoedStringsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class EchoedStringsSniff implements Sniff
         return [T_ECHO];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -83,6 +82,5 @@ class EchoedStringsSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

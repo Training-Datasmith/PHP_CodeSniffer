@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the JSHint sniff.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\Generic\Tests\Debug;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 use PHP_CodeSniffer\Config;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class JSHintUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Should this test be skipped for some reason.
      *
@@ -33,7 +33,6 @@ class JSHintUnitTest extends AbstractSniffUnitTest
 
     }//end shouldSkipTest()
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -48,7 +47,6 @@ class JSHintUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -62,6 +60,5 @@ class JSHintUnitTest extends AbstractSniffUnitTest
         return [3 => 2];
 
     }//end getWarningList()
-
 
 }//end class

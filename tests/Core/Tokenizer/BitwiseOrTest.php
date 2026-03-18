@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the conversion of bitwise or tokens to type union tokens.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BitwiseOrTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that non-union type bitwise or tokens are still tokenized as bitwise or.
      *
@@ -34,7 +34,6 @@ class BitwiseOrTest extends AbstractMethodUnitTest
         $this->assertSame('T_BITWISE_OR', $tokens[$opener]['type']);
 
     }//end testBitwiseOr()
-
 
     /**
      * Data provider.
@@ -65,7 +64,6 @@ class BitwiseOrTest extends AbstractMethodUnitTest
 
     }//end dataBitwiseOr()
 
-
     /**
      * Test that bitwise or tokens when used as part of a union type are tokenized as `T_TYPE_UNION`.
      *
@@ -85,7 +83,6 @@ class BitwiseOrTest extends AbstractMethodUnitTest
         $this->assertSame('T_TYPE_UNION', $tokens[$opener]['type']);
 
     }//end testTypeUnion()
-
 
     /**
      * Data provider.
@@ -133,6 +130,5 @@ class BitwiseOrTest extends AbstractMethodUnitTest
         ];
 
     }//end dataTypeUnion()
-
 
 }//end class

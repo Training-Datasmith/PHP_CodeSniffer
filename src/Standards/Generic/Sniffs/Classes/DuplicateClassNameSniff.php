@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Reports errors if the same class or interface name is used in multiple files.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DuplicateClassNameSniff implements Sniff
 {
-
     /**
      * List of classes that have been found during checking.
      *
      * @var array
      */
     protected $foundClasses = [];
-
 
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -33,7 +33,6 @@ class DuplicateClassNameSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -113,6 +112,5 @@ class DuplicateClassNameSniff implements Sniff
         }//end while
 
     }//end process()
-
 
 }//end class

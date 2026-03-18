@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that getRequestData() is used to access super globals.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\PHP;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class GetRequestDataSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class GetRequestDataSniff implements Sniff
         return [T_VARIABLE];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -63,7 +62,7 @@ class GetRequestDataSniff implements Sniff
                     // We don't have nested classes.
                     break;
                 }
-            } else if ($inClass === true && $tokens[$i]['code'] === T_FUNCTION) {
+            } elseif ($inClass === true && $tokens[$i]['code'] === T_FUNCTION) {
                 $funcName = $phpcsFile->findNext(T_STRING, $i);
                 $funcName = $tokens[$funcName]['content'];
                 if (strtolower($funcName) === 'getrequestdata') {
@@ -100,6 +99,5 @@ class GetRequestDataSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, $type, $data);
 
     }//end process()
-
 
 }//end class

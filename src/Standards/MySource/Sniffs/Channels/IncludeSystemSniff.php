@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that systems, asset types and libs are included before they are used.
  *
@@ -9,13 +11,12 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Channels;
 
-use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 class IncludeSystemSniff extends AbstractScopeSniff
 {
-
     /**
      * A list of classes that don't need to be included.
      *
@@ -40,7 +41,6 @@ class IncludeSystemSniff extends AbstractScopeSniff
         'domdocument'               => true,
     ];
 
-
     /**
      * Constructs an AbstractScopeSniff.
      */
@@ -49,7 +49,6 @@ class IncludeSystemSniff extends AbstractScopeSniff
         parent::__construct([T_FUNCTION], [T_DOUBLE_COLON, T_EXTENDS], true);
 
     }//end __construct()
-
 
     /**
      * Processes the function tokens within the class.
@@ -113,7 +112,7 @@ class IncludeSystemSniff extends AbstractScopeSniff
             if ($name !== false) {
                 $includedClasses[$name] = true;
                 // Special case for Widgets cause they are, well, special.
-            } else if (strtolower($tokens[$i]['content']) === 'includewidget') {
+            } elseif (strtolower($tokens[$i]['content']) === 'includewidget') {
                 $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($i + 1));
                 $typeName = trim($tokens[$typeName]['content'], " '");
                 $includedClasses[strtolower($typeName).'widgettype'] = true;
@@ -191,7 +190,6 @@ class IncludeSystemSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Processes a token within the scope that this test is listening to.
      *
@@ -256,7 +254,7 @@ class IncludeSystemSniff extends AbstractScopeSniff
             if ($name !== false) {
                 $includedClasses[$name] = true;
                 // Special case for Widgets cause they are, well, special.
-            } else if (strtolower($tokens[$i]['content']) === 'includewidget') {
+            } elseif (strtolower($tokens[$i]['content']) === 'includewidget') {
                 $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($i + 1));
                 $typeName = trim($tokens[$typeName]['content'], " '");
                 $includedClasses[strtolower($typeName).'widgettype'] = true;
@@ -276,7 +274,6 @@ class IncludeSystemSniff extends AbstractScopeSniff
         }
 
     }//end processTokenOutsideScope()
-
 
     /**
      * Determines the included class name from given token.
@@ -311,6 +308,5 @@ class IncludeSystemSniff extends AbstractScopeSniff
         return false;
 
     }//end getIncludedClassFromToken()
-
 
 }//end class

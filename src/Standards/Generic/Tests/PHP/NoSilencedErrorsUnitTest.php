@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the NoSilencedErrors sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class NoSilencedErrorsUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -28,7 +28,6 @@ class NoSilencedErrorsUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -46,6 +45,5 @@ class NoSilencedErrorsUnitTest extends AbstractSniffUnitTest
         ];
 
     }//end getWarningList()
-
 
 }//end class

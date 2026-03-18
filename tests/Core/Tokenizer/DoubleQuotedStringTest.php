@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests that embedded variables and expressions in double quoted strings are tokenized
  * as one double quoted string token.
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class DoubleQuotedStringTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that double quoted strings contain the complete string.
      *
@@ -35,7 +35,6 @@ class DoubleQuotedStringTest extends AbstractMethodUnitTest
         $this->assertSame($expectedContent, $tokens[$target]['content']);
 
     }//end testDoubleQuotedString()
-
 
     /**
      * Data provider.
@@ -131,6 +130,5 @@ class DoubleQuotedStringTest extends AbstractMethodUnitTest
         ];
 
     }//end dataDoubleQuotedString()
-
 
 }//end class

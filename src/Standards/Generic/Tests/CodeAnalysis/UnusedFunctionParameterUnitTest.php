@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the UnusedFunctionParameter sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class UnusedFunctionParameterUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -28,7 +28,6 @@ class UnusedFunctionParameterUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -53,6 +52,5 @@ class UnusedFunctionParameterUnitTest extends AbstractSniffUnitTest
         ];
 
     }//end getWarningList()
-
 
 }//end class

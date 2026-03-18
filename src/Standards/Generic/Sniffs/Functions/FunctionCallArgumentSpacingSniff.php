@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that calls to methods and functions are spaced correctly.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class FunctionCallArgumentSpacingSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -37,7 +37,6 @@ class FunctionCallArgumentSpacingSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -86,7 +85,6 @@ class FunctionCallArgumentSpacingSniff implements Sniff
         $this->checkSpacing($phpcsFile, $stackPtr, $openBracket);
 
     }//end process()
-
 
     /**
      * Checks the spacing around commas.
@@ -185,6 +183,5 @@ class FunctionCallArgumentSpacingSniff implements Sniff
         }//end while
 
     }//end checkSpacing()
-
 
 }//end class

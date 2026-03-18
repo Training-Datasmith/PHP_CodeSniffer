@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures doc blocks follow basic formatting.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DocCommentSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -24,7 +25,6 @@ class DocCommentSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -36,7 +36,6 @@ class DocCommentSniff implements Sniff
         return [T_DOC_COMMENT_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -350,6 +349,5 @@ class DocCommentSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

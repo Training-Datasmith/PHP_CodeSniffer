@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Info report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Util\Timing;
 
 class Info implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,7 +30,7 @@ class Info implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         $metrics = $phpcsFile->getMetrics();
         foreach ($metrics as $metric => $data) {
@@ -42,7 +42,6 @@ class Info implements Report
         return true;
 
     }//end generateFileReport()
-
 
     /**
      * Prints the source of all errors and warnings.
@@ -66,10 +65,10 @@ class Info implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         $lines = explode(PHP_EOL, $cachedData);
         array_pop($lines);
@@ -167,6 +166,5 @@ class Info implements Report
         }
 
     }//end generate()
-
 
 }//end class

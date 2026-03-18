@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that control structures have the correct spacing.
  *
@@ -16,14 +18,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ControlStructureSpacingSniff implements Sniff
 {
-
     /**
      * The number of spaces code should be indented.
      *
      * @var integer
      */
     public $indent = 4;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -45,7 +45,6 @@ class ControlStructureSpacingSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -189,6 +188,5 @@ class ControlStructureSpacingSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

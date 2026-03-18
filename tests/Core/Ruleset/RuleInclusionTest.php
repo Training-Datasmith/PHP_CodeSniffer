@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Ruleset class.
  *
@@ -15,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 class RuleInclusionTest extends TestCase
 {
-
     /**
      * The Ruleset object.
      *
@@ -37,7 +38,6 @@ class RuleInclusionTest extends TestCase
      */
     private static $contents = '';
 
-
     /**
      * Initialize the test.
      *
@@ -53,7 +53,6 @@ class RuleInclusionTest extends TestCase
         }
 
     }//end setUp()
-
 
     /**
      * Initialize the config and ruleset objects based on the `RuleInclusionTest.xml` ruleset file.
@@ -93,7 +92,6 @@ class RuleInclusionTest extends TestCase
 
     }//end setUpBeforeClass()
 
-
     /**
      * Reset ruleset file.
      *
@@ -104,7 +102,6 @@ class RuleInclusionTest extends TestCase
         file_put_contents(self::$standard, self::$contents);
 
     }//end tearDown()
-
 
     /**
      * Test that sniffs are registered.
@@ -117,7 +114,6 @@ class RuleInclusionTest extends TestCase
         $this->assertCount(48, self::$ruleset->sniffCodes);
 
     }//end testHasSniffCodes()
-
 
     /**
      * Test that sniffs are correctly registered, independently of the syntax used to include the sniff.
@@ -135,7 +131,6 @@ class RuleInclusionTest extends TestCase
         $this->assertSame($value, self::$ruleset->sniffCodes[$key]);
 
     }//end testRegisteredSniffCodes()
-
 
     /**
      * Data provider.
@@ -343,7 +338,6 @@ class RuleInclusionTest extends TestCase
 
     }//end dataRegisteredSniffCodes()
 
-
     /**
      * Test that setting properties for standards, categories, sniffs works for all supported rule
      * inclusion methods.
@@ -366,7 +360,6 @@ class RuleInclusionTest extends TestCase
         $this->assertSame($expectedValue, $actualValue);
 
     }//end testSettingProperties()
-
 
     /**
      * Data provider.
@@ -434,7 +427,6 @@ class RuleInclusionTest extends TestCase
 
     }//end dataSettingProperties()
 
-
     /**
      * Test that setting properties for standards, categories on sniffs which don't support the property will
      * silently ignore the property and not set it.
@@ -455,7 +447,6 @@ class RuleInclusionTest extends TestCase
         $this->assertObjectNotHasAttribute($propertyName, $sniffObject, 'Property '.$propertyName.' registered for sniff '.$sniffClass.' which does not support it');
 
     }//end testSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
-
 
     /**
      * Data provider.
@@ -482,6 +473,5 @@ class RuleInclusionTest extends TestCase
         ];
 
     }//end dataSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
-
 
 }//end class

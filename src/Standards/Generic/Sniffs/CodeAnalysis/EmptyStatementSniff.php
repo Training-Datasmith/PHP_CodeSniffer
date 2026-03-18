@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This sniff class detected empty statement.
  *
@@ -29,8 +31,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class EmptyStatementSniff implements Sniff
 {
-
-
     /**
      * Registers the tokens that this sniff wants to listen for.
      *
@@ -54,7 +54,6 @@ class EmptyStatementSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -92,6 +91,5 @@ class EmptyStatementSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'Detected'.ucfirst(strtolower($name)), [$name]);
 
     }//end process()
-
 
 }//end class

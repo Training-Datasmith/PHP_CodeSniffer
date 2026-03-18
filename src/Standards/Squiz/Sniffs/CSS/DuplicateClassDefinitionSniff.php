@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Check for duplicate class definitions that can be merged into one.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class DuplicateClassDefinitionSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class DuplicateClassDefinitionSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -98,7 +97,7 @@ class DuplicateClassDefinitionSniff implements Sniff
             if ($name[0] === '@') {
                 // Media block has its own "scope".
                 $scope = $name;
-            } else if (isset($classNames[$scope][$name]) === true) {
+            } elseif (isset($classNames[$scope][$name]) === true) {
                 $first = $classNames[$scope][$name];
                 $error = 'Duplicate class definition found; first defined on line %s';
                 $data  = [$tokens[$first]['line']];
@@ -111,6 +110,5 @@ class DuplicateClassDefinitionSniff implements Sniff
         }//end while
 
     }//end process()
-
 
 }//end class

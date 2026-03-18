@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the IncrementDecrementSpacing sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class IncrementDecrementSpacingUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,28 +25,27 @@ class IncrementDecrementSpacingUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='IncrementDecrementSpacingUnitTest.inc')
+    public function getErrorList($testFile = 'IncrementDecrementSpacingUnitTest.inc')
     {
         switch ($testFile) {
-        case 'IncrementDecrementSpacingUnitTest.inc':
-        case 'IncrementDecrementSpacingUnitTest.js':
-            return [
-                5  => 1,
-                6  => 1,
-                8  => 1,
-                10 => 1,
-                13 => 1,
-                14 => 1,
-                16 => 1,
-                17 => 1,
-            ];
+            case 'IncrementDecrementSpacingUnitTest.inc':
+            case 'IncrementDecrementSpacingUnitTest.js':
+                return [
+                    5  => 1,
+                    6  => 1,
+                    8  => 1,
+                    10 => 1,
+                    13 => 1,
+                    14 => 1,
+                    16 => 1,
+                    17 => 1,
+                ];
 
-        default:
-            return [];
+            default:
+                return [];
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -61,6 +60,5 @@ class IncrementDecrementSpacingUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the FileComment sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class FileCommentUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,39 +25,38 @@ class FileCommentUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='FileCommentUnitTest.inc')
+    public function getErrorList($testFile = 'FileCommentUnitTest.inc')
     {
         switch ($testFile) {
-        case 'FileCommentUnitTest.1.inc':
-        case 'FileCommentUnitTest.1.js':
-            return [
-                1  => 1,
-                22 => 2,
-                23 => 1,
-                24 => 2,
-                25 => 2,
-                26 => 1,
-                27 => 2,
-                28 => 2,
-                32 => 2,
-            ];
+            case 'FileCommentUnitTest.1.inc':
+            case 'FileCommentUnitTest.1.js':
+                return [
+                    1  => 1,
+                    22 => 2,
+                    23 => 1,
+                    24 => 2,
+                    25 => 2,
+                    26 => 1,
+                    27 => 2,
+                    28 => 2,
+                    32 => 2,
+                ];
 
-        case 'FileCommentUnitTest.4.inc':
-        case 'FileCommentUnitTest.6.inc':
-        case 'FileCommentUnitTest.7.inc':
-        case 'FileCommentUnitTest.9.inc':
-        case 'FileCommentUnitTest.10.inc':
-            return [1 => 1];
+            case 'FileCommentUnitTest.4.inc':
+            case 'FileCommentUnitTest.6.inc':
+            case 'FileCommentUnitTest.7.inc':
+            case 'FileCommentUnitTest.9.inc':
+            case 'FileCommentUnitTest.10.inc':
+                return [1 => 1];
 
-        case 'FileCommentUnitTest.5.inc':
-            return [2 => 1];
+            case 'FileCommentUnitTest.5.inc':
+                return [2 => 1];
 
-        default:
-            return [];
+            default:
+                return [];
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -72,6 +71,5 @@ class FileCommentUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

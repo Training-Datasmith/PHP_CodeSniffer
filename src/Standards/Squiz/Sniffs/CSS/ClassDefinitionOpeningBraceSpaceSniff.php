@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure a single space before, and a newline after, the class opening brace
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
         return [T_OPEN_CURLY_BRACKET];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -54,7 +53,7 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
             $length = 0;
             if ($tokens[$stackPtr]['line'] !== $tokens[$prevNonWhitespace]['line']) {
                 $length = 'newline';
-            } else if ($tokens[($stackPtr - 1)]['code'] === T_WHITESPACE) {
+            } elseif ($tokens[($stackPtr - 1)]['code'] === T_WHITESPACE) {
                 if (strpos($tokens[($stackPtr - 1)]['content'], "\t") !== false) {
                     $length = 'tab';
                 } else {
@@ -68,7 +67,7 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
                 if ($fix === true) {
                     $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
                 }
-            } else if ($length !== 1) {
+            } elseif ($length !== 1) {
                 $error = 'Expected 1 space before opening brace of class definition; %s found';
                 $data  = [$length];
                 $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'Before', $data);
@@ -149,7 +148,7 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
                     if ($found < 0) {
                         // First statement on same line as the opening brace.
                         $phpcsFile->fixer->addContentBefore($nextNonWhiteSpace, $phpcsFile->eolChar.$phpcsFile->eolChar);
-                    } else if ($found === 0) {
+                    } elseif ($found === 0) {
                         // Next statement on next line, no blank line.
                         $phpcsFile->fixer->addNewlineBefore($firstOnNextLine);
                     } else {
@@ -171,6 +170,5 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

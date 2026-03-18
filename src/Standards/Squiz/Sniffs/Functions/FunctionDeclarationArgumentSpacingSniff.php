@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that arguments in function declarations are spaced correctly.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class FunctionDeclarationArgumentSpacingSniff implements Sniff
 {
-
     /**
      * How many spaces should surround the equals signs.
      *
@@ -37,7 +38,6 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
      */
     public $requiredSpacesBeforeClose = 0;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -52,7 +52,6 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -90,7 +89,6 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
         }
 
     }//end process()
-
 
     /**
      * Processes the contents of a single set of brackets.
@@ -299,7 +297,7 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
                             if ($fix === true) {
                                 $phpcsFile->fixer->addContent($commaToken, ' ');
                             }
-                        } else if ($spacesAfter !== 1) {
+                        } elseif ($spacesAfter !== 1) {
                             $error = 'Expected 1 space between comma and argument "%s"; %s found';
                             $data  = [
                                 $param['name'],
@@ -393,6 +391,5 @@ class FunctionDeclarationArgumentSpacingSniff implements Sniff
         }
 
     }//end processBracket()
-
 
 }//end class

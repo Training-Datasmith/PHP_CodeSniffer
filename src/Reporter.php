@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Manages reporting of errors and warnings.
  *
@@ -17,7 +19,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class Reporter
 {
-
     /**
      * The config data for the run.
      *
@@ -81,7 +82,6 @@ class Reporter
      */
     private $tmpFiles = [];
 
-
     /**
      * Initialise the reporter.
      *
@@ -113,10 +113,10 @@ class Reporter
                 }
 
                 $reportClassName = Autoload::loadFile($filename);
-            } else if (class_exists('PHP_CodeSniffer\Reports\\'.ucfirst($type)) === true) {
+            } elseif (class_exists('PHP_CodeSniffer\Reports\\'.ucfirst($type)) === true) {
                 // PHPCS native report.
                 $reportClassName = 'PHP_CodeSniffer\Reports\\'.ucfirst($type);
-            } else if (class_exists($type) === true) {
+            } elseif (class_exists($type) === true) {
                 // FQN of a custom report.
                 $reportClassName = $type;
             } else {
@@ -164,7 +164,6 @@ class Reporter
 
     }//end __construct()
 
-
     /**
      * Generates and prints final versions of all reports.
      *
@@ -187,7 +186,6 @@ class Reporter
         return $toScreen;
 
     }//end printReports()
-
 
     /**
      * Generates and prints a single final report.
@@ -253,7 +251,6 @@ class Reporter
         }
 
     }//end printReport()
-
 
     /**
      * Caches the result of a single processed file for all reports.
@@ -321,7 +318,6 @@ class Reporter
         }
 
     }//end cacheFileReport()
-
 
     /**
      * Generate summary information to be used during report generation.
@@ -417,6 +413,5 @@ class Reporter
         return $report;
 
     }//end prepareFileReport()
-
 
 }//end class

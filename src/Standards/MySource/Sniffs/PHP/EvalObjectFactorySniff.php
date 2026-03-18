@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that eval() is not used to create objects.
  *
@@ -9,14 +11,12 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\PHP;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 class EvalObjectFactorySniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class EvalObjectFactorySniff implements Sniff
         return [T_EVAL];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -56,7 +55,7 @@ class EvalObjectFactorySniff implements Sniff
         for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
             if (isset(Tokens::$stringTokens[$tokens[$i]['code']]) === true) {
                 $strings[$i] = $tokens[$i]['content'];
-            } else if ($tokens[$i]['code'] === T_VARIABLE) {
+            } elseif ($tokens[$i]['code'] === T_VARIABLE) {
                 $vars[$i] = $tokens[$i]['content'];
             }
         }
@@ -109,6 +108,5 @@ class EvalObjectFactorySniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

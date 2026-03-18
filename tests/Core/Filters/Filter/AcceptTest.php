@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Filters\Filter::accept method.
  *
@@ -17,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 class AcceptTest extends TestCase
 {
-
     /**
      * The Config object.
      *
@@ -31,7 +32,6 @@ class AcceptTest extends TestCase
      * @var \PHP_CodeSniffer\Ruleset
      */
     protected static $ruleset;
-
 
     /**
      * Initialize the test.
@@ -49,7 +49,6 @@ class AcceptTest extends TestCase
 
     }//end setUp()
 
-
     /**
      * Initialize the config and ruleset objects based on the `AcceptTest.xml` ruleset file.
      *
@@ -63,11 +62,10 @@ class AcceptTest extends TestCase
         }
 
         $standard      = __DIR__.'/'.basename(__FILE__, '.php').'.xml';
-        self::$config  = new Config(["--standard=$standard", "--ignore=*/somethingelse/*"]);
+        self::$config  = new Config(["--standard=$standard", '--ignore=*/somethingelse/*']);
         self::$ruleset = new Ruleset(self::$config);
 
     }//end setUpBeforeClass()
-
 
     /**
      * Test filtering a file list for excluded paths.
@@ -93,7 +91,6 @@ class AcceptTest extends TestCase
         $this->assertEquals($expectedOutput, $files);
 
     }//end testExcludePatterns()
-
 
     /**
      * Data provider.
@@ -149,6 +146,5 @@ class AcceptTest extends TestCase
         return $testCases;
 
     }//end dataExcludePatterns()
-
 
 }//end class

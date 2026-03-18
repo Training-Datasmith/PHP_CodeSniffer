@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure single and multi-line function declarations are defined correctly.
  *
@@ -17,7 +19,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class FunctionDeclarationSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -35,7 +36,6 @@ class FunctionDeclarationSniff implements Sniff
      */
     public $indent = 4;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -49,7 +49,6 @@ class FunctionDeclarationSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -79,7 +78,7 @@ class FunctionDeclarationSniff implements Sniff
             // Must be one space after the FUNCTION keyword.
             if ($tokens[($stackPtr + 1)]['content'] === $phpcsFile->eolChar) {
                 $spaces = 'newline';
-            } else if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
+            } elseif ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
                 $spaces = $tokens[($stackPtr + 1)]['length'];
             } else {
                 $spaces = 0;
@@ -109,7 +108,7 @@ class FunctionDeclarationSniff implements Sniff
         ) {
             if ($tokens[($openBracket - 1)]['content'] === $phpcsFile->eolChar) {
                 $spaces = 'newline';
-            } else if ($tokens[($openBracket - 1)]['code'] === T_WHITESPACE) {
+            } elseif ($tokens[($openBracket - 1)]['code'] === T_WHITESPACE) {
                 $spaces = $tokens[($openBracket - 1)]['length'];
             } else {
                 $spaces = 0;
@@ -129,7 +128,7 @@ class FunctionDeclarationSniff implements Sniff
                 $end = $phpcsFile->findNext(T_SEMICOLON, $closeBracket);
                 if ($tokens[($end - 1)]['content'] === $phpcsFile->eolChar) {
                     $spaces = 'newline';
-                } else if ($tokens[($end - 1)]['code'] === T_WHITESPACE) {
+                } elseif ($tokens[($end - 1)]['code'] === T_WHITESPACE) {
                     $spaces = $tokens[($end - 1)]['length'];
                 } else {
                     $spaces = 0;
@@ -152,7 +151,7 @@ class FunctionDeclarationSniff implements Sniff
             if ($use !== false) {
                 if ($tokens[($use + 1)]['code'] !== T_WHITESPACE) {
                     $length = 0;
-                } else if ($tokens[($use + 1)]['content'] === "\t") {
+                } elseif ($tokens[($use + 1)]['content'] === "\t") {
                     $length = '\t';
                 } else {
                     $length = $tokens[($use + 1)]['length'];
@@ -173,7 +172,7 @@ class FunctionDeclarationSniff implements Sniff
 
                 if ($tokens[($use - 1)]['code'] !== T_WHITESPACE) {
                     $length = 0;
-                } else if ($tokens[($use - 1)]['content'] === "\t") {
+                } elseif ($tokens[($use - 1)]['content'] === "\t") {
                     $length = '\t';
                 } else {
                     $length = $tokens[($use - 1)]['length'];
@@ -201,7 +200,6 @@ class FunctionDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
     /**
      * Determine if this is a multi-line function declaration.
@@ -241,7 +239,6 @@ class FunctionDeclarationSniff implements Sniff
 
     }//end isMultiLineDeclaration()
 
-
     /**
      * Processes single-line declarations.
      *
@@ -267,7 +264,6 @@ class FunctionDeclarationSniff implements Sniff
         $sniff->process($phpcsFile, $stackPtr);
 
     }//end processSingleLineDeclaration()
-
 
     /**
      * Processes multi-line declarations.
@@ -356,7 +352,6 @@ class FunctionDeclarationSniff implements Sniff
 
     }//end processMultiLineDeclaration()
 
-
     /**
      * Processes multi-line argument list declarations.
      *
@@ -369,7 +364,7 @@ class FunctionDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function processArgumentList($phpcsFile, $stackPtr, $indent, $type='function')
+    public function processArgumentList($phpcsFile, $stackPtr, $indent, $type = 'function')
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -471,7 +466,7 @@ class FunctionDeclarationSniff implements Sniff
                 }
                 if ($tokens[$i]['code'] === T_WHITESPACE) {
                     $foundIndent = $tokens[$i]['length'];
-                } else if ($tokens[$i]['code'] === T_DOC_COMMENT_WHITESPACE) {
+                } elseif ($tokens[$i]['code'] === T_DOC_COMMENT_WHITESPACE) {
                     $foundIndent = $tokens[$i]['length'];
                     ++$expectedIndent;
                 }
@@ -531,6 +526,5 @@ class FunctionDeclarationSniff implements Sniff
         }//end for
 
     }//end processArgumentList()
-
 
 }//end class

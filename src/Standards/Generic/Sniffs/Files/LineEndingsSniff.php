@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that end of line characters are correct.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class LineEndingsSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -33,7 +34,6 @@ class LineEndingsSniff implements Sniff
      */
     public $eolChar = '\n';
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -47,7 +47,6 @@ class LineEndingsSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -98,18 +97,18 @@ class LineEndingsSniff implements Sniff
         if ($fix === true) {
             $tokens = $phpcsFile->getTokens();
             switch ($this->eolChar) {
-            case '\n':
-                $eolChar = "\n";
-                break;
-            case '\r':
-                $eolChar = "\r";
-                break;
-            case '\r\n':
-                $eolChar = "\r\n";
-                break;
-            default:
-                $eolChar = $this->eolChar;
-                break;
+                case '\n':
+                    $eolChar = "\n";
+                    break;
+                case '\r':
+                    $eolChar = "\r";
+                    break;
+                case '\r\n':
+                    $eolChar = "\r\n";
+                    break;
+                default:
+                    $eolChar = $this->eolChar;
+                    break;
             }
 
             for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
@@ -143,6 +142,5 @@ class LineEndingsSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
 }//end class

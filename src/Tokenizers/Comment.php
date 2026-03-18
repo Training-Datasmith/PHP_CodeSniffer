@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tokenizes doc block comments.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Util;
 
 class Comment
 {
-
-
     /**
      * Creates an array of tokens when given some PHP code.
      *
@@ -159,7 +159,6 @@ class Comment
 
     }//end tokenizeString()
 
-
     /**
      * Process a single line of a comment.
      *
@@ -235,7 +234,6 @@ class Comment
 
     }//end processLine()
 
-
     /**
      * Collect consecutive whitespace into a single token.
      *
@@ -267,6 +265,5 @@ class Comment
         ];
 
     }//end collectWhitespace()
-
 
 }//end class

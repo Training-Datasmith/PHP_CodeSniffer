@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Runs the Zend Code Analyzer (from Zend Studio) on the file.
  *
@@ -10,16 +12,14 @@
 
 namespace PHP_CodeSniffer\Standards\Zend\Sniffs\Debug;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Common;
 
 class CodeAnalyzerSniff implements Sniff
 {
-
-
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -30,7 +30,6 @@ class CodeAnalyzerSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -96,6 +95,5 @@ class CodeAnalyzerSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
 }//end class

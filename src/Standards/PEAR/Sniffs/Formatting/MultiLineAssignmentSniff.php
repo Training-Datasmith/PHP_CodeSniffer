@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * If an assignment goes over two lines, ensure the equal sign is indented.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class MultiLineAssignmentSniff implements Sniff
 {
-
     /**
      * The number of spaces code should be indented.
      *
      * @var integer
      */
     public $indent = 4;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -33,7 +33,6 @@ class MultiLineAssignmentSniff implements Sniff
         return [T_EQUAL];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -101,6 +100,5 @@ class MultiLineAssignmentSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

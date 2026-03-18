@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Warns about the use of debug code.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Debug;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DebugCodeSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class DebugCodeSniff implements Sniff
         return [T_DOUBLE_COLON];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -50,6 +49,5 @@ class DebugCodeSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

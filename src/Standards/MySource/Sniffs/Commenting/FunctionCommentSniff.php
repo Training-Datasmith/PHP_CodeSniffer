@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Parses and verifies the doc comments for functions.
  *
@@ -11,14 +13,12 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Commenting;
 
+use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FunctionCommentSniff as SquizFunctionCommentSniff;
 use PHP_CodeSniffer\Util\Tokens;
-use PHP_CodeSniffer\Files\File;
 
 class FunctionCommentSniff extends SquizFunctionCommentSniff
 {
-
-
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -60,7 +60,7 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
                     $error = 'There must be one blank line before the @api tag in a function comment';
                     $phpcsFile->addError($error, $tag, 'ApiSpacing');
                 }
-            } else if (substr($tokens[$tag]['content'], 0, 5) === '@api-') {
+            } elseif (substr($tokens[$tag]['content'], 0, 5) === '@api-') {
                 $hasApiTag = true;
 
                 $prev = $phpcsFile->findPrevious([T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], ($tag - 1));
@@ -79,6 +79,5 @@ class FunctionCommentSniff extends SquizFunctionCommentSniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks the naming of member variables.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
-
-
     /**
      * Processes class member variables.
      *
@@ -65,7 +65,6 @@ class ValidVariableNameSniff extends AbstractVariableSniff
 
     }//end processMemberVar()
 
-
     /**
      * Processes normal variables.
      *
@@ -82,7 +81,6 @@ class ValidVariableNameSniff extends AbstractVariableSniff
 
     }//end processVariable()
 
-
     /**
      * Processes variables in double quoted strings.
      *
@@ -98,6 +96,5 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         */
 
     }//end processVariableInString()
-
 
 }//end class

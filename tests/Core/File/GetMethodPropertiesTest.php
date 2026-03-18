@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:getMethodProperties method.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class GetMethodPropertiesTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test a basic function.
      *
@@ -36,7 +36,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testBasicFunction()
-
 
     /**
      * Test a function with a return type.
@@ -60,7 +59,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testReturnFunction()
 
-
     /**
      * Test a closure used as a function argument.
      *
@@ -82,7 +80,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testNestedClosure()
-
 
     /**
      * Test a basic method.
@@ -106,7 +103,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testBasicMethod()
 
-
     /**
      * Test a private static method.
      *
@@ -128,7 +124,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPrivateStaticMethod()
-
 
     /**
      * Test a basic final method.
@@ -152,7 +147,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testFinalMethod()
 
-
     /**
      * Test a protected method with a return type.
      *
@@ -174,7 +168,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testProtectedReturnMethod()
-
 
     /**
      * Test a public method with a return type.
@@ -198,7 +191,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPublicReturnMethod()
 
-
     /**
      * Test a public method with a nullable return type.
      *
@@ -220,7 +212,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testNullableReturnMethod()
-
 
     /**
      * Test a public method with a nullable return type.
@@ -244,7 +235,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testMessyNullableReturnMethod()
 
-
     /**
      * Test a method with a namespaced return type.
      *
@@ -266,7 +256,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testReturnNamespace()
-
 
     /**
      * Test a method with a messy namespaces return type.
@@ -290,7 +279,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testReturnMultilineNamespace()
 
-
     /**
      * Test a basic abstract method.
      *
@@ -312,7 +300,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testAbstractMethod()
-
 
     /**
      * Test an abstract method with a return type.
@@ -336,7 +323,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testAbstractReturnMethod()
 
-
     /**
      * Test a basic interface method.
      *
@@ -358,7 +344,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testInterfaceMethod()
-
 
     /**
      * Test a static arrow function.
@@ -382,7 +367,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testArrowFunction()
 
-
     /**
      * Test a function with return type "static".
      *
@@ -404,7 +388,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testReturnTypeStatic()
-
 
     /**
      * Test a function with return type "mixed".
@@ -428,7 +411,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP8MixedTypeHint()
 
-
     /**
      * Test a function with return type "mixed" and nullability.
      *
@@ -450,7 +432,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP8MixedTypeHintNullable()
-
 
     /**
      * Test a function with return type using the namespace operator.
@@ -474,7 +455,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testNamespaceOperatorTypeHint()
 
-
     /**
      * Verify recognition of PHP8 union type declaration.
      *
@@ -496,7 +476,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP8UnionTypesSimple()
-
 
     /**
      * Verify recognition of PHP8 union type declaration with two classes.
@@ -520,7 +499,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP8UnionTypesTwoClasses()
 
-
     /**
      * Verify recognition of PHP8 union type declaration with all base types.
      *
@@ -542,7 +520,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP8UnionTypesAllBaseTypes()
-
 
     /**
      * Verify recognition of PHP8 union type declaration with all pseudo types.
@@ -566,7 +543,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP8UnionTypesAllPseudoTypes()
 
-
     /**
      * Verify recognition of PHP8 union type declaration with (illegal) nullability.
      *
@@ -588,7 +564,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP8UnionTypesNullable()
-
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) single type null.
@@ -612,7 +587,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP8PseudoTypeNull()
 
-
     /**
      * Verify recognition of PHP8 type declaration with (illegal) single type false.
      *
@@ -634,7 +608,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP8PseudoTypeFalse()
-
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type false combined with type bool.
@@ -658,7 +631,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP8PseudoTypeFalseAndBool()
 
-
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type object combined with a class name.
      *
@@ -680,7 +652,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP8ObjectAndClass()
-
 
     /**
      * Verify recognition of PHP8 type declaration with (illegal) type iterable combined with array/Traversable.
@@ -704,7 +675,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP8PseudoTypeIterableAndArray()
 
-
     /**
      * Verify recognition of PHP8 type declaration with (illegal) duplicate types.
      *
@@ -726,7 +696,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP8DuplicateTypeInUnionWhitespaceAndComment()
-
 
     /**
      * Verify recognition of PHP8.1 type "never".
@@ -750,7 +719,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP81NeverType()
 
-
     /**
      * Verify recognition of PHP8.1 type "never"  with (illegal) nullability.
      *
@@ -772,7 +740,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP81NullableNeverType()
-
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration.
@@ -796,7 +763,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP8IntersectionTypes()
 
-
     /**
      * Verify recognition of PHP8.1 intersection type declaration with more types.
      *
@@ -818,7 +784,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP81MoreIntersectionTypes()
-
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration in arrow function.
@@ -842,7 +807,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP81IntersectionArrowFunction()
 
-
     /**
      * Verify recognition of PHP8.1 intersection type declaration with illegal simple types.
      *
@@ -864,7 +828,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->getMethodPropertiesTestHelper('/* '.__FUNCTION__.' */', $expected);
 
     }//end testPHP81IllegalIntersectionTypes()
-
 
     /**
      * Verify recognition of PHP8.1 intersection type declaration with (illegal) nullability.
@@ -888,7 +851,6 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
 
     }//end testPHP81NullableIntersectionTypes()
 
-
     /**
      * Test helper.
      *
@@ -905,6 +867,5 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
         $this->assertArraySubset($expected, $found, true);
 
     }//end getMethodPropertiesTestHelper()
-
 
 }//end class

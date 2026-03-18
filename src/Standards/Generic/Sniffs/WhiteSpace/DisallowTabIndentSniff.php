@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Throws errors if tabs are used for indentation.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowTabIndentSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -33,7 +34,6 @@ class DisallowTabIndentSniff implements Sniff
      */
     private $tabWidth;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -47,7 +47,6 @@ class DisallowTabIndentSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -137,9 +136,9 @@ class DisallowTabIndentSniff implements Sniff
 
                     if ($foundIndentTabs > 0 && $foundIndentSpaces === 0) {
                         $phpcsFile->recordMetric($i, 'Line indent', 'tabs');
-                    } else if ($foundIndentTabs === 0 && $foundIndentSpaces > 0) {
+                    } elseif ($foundIndentTabs === 0 && $foundIndentSpaces > 0) {
                         $phpcsFile->recordMetric($i, 'Line indent', 'spaces');
-                    } else if ($foundIndentTabs > 0 && $foundIndentSpaces > 0) {
+                    } elseif ($foundIndentTabs > 0 && $foundIndentSpaces > 0) {
                         $spacePosition  = strpos($indentation, ' ');
                         $tabAfterSpaces = strpos($indentation, "\t", $spacePosition);
                         if ($tabAfterSpaces !== false) {
@@ -187,6 +186,5 @@ class DisallowTabIndentSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
 }//end class

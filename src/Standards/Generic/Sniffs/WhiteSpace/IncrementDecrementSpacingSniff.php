@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies spacing between variables and increment/decrement operators.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class IncrementDecrementSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -25,7 +26,6 @@ class IncrementDecrementSpacingSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -40,7 +40,6 @@ class IncrementDecrementSpacingSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -165,6 +164,5 @@ class IncrementDecrementSpacingSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

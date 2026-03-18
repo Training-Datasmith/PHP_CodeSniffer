@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures all calls to inbuilt PHP functions are lowercase.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class LowercasePHPFunctionsSniff implements Sniff
 {
-
     /**
      * String -> int hash map of all php built in function names
      *
      * @var array
      */
     private $builtInFunctions;
-
 
     /**
      * Construct the LowercasePHPFunctionSniff
@@ -35,7 +35,6 @@ class LowercasePHPFunctionsSniff implements Sniff
 
     }//end __construct()
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -46,7 +45,6 @@ class LowercasePHPFunctionsSniff implements Sniff
         return [T_STRING];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -162,6 +160,5 @@ class LowercasePHPFunctionsSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

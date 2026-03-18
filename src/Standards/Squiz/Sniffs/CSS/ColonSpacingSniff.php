@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure there is no space before a colon and one space after it.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ColonSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class ColonSpacingSniff implements Sniff
         return [T_COLON];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -102,6 +101,5 @@ class ColonSpacingSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures JS classes don't contain duplicate property names.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DuplicatePropertySniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['JS'];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -33,7 +33,6 @@ class DuplicatePropertySniff implements Sniff
         return [T_OBJECT];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -77,6 +76,5 @@ class DuplicatePropertySniff implements Sniff
         }//end while
 
     }//end process()
-
 
 }//end class

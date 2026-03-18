@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the declaration of an anon class is correct.
  *
@@ -17,7 +19,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class AnonClassDeclarationSniff extends ClassDeclarationSniff
 {
-
     /**
      * The PSR2 MultiLineFunctionDeclarations sniff.
      *
@@ -32,7 +33,6 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
      */
     private $functionCallSniff;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -43,7 +43,6 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
         return [T_ANON_CLASS];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -130,7 +129,6 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
 
     }//end process()
 
-
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -167,7 +165,7 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
 
         if ($tokens[$prev]['line'] !== $tokens[$closeBracket]['line']) {
             $spaceBeforeClose = 'newline';
-        } else if ($tokens[($closeBracket - 1)]['code'] === T_WHITESPACE) {
+        } elseif ($tokens[($closeBracket - 1)]['code'] === T_WHITESPACE) {
             $spaceBeforeClose = $tokens[($closeBracket - 1)]['length'];
         }
 
@@ -217,7 +215,6 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
 
     }//end processSingleLineArgumentList()
 
-
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -237,6 +234,5 @@ class AnonClassDeclarationSniff extends ClassDeclarationSniff
         $this->multiLineSniff->processArgumentList($phpcsFile, $stackPtr, $this->indent, 'argument');
 
     }//end processMultiLineArgumentList()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that all class constants have their visibility set.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ConstantVisibilitySniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class ConstantVisibilitySniff implements Sniff
         return [T_CONST];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -59,6 +58,5 @@ class ConstantVisibilitySniff implements Sniff
         $phpcsFile->addWarning($error, $stackPtr, 'NotFound');
 
     }//end process()
-
 
 }//end class

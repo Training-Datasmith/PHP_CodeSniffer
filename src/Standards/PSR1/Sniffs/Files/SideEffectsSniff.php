@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures a file declares new symbols and causes no other side effects, or executes logic with side effects, but not both.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class SideEffectsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class SideEffectsSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -59,7 +58,6 @@ class SideEffectsSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
     /**
      * Searches for symbol declarations and side effects.
@@ -297,6 +295,5 @@ class SideEffectsSniff implements Sniff
         ];
 
     }//end searchForConflict()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the ForLoopWithTestFunctionCall sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class ForLoopWithTestFunctionCallUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -28,7 +28,6 @@ class ForLoopWithTestFunctionCallUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -46,6 +45,5 @@ class ForLoopWithTestFunctionCallUnitTest extends AbstractSniffUnitTest
         ];
 
     }//end getWarningList()
-
 
 }//end class

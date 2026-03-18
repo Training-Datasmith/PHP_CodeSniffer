@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks the //end ... comments on classes, interfaces and functions.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ClosingDeclarationCommentSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -31,7 +31,6 @@ class ClosingDeclarationCommentSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -68,9 +67,9 @@ class ClosingDeclarationCommentSniff implements Sniff
 
             $decName = $phpcsFile->getDeclarationName($stackPtr);
             $comment = '//end '.$decName.'()';
-        } else if ($tokens[$stackPtr]['code'] === T_CLASS) {
+        } elseif ($tokens[$stackPtr]['code'] === T_CLASS) {
             $comment = '//end class';
-        } else if ($tokens[$stackPtr]['code'] === T_INTERFACE) {
+        } elseif ($tokens[$stackPtr]['code'] === T_INTERFACE) {
             $comment = '//end interface';
         } else {
             $comment = '//end enum';
@@ -127,6 +126,5 @@ class ClosingDeclarationCommentSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure colour names are not used.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class NamedColoursSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -49,7 +50,6 @@ class NamedColoursSniff implements Sniff
         'yellow'  => 'yellow',
     ];
 
-
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -60,7 +60,6 @@ class NamedColoursSniff implements Sniff
         return [T_STRING];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -88,6 +87,5 @@ class NamedColoursSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

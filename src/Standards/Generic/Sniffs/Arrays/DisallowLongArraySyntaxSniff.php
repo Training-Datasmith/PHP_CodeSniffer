@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Bans the use of the PHP long array syntax.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowLongArraySyntaxSniff implements Sniff
 {
-
-
     /**
      * Registers the tokens that this sniff wants to listen for.
      *
@@ -26,7 +26,6 @@ class DisallowLongArraySyntaxSniff implements Sniff
         return [T_ARRAY];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -73,6 +72,5 @@ class DisallowLongArraySyntaxSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures PHP believes the syntax is clean.
  *
@@ -17,14 +19,12 @@ use PHP_CodeSniffer\Util\Common;
 
 class SyntaxSniff implements Sniff
 {
-
     /**
      * The path to the PHP version we are checking with.
      *
      * @var string
      */
     private $phpPath;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -39,7 +39,6 @@ class SyntaxSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -70,6 +69,5 @@ class SyntaxSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
 }//end class

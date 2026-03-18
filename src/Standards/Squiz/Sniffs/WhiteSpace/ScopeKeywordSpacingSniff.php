@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure there is a single space after scope keywords.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ScopeKeywordSpacingSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -30,7 +30,6 @@ class ScopeKeywordSpacingSniff implements Sniff
         return $register;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -164,6 +163,5 @@ class ScopeKeywordSpacingSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

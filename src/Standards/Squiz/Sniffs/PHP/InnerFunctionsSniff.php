@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that functions within functions are never used.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class InnerFunctionsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class InnerFunctionsSniff implements Sniff
         return [T_FUNCTION];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -71,6 +70,5 @@ class InnerFunctionsSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'NotAllowed');
 
     }//end process()
-
 
 }//end class

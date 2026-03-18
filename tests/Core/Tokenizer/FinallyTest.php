@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the tokenization of the finally keyword.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class FinallyTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that the finally keyword is tokenized as such.
      *
@@ -35,7 +35,6 @@ class FinallyTest extends AbstractMethodUnitTest
 
     }//end testFinallyKeyword()
 
-
     /**
      * Data provider.
      *
@@ -52,7 +51,6 @@ class FinallyTest extends AbstractMethodUnitTest
         ];
 
     }//end dataFinallyKeyword()
-
 
     /**
      * Test that 'finally' when not used as the reserved keyword is tokenized as `T_STRING`.
@@ -74,7 +72,6 @@ class FinallyTest extends AbstractMethodUnitTest
 
     }//end testFinallyNonKeyword()
 
-
     /**
      * Data provider.
      *
@@ -91,6 +88,5 @@ class FinallyTest extends AbstractMethodUnitTest
         ];
 
     }//end dataFinallyNonKeyword()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures objects are assigned to a variable when instantiated.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ObjectInstantiationSniff implements Sniff
 {
-
-
     /**
      * Registers the token types that this sniff wishes to listen to.
      *
@@ -27,7 +27,6 @@ class ObjectInstantiationSniff implements Sniff
         return [T_NEW];
 
     }//end register()
-
 
     /**
      * Process the tokens that this sniff is listening for.
@@ -80,6 +79,5 @@ class ObjectInstantiationSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'NotAssigned');
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures method and function names are correct.
  *
@@ -16,7 +18,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ValidFunctionNameSniff extends AbstractScopeSniff
 {
-
     /**
      * A list of all PHP magic methods.
      *
@@ -49,7 +50,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
      */
     protected $magicFunctions = ['autoload' => true];
 
-
     /**
      * Constructs a PEAR_Sniffs_NamingConventions_ValidFunctionNameSniff.
      */
@@ -58,7 +58,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
         parent::__construct(Tokens::$ooScopeTokens, [T_FUNCTION], true);
 
     }//end __construct()
-
 
     /**
      * Processes the tokens within the scope.
@@ -167,7 +166,6 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
         }
 
     }//end processTokenWithinScope()
-
 
     /**
      * Processes the tokens outside the scope.
@@ -279,6 +277,5 @@ class ValidFunctionNameSniff extends AbstractScopeSniff
         }
 
     }//end processTokenOutsideScope()
-
 
 }//end class

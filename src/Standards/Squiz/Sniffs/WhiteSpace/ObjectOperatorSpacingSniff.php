@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure there is no whitespace before/after an object operator.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ObjectOperatorSpacingSniff implements Sniff
 {
-
     /**
      * Allow newlines instead of spaces.
      *
      * @var boolean
      */
     public $ignoreNewlines = false;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -37,7 +37,6 @@ class ObjectOperatorSpacingSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -85,7 +84,6 @@ class ObjectOperatorSpacingSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Check the spacing before the operator.
      *
@@ -124,7 +122,6 @@ class ObjectOperatorSpacingSniff implements Sniff
 
     }//end checkSpacingBeforeOperator()
 
-
     /**
      * Check the spacing after the operator.
      *
@@ -162,6 +159,5 @@ class ObjectOperatorSpacingSniff implements Sniff
         return true;
 
     }//end checkSpacingAfterOperator()
-
 
 }//end class

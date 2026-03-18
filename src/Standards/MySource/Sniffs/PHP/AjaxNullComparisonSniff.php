@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that values submitted via JS are not compared to NULL.
  *
@@ -12,13 +14,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\PHP;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class AjaxNullComparisonSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -29,7 +29,6 @@ class AjaxNullComparisonSniff implements Sniff
         return [T_FUNCTION];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -98,6 +97,5 @@ class AjaxNullComparisonSniff implements Sniff
         }//end for
 
     }//end process()
-
 
 }//end class

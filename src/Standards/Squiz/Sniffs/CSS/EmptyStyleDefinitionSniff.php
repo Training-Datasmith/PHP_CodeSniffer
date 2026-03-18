@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure that style definitions are not empty.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class EmptyStyleDefinitionSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class EmptyStyleDefinitionSniff implements Sniff
         return [T_STYLE];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -59,6 +58,5 @@ class EmptyStyleDefinitionSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the opening brace of a class/interface/trait is on the same line as the class declaration.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class OpeningBraceSameLineSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -31,7 +31,6 @@ class OpeningBraceSameLineSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -99,7 +98,7 @@ class OpeningBraceSameLineSniff implements Sniff
         // Is there precisely one space before the opening brace ?
         if ($tokens[($openingBrace - 1)]['code'] !== T_WHITESPACE) {
             $length = 0;
-        } else if ($tokens[($openingBrace - 1)]['content'] === "\t") {
+        } elseif ($tokens[($openingBrace - 1)]['content'] === "\t") {
             $length = '\t';
         } else {
             $length = $tokens[($openingBrace - 1)]['length'];
@@ -119,6 +118,5 @@ class OpeningBraceSameLineSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures there is a single space before cast tokens.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class SpaceBeforeCastSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class SpaceBeforeCastSniff implements Sniff
         return Tokens::$castTokens;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -68,6 +67,5 @@ class SpaceBeforeCastSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

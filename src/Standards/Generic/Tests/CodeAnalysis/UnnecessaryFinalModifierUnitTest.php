@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the UnnecessaryFinalModifier sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class UnnecessaryFinalModifierUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -28,7 +28,6 @@ class UnnecessaryFinalModifierUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -50,6 +49,5 @@ class UnnecessaryFinalModifierUnitTest extends AbstractSniffUnitTest
         ];
 
     }//end getWarningList()
-
 
 }//end class

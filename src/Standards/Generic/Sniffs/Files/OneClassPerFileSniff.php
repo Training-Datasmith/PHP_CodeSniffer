@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that only one class is declared per file.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class OneClassPerFileSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class OneClassPerFileSniff implements Sniff
         return [T_CLASS];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -52,6 +51,5 @@ class OneClassPerFileSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

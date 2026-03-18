@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure colours are defined in upper-case and use shortcuts where possible.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ColourDefinitionSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -33,7 +33,6 @@ class ColourDefinitionSniff implements Sniff
         return [T_COLOUR];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -83,6 +82,5 @@ class ColourDefinitionSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

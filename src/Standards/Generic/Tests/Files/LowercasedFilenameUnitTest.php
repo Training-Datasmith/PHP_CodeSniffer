@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the LowercasedFilename sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class LowercasedFilenameUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,18 +25,17 @@ class LowercasedFilenameUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'LowercasedFilenameUnitTest.1.inc':
-        case 'LowercasedFilenameUnitTest.2.inc':
-            return [1 => 1];
-        default:
-            return [];
+            case 'LowercasedFilenameUnitTest.1.inc':
+            case 'LowercasedFilenameUnitTest.2.inc':
+                return [1 => 1];
+            default:
+                return [];
         }
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -51,6 +50,5 @@ class LowercasedFilenameUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

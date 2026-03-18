@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Makes sure that any use of double quotes strings are warranted.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DoubleQuoteUsageSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -29,7 +29,6 @@ class DoubleQuoteUsageSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -139,6 +138,5 @@ class DoubleQuoteUsageSniff implements Sniff
         return $skipTo;
 
     }//end process()
-
 
 }//end class

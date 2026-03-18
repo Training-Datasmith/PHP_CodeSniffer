@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Enforces switch statement formatting.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class SwitchDeclarationSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -33,7 +34,6 @@ class SwitchDeclarationSniff implements Sniff
      */
     public $indent = 4;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -44,7 +44,6 @@ class SwitchDeclarationSniff implements Sniff
         return [T_SWITCH];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -277,7 +276,7 @@ class SwitchDeclarationSniff implements Sniff
                         }
                     }//end if
                 }//end if
-            } else if ($type === 'Default') {
+            } elseif ($type === 'Default') {
                 $error = 'DEFAULT case must have a breaking statement';
                 $phpcsFile->addError($error, $nextCase, 'DefaultNoBreak');
             }//end if
@@ -299,6 +298,5 @@ class SwitchDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

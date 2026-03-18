@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Parses and verifies the class doc comment.
  *
@@ -22,8 +24,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ClassCommentSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -34,7 +34,6 @@ class ClassCommentSniff implements Sniff
         return [T_CLASS];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -104,6 +103,5 @@ class ClassCommentSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

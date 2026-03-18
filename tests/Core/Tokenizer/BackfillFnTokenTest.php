@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the backfilling of the T_FN token to PHP < 7.4.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillFnTokenTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test simple arrow functions.
      *
@@ -32,7 +32,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testSimple()
 
-
     /**
      * Test whitespace inside arrow function definitions.
      *
@@ -47,7 +46,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 6, 13);
 
     }//end testWhitespace()
-
 
     /**
      * Test comments inside arrow function definitions.
@@ -64,7 +62,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testComment()
 
-
     /**
      * Test heredocs inside arrow function definitions.
      *
@@ -80,7 +77,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testHeredoc()
 
-
     /**
      * Test nested arrow functions.
      *
@@ -95,7 +91,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 5, 25);
 
     }//end testNestedOuter()
-
 
     /**
      * Test nested arrow functions.
@@ -126,7 +121,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->assertSame($expectedScopeCloser, $tokens[$closer]['scope_closer'], 'Closer scope closer is not the semicolon token');
 
     }//end testNestedInner()
-
 
     /**
      * Test nested arrow functions with a shared closer.
@@ -162,7 +156,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testNestedSharedCloser()
 
-
     /**
      * Test arrow functions that call functions.
      *
@@ -177,7 +170,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 5, 17);
 
     }//end testFunctionCall()
-
 
     /**
      * Test arrow functions that are included in chained calls.
@@ -194,7 +186,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testChainedFunctionCall()
 
-
     /**
      * Test arrow functions that are used as function arguments.
      *
@@ -209,7 +200,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 8, 15, 'comma');
 
     }//end testFunctionArgument()
-
 
     /**
      * Test arrow functions that use closures.
@@ -226,7 +216,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testClosure()
 
-
     /**
      * Test arrow functions using an array index.
      *
@@ -241,7 +230,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 8, 17, 'comma');
 
     }//end testArrayIndex()
-
 
     /**
      * Test arrow functions with a return type.
@@ -258,7 +246,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testReturnType()
 
-
     /**
      * Test arrow functions that return a reference.
      *
@@ -273,7 +260,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 6, 9);
 
     }//end testReference()
-
 
     /**
      * Test arrow functions that are grouped by parenthesis.
@@ -290,7 +276,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testGrouped()
 
-
     /**
      * Test arrow functions that are used as array values.
      *
@@ -305,7 +290,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 4, 9, 'comma');
 
     }//end testArrayValue()
-
 
     /**
      * Test arrow functions that are used as array values with no trailing comma.
@@ -322,7 +306,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testArrayValueNoTrailingComma()
 
-
     /**
      * Test arrow functions that use the yield keyword.
      *
@@ -337,7 +320,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 5, 14);
 
     }//end testYield()
-
 
     /**
      * Test arrow functions that use nullable namespace types.
@@ -354,7 +336,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testNullableNamespace()
 
-
     /**
      * Test arrow functions that use the namespace operator in the return type.
      *
@@ -369,7 +350,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 16, 19);
 
     }//end testNamespaceOperatorInTypes()
-
 
     /**
      * Test arrow functions that use self/parent/callable/array/static return types.
@@ -411,7 +391,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testKeywordReturnTypes()
 
-
     /**
      * Test arrow function with a union parameter type.
      *
@@ -427,7 +406,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testUnionParamType()
 
-
     /**
      * Test arrow function with a union return type.
      *
@@ -442,7 +420,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 11, 18);
 
     }//end testUnionReturnType()
-
 
     /**
      * Test arrow functions used in ternary operators.
@@ -495,7 +472,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testTernary()
 
-
     /**
      * Test typed arrow functions used in ternary operators.
      *
@@ -513,7 +489,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testTernaryWithTypes()
 
-
     /**
      * Test arrow function returning a match control structure.
      *
@@ -529,7 +504,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testWithMatchValue()
 
-
     /**
      * Test arrow function returning a match control structure with something behind it.
      *
@@ -544,7 +518,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->scopePositionTestHelper($token, 5, 48);
 
     }//end testWithMatchValueAndMore()
-
 
     /**
      * Test match control structure returning arrow functions.
@@ -572,7 +545,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->assertSame($expectedCloserType, $tokens[($token + $closerOffset)]['type'], 'Mismatched scope closer type');
 
     }//end testInMatchValue()
-
 
     /**
      * Data provider.
@@ -616,7 +588,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end dataInMatchValue()
 
-
     /**
      * Test arrow function nested within a method declaration.
      *
@@ -632,7 +603,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end testNestedInMethod()
 
-
     /**
      * Verify that "fn" keywords which are not arrow functions get tokenized as T_STRING and don't
      * have the extra token array indexes.
@@ -645,7 +615,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testNotAnArrowFunction($testMarker, $testContent='fn')
+    public function testNotAnArrowFunction($testMarker, $testContent = 'fn')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -662,7 +632,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->assertArrayNotHasKey('parenthesis_closer', $tokenArray, 'Parenthesis closer is set');
 
     }//end testNotAnArrowFunction()
-
 
     /**
      * Data provider.
@@ -714,7 +683,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end dataNotAnArrowFunction()
 
-
     /**
      * Helper function to check that all token keys are correctly set for T_FN tokens.
      *
@@ -727,7 +695,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    private function backfillHelper($token, $skipScopeCloserCheck=false)
+    private function backfillHelper($token, $skipScopeCloserCheck = false)
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -766,7 +734,6 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
 
     }//end backfillHelper()
 
-
     /**
      * Helper function to check that the scope opener/closer positions are correctly set for T_FN tokens.
      *
@@ -779,7 +746,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    private function scopePositionTestHelper($token, $openerOffset, $closerOffset, $expectedCloserType='semicolon')
+    private function scopePositionTestHelper($token, $openerOffset, $closerOffset, $expectedCloserType = 'semicolon')
     {
         $tokens = self::$phpcsFile->getTokens();
         $expectedScopeOpener = ($token + $openerOffset);
@@ -797,6 +764,5 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
         $this->assertSame($expectedScopeCloser, $tokens[$closer]['scope_closer'], 'Closer scope closer is not the '.$expectedCloserType.' token');
 
     }//end scopePositionTestHelper()
-
 
 }//end class

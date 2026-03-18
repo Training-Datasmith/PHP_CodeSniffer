@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure single and multi-line function declarations are defined correctly.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -24,7 +25,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Determine if this is a multi-line function declaration.
@@ -92,7 +92,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
 
     }//end isMultiLineDeclaration()
 
-
     /**
      * Processes single-line declarations.
      *
@@ -140,7 +139,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
 
     }//end processSingleLineDeclaration()
 
-
     /**
      * Processes multi-line declarations.
      *
@@ -174,7 +172,6 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
 
     }//end processMultiLineDeclaration()
 
-
     /**
      * Processes the contents of a single set of brackets.
      *
@@ -188,7 +185,7 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
      *
      * @return void
      */
-    public function processBracket($phpcsFile, $openBracket, array $tokens, $type='function')
+    public function processBracket($phpcsFile, $openBracket, array $tokens, $type = 'function')
     {
         $errorPrefix = '';
         if ($type === 'use') {
@@ -250,6 +247,5 @@ class MultiLineFunctionDeclarationSniff extends PEARFunctionDeclarationSniff
         }//end for
 
     }//end processBracket()
-
 
 }//end class

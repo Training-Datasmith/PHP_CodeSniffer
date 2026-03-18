@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the tokenization of goto declarations and statements.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class GotoLabelTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Verify that the label in a goto statement is tokenized as T_STRING.
      *
@@ -36,7 +36,6 @@ class GotoLabelTest extends AbstractMethodUnitTest
         $this->assertSame($testContent, $tokens[$label]['content']);
 
     }//end testGotoStatement()
-
 
     /**
      * Data provider.
@@ -60,7 +59,6 @@ class GotoLabelTest extends AbstractMethodUnitTest
 
     }//end dataGotoStatement()
 
-
     /**
      * Verify that the label in a goto declaration is tokenized as T_GOTO_LABEL.
      *
@@ -82,7 +80,6 @@ class GotoLabelTest extends AbstractMethodUnitTest
         $this->assertSame($testContent, $tokens[$label]['content']);
 
     }//end testGotoDeclaration()
-
 
     /**
      * Data provider.
@@ -106,7 +103,6 @@ class GotoLabelTest extends AbstractMethodUnitTest
 
     }//end dataGotoDeclaration()
 
-
     /**
      * Verify that the constant used in a switch - case statement is not confused with a goto label.
      *
@@ -127,7 +123,6 @@ class GotoLabelTest extends AbstractMethodUnitTest
         $this->assertSame('T_STRING', $tokens[$target]['type']);
 
     }//end testNotAGotoDeclaration()
-
 
     /**
      * Data provider.
@@ -170,6 +165,5 @@ class GotoLabelTest extends AbstractMethodUnitTest
         ];
 
     }//end dataNotAGotoDeclaration()
-
 
 }//end class

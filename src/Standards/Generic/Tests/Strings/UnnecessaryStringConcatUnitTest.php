@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the UnnecessaryStringConcat sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class UnnecessaryStringConcatUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,35 +25,34 @@ class UnnecessaryStringConcatUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='UnnecessaryStringConcatUnitTest.inc')
+    public function getErrorList($testFile = 'UnnecessaryStringConcatUnitTest.inc')
     {
         switch ($testFile) {
-        case 'UnnecessaryStringConcatUnitTest.inc':
-            return [
-                2  => 1,
-                6  => 1,
-                9  => 1,
-                12 => 1,
-                19 => 1,
-                20 => 1,
-            ];
-            break;
-        case 'UnnecessaryStringConcatUnitTest.js':
-            return [
-                1  => 1,
-                8  => 1,
-                11 => 1,
-                14 => 1,
-                15 => 1,
-            ];
-            break;
-        default:
-            return [];
-            break;
+            case 'UnnecessaryStringConcatUnitTest.inc':
+                return [
+                    2  => 1,
+                    6  => 1,
+                    9  => 1,
+                    12 => 1,
+                    19 => 1,
+                    20 => 1,
+                ];
+                break;
+            case 'UnnecessaryStringConcatUnitTest.js':
+                return [
+                    1  => 1,
+                    8  => 1,
+                    11 => 1,
+                    14 => 1,
+                    15 => 1,
+                ];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -68,6 +67,5 @@ class UnnecessaryStringConcatUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

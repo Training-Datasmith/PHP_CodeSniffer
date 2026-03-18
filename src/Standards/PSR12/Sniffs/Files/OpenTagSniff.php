@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the open tag is defined correctly.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class OpenTagSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class OpenTagSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this sniff when one of its tokens is encountered.
@@ -68,6 +67,5 @@ class OpenTagSniff implements Sniff
         return $phpcsFile->numTokens;
 
     }//end process()
-
 
 }//end class

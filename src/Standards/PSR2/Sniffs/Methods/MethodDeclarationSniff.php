@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the method declaration is correct.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class MethodDeclarationSniff extends AbstractScopeSniff
 {
-
-
     /**
      * Constructs a Squiz_Sniffs_Scope_MethodScopeSniff.
      */
@@ -25,7 +25,6 @@ class MethodDeclarationSniff extends AbstractScopeSniff
         parent::__construct(Tokens::$ooScopeTokens, [T_FUNCTION]);
 
     }//end __construct()
-
 
     /**
      * Processes the function tokens within the class.
@@ -71,18 +70,18 @@ class MethodDeclarationSniff extends AbstractScopeSniff
         $prefix = $stackPtr;
         while (($prefix = $phpcsFile->findPrevious(Tokens::$methodPrefixes, ($prefix - 1), $prev)) !== false) {
             switch ($tokens[$prefix]['code']) {
-            case T_STATIC:
-                $static = $prefix;
-                break;
-            case T_ABSTRACT:
-                $abstract = $prefix;
-                break;
-            case T_FINAL:
-                $final = $prefix;
-                break;
-            default:
-                $visibility = $prefix;
-                break;
+                case T_STATIC:
+                    $static = $prefix;
+                    break;
+                case T_ABSTRACT:
+                    $abstract = $prefix;
+                    break;
+                case T_FINAL:
+                    $final = $prefix;
+                    break;
+                default:
+                    $visibility = $prefix;
+                    break;
             }
         }
 
@@ -142,7 +141,6 @@ class MethodDeclarationSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -157,6 +155,5 @@ class MethodDeclarationSniff extends AbstractScopeSniff
     {
 
     }//end processTokenOutsideScope()
-
 
 }//end class

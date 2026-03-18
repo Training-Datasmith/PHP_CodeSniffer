@@ -1,5 +1,7 @@
 #!/usr/bin/env php
 <?php
+
+declare(strict_types=1);
 /**
  * Build a PHPCS phar.
  *
@@ -33,7 +35,6 @@ require_once dirname(__DIR__).'/src/Util/Tokens.php';
 if (defined('PHP_CODESNIFFER_VERBOSITY') === false) {
     define('PHP_CODESNIFFER_VERBOSITY', 0);
 }
-
 
 /**
  * Replacement for the PHP native php_strip_whitespace() function,
@@ -77,7 +78,6 @@ function stripWhitespaceAndComments($fullpath, $config)
     return $stripped;
 
 }//end stripWhitespaceAndComments()
-
 
 $startTime = microtime(true);
 

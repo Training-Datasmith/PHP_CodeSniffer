@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * XML report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Files\File;
 
 class Xml implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,9 +30,9 @@ class Xml implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
-        $out = new \XMLWriter;
+        $out = new \XMLWriter();
         $out->openMemory();
         $out->setIndent(true);
         $out->setIndentString('    ');
@@ -77,7 +77,7 @@ class Xml implements Report
         $content = $out->flush();
         if (strpos($content, PHP_EOL) !== false) {
             $content = substr($content, (strpos($content, PHP_EOL) + strlen(PHP_EOL)));
-        } else if (strpos($content, "\n") !== false) {
+        } elseif (strpos($content, "\n") !== false) {
             $content = substr($content, (strpos($content, "\n") + 1));
         }
 
@@ -86,7 +86,6 @@ class Xml implements Report
         return true;
 
     }//end generateFileReport()
-
 
     /**
      * Prints all violations for processed files, in a proprietary XML format.
@@ -110,10 +109,10 @@ class Xml implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
         echo '<phpcs version="'.Config::VERSION.'">'.PHP_EOL;
@@ -121,6 +120,5 @@ class Xml implements Report
         echo '</phpcs>'.PHP_EOL;
 
     }//end generate()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the AssignmentInCondition sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class AssignmentInConditionUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -28,7 +28,6 @@ class AssignmentInConditionUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -78,6 +77,5 @@ class AssignmentInConditionUnitTest extends AbstractSniffUnitTest
         ];
 
     }//end getWarningList()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that constant names are all uppercase.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class UpperCaseConstantNameSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -30,7 +30,6 @@ class UpperCaseConstantNameSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -136,6 +135,5 @@ class UpperCaseConstantNameSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

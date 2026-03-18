@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for functions outside of classes.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class GlobalFunctionSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class GlobalFunctionSniff implements Sniff
         return [T_FUNCTION];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -56,6 +55,5 @@ class GlobalFunctionSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

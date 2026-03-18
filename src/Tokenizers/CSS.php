@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tokenizes CSS code.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util;
 
 class CSS extends PHP
 {
-
-
     /**
      * Initialise the tokenizer.
      *
@@ -28,7 +28,7 @@ class CSS extends PHP
      *
      * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the file appears to be minified.
      */
-    public function __construct($content, Config $config, $eolChar='\n')
+    public function __construct($content, Config $config, $eolChar = '\n')
     {
         if ($this->isMinifiedContent($content, $eolChar) === true) {
             throw new TokenizerException('File appears to be minified and cannot be processed');
@@ -37,7 +37,6 @@ class CSS extends PHP
         parent::__construct($content, $config, $eolChar);
 
     }//end __construct()
-
 
     /**
      * Creates an array of tokens when given some CSS code.
@@ -292,200 +291,200 @@ class CSS extends PHP
             }
 
             switch ($token['code']) {
-            case T_OPEN_CURLY_BRACKET:
-                // Opening curly brackets for an At-rule do not start a style
-                // definition. We also reset the asperand flag here because the next
-                // opening curly bracket could be indeed the start of a style
-                // definition.
-                if ($asperandStart === true) {
+                case T_OPEN_CURLY_BRACKET:
+                    // Opening curly brackets for an At-rule do not start a style
+                    // definition. We also reset the asperand flag here because the next
+                    // opening curly bracket could be indeed the start of a style
+                    // definition.
+                    if ($asperandStart === true) {
+                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                            if ($inStyleDef === true) {
+                                echo "\t\t* style definition closed *".PHP_EOL;
+                            }
+
+                            echo "\t\t* at-rule definition closed *".PHP_EOL;
+                        }
+
+                        $inStyleDef    = false;
+                        $asperandStart = false;
+                    } else {
+                        $inStyleDef = true;
+                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                            echo "\t\t* style definition opened *".PHP_EOL;
+                        }
+                    }
+                    break;
+                case T_CLOSE_CURLY_BRACKET:
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                         if ($inStyleDef === true) {
                             echo "\t\t* style definition closed *".PHP_EOL;
                         }
 
-                        echo "\t\t* at-rule definition closed *".PHP_EOL;
+                        if ($asperandStart === true) {
+                            echo "\t\t* at-rule definition closed *".PHP_EOL;
+                        }
                     }
 
                     $inStyleDef    = false;
                     $asperandStart = false;
-                } else {
-                    $inStyleDef = true;
-                    if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                        echo "\t\t* style definition opened *".PHP_EOL;
-                    }
-                }
-                break;
-            case T_CLOSE_CURLY_BRACKET:
-                if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                    if ($inStyleDef === true) {
-                        echo "\t\t* style definition closed *".PHP_EOL;
-                    }
+                    break;
+                case T_MINUS:
+                    // Minus signs are often used instead of spaces inside
+                    // class names, IDs and styles.
+                    if ($finalTokens[($stackPtr + 1)]['code'] === T_STRING) {
+                        if ($finalTokens[($stackPtr - 1)]['code'] === T_STRING) {
+                            $newContent = $finalTokens[($stackPtr - 1)]['content'].'-'.$finalTokens[($stackPtr + 1)]['content'];
 
-                    if ($asperandStart === true) {
-                        echo "\t\t* at-rule definition closed *".PHP_EOL;
-                    }
-                }
+                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                echo "\t\t* token is a string joiner; ignoring this and previous token".PHP_EOL;
+                                $old = Util\Common::prepareForOutput($finalTokens[($stackPtr + 1)]['content']);
+                                $new = Util\Common::prepareForOutput($newContent);
+                                echo "\t\t=> token ".($stackPtr + 1)." content changed from \"$old\" to \"$new\"".PHP_EOL;
+                            }
 
-                $inStyleDef    = false;
-                $asperandStart = false;
-                break;
-            case T_MINUS:
-                // Minus signs are often used instead of spaces inside
-                // class names, IDs and styles.
-                if ($finalTokens[($stackPtr + 1)]['code'] === T_STRING) {
-                    if ($finalTokens[($stackPtr - 1)]['code'] === T_STRING) {
-                        $newContent = $finalTokens[($stackPtr - 1)]['content'].'-'.$finalTokens[($stackPtr + 1)]['content'];
+                            $finalTokens[($stackPtr + 1)]['content'] = $newContent;
+                            unset($finalTokens[$stackPtr]);
+                            unset($finalTokens[($stackPtr - 1)]);
+                        } else {
+                            $newContent = '-'.$finalTokens[($stackPtr + 1)]['content'];
 
+                            $finalTokens[($stackPtr + 1)]['content'] = $newContent;
+                            unset($finalTokens[$stackPtr]);
+                        }
+                    } elseif ($finalTokens[($stackPtr + 1)]['code'] === T_LNUMBER) {
+                        // They can also be used to provide negative numbers.
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            echo "\t\t* token is a string joiner; ignoring this and previous token".PHP_EOL;
-                            $old = Util\Common::prepareForOutput($finalTokens[($stackPtr + 1)]['content']);
-                            $new = Util\Common::prepareForOutput($newContent);
-                            echo "\t\t=> token ".($stackPtr + 1)." content changed from \"$old\" to \"$new\"".PHP_EOL;
+                            echo "\t\t* token is part of a negative number; adding content to next token and ignoring *".PHP_EOL;
+                            $content = Util\Common::prepareForOutput($finalTokens[($stackPtr + 1)]['content']);
+                            echo "\t\t=> token ".($stackPtr + 1)." content changed from \"$content\" to \"-$content\"".PHP_EOL;
                         }
 
-                        $finalTokens[($stackPtr + 1)]['content'] = $newContent;
+                        $finalTokens[($stackPtr + 1)]['content'] = '-'.$finalTokens[($stackPtr + 1)]['content'];
                         unset($finalTokens[$stackPtr]);
-                        unset($finalTokens[($stackPtr - 1)]);
-                    } else {
-                        $newContent = '-'.$finalTokens[($stackPtr + 1)]['content'];
-
-                        $finalTokens[($stackPtr + 1)]['content'] = $newContent;
-                        unset($finalTokens[$stackPtr]);
-                    }
-                } else if ($finalTokens[($stackPtr + 1)]['code'] === T_LNUMBER) {
-                    // They can also be used to provide negative numbers.
-                    if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                        echo "\t\t* token is part of a negative number; adding content to next token and ignoring *".PHP_EOL;
-                        $content = Util\Common::prepareForOutput($finalTokens[($stackPtr + 1)]['content']);
-                        echo "\t\t=> token ".($stackPtr + 1)." content changed from \"$content\" to \"-$content\"".PHP_EOL;
-                    }
-
-                    $finalTokens[($stackPtr + 1)]['content'] = '-'.$finalTokens[($stackPtr + 1)]['content'];
-                    unset($finalTokens[$stackPtr]);
-                }//end if
-                break;
-            case T_COLON:
-                // Only interested in colons that are defining styles.
-                if ($inStyleDef === false) {
+                    }//end if
                     break;
-                }
-
-                for ($x = ($stackPtr - 1); $x >= 0; $x--) {
-                    if (isset(Util\Tokens::$emptyTokens[$finalTokens[$x]['code']]) === false) {
+                case T_COLON:
+                    // Only interested in colons that are defining styles.
+                    if ($inStyleDef === false) {
                         break;
                     }
-                }
 
-                if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                    $type = $finalTokens[$x]['type'];
-                    echo "\t\t=> token $x changed from $type to T_STYLE".PHP_EOL;
-                }
-
-                $finalTokens[$x]['type'] = 'T_STYLE';
-                $finalTokens[$x]['code'] = T_STYLE;
-                break;
-            case T_STRING:
-                if (strtolower($token['content']) === 'url') {
-                    // Find the next content.
-                    for ($x = ($stackPtr + 1); $x < $numTokens; $x++) {
+                    for ($x = ($stackPtr - 1); $x >= 0; $x--) {
                         if (isset(Util\Tokens::$emptyTokens[$finalTokens[$x]['code']]) === false) {
                             break;
                         }
                     }
 
-                    // Needs to be in the format "url(" for it to be a URL.
-                    if ($finalTokens[$x]['code'] !== T_OPEN_PARENTHESIS) {
-                        continue 2;
-                    }
-
-                    // Make sure the content isn't empty.
-                    for ($y = ($x + 1); $y < $numTokens; $y++) {
-                        if (isset(Util\Tokens::$emptyTokens[$finalTokens[$y]['code']]) === false) {
-                            break;
-                        }
-                    }
-
-                    if ($finalTokens[$y]['code'] === T_CLOSE_PARENTHESIS) {
-                        continue 2;
-                    }
-
                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                        for ($i = ($stackPtr + 1); $i <= $y; $i++) {
-                            $type    = $finalTokens[$i]['type'];
-                            $content = Util\Common::prepareForOutput($finalTokens[$i]['content']);
-                            echo "\tProcess token $i: $type => $content".PHP_EOL;
-                        }
-
-                        echo "\t\t* token starts a URL *".PHP_EOL;
+                        $type = $finalTokens[$x]['type'];
+                        echo "\t\t=> token $x changed from $type to T_STYLE".PHP_EOL;
                     }
 
-                    // Join all the content together inside the url() statement.
-                    $newContent = '';
-                    for ($i = ($x + 2); $i < $numTokens; $i++) {
-                        if ($finalTokens[$i]['code'] === T_CLOSE_PARENTHESIS) {
-                            break;
+                    $finalTokens[$x]['type'] = 'T_STYLE';
+                    $finalTokens[$x]['code'] = T_STYLE;
+                    break;
+                case T_STRING:
+                    if (strtolower($token['content']) === 'url') {
+                        // Find the next content.
+                        for ($x = ($stackPtr + 1); $x < $numTokens; $x++) {
+                            if (isset(Util\Tokens::$emptyTokens[$finalTokens[$x]['code']]) === false) {
+                                break;
+                            }
                         }
 
-                        $newContent .= $finalTokens[$i]['content'];
+                        // Needs to be in the format "url(" for it to be a URL.
+                        if ($finalTokens[$x]['code'] !== T_OPEN_PARENTHESIS) {
+                            continue 2;
+                        }
+
+                        // Make sure the content isn't empty.
+                        for ($y = ($x + 1); $y < $numTokens; $y++) {
+                            if (isset(Util\Tokens::$emptyTokens[$finalTokens[$y]['code']]) === false) {
+                                break;
+                            }
+                        }
+
+                        if ($finalTokens[$y]['code'] === T_CLOSE_PARENTHESIS) {
+                            continue 2;
+                        }
+
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            $content = Util\Common::prepareForOutput($finalTokens[$i]['content']);
-                            echo "\t\t=> token $i added to URL string and ignored: $content".PHP_EOL;
+                            for ($i = ($stackPtr + 1); $i <= $y; $i++) {
+                                $type    = $finalTokens[$i]['type'];
+                                $content = Util\Common::prepareForOutput($finalTokens[$i]['content']);
+                                echo "\tProcess token $i: $type => $content".PHP_EOL;
+                            }
+
+                            echo "\t\t* token starts a URL *".PHP_EOL;
                         }
 
-                        unset($finalTokens[$i]);
-                    }
+                        // Join all the content together inside the url() statement.
+                        $newContent = '';
+                        for ($i = ($x + 2); $i < $numTokens; $i++) {
+                            if ($finalTokens[$i]['code'] === T_CLOSE_PARENTHESIS) {
+                                break;
+                            }
 
-                    $stackPtr = $i;
+                            $newContent .= $finalTokens[$i]['content'];
+                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                $content = Util\Common::prepareForOutput($finalTokens[$i]['content']);
+                                echo "\t\t=> token $i added to URL string and ignored: $content".PHP_EOL;
+                            }
 
-                    // If the content inside the "url()" is in double quotes
-                    // there will only be one token and so we don't have to do
-                    // anything except change its type. If it is not empty,
-                    // we need to do some token merging.
-                    $finalTokens[($x + 1)]['type'] = 'T_URL';
-                    $finalTokens[($x + 1)]['code'] = T_URL;
-
-                    if ($newContent !== '') {
-                        $finalTokens[($x + 1)]['content'] .= $newContent;
-                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            $content = Util\Common::prepareForOutput($finalTokens[($x + 1)]['content']);
-                            echo "\t\t=> token content changed to: $content".PHP_EOL;
+                            unset($finalTokens[$i]);
                         }
-                    }
-                } else if ($finalTokens[$stackPtr]['content'][0] === '-'
-                    && $finalTokens[($stackPtr + 1)]['code'] === T_STRING
-                ) {
-                    if (isset($finalTokens[($stackPtr - 1)]) === true
-                        && $finalTokens[($stackPtr - 1)]['code'] === T_STRING
+
+                        $stackPtr = $i;
+
+                        // If the content inside the "url()" is in double quotes
+                        // there will only be one token and so we don't have to do
+                        // anything except change its type. If it is not empty,
+                        // we need to do some token merging.
+                        $finalTokens[($x + 1)]['type'] = 'T_URL';
+                        $finalTokens[($x + 1)]['code'] = T_URL;
+
+                        if ($newContent !== '') {
+                            $finalTokens[($x + 1)]['content'] .= $newContent;
+                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                $content = Util\Common::prepareForOutput($finalTokens[($x + 1)]['content']);
+                                echo "\t\t=> token content changed to: $content".PHP_EOL;
+                            }
+                        }
+                    } elseif ($finalTokens[$stackPtr]['content'][0] === '-'
+                        && $finalTokens[($stackPtr + 1)]['code'] === T_STRING
                     ) {
-                        $newContent = $finalTokens[($stackPtr - 1)]['content'].$finalTokens[$stackPtr]['content'].$finalTokens[($stackPtr + 1)]['content'];
+                        if (isset($finalTokens[($stackPtr - 1)]) === true
+                            && $finalTokens[($stackPtr - 1)]['code'] === T_STRING
+                        ) {
+                            $newContent = $finalTokens[($stackPtr - 1)]['content'].$finalTokens[$stackPtr]['content'].$finalTokens[($stackPtr + 1)]['content'];
 
-                        if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                            echo "\t\t* token is a string joiner; ignoring this and previous token".PHP_EOL;
-                            $old = Util\Common::prepareForOutput($finalTokens[($stackPtr + 1)]['content']);
-                            $new = Util\Common::prepareForOutput($newContent);
-                            echo "\t\t=> token ".($stackPtr + 1)." content changed from \"$old\" to \"$new\"".PHP_EOL;
+                            if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                                echo "\t\t* token is a string joiner; ignoring this and previous token".PHP_EOL;
+                                $old = Util\Common::prepareForOutput($finalTokens[($stackPtr + 1)]['content']);
+                                $new = Util\Common::prepareForOutput($newContent);
+                                echo "\t\t=> token ".($stackPtr + 1)." content changed from \"$old\" to \"$new\"".PHP_EOL;
+                            }
+
+                            $finalTokens[($stackPtr + 1)]['content'] = $newContent;
+                            unset($finalTokens[$stackPtr]);
+                            unset($finalTokens[($stackPtr - 1)]);
+                        } else {
+                            $newContent = $finalTokens[$stackPtr]['content'].$finalTokens[($stackPtr + 1)]['content'];
+
+                            $finalTokens[($stackPtr + 1)]['content'] = $newContent;
+                            unset($finalTokens[$stackPtr]);
                         }
-
-                        $finalTokens[($stackPtr + 1)]['content'] = $newContent;
-                        unset($finalTokens[$stackPtr]);
-                        unset($finalTokens[($stackPtr - 1)]);
-                    } else {
-                        $newContent = $finalTokens[$stackPtr]['content'].$finalTokens[($stackPtr + 1)]['content'];
-
-                        $finalTokens[($stackPtr + 1)]['content'] = $newContent;
-                        unset($finalTokens[$stackPtr]);
+                    }//end if
+                    break;
+                case T_ASPERAND:
+                    $asperandStart = true;
+                    if (PHP_CODESNIFFER_VERBOSITY > 1) {
+                        echo "\t\t* at-rule definition opened *".PHP_EOL;
                     }
-                }//end if
-                break;
-            case T_ASPERAND:
-                $asperandStart = true;
-                if (PHP_CODESNIFFER_VERBOSITY > 1) {
-                    echo "\t\t* at-rule definition opened *".PHP_EOL;
-                }
-                break;
-            default:
-                // Nothing special to be done with this token.
-                break;
+                    break;
+                default:
+                    // Nothing special to be done with this token.
+                    break;
             }//end switch
         }//end for
 
@@ -519,7 +518,6 @@ class CSS extends PHP
 
     }//end tokenize()
 
-
     /**
      * Performs additional processing after main tokenizing.
      *
@@ -533,6 +531,5 @@ class CSS extends PHP
         */
 
     }//end processAdditional()
-
 
 }//end class

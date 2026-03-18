@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Processes pattern strings and checks that the code conforms to the pattern.
  *
@@ -9,14 +11,13 @@
 
 namespace PHP_CodeSniffer\Sniffs;
 
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Tokens;
-use PHP_CodeSniffer\Tokenizers\PHP;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Tokenizers\PHP;
+use PHP_CodeSniffer\Util\Tokens;
 
 abstract class AbstractPatternSniff implements Sniff
 {
-
     /**
      * If true, comments will be ignored if they are found in the code.
      *
@@ -54,13 +55,12 @@ abstract class AbstractPatternSniff implements Sniff
      */
     private $errorPos = [];
 
-
     /**
      * Constructs a AbstractPatternSniff.
      *
      * @param boolean $ignoreComments If true, comments will be ignored.
      */
-    public function __construct($ignoreComments=null)
+    public function __construct($ignoreComments = null)
     {
         // This is here for backwards compatibility.
         if ($ignoreComments !== null) {
@@ -70,7 +70,6 @@ abstract class AbstractPatternSniff implements Sniff
         $this->supplementaryTokens = $this->registerSupplementary();
 
     }//end __construct()
-
 
     /**
      * Registers the tokens to listen to.
@@ -112,7 +111,6 @@ abstract class AbstractPatternSniff implements Sniff
 
     }//end register()
 
-
     /**
      * Returns the token types that the specified pattern is checking for.
      *
@@ -146,7 +144,6 @@ abstract class AbstractPatternSniff implements Sniff
 
     }//end getPatternTokenTypes()
 
-
     /**
      * Returns the position in the pattern that this test should register as
      * a listener for the pattern.
@@ -172,7 +169,6 @@ abstract class AbstractPatternSniff implements Sniff
         return $tokenTypes[$token];
 
     }//end getListenerTokenPos()
-
 
     /**
      * Processes the test.
@@ -239,7 +235,6 @@ abstract class AbstractPatternSniff implements Sniff
         }
 
     }//end process()
-
 
     /**
      * Processes the pattern and verifies the code at $stackPtr.
@@ -323,7 +318,7 @@ abstract class AbstractPatternSniff implements Sniff
                             $stackPtr = ($prev - 1);
                         }
                     }//end if
-                } else if ($pattern[$i]['type'] === 'skip') {
+                } elseif ($pattern[$i]['type'] === 'skip') {
                     // Skip to next piece of relevant code.
                     if ($pattern[$i]['to'] === 'parenthesis_closer') {
                         $to = 'parenthesis_opener';
@@ -355,9 +350,9 @@ abstract class AbstractPatternSniff implements Sniff
 
                     // Skip to the opening token.
                     $stackPtr = ($tokens[$next][$to] - 1);
-                } else if ($pattern[$i]['type'] === 'string') {
+                } elseif ($pattern[$i]['type'] === 'string') {
                     $found = 'abc';
-                } else if ($pattern[$i]['type'] === 'newline') {
+                } elseif ($pattern[$i]['type'] === 'newline') {
                     if ($this->ignoreComments === true
                         && isset(Tokens::$commentTokens[$tokens[$stackPtr]['code']]) === true
                     ) {
@@ -576,7 +571,7 @@ abstract class AbstractPatternSniff implements Sniff
                         $stackPtr = ($next + 1);
                     }
                 }//end if
-            } else if ($pattern[$i]['type'] === 'skip') {
+            } elseif ($pattern[$i]['type'] === 'skip') {
                 if ($pattern[$i]['to'] === 'unknown') {
                     $next = $phpcsFile->findNext(
                         $pattern[($i + 1)]['token'],
@@ -616,7 +611,7 @@ abstract class AbstractPatternSniff implements Sniff
                     // Skip to the closing token.
                     $stackPtr = ($tokens[$next][$pattern[$i]['to']] + 1);
                 }//end if
-            } else if ($pattern[$i]['type'] === 'string') {
+            } elseif ($pattern[$i]['type'] === 'string') {
                 if ($tokens[$stackPtr]['code'] !== T_STRING) {
                     $hasError = true;
                 }
@@ -627,7 +622,7 @@ abstract class AbstractPatternSniff implements Sniff
                 }
 
                 $stackPtr++;
-            } else if ($pattern[$i]['type'] === 'newline') {
+            } elseif ($pattern[$i]['type'] === 'newline') {
                 // Find the next token that contains a newline character.
                 $newline = 0;
                 for ($j = $stackPtr; $j < $phpcsFile->numTokens; $j++) {
@@ -692,7 +687,6 @@ abstract class AbstractPatternSniff implements Sniff
 
     }//end processPattern()
 
-
     /**
      * Prepares an error for the specified patternCode.
      *
@@ -714,14 +708,12 @@ abstract class AbstractPatternSniff implements Sniff
 
     }//end prepareError()
 
-
     /**
      * Returns the patterns that should be checked.
      *
      * @return string[]
      */
     abstract protected function getPatterns();
-
 
     /**
      * Registers any supplementary tokens that this test might wish to process.
@@ -739,23 +731,21 @@ abstract class AbstractPatternSniff implements Sniff
 
     }//end registerSupplementary()
 
-
-     /**
-      * Processes any tokens registered with registerSupplementary().
-      *
-      * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where to
-      *                                               process the skip.
-      * @param int                         $stackPtr  The position in the tokens stack to
-      *                                               process.
-      *
-      * @return void
-      * @see    registerSupplementary()
-      */
+    /**
+     * Processes any tokens registered with registerSupplementary().
+     *
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where to
+     *                                               process the skip.
+     * @param int                         $stackPtr  The position in the tokens stack to
+     *                                               process.
+     *
+     * @return void
+     * @see    registerSupplementary()
+     */
     protected function processSupplementary(File $phpcsFile, $stackPtr)
     {
 
     }//end processSupplementary()
-
 
     /**
      * Parses a pattern string into an array of pattern steps.
@@ -790,12 +780,12 @@ abstract class AbstractPatternSniff implements Sniff
                 if ($specialPattern['to'] !== 'unknown') {
                     $firstToken++;
                 }
-            } else if (substr($pattern, $i, 3) === 'abc') {
+            } elseif (substr($pattern, $i, 3) === 'abc') {
                 $specialPattern = ['type' => 'string'];
                 $lastToken      = ($i - $firstToken);
                 $firstToken     = ($i + 3);
                 $i += 2;
-            } else if (substr($pattern, $i, 3) === 'EOL') {
+            } elseif (substr($pattern, $i, 3) === 'EOL') {
                 $specialPattern = ['type' => 'newline'];
                 $lastToken      = ($i - $firstToken);
                 $firstToken     = ($i + 3);
@@ -846,7 +836,6 @@ abstract class AbstractPatternSniff implements Sniff
 
     }//end parse()
 
-
     /**
      * Creates a skip pattern.
      *
@@ -865,26 +854,26 @@ abstract class AbstractPatternSniff implements Sniff
         $nestedBraces      = 0;
         for ($start = $from; $start >= 0; $start--) {
             switch ($pattern[$start]) {
-            case '(':
-                if ($nestedParenthesis === 0) {
-                    $skip['to'] = 'parenthesis_closer';
-                }
+                case '(':
+                    if ($nestedParenthesis === 0) {
+                        $skip['to'] = 'parenthesis_closer';
+                    }
 
-                $nestedParenthesis--;
-                break;
-            case '{':
-                if ($nestedBraces === 0) {
-                    $skip['to'] = 'scope_closer';
-                }
+                    $nestedParenthesis--;
+                    break;
+                case '{':
+                    if ($nestedBraces === 0) {
+                        $skip['to'] = 'scope_closer';
+                    }
 
-                $nestedBraces--;
-                break;
-            case '}':
-                $nestedBraces++;
-                break;
-            case ')':
-                $nestedParenthesis++;
-                break;
+                    $nestedBraces--;
+                    break;
+                case '}':
+                    $nestedBraces++;
+                    break;
+                case ')':
+                    $nestedParenthesis++;
+                    break;
             }//end switch
 
             if (isset($skip['to']) === true) {
@@ -899,7 +888,6 @@ abstract class AbstractPatternSniff implements Sniff
         return $skip;
 
     }//end createSkipPattern()
-
 
     /**
      * Creates a token pattern.
@@ -932,6 +920,5 @@ abstract class AbstractPatternSniff implements Sniff
         return $patterns;
 
     }//end createTokenPattern()
-
 
 }//end class

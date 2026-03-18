@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the backfilling of the T_FN token to PHP < 7.4.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Verify that parameter labels are tokenized as T_PARAM_NAME and that
      * the colon after it is tokenized as a T_COLON.
@@ -67,7 +67,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
         }//end foreach
 
     }//end testNamedFunctionCallArguments()
-
 
     /**
      * Data provider.
@@ -257,7 +256,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 
     }//end dataNamedFunctionCallArguments()
 
-
     /**
      * Verify that other T_STRING tokens within a function call are still tokenized as T_STRING.
      *
@@ -288,7 +286,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 
     }//end testOtherTstringInFunctionCall()
 
-
     /**
      * Data provider.
      *
@@ -318,7 +315,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
         ];
 
     }//end dataOtherTstringInFunctionCall()
-
 
     /**
      * Verify whether the colons are tokenized correctly when a ternary is used in a mixed
@@ -370,7 +366,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
         );
 
     }//end testMixedPositionalAndNamedArgsWithTernary()
-
 
     /**
      * Verify whether the colons are tokenized correctly when a ternary is used
@@ -468,7 +463,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 
     }//end testNamedArgWithTernary()
 
-
     /**
      * Verify whether the colons are tokenized correctly when named arguments
      * function calls are used in a ternary.
@@ -549,7 +543,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 
     }//end testTernaryWithFunctionCallsInThenElse()
 
-
     /**
      * Verify whether the colons are tokenized correctly when constants are used in a ternary.
      *
@@ -578,7 +571,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
         );
 
     }//end testTernaryWithConstantsInThenElse()
-
 
     /**
      * Verify whether the colons are tokenized correctly in a switch statement.
@@ -641,7 +633,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 
     }//end testSwitchStatement()
 
-
     /**
      * Verify that a variable parameter label (parse error) is still tokenized as T_VARIABLE.
      *
@@ -686,7 +677,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
         );
 
     }//end testParseErrorVariableLabel()
-
 
     /**
      * Verify that reserved keywords used as a parameter label are tokenized as T_PARAM_NAME
@@ -737,7 +727,6 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
         );
 
     }//end testReservedKeywordsAsName()
-
 
     /**
      * Data provider.
@@ -852,15 +841,15 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 
             if ($keyword === 'and') {
                 $tokensTypes[] = T_LOGICAL_AND;
-            } else if ($keyword === 'die') {
+            } elseif ($keyword === 'die') {
                 $tokensTypes[] = T_EXIT;
-            } else if ($keyword === 'or') {
+            } elseif ($keyword === 'or') {
                 $tokensTypes[] = T_LOGICAL_OR;
-            } else if ($keyword === 'xor') {
+            } elseif ($keyword === 'xor') {
                 $tokensTypes[] = T_LOGICAL_XOR;
-            } else if ($keyword === '__halt_compiler') {
+            } elseif ($keyword === '__halt_compiler') {
                 $tokensTypes[] = T_HALT_COMPILER;
-            } else if (defined($tokenName) === true) {
+            } elseif (defined($tokenName) === true) {
                 $tokensTypes[] = constant($tokenName);
             }
 
@@ -880,6 +869,5 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
         return $data;
 
     }//end dataReservedKeywordsAsName()
-
 
 }//end class

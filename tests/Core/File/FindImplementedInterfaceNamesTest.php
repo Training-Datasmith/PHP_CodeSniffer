@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:findImplementedInterfaceNames method.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test retrieving the name(s) of the interfaces being implemented by a class.
      *
@@ -32,7 +32,6 @@ class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
         $this->assertSame($expected, $result);
 
     }//end testFindImplementedInterfaceNames()
-
 
     /**
      * Data provider for the FindImplementedInterfaceNames test.
@@ -99,6 +98,5 @@ class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
         ];
 
     }//end dataImplementedInterface()
-
 
 }//end class

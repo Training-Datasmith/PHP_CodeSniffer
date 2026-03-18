@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A test class for testing all sniffs for installed standards.
  *
@@ -9,15 +11,13 @@
 
 namespace PHP_CodeSniffer\Tests\Standards;
 
-use PHP_CodeSniffer\Util\Standards;
 use PHP_CodeSniffer\Autoload;
-use PHPUnit\TextUI\TestRunner;
+use PHP_CodeSniffer\Util\Standards;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TextUI\TestRunner;
 
 class AllSniffs
 {
-
-
     /**
      * Prepare the test runner.
      *
@@ -28,7 +28,6 @@ class AllSniffs
         TestRunner::run(self::suite());
 
     }//end main()
-
 
     /**
      * Add all sniff unit tests into a test suite.
@@ -106,7 +105,6 @@ class AllSniffs
 
     }//end suite()
 
-
     /**
      * Get the details of all coding standards installed.
      *
@@ -118,6 +116,5 @@ class AllSniffs
         return Standards::getInstalledStandardDetails(true);
 
     }//end getInstalledStandardDetails()
-
 
 }//end class

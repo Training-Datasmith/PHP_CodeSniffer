@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that object operators are indented correctly.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ObjectOperatorIndentSniff implements Sniff
 {
-
     /**
      * The number of spaces code should be indented.
      *
@@ -39,7 +40,6 @@ class ObjectOperatorIndentSniff implements Sniff
         T_NULLSAFE_OBJECT_OPERATOR,
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -50,7 +50,6 @@ class ObjectOperatorIndentSniff implements Sniff
         return $this->targets;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -199,6 +198,5 @@ class ObjectOperatorIndentSniff implements Sniff
         }//end while
 
     }//end process()
-
 
 }//end class

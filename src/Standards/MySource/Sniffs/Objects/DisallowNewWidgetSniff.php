@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that widgets are not manually created.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Objects;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowNewWidgetSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class DisallowNewWidgetSniff implements Sniff
         return [T_NEW];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -54,6 +53,5 @@ class DisallowNewWidgetSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

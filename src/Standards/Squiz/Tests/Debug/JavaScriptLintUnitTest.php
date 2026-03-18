@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the JavaScriptLint sniff.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\Squiz\Tests\Debug;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 use PHP_CodeSniffer\Config;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class JavaScriptLintUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Should this test be skipped for some reason.
      *
@@ -32,7 +32,6 @@ class JavaScriptLintUnitTest extends AbstractSniffUnitTest
 
     }//end shouldSkipTest()
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -47,7 +46,6 @@ class JavaScriptLintUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -61,6 +59,5 @@ class JavaScriptLintUnitTest extends AbstractSniffUnitTest
         return [2 => 1];
 
     }//end getWarningList()
-
 
 }//end class

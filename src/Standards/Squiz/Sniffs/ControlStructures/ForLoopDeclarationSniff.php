@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that there is a space between each condition of for loops.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ForLoopDeclarationSniff implements Sniff
 {
-
     /**
      * How many spaces should follow the opening bracket.
      *
@@ -47,7 +48,6 @@ class ForLoopDeclarationSniff implements Sniff
         'JS',
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -58,7 +58,6 @@ class ForLoopDeclarationSniff implements Sniff
         return [T_FOR];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -106,12 +105,12 @@ class ForLoopDeclarationSniff implements Sniff
                     $phpcsFile->fixer->endChangeset();
                 }
             }
-        } else if ($this->requiredSpacesAfterOpen > 0) {
+        } elseif ($this->requiredSpacesAfterOpen > 0) {
             $nextNonWhiteSpace = $phpcsFile->findNext(T_WHITESPACE, ($openingBracket + 1), $closingBracket, true);
             $spaceAfterOpen    = 0;
             if ($tokens[$openingBracket]['line'] !== $tokens[$nextNonWhiteSpace]['line']) {
                 $spaceAfterOpen = 'newline';
-            } else if ($tokens[($openingBracket + 1)]['code'] === T_WHITESPACE) {
+            } elseif ($tokens[($openingBracket + 1)]['code'] === T_WHITESPACE) {
                 $spaceAfterOpen = $tokens[($openingBracket + 1)]['length'];
             }
 
@@ -174,11 +173,11 @@ class ForLoopDeclarationSniff implements Sniff
                     $phpcsFile->fixer->endChangeset();
                 }
             }
-        } else if ($this->requiredSpacesBeforeClose > 0) {
+        } elseif ($this->requiredSpacesBeforeClose > 0) {
             $spaceBeforeClose = 0;
             if ($tokens[$closingBracket]['line'] !== $tokens[$prevNonWhiteSpace]['line']) {
                 $spaceBeforeClose = 'newline';
-            } else if ($tokens[($closingBracket - 1)]['code'] === T_WHITESPACE) {
+            } elseif ($tokens[($closingBracket - 1)]['code'] === T_WHITESPACE) {
                 $spaceBeforeClose = $tokens[($closingBracket - 1)]['length'];
             }
 
@@ -280,7 +279,7 @@ class ForLoopDeclarationSniff implements Sniff
                     if ($fix === true) {
                         $phpcsFile->fixer->addContent($semicolon, ' ');
                     }
-                } else if ($tokens[($semicolon + 1)]['code'] === T_WHITESPACE
+                } elseif ($tokens[($semicolon + 1)]['code'] === T_WHITESPACE
                     && $tokens[$nextNonWhiteSpace]['code'] !== T_SEMICOLON
                 ) {
                     $spaces = $tokens[($semicolon + 1)]['length'];
@@ -311,6 +310,5 @@ class ForLoopDeclarationSniff implements Sniff
         } while ($semicolonCount < 2);
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Detects for-loops that can be simplified to a while-loop.
  *
@@ -28,8 +30,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ForLoopShouldBeWhileLoopSniff implements Sniff
 {
-
-
     /**
      * Registers the tokens that this sniff wants to listen for.
      *
@@ -40,7 +40,6 @@ class ForLoopShouldBeWhileLoopSniff implements Sniff
         return [T_FOR];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -75,7 +74,7 @@ class ForLoopShouldBeWhileLoopSniff implements Sniff
             $code = $tokens[$next]['code'];
             if ($code === T_SEMICOLON) {
                 ++$index;
-            } else if (isset(Tokens::$emptyTokens[$code]) === false) {
+            } elseif (isset(Tokens::$emptyTokens[$code]) === false) {
                 ++$parts[$index];
             }
         }
@@ -86,6 +85,5 @@ class ForLoopShouldBeWhileLoopSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that operators have valid spacing surrounding them.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class OperatorSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -48,7 +49,6 @@ class OperatorSpacingSniff implements Sniff
      * @var string[]
      */
     private $nonOperandTokens = [];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -117,7 +117,6 @@ class OperatorSpacingSniff implements Sniff
         return $targets;
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -217,7 +216,7 @@ class OperatorSpacingSniff implements Sniff
             }
 
             $phpcsFile->recordMetric($stackPtr, 'Space before operator', 0);
-        } else if (isset(Tokens::$assignmentTokens[$tokens[$stackPtr]['code']]) === false
+        } elseif (isset(Tokens::$assignmentTokens[$tokens[$stackPtr]['code']]) === false
             || $this->ignoreSpacingBeforeAssignments === false
         ) {
             // Throw an error for assignments only if enabled using the sniff property
@@ -313,7 +312,6 @@ class OperatorSpacingSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Checks if an operator is actually a different type of token in the current context.
      *
@@ -377,6 +375,5 @@ class OperatorSpacingSniff implements Sniff
         return true;
 
     }//end isOperator()
-
 
 }//end class

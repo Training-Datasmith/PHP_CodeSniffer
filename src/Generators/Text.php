@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A doc generator that outputs text-based documentation.
  *
@@ -13,8 +15,6 @@ namespace PHP_CodeSniffer\Generators;
 
 class Text extends Generator
 {
-
-
     /**
      * Process the documentation for a single sniff.
      *
@@ -31,13 +31,12 @@ class Text extends Generator
         foreach ($doc->childNodes as $node) {
             if ($node->nodeName === 'standard') {
                 $this->printTextBlock($node);
-            } else if ($node->nodeName === 'code_comparison') {
+            } elseif ($node->nodeName === 'code_comparison') {
                 $this->printCodeComparisonBlock($node);
             }
         }
 
     }//end processSniff()
-
 
     /**
      * Prints the title area for a single sniff.
@@ -60,7 +59,6 @@ class Text extends Generator
         echo PHP_EOL.PHP_EOL;
 
     }//end printTitle()
-
 
     /**
      * Print a text block found in a standard.
@@ -115,7 +113,6 @@ class Text extends Generator
 
     }//end printTextBlock()
 
-
     /**
      * Print a code comparison block found in a standard.
      *
@@ -140,7 +137,7 @@ class Text extends Generator
                     // so we are done.
                     $firstTitleLines[] = $tempTitle.$word;
                     $tempTitle         = '';
-                } else if (strlen($tempTitle.$word) === 46) {
+                } elseif (strlen($tempTitle.$word) === 46) {
                     // We are already at the edge, so we are done.
                     $firstTitleLines[] = $tempTitle.$word;
                     $tempTitle         = '';
@@ -175,7 +172,7 @@ class Text extends Generator
                     // so we are done.
                     $secondTitleLines[] = $tempTitle.$word;
                     $tempTitle          = '';
-                } else if (strlen($tempTitle.$word) === 46) {
+                } elseif (strlen($tempTitle.$word) === 46) {
                     // We are already at the edge, so we are done.
                     $secondTitleLines[] = $tempTitle.$word;
                     $tempTitle          = '';
@@ -248,6 +245,5 @@ class Text extends Generator
         echo str_repeat('-', 100).PHP_EOL.PHP_EOL;
 
     }//end printCodeComparisonBlock()
-
 
 }//end class

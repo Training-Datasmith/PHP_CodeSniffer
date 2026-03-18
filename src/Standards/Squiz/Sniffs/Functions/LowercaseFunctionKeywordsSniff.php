@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures all function keywords are lowercase.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class LowercaseFunctionKeywordsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -32,7 +32,6 @@ class LowercaseFunctionKeywordsSniff implements Sniff
         return $tokens;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -64,6 +63,5 @@ class LowercaseFunctionKeywordsSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

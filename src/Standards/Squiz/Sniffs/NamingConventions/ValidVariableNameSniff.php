@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks the naming of variables and member variables.
  *
@@ -16,8 +18,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ValidVariableNameSniff extends AbstractVariableSniff
 {
-
-
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -102,7 +102,6 @@ class ValidVariableNameSniff extends AbstractVariableSniff
 
     }//end processVariable()
 
-
     /**
      * Processes class member variables.
      *
@@ -155,7 +154,6 @@ class ValidVariableNameSniff extends AbstractVariableSniff
 
     }//end processMemberVar()
 
-
     /**
      * Processes the variable found within a double quoted string.
      *
@@ -185,6 +183,5 @@ class ValidVariableNameSniff extends AbstractVariableSniff
         }
 
     }//end processVariableInString()
-
 
 }//end class

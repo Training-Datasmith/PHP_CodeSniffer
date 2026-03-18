@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that there is a space between each condition of foreach loops.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ForEachLoopDeclarationSniff implements Sniff
 {
-
     /**
      * How many spaces should follow the opening bracket.
      *
@@ -29,7 +30,6 @@ class ForEachLoopDeclarationSniff implements Sniff
      */
     public $requiredSpacesBeforeClose = 0;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -40,7 +40,6 @@ class ForEachLoopDeclarationSniff implements Sniff
         return [T_FOREACH];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -78,7 +77,7 @@ class ForEachLoopDeclarationSniff implements Sniff
             if ($fix === true) {
                 $phpcsFile->fixer->replaceToken(($openingBracket + 1), '');
             }
-        } else if ($this->requiredSpacesAfterOpen > 0) {
+        } elseif ($this->requiredSpacesAfterOpen > 0) {
             $spaceAfterOpen = 0;
             if ($tokens[($openingBracket + 1)]['code'] === T_WHITESPACE) {
                 $spaceAfterOpen = $tokens[($openingBracket + 1)]['length'];
@@ -108,7 +107,7 @@ class ForEachLoopDeclarationSniff implements Sniff
             if ($fix === true) {
                 $phpcsFile->fixer->replaceToken(($closingBracket - 1), '');
             }
-        } else if ($this->requiredSpacesBeforeClose > 0) {
+        } elseif ($this->requiredSpacesBeforeClose > 0) {
             $spaceBeforeClose = 0;
             if ($tokens[($closingBracket - 1)]['code'] === T_WHITESPACE) {
                 $spaceBeforeClose = $tokens[($closingBracket - 1)]['length'];
@@ -231,6 +230,5 @@ class ForEachLoopDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

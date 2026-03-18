@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the GlobalFunction sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class GlobalFunctionUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -29,7 +29,6 @@ class GlobalFunctionUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -43,6 +42,5 @@ class GlobalFunctionUnitTest extends AbstractSniffUnitTest
         return [2 => 1];
 
     }//end getWarningList()
-
 
 }//end class

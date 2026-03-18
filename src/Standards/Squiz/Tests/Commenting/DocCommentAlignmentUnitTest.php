@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the DocCommentAlignment sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class DocCommentAlignmentUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,7 +25,7 @@ class DocCommentAlignmentUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='DocCommentAlignmentUnitTest.inc')
+    public function getErrorList($testFile = 'DocCommentAlignmentUnitTest.inc')
     {
         $errors = [
             3  => 1,
@@ -57,7 +57,6 @@ class DocCommentAlignmentUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -71,6 +70,5 @@ class DocCommentAlignmentUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

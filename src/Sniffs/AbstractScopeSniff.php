@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Allows tests that extend this class to listen for tokens within a particular scope.
  *
@@ -26,12 +28,11 @@
 
 namespace PHP_CodeSniffer\Sniffs;
 
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
+use PHP_CodeSniffer\Files\File;
 
 abstract class AbstractScopeSniff implements Sniff
 {
-
     /**
      * The token types that this test wishes to listen to within the scope.
      *
@@ -53,7 +54,6 @@ abstract class AbstractScopeSniff implements Sniff
      */
     private $listenOutside = false;
 
-
     /**
      * Constructs a new AbstractScopeTest.
      *
@@ -71,7 +71,7 @@ abstract class AbstractScopeSniff implements Sniff
     public function __construct(
         array $scopeTokens,
         array $tokens,
-        $listenOutside=false
+        $listenOutside = false
     ) {
         if (empty($scopeTokens) === true) {
             $error = 'The scope tokens list cannot be empty';
@@ -96,7 +96,6 @@ abstract class AbstractScopeSniff implements Sniff
 
     }//end __construct()
 
-
     /**
      * The method that is called to register the tokens this test wishes to
      * listen to.
@@ -112,7 +111,6 @@ abstract class AbstractScopeSniff implements Sniff
         return $this->tokens;
 
     }//end register()
-
 
     /**
      * Processes the tokens that this test is listening for.
@@ -150,7 +148,6 @@ abstract class AbstractScopeSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -169,7 +166,6 @@ abstract class AbstractScopeSniff implements Sniff
      */
     abstract protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope);
 
-
     /**
      * Processes a token that is found outside the scope that this test is
      * listening to.
@@ -184,6 +180,5 @@ abstract class AbstractScopeSniff implements Sniff
      *                  the rest of the file.
      */
     abstract protected function processTokenOutsideScope(File $phpcsFile, $stackPtr);
-
 
 }//end class

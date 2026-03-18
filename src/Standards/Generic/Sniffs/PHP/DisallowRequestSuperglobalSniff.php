@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures the $_REQUEST superglobal is not used
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowRequestSuperglobalSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class DisallowRequestSuperglobalSniff implements Sniff
         return [T_VARIABLE];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -50,6 +49,5 @@ class DisallowRequestSuperglobalSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'Found');
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * The base class for all PHP_CodeSniffer documentation generators.
  *
@@ -12,12 +14,11 @@
 
 namespace PHP_CodeSniffer\Generators;
 
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Autoload;
+use PHP_CodeSniffer\Ruleset;
 
 abstract class Generator
 {
-
     /**
      * The ruleset used for the run.
      *
@@ -31,7 +32,6 @@ abstract class Generator
      * @var string[]
      */
     public $docFiles = [];
-
 
     /**
      * Constructs a doc generator.
@@ -60,7 +60,6 @@ abstract class Generator
 
     }//end __construct()
 
-
     /**
      * Retrieves the title of the sniff from the DOMNode supplied.
      *
@@ -75,7 +74,6 @@ abstract class Generator
         return $doc->getAttribute('title');
 
     }//end getTitle()
-
 
     /**
      * Generates the documentation for a standard.
@@ -98,7 +96,6 @@ abstract class Generator
 
     }//end generate()
 
-
     /**
      * Process the documentation for a single sniff.
      *
@@ -112,6 +109,5 @@ abstract class Generator
      * @see    generate()
      */
     abstract protected function processSniff(\DOMNode $doc);
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for PHP_CodeSniffer error suppression tags.
  *
@@ -10,14 +12,12 @@
 namespace PHP_CodeSniffer\Tests\Core;
 
 use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Files\DummyFile;
+use PHP_CodeSniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
 
 class ErrorSuppressionTest extends TestCase
 {
-
-
     /**
      * Test suppressing a single error.
      *
@@ -31,7 +31,7 @@ class ErrorSuppressionTest extends TestCase
      *
      * @return void
      */
-    public function testSuppressError($before, $after, $expectedErrors=0)
+    public function testSuppressError($before, $after, $expectedErrors = 0)
     {
         static $config, $ruleset;
 
@@ -51,7 +51,6 @@ class ErrorSuppressionTest extends TestCase
         $this->assertCount($expectedErrors, $file->getErrors());
 
     }//end testSuppressError()
-
 
     /**
      * Data provider.
@@ -150,7 +149,6 @@ class ErrorSuppressionTest extends TestCase
 
     }//end dataSuppressError()
 
-
     /**
      * Test suppressing 1 out of 2 errors.
      *
@@ -164,7 +162,7 @@ class ErrorSuppressionTest extends TestCase
      *
      * @return void
      */
-    public function testSuppressSomeErrors($before, $between, $expectedErrors=1)
+    public function testSuppressSomeErrors($before, $between, $expectedErrors = 1)
     {
         static $config, $ruleset;
 
@@ -190,7 +188,6 @@ EOD;
         $this->assertCount($expectedErrors, $file->getErrors());
 
     }//end testSuppressSomeErrors()
-
 
     /**
      * Data provider.
@@ -243,7 +240,6 @@ EOD;
 
     }//end dataSuppressSomeErrors()
 
-
     /**
      * Test suppressing a single warning.
      *
@@ -257,7 +253,7 @@ EOD;
      *
      * @return void
      */
-    public function testSuppressWarning($before, $after, $expectedWarnings=0)
+    public function testSuppressWarning($before, $after, $expectedWarnings = 0)
     {
         static $config, $ruleset;
 
@@ -282,7 +278,6 @@ EOD;
         $this->assertCount($expectedWarnings, $file->getWarnings());
 
     }//end testSuppressWarning()
-
 
     /**
      * Data provider.
@@ -327,7 +322,6 @@ EOD;
 
     }//end dataSuppressWarning()
 
-
     /**
      * Test suppressing a single error using a single line ignore.
      *
@@ -342,7 +336,7 @@ EOD;
      *
      * @return void
      */
-    public function testSuppressLine($before, $after='', $expectedErrors=1)
+    public function testSuppressLine($before, $after = '', $expectedErrors = 1)
     {
         static $config, $ruleset;
 
@@ -367,7 +361,6 @@ EOD;
         $this->assertCount($expectedErrors, $file->getErrors());
 
     }//end testSuppressLine()
-
 
     /**
      * Data provider.
@@ -421,7 +414,6 @@ EOD;
 
     }//end dataSuppressLine()
 
-
     /**
      * Test suppressing a single error using a single line ignore in the middle of a line.
      *
@@ -445,7 +437,6 @@ EOD;
         $this->assertCount(0, $file->getErrors());
 
     }//end testSuppressLineMidLine()
-
 
     /**
      * Test suppressing a single error using a single line ignore within a docblock.
@@ -479,7 +470,6 @@ EOD;
         $this->assertCount(0, $file->getErrors());
 
     }//end testSuppressLineWithinDocblock()
-
 
     /**
      * Test that using a single line ignore does not interfere with other suppressions.
@@ -518,7 +508,6 @@ EOD;
         $this->assertCount(0, $file->getErrors());
 
     }//end testNestedSuppressLine()
-
 
     /**
      * Data provider.
@@ -569,7 +558,6 @@ EOD;
 
     }//end dataNestedSuppressLine()
 
-
     /**
      * Test suppressing a scope opener.
      *
@@ -583,7 +571,7 @@ EOD;
      *
      * @return void
      */
-    public function testSuppressScope($before, $after, $expectedErrors=0)
+    public function testSuppressScope($before, $after, $expectedErrors = 0)
     {
         static $config, $ruleset;
 
@@ -613,7 +601,6 @@ EOD;
         $this->assertCount($expectedErrors, $file->getErrors());
 
     }//end testSuppressScope()
-
 
     /**
      * Data provider.
@@ -666,7 +653,6 @@ EOD;
 
     }//end dataSuppressScope()
 
-
     /**
      * Test suppressing a whole file.
      *
@@ -681,7 +667,7 @@ EOD;
      *
      * @return void
      */
-    public function testSuppressFile($before, $after='', $expectedWarnings=0)
+    public function testSuppressFile($before, $after = '', $expectedWarnings = 0)
     {
         static $config, $ruleset;
 
@@ -708,7 +694,6 @@ EOD;
         $this->assertCount($expectedWarnings, $file->getWarnings());
 
     }//end testSuppressFile()
-
 
     /**
      * Data provider.
@@ -761,7 +746,6 @@ EOD;
 
     }//end dataSuppressFile()
 
-
     /**
      * Test disabling specific sniffs.
      *
@@ -776,7 +760,7 @@ EOD;
      *
      * @return void
      */
-    public function testDisableSelected($before, $expectedErrors=0, $expectedWarnings=0)
+    public function testDisableSelected($before, $expectedErrors = 0, $expectedWarnings = 0)
     {
         static $config, $ruleset;
 
@@ -807,7 +791,6 @@ EOD;
         $this->assertCount($expectedWarnings, $file->getWarnings());
 
     }//end testDisableSelected()
-
 
     /**
      * Data provider.
@@ -875,7 +858,6 @@ EOD;
 
     }//end dataDisableSelected()
 
-
     /**
      * Test re-enabling specific sniffs that have been disabled.
      *
@@ -914,7 +896,6 @@ EOD;
         $this->assertCount($expectedWarnings, $file->getWarnings());
 
     }//end testEnableSelected()
-
 
     /**
      * Data provider.
@@ -1050,7 +1031,6 @@ EOD;
 
     }//end dataEnableSelected()
 
-
     /**
      * Test ignoring specific sniffs.
      *
@@ -1094,7 +1074,6 @@ EOD;
         $this->assertCount($expectedWarnings, $file->getWarnings());
 
     }//end testIgnoreSelected()
-
 
     /**
      * Data provider.
@@ -1142,7 +1121,6 @@ EOD;
 
     }//end dataIgnoreSelected()
 
-
     /**
      * Test ignoring specific sniffs.
      *
@@ -1181,7 +1159,6 @@ EOD;
         $this->assertCount($expectedWarnings, $file->getWarnings());
 
     }//end testCommenting()
-
 
     /**
      * Data provider.
@@ -1242,6 +1219,5 @@ EOD;
         ];
 
     }//end dataCommenting()
-
 
 }//end class

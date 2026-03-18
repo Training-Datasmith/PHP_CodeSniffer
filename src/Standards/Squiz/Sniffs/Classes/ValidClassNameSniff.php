@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures classes are in camel caps, and the first letter is capitalised.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class ValidClassNameSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -32,7 +32,6 @@ class ValidClassNameSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -82,6 +81,5 @@ class ValidClassNameSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

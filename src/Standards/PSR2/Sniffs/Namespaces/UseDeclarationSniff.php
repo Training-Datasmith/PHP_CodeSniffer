@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures USE blocks are declared correctly.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class UseDeclarationSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class UseDeclarationSniff implements Sniff
         return [T_USE];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -67,14 +66,14 @@ class UseDeclarationSniff implements Sniff
                 $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MultipleDeclarations');
                 if ($fix === true) {
                     switch ($tokens[($stackPtr + 2)]['content']) {
-                    case 'const':
-                        $baseUse = 'use const';
-                        break;
-                    case 'function':
-                        $baseUse = 'use function';
-                        break;
-                    default:
-                        $baseUse = 'use';
+                        case 'const':
+                            $baseUse = 'use const';
+                            break;
+                        case 'function':
+                            $baseUse = 'use function';
+                            break;
+                        default:
+                            $baseUse = 'use';
                     }
 
                     if ($tokens[($next + 1)]['code'] !== T_WHITESPACE) {
@@ -264,7 +263,6 @@ class UseDeclarationSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Check if this use statement is part of the namespace block.
      *
@@ -292,6 +290,5 @@ class UseDeclarationSniff implements Sniff
         return false;
 
     }//end shouldIgnoreUse()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Throws errors if spaces are used for indentation other than precision indentation.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowSpaceIndentSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -33,7 +34,6 @@ class DisallowSpaceIndentSniff implements Sniff
      */
     private $tabWidth;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -47,7 +47,6 @@ class DisallowSpaceIndentSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -128,7 +127,7 @@ class DisallowSpaceIndentSniff implements Sniff
                 if (isset($matches[2]) === true) {
                     $nonWhitespace = $matches[2];
                 }
-            } else if (isset($tokens[($i + 1)]) === true
+            } elseif (isset($tokens[($i + 1)]) === true
                 && $tokens[$i]['line'] < $tokens[($i + 1)]['line']
             ) {
                 // There is no content after this whitespace except for a newline.
@@ -199,7 +198,7 @@ class DisallowSpaceIndentSniff implements Sniff
                         // end of the whitespace.
                         continue;
                     }
-                } else if ($recordMetrics === true) {
+                } elseif ($recordMetrics === true) {
                     $phpcsFile->recordMetric($i, 'Line indent', 'mixed');
                 }
             }//end if
@@ -217,6 +216,5 @@ class DisallowSpaceIndentSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
 }//end class

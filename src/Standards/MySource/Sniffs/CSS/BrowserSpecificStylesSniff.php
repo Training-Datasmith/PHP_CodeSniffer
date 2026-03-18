@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure that browser-specific styles are not used.
  *
@@ -9,12 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\CSS;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class BrowserSpecificStylesSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -39,7 +40,6 @@ class BrowserSpecificStylesSniff implements Sniff
         'webkit' => true,
     ];
 
-
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -50,7 +50,6 @@ class BrowserSpecificStylesSniff implements Sniff
         return [T_STYLE];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -82,6 +81,5 @@ class BrowserSpecificStylesSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

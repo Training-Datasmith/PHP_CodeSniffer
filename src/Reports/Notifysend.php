@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Notify-send report for PHP_CodeSniffer.
  *
@@ -22,7 +24,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class Notifysend implements Report
 {
-
     /**
      * Notification timeout in milliseconds.
      *
@@ -50,7 +51,6 @@ class Notifysend implements Report
      * @var string
      */
     protected $version;
-
 
     /**
      * Load configuration data.
@@ -80,7 +80,6 @@ class Notifysend implements Report
 
     }//end __construct()
 
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -95,7 +94,7 @@ class Notifysend implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         echo $report['filename'].PHP_EOL;
 
@@ -104,7 +103,6 @@ class Notifysend implements Report
         return true;
 
     }//end generateFileReport()
-
 
     /**
      * Generates a summary of errors and warnings for each file processed.
@@ -128,10 +126,10 @@ class Notifysend implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         $checkedFiles = explode(PHP_EOL, trim($cachedData));
 
@@ -145,7 +143,6 @@ class Notifysend implements Report
         }
 
     }//end generate()
-
 
     /**
      * Generate the error message to show to the user.
@@ -184,7 +181,6 @@ class Notifysend implements Report
 
     }//end generateMessage()
 
-
     /**
      * Tell the user that all is fine and no error/warning has been found.
      *
@@ -199,7 +195,6 @@ class Notifysend implements Report
         exec($cmd);
 
     }//end notifyAllFine()
-
 
     /**
      * Tell the user that errors/warnings have been found.
@@ -217,7 +212,6 @@ class Notifysend implements Report
         exec($cmd);
 
     }//end notifyErrors()
-
 
     /**
      * Generate and return the basic notify-send command string to execute.
@@ -237,6 +231,5 @@ class Notifysend implements Report
         return $cmd;
 
     }//end getBasicCommand()
-
 
 }//end class

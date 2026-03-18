@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the ExecutableFile sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class ExecutableFileUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Should this test be skipped for some reason.
      *
@@ -29,7 +29,6 @@ class ExecutableFileUnitTest extends AbstractSniffUnitTest
 
     }//end shouldSkipTest()
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -40,18 +39,17 @@ class ExecutableFileUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'ExecutableFileUnitTest.2.inc':
-        case 'ExecutableFileUnitTest.4.inc':
-            return [1 => 1];
-        default:
-            return [];
+            case 'ExecutableFileUnitTest.2.inc':
+            case 'ExecutableFileUnitTest.4.inc':
+                return [1 => 1];
+            default:
+                return [];
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -63,11 +61,10 @@ class ExecutableFileUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getWarningList($testFile='')
+    public function getWarningList($testFile = '')
     {
         return [];
 
     }//end getWarningList()
-
 
 }//end class

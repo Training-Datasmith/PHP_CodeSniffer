@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure that each style definition is on a line by itself.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowMultipleStyleDefinitionsSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -33,7 +33,6 @@ class DisallowMultipleStyleDefinitionsSniff implements Sniff
         return [T_STYLE];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -66,6 +65,5 @@ class DisallowMultipleStyleDefinitionsSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

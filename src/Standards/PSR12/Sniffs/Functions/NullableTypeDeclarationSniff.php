@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that nullable typehints are lacking superfluous whitespace, e.g. ?int
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class NullableTypeDeclarationSniff implements Sniff
 {
-
     /**
      * An array of valid tokens after `T_NULLABLE` occurrences.
      *
@@ -29,7 +30,6 @@ class NullableTypeDeclarationSniff implements Sniff
         T_STATIC       => true,
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -40,7 +40,6 @@ class NullableTypeDeclarationSniff implements Sniff
         return [T_NULLABLE];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -86,6 +85,5 @@ class NullableTypeDeclarationSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'UnexpectedCharactersFound');
 
     }//end process()
-
 
 }//end class

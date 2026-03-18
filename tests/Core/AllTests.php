@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A test class for testing the core.
  *
@@ -11,13 +13,11 @@
 namespace PHP_CodeSniffer\Tests\Core;
 
 use PHP_CodeSniffer\Tests\FileList;
-use PHPUnit\TextUI\TestRunner;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TextUI\TestRunner;
 
 class AllTests
 {
-
-
     /**
      * Prepare the test runner.
      *
@@ -28,7 +28,6 @@ class AllTests
         TestRunner::run(self::suite());
 
     }//end main()
-
 
     /**
      * Add all core unit tests into a test suite.
@@ -58,6 +57,5 @@ class AllTests
         return $suite;
 
     }//end suite()
-
 
 }//end class

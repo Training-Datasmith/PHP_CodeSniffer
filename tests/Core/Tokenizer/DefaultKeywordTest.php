@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the retokenization of the `default` keyword to T_MATCH_DEFAULT for PHP 8.0 match structures
  * and makes sure that the tokenization of switch `T_DEFAULT` structures is not aversely affected.
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class DefaultKeywordTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test the retokenization of the `default` keyword for match structure to `T_MATCH_DEFAULT`.
      *
@@ -31,7 +31,7 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testMatchDefault($testMarker, $testContent='default')
+    public function testMatchDefault($testMarker, $testContent = 'default')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -46,7 +46,6 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
         $this->assertArrayNotHasKey('scope_closer', $tokenArray, 'Scope closer is set');
 
     }//end testMatchDefault()
-
 
     /**
      * Data provider.
@@ -92,7 +91,6 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
 
     }//end dataMatchDefault()
 
-
     /**
      * Verify that the retokenization of `T_DEFAULT` tokens in match constructs, doesn't negatively
      * impact the tokenization of `T_DEFAULT` tokens in switch control structures.
@@ -111,7 +109,7 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testSwitchDefault($testMarker, $openerOffset, $closerOffset, $conditionStop=null, $testContent='default')
+    public function testSwitchDefault($testMarker, $openerOffset, $closerOffset, $conditionStop = null, $testContent = 'default')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -163,7 +161,6 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
 
     }//end testSwitchDefault()
 
-
     /**
      * Data provider.
      *
@@ -208,7 +205,6 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
 
     }//end dataSwitchDefault()
 
-
     /**
      * Verify that the retokenization of `T_DEFAULT` tokens in match constructs, doesn't negatively
      * impact the tokenization of `T_STRING` tokens with the contents 'default' which aren't in
@@ -222,7 +218,7 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testNotDefaultKeyword($testMarker, $testContent='DEFAULT')
+    public function testNotDefaultKeyword($testMarker, $testContent = 'DEFAULT')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -237,7 +233,6 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
         $this->assertArrayNotHasKey('scope_closer', $tokenArray, 'Scope closer is set');
 
     }//end testNotDefaultKeyword()
-
 
     /**
      * Data provider.
@@ -277,7 +272,6 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
 
     }//end dataNotDefaultKeyword()
 
-
     /**
      * Test a specific edge case where a scope opener would be incorrectly set.
      *
@@ -297,6 +291,5 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
         $this->assertArrayNotHasKey('scope_closer', $tokenArray, 'Scope closer is set');
 
     }//end testIssue3326()
-
 
 }//end class

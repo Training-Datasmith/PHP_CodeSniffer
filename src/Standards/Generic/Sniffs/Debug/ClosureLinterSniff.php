@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Runs gjslint on the file.
  *
@@ -16,7 +18,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class ClosureLinterSniff implements Sniff
 {
-
     /**
      * A list of error codes that should show errors.
      *
@@ -40,7 +41,6 @@ class ClosureLinterSniff implements Sniff
      */
     public $supportedTokenizers = ['JS'];
 
-
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -51,7 +51,6 @@ class ClosureLinterSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -112,6 +111,5 @@ class ClosureLinterSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
 }//end class

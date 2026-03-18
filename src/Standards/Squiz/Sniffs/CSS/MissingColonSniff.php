@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure that all style definitions have a colon.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class MissingColonSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -33,7 +33,6 @@ class MissingColonSniff implements Sniff
         return [T_OPEN_CURLY_BRACKET];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -80,12 +79,11 @@ class MissingColonSniff implements Sniff
 
             if ($tokens[$i]['code'] === T_STRING) {
                 $foundString = $i;
-            } else if ($tokens[$i]['code'] === T_COLON) {
+            } elseif ($tokens[$i]['code'] === T_COLON) {
                 $foundColon = $i;
             }
         }//end for
 
     }//end process()
-
 
 }//end class

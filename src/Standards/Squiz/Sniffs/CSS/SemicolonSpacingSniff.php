@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure each style definition has a semi-colon and it is spaced correctly.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class SemicolonSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class SemicolonSpacingSniff implements Sniff
         return [T_STYLE];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -98,6 +97,5 @@ class SemicolonSpacingSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

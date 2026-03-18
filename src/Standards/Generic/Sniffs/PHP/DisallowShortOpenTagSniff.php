@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Makes sure that shorthand PHP open tags are not used.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class DisallowShortOpenTagSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -37,7 +37,6 @@ class DisallowShortOpenTagSniff implements Sniff
         return $targets;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -110,7 +109,7 @@ class DisallowShortOpenTagSniff implements Sniff
                 if ($closerFound !== false) {
                     if ($i !== $stackPtr) {
                         break;
-                    } else if ($closerFound > $openerFound) {
+                    } elseif ($closerFound > $openerFound) {
                         break;
                     } else {
                         $closerFound = false;
@@ -134,7 +133,6 @@ class DisallowShortOpenTagSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Get a snippet from a HTML token.
      *
@@ -144,7 +142,7 @@ class DisallowShortOpenTagSniff implements Sniff
      *
      * @return string
      */
-    protected function getSnippet($content, $start='', $length=40)
+    protected function getSnippet($content, $start = '', $length = 40)
     {
         $startPos = 0;
 
@@ -163,6 +161,5 @@ class DisallowShortOpenTagSniff implements Sniff
         return $snippet;
 
     }//end getSnippet()
-
 
 }//end class

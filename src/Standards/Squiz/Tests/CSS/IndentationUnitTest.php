@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the Indentation sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class IndentationUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,37 +25,36 @@ class IndentationUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'IndentationUnitTest.1.css':
-            return [
-                2  => 1,
-                3  => 1,
-                5  => 1,
-                6  => 1,
-                7  => 1,
-                12 => 1,
-                30 => 1,
-                32 => 1,
-                50 => 1,
-                52 => 1,
-                53 => 1,
-                66 => 1,
-                67 => 1,
-                68 => 1,
-                69 => 1,
-                70 => 1,
-                71 => 1,
-                72 => 1,
-            ];
+            case 'IndentationUnitTest.1.css':
+                return [
+                    2  => 1,
+                    3  => 1,
+                    5  => 1,
+                    6  => 1,
+                    7  => 1,
+                    12 => 1,
+                    30 => 1,
+                    32 => 1,
+                    50 => 1,
+                    52 => 1,
+                    53 => 1,
+                    66 => 1,
+                    67 => 1,
+                    68 => 1,
+                    69 => 1,
+                    70 => 1,
+                    71 => 1,
+                    72 => 1,
+                ];
 
-        default:
-            return [];
+            default:
+                return [];
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -70,6 +69,5 @@ class IndentationUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

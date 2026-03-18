@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tokenizes PHP code.
  *
@@ -13,7 +15,6 @@ use PHP_CodeSniffer\Util;
 
 class PHP extends Tokenizer
 {
-
     /**
      * A list of tokens that are allowed to open a scope.
      *
@@ -498,7 +499,6 @@ class PHP extends Tokenizer
      */
     private static $resolveTokenCache = [];
 
-
     /**
      * Creates an array of tokens when given some PHP code.
      *
@@ -755,10 +755,10 @@ class PHP extends Tokenizer
                     if (strpos($nextToken[1], "\r\n") === 0) {
                         $token[1] .= "\r\n";
                         $tokens[($stackPtr + 1)][1] = substr($nextToken[1], 2);
-                    } else if (strpos($nextToken[1], "\n\r") === 0) {
+                    } elseif (strpos($nextToken[1], "\n\r") === 0) {
                         $token[1] .= "\n\r";
                         $tokens[($stackPtr + 1)][1] = substr($nextToken[1], 2);
-                    } else if (strpos($nextToken[1], "\n") === 0) {
+                    } elseif (strpos($nextToken[1], "\n") === 0) {
                         $token[1] .= "\n";
                         $tokens[($stackPtr + 1)][1] = substr($nextToken[1], 1);
                     }
@@ -1885,7 +1885,7 @@ class PHP extends Tokenizer
                         $newToken['code'] = T_NULLABLE;
                         $newToken['type'] = 'T_NULLABLE';
                         break;
-                    } else if (in_array($tokenType, [T_DOUBLE_ARROW, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, '=', '{', ';'], true) === true) {
+                    } elseif (in_array($tokenType, [T_DOUBLE_ARROW, T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, '=', '{', ';'], true) === true) {
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
                             echo "\t\t* token $stackPtr changed from ? to T_INLINE_THEN".PHP_EOL;
                         }
@@ -1968,7 +1968,7 @@ class PHP extends Tokenizer
                 for ($x = ($stackPtr + 1); $x < $numTokens; $x++) {
                     if (is_array($tokens[$x]) === false && $tokens[$x] === '(') {
                         $parenthesisStack[] = $x;
-                    } else if (is_array($tokens[$x]) === false && $tokens[$x] === ')') {
+                    } elseif (is_array($tokens[$x]) === false && $tokens[$x] === ')') {
                         array_pop($parenthesisStack);
                         if (empty($parenthesisStack) === true) {
                             $parenthesisCloser = $x;
@@ -2149,7 +2149,7 @@ class PHP extends Tokenizer
                         ) {
                             $preserveTstring = false;
                         }
-                    } else if ($finalTokens[$lastNotEmptyToken]['content'] === '&') {
+                    } elseif ($finalTokens[$lastNotEmptyToken]['content'] === '&') {
                         // Function names for functions declared to return by reference.
                         for ($i = ($lastNotEmptyToken - 1); $i >= 0; $i--) {
                             if (isset(Util\Tokens::$emptyTokens[$finalTokens[$i]['code']]) === true) {
@@ -2200,7 +2200,7 @@ class PHP extends Tokenizer
                     $cacheKey = null;
                     if ($token[0] === T_STRING) {
                         $cacheKey = strtolower($token[1]);
-                    } else if ($token[0] !== T_CURLY_OPEN) {
+                    } elseif ($token[0] !== T_CURLY_OPEN) {
                         $cacheKey = $token[0];
                     }
 
@@ -2256,7 +2256,7 @@ class PHP extends Tokenizer
                                     if ($parenCount === 0) {
                                         break;
                                     }
-                                } else if ($tokens[$i] === ')') {
+                                } elseif ($tokens[$i] === ')') {
                                     $parenCount++;
                                 }
                             }
@@ -2393,7 +2393,6 @@ class PHP extends Tokenizer
         return $finalTokens;
 
     }//end tokenize()
-
 
     /**
      * Performs additional processing after main tokenizing.
@@ -3232,7 +3231,6 @@ class PHP extends Tokenizer
 
     }//end processAdditional()
 
-
     /**
      * Takes a token produced from <code>token_get_all()</code> and produces a
      * more uniform token.
@@ -3251,7 +3249,7 @@ class PHP extends Tokenizer
             $cacheKey = null;
             if ($token[0] === T_STRING) {
                 $cacheKey = strtolower($token[1]);
-            } else if ($token[0] !== T_CURLY_OPEN) {
+            } elseif ($token[0] !== T_CURLY_OPEN) {
                 $cacheKey = $token[0];
             }
 
@@ -3268,30 +3266,30 @@ class PHP extends Tokenizer
 
         if ($token[0] === T_STRING) {
             switch ($cacheKey) {
-            case 'false':
-                $newToken['type'] = 'T_FALSE';
-                break;
-            case 'true':
-                $newToken['type'] = 'T_TRUE';
-                break;
-            case 'null':
-                $newToken['type'] = 'T_NULL';
-                break;
-            case 'self':
-                $newToken['type'] = 'T_SELF';
-                break;
-            case 'parent':
-                $newToken['type'] = 'T_PARENT';
-                break;
-            default:
-                $newToken['type'] = 'T_STRING';
-                break;
+                case 'false':
+                    $newToken['type'] = 'T_FALSE';
+                    break;
+                case 'true':
+                    $newToken['type'] = 'T_TRUE';
+                    break;
+                case 'null':
+                    $newToken['type'] = 'T_NULL';
+                    break;
+                case 'self':
+                    $newToken['type'] = 'T_SELF';
+                    break;
+                case 'parent':
+                    $newToken['type'] = 'T_PARENT';
+                    break;
+                default:
+                    $newToken['type'] = 'T_STRING';
+                    break;
             }
 
             $newToken['code'] = constant($newToken['type']);
 
             self::$resolveTokenCache[$cacheKey] = $newToken;
-        } else if ($token[0] === T_CURLY_OPEN) {
+        } elseif ($token[0] === T_CURLY_OPEN) {
             $newToken = [
                 'code' => T_OPEN_CURLY_BRACKET,
                 'type' => 'T_OPEN_CURLY_BRACKET',
@@ -3310,7 +3308,6 @@ class PHP extends Tokenizer
 
     }//end standardiseToken()
 
-
     /**
      * Converts simple tokens into a format that conforms to complex tokens
      * produced by token_get_all().
@@ -3327,87 +3324,87 @@ class PHP extends Tokenizer
         $newToken = [];
 
         switch ($token) {
-        case '{':
-            $newToken['type'] = 'T_OPEN_CURLY_BRACKET';
-            break;
-        case '}':
-            $newToken['type'] = 'T_CLOSE_CURLY_BRACKET';
-            break;
-        case '[':
-            $newToken['type'] = 'T_OPEN_SQUARE_BRACKET';
-            break;
-        case ']':
-            $newToken['type'] = 'T_CLOSE_SQUARE_BRACKET';
-            break;
-        case '(':
-            $newToken['type'] = 'T_OPEN_PARENTHESIS';
-            break;
-        case ')':
-            $newToken['type'] = 'T_CLOSE_PARENTHESIS';
-            break;
-        case ':':
-            $newToken['type'] = 'T_COLON';
-            break;
-        case '.':
-            $newToken['type'] = 'T_STRING_CONCAT';
-            break;
-        case ';':
-            $newToken['type'] = 'T_SEMICOLON';
-            break;
-        case '=':
-            $newToken['type'] = 'T_EQUAL';
-            break;
-        case '*':
-            $newToken['type'] = 'T_MULTIPLY';
-            break;
-        case '/':
-            $newToken['type'] = 'T_DIVIDE';
-            break;
-        case '+':
-            $newToken['type'] = 'T_PLUS';
-            break;
-        case '-':
-            $newToken['type'] = 'T_MINUS';
-            break;
-        case '%':
-            $newToken['type'] = 'T_MODULUS';
-            break;
-        case '^':
-            $newToken['type'] = 'T_BITWISE_XOR';
-            break;
-        case '&':
-            $newToken['type'] = 'T_BITWISE_AND';
-            break;
-        case '|':
-            $newToken['type'] = 'T_BITWISE_OR';
-            break;
-        case '~':
-            $newToken['type'] = 'T_BITWISE_NOT';
-            break;
-        case '<':
-            $newToken['type'] = 'T_LESS_THAN';
-            break;
-        case '>':
-            $newToken['type'] = 'T_GREATER_THAN';
-            break;
-        case '!':
-            $newToken['type'] = 'T_BOOLEAN_NOT';
-            break;
-        case ',':
-            $newToken['type'] = 'T_COMMA';
-            break;
-        case '@':
-            $newToken['type'] = 'T_ASPERAND';
-            break;
-        case '$':
-            $newToken['type'] = 'T_DOLLAR';
-            break;
-        case '`':
-            $newToken['type'] = 'T_BACKTICK';
-            break;
-        default:
-            $newToken['type'] = 'T_NONE';
-            break;
+            case '{':
+                $newToken['type'] = 'T_OPEN_CURLY_BRACKET';
+                break;
+            case '}':
+                $newToken['type'] = 'T_CLOSE_CURLY_BRACKET';
+                break;
+            case '[':
+                $newToken['type'] = 'T_OPEN_SQUARE_BRACKET';
+                break;
+            case ']':
+                $newToken['type'] = 'T_CLOSE_SQUARE_BRACKET';
+                break;
+            case '(':
+                $newToken['type'] = 'T_OPEN_PARENTHESIS';
+                break;
+            case ')':
+                $newToken['type'] = 'T_CLOSE_PARENTHESIS';
+                break;
+            case ':':
+                $newToken['type'] = 'T_COLON';
+                break;
+            case '.':
+                $newToken['type'] = 'T_STRING_CONCAT';
+                break;
+            case ';':
+                $newToken['type'] = 'T_SEMICOLON';
+                break;
+            case '=':
+                $newToken['type'] = 'T_EQUAL';
+                break;
+            case '*':
+                $newToken['type'] = 'T_MULTIPLY';
+                break;
+            case '/':
+                $newToken['type'] = 'T_DIVIDE';
+                break;
+            case '+':
+                $newToken['type'] = 'T_PLUS';
+                break;
+            case '-':
+                $newToken['type'] = 'T_MINUS';
+                break;
+            case '%':
+                $newToken['type'] = 'T_MODULUS';
+                break;
+            case '^':
+                $newToken['type'] = 'T_BITWISE_XOR';
+                break;
+            case '&':
+                $newToken['type'] = 'T_BITWISE_AND';
+                break;
+            case '|':
+                $newToken['type'] = 'T_BITWISE_OR';
+                break;
+            case '~':
+                $newToken['type'] = 'T_BITWISE_NOT';
+                break;
+            case '<':
+                $newToken['type'] = 'T_LESS_THAN';
+                break;
+            case '>':
+                $newToken['type'] = 'T_GREATER_THAN';
+                break;
+            case '!':
+                $newToken['type'] = 'T_BOOLEAN_NOT';
+                break;
+            case ',':
+                $newToken['type'] = 'T_COMMA';
+                break;
+            case '@':
+                $newToken['type'] = 'T_ASPERAND';
+                break;
+            case '$':
+                $newToken['type'] = 'T_DOLLAR';
+                break;
+            case '`':
+                $newToken['type'] = 'T_BACKTICK';
+                break;
+            default:
+                $newToken['type'] = 'T_NONE';
+                break;
         }//end switch
 
         $newToken['code']    = constant($newToken['type']);
@@ -3417,7 +3414,6 @@ class PHP extends Tokenizer
         return $newToken;
 
     }//end resolveSimpleToken()
-
 
     /**
      * Finds a "closer" token (closing parenthesis or square bracket for example)
@@ -3442,7 +3438,7 @@ class PHP extends Tokenizer
                 || (is_array($tokens[$x]) === true && in_array($tokens[$x][1], $openerTokens, true) === true)
             ) {
                 $stack[] = $x;
-            } else if ($tokens[$x] === $closerChar) {
+            } elseif ($tokens[$x] === $closerChar) {
                 array_pop($stack);
                 if (empty($stack) === true) {
                     $closer = $x;
@@ -3454,7 +3450,6 @@ class PHP extends Tokenizer
         return $closer;
 
     }//end findCloser()
-
 
     /**
      * PHP 8 attributes parser for PHP < 8
@@ -3518,7 +3513,6 @@ class PHP extends Tokenizer
 
     }//end parsePhpAttribute()
 
-
     /**
      * Creates a map for the attributes tokens that surround other tokens.
      *
@@ -3539,7 +3533,7 @@ class PHP extends Tokenizer
                     $map[$this->tokens[$i]['attribute_opener']]
                         = $this->tokens[$i]['attribute_closer'];
                 }
-            } else if (isset($this->tokens[$i]['attribute_closer']) === true
+            } elseif (isset($this->tokens[$i]['attribute_closer']) === true
                 && $i === $this->tokens[$i]['attribute_closer']
             ) {
                 array_pop($map);
@@ -3554,6 +3548,5 @@ class PHP extends Tokenizer
         }//end for
 
     }//end createAttributesNestingMap()
-
 
 }//end class

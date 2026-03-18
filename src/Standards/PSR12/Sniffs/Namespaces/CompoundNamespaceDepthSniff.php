@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that compound namespaces are not defined too deep.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class CompoundNamespaceDepthSniff implements Sniff
 {
-
     /**
      * The max depth for compound namespaces.
      *
      * @var integer
      */
     public $maxDepth = 2;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -33,7 +33,6 @@ class CompoundNamespaceDepthSniff implements Sniff
         return [T_OPEN_USE_GROUP];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -75,6 +74,5 @@ class CompoundNamespaceDepthSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

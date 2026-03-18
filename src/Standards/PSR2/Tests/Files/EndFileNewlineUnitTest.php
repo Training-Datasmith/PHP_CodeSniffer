@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the EndFileNewline sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class EndFileNewlineUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,26 +25,25 @@ class EndFileNewlineUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'EndFileNewlineUnitTest.1.inc':
-        case 'EndFileNewlineUnitTest.3.inc':
-        case 'EndFileNewlineUnitTest.6.inc':
-        case 'EndFileNewlineUnitTest.7.inc':
-        case 'EndFileNewlineUnitTest.9.inc':
-        case 'EndFileNewlineUnitTest.10.inc':
-            return [2 => 1];
-        case 'EndFileNewlineUnitTest.11.inc':
-        case 'EndFileNewlineUnitTest.12.inc':
-        case 'EndFileNewlineUnitTest.13.inc':
-            return [1 => 1];
-        default:
-            return [];
+            case 'EndFileNewlineUnitTest.1.inc':
+            case 'EndFileNewlineUnitTest.3.inc':
+            case 'EndFileNewlineUnitTest.6.inc':
+            case 'EndFileNewlineUnitTest.7.inc':
+            case 'EndFileNewlineUnitTest.9.inc':
+            case 'EndFileNewlineUnitTest.10.inc':
+                return [2 => 1];
+            case 'EndFileNewlineUnitTest.11.inc':
+            case 'EndFileNewlineUnitTest.12.inc':
+            case 'EndFileNewlineUnitTest.13.inc':
+                return [1 => 1];
+            default:
+                return [];
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -56,11 +55,10 @@ class EndFileNewlineUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getWarningList($testFile='')
+    public function getWarningList($testFile = '')
     {
         return [];
 
     }//end getWarningList()
-
 
 }//end class

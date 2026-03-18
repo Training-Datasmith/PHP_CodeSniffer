@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures namespaces are declared correctly.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class NamespaceDeclarationSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class NamespaceDeclarationSniff implements Sniff
         return [T_NAMESPACE];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -95,6 +94,5 @@ class NamespaceDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

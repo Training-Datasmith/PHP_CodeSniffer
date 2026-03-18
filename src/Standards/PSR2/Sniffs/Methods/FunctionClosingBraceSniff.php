@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the closing brace of a function goes directly after the body.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class FunctionClosingBraceSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -29,7 +29,6 @@ class FunctionClosingBraceSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -86,6 +85,5 @@ class FunctionClosingBraceSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

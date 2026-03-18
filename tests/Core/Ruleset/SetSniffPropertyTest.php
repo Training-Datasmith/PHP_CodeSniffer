@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the handling of properties being set via the ruleset.
  *
@@ -20,8 +22,6 @@ use PHPUnit\Framework\TestCase;
  */
 class SetSniffPropertyTest extends TestCase
 {
-
-
     /**
      * Initialize the test.
      *
@@ -37,7 +37,6 @@ class SetSniffPropertyTest extends TestCase
         }
 
     }//end setUp()
-
 
     /**
      * Test that setting a property via the ruleset works in all situations which allow for it.
@@ -82,7 +81,6 @@ class SetSniffPropertyTest extends TestCase
 
     }//end testSniffPropertiesGetSetWhenAllowed()
 
-
     /**
      * Data provider.
      *
@@ -99,7 +97,6 @@ class SetSniffPropertyTest extends TestCase
         ];
 
     }//end dataSniffPropertiesGetSetWhenAllowed()
-
 
     /**
      * Test that setting a property for a category will apply it correctly to those sniffs which support the
@@ -140,7 +137,6 @@ class SetSniffPropertyTest extends TestCase
 
     }//end testSetPropertyAppliesPropertyToMultipleSniffsInCategory()
 
-
     /**
      * Test that attempting to set a non-existent property directly on a sniff will throw an error
      * when the sniff does not explicitly declare the property, extends stdClass or has magic methods.
@@ -165,7 +161,6 @@ class SetSniffPropertyTest extends TestCase
         $ruleset  = new Ruleset($config);
 
     }//end testSetPropertyThrowsErrorOnInvalidProperty()
-
 
     /**
      * Test that attempting to set a non-existent property directly on a sniff will throw an error
@@ -193,7 +188,6 @@ class SetSniffPropertyTest extends TestCase
 
     }//end testSetPropertyThrowsErrorWhenPropertyOnlyAllowedViaAttribute()
 
-
     /**
      * Test that attempting to set a non-existent property on a sniff when the property directive is
      * for the whole standard, does not yield an error.
@@ -211,7 +205,6 @@ class SetSniffPropertyTest extends TestCase
 
     }//end testSetPropertyDoesNotThrowErrorOnInvalidPropertyWhenSetForStandard()
 
-
     /**
      * Test that attempting to set a non-existent property on a sniff when the property directive is
      * for a whole category, does not yield an error.
@@ -228,7 +221,6 @@ class SetSniffPropertyTest extends TestCase
         $ruleset  = new Ruleset($config);
 
     }//end testSetPropertyDoesNotThrowErrorOnInvalidPropertyWhenSetForCategory()
-
 
     /**
      * Test that setting a property via a direct call to the Ruleset::setSniffProperty() method
@@ -273,7 +265,6 @@ class SetSniffPropertyTest extends TestCase
         $this->assertSame($propertyValue, $sniffObject->$propertyName, 'Property value not set to expected value');
 
     }//end testDirectCallWithNewArrayFormatSetsProperty()
-
 
     /**
      * Test that setting a property via a direct call to the Ruleset::setSniffProperty() method
@@ -321,7 +312,6 @@ class SetSniffPropertyTest extends TestCase
 
     }//end testDirectCallWithOldArrayFormatSetsProperty()
 
-
     /**
      * Data provider.
      *
@@ -362,7 +352,6 @@ class SetSniffPropertyTest extends TestCase
         ];
 
     }//end dataDirectCallWithOldArrayFormatSetsProperty()
-
 
     /**
      * Test that setting a property via a direct call to the Ruleset::setSniffProperty() method
@@ -408,6 +397,5 @@ class SetSniffPropertyTest extends TestCase
         );
 
     }//end testDirectCallWithOldArrayFormatThrowsDeprecationNotice()
-
 
 }//end class

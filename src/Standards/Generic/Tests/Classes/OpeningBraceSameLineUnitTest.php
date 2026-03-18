@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the OpeningBraceSameLine sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class OpeningBraceSameLineUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -43,7 +43,6 @@ class OpeningBraceSameLineUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -57,6 +56,5 @@ class OpeningBraceSameLineUnitTest extends AbstractSniffUnitTest
         return [51 => 1];
 
     }//end getWarningList()
-
 
 }//end class

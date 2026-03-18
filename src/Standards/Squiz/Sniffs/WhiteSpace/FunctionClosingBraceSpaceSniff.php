@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that there is one empty line before the closing brace of a function.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class FunctionClosingBraceSpaceSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -24,7 +25,6 @@ class FunctionClosingBraceSpaceSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -39,7 +39,6 @@ class FunctionClosingBraceSpaceSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -100,7 +99,7 @@ class FunctionClosingBraceSpaceSniff implements Sniff
                 if ($fix === true) {
                     $phpcsFile->fixer->addNewlineBefore($closeBrace);
                 }
-            } else if ($found > 0) {
+            } elseif ($found > 0) {
                 $error = 'Expected 0 blank lines before closing brace of nested function; %s found';
                 $data  = [$found];
                 $fix   = $phpcsFile->addFixableError($error, $closeBrace, 'SpacingBeforeNestedClose', $data);
@@ -159,6 +158,5 @@ class FunctionClosingBraceSpaceSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

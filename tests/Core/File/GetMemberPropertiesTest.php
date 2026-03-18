@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Files\File::getMemberProperties method.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class GetMemberPropertiesTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test the getMemberProperties() method.
      *
@@ -33,7 +33,6 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
         $this->assertArraySubset($expected, $result, true);
 
     }//end testGetMemberProperties()
-
 
     /**
      * Data provider for the GetMemberProperties test.
@@ -802,7 +801,6 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
 
     }//end dataGetMemberProperties()
 
-
     /**
      * Test receiving an expected exception when a non property is passed.
      *
@@ -821,7 +819,6 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
         $result   = self::$phpcsFile->getMemberProperties($variable);
 
     }//end testNotClassPropertyException()
-
 
     /**
      * Data provider for the NotClassPropertyException test.
@@ -844,7 +841,6 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
 
     }//end dataNotClassProperty()
 
-
     /**
      * Test receiving an expected exception when a non variable is passed.
      *
@@ -859,6 +855,5 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
         $result = self::$phpcsFile->getMemberProperties($next);
 
     }//end testNotAVariableException()
-
 
 }//end class

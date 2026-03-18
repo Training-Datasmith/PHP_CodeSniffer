@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Stores the configuration used to run PHPCS and PHPCBF.
  *
@@ -74,27 +76,26 @@ use PHP_CodeSniffer\Util\Common;
  */
 class Config
 {
-
     /**
      * The current version.
      *
      * @var string
      */
-    const VERSION = '3.8.0';
+    public const VERSION = '3.8.0';
 
     /**
      * Package stability; either stable, beta or alpha.
      *
      * @var string
      */
-    const STABILITY = 'stable';
+    public const STABILITY = 'stable';
 
     /**
      * Default report width when no report width is provided and 'auto' does not yield a valid width.
      *
      * @var int
      */
-    const DEFAULT_REPORT_WIDTH = 80;
+    public const DEFAULT_REPORT_WIDTH = 80;
 
     /**
      * An array of settings that PHPCS and PHPCBF accept.
@@ -192,7 +193,6 @@ class Config
      */
     private static $executablePaths = [];
 
-
     /**
      * Get the value of an inaccessible property.
      *
@@ -211,7 +211,6 @@ class Config
 
     }//end __get()
 
-
     /**
      * Set the value of an inaccessible property.
      *
@@ -228,51 +227,50 @@ class Config
         }
 
         switch ($name) {
-        case 'reportWidth' :
-            // Support auto terminal width.
-            if ($value === 'auto' && function_exists('shell_exec') === true) {
-                $dimensions = shell_exec('stty size 2>&1');
-                if (is_string($dimensions) === true && preg_match('|\d+ (\d+)|', $dimensions, $matches) === 1) {
-                    $value = (int) $matches[1];
-                    break;
-                }
-            }
-
-            if (is_int($value) === true) {
-                $value = abs($value);
-            } else if (is_string($value) === true && preg_match('`^\d+$`', $value) === 1) {
-                $value = (int) $value;
-            } else {
-                $value = self::DEFAULT_REPORT_WIDTH;
-            }
-            break;
-        case 'standards' :
-            $cleaned = [];
-
-            // Check if the standard name is valid, or if the case is invalid.
-            $installedStandards = Util\Standards::getInstalledStandards();
-            foreach ($value as $standard) {
-                foreach ($installedStandards as $validStandard) {
-                    if (strtolower($standard) === strtolower($validStandard)) {
-                        $standard = $validStandard;
+            case 'reportWidth':
+                // Support auto terminal width.
+                if ($value === 'auto' && function_exists('shell_exec') === true) {
+                    $dimensions = shell_exec('stty size 2>&1');
+                    if (is_string($dimensions) === true && preg_match('|\d+ (\d+)|', $dimensions, $matches) === 1) {
+                        $value = (int) $matches[1];
                         break;
                     }
                 }
 
-                $cleaned[] = $standard;
-            }
+                if (is_int($value) === true) {
+                    $value = abs($value);
+                } elseif (is_string($value) === true && preg_match('`^\d+$`', $value) === 1) {
+                    $value = (int) $value;
+                } else {
+                    $value = self::DEFAULT_REPORT_WIDTH;
+                }
+                break;
+            case 'standards':
+                $cleaned = [];
 
-            $value = $cleaned;
-            break;
-        default :
-            // No validation required.
-            break;
+                // Check if the standard name is valid, or if the case is invalid.
+                $installedStandards = Util\Standards::getInstalledStandards();
+                foreach ($value as $standard) {
+                    foreach ($installedStandards as $validStandard) {
+                        if (strtolower($standard) === strtolower($validStandard)) {
+                            $standard = $validStandard;
+                            break;
+                        }
+                    }
+
+                    $cleaned[] = $standard;
+                }
+
+                $value = $cleaned;
+                break;
+            default:
+                // No validation required.
+                break;
         }//end switch
 
         $this->settings[$name] = $value;
 
     }//end __set()
-
 
     /**
      * Check if the value of an inaccessible property is set.
@@ -287,7 +285,6 @@ class Config
 
     }//end __isset()
 
-
     /**
      * Unset the value of an inaccessible property.
      *
@@ -301,7 +298,6 @@ class Config
 
     }//end __unset()
 
-
     /**
      * Get the array of all config settings.
      *
@@ -312,7 +308,6 @@ class Config
         return $this->settings;
 
     }//end getSettings()
-
 
     /**
      * Set the array of all config settings.
@@ -333,7 +328,7 @@ class Config
      * @param bool  $dieOnUnknownArg Whether or not to kill the process when an
      *                               unknown command line arg is found.
      */
-    public function __construct(array $cliArgs=[], $dieOnUnknownArg=true)
+    public function __construct(array $cliArgs = [], $dieOnUnknownArg = true)
     {
         if (defined('PHP_CODESNIFFER_IN_TESTS') === true) {
             // Let everything through during testing so that we can
@@ -415,7 +410,6 @@ class Config
 
     }//end __construct()
 
-
     /**
      * Set the command line values.
      *
@@ -465,7 +459,6 @@ class Config
         }//end for
 
     }//end setCommandLineValues()
-
 
     /**
      * Restore default values for all possible command line arguments.
@@ -593,7 +586,6 @@ class Config
 
     }//end restoreDefaults()
 
-
     /**
      * Processes a short (-e) command line argument.
      *
@@ -606,98 +598,97 @@ class Config
     public function processShortArgument($arg, $pos)
     {
         switch ($arg) {
-        case 'h':
-        case '?':
-            ob_start();
-            $this->printUsage();
-            $output = ob_get_contents();
-            ob_end_clean();
-            throw new DeepExitException($output, 0);
-        case 'i' :
-            ob_start();
-            Util\Standards::printInstalledStandards();
-            $output = ob_get_contents();
-            ob_end_clean();
-            throw new DeepExitException($output, 0);
-        case 'v' :
-            if ($this->quiet === true) {
-                // Ignore when quiet mode is enabled.
+            case 'h':
+            case '?':
+                ob_start();
+                $this->printUsage();
+                $output = ob_get_contents();
+                ob_end_clean();
+                throw new DeepExitException($output, 0);
+            case 'i' :
+                ob_start();
+                Util\Standards::printInstalledStandards();
+                $output = ob_get_contents();
+                ob_end_clean();
+                throw new DeepExitException($output, 0);
+            case 'v' :
+                if ($this->quiet === true) {
+                    // Ignore when quiet mode is enabled.
+                    break;
+                }
+
+                $this->verbosity++;
+                self::$overriddenDefaults['verbosity'] = true;
                 break;
-            }
-
-            $this->verbosity++;
-            self::$overriddenDefaults['verbosity'] = true;
-            break;
-        case 'l' :
-            $this->local = true;
-            self::$overriddenDefaults['local'] = true;
-            break;
-        case 's' :
-            $this->showSources = true;
-            self::$overriddenDefaults['showSources'] = true;
-            break;
-        case 'a' :
-            $this->interactive = true;
-            self::$overriddenDefaults['interactive'] = true;
-            break;
-        case 'e':
-            $this->explain = true;
-            self::$overriddenDefaults['explain'] = true;
-            break;
-        case 'p' :
-            if ($this->quiet === true) {
-                // Ignore when quiet mode is enabled.
+            case 'l' :
+                $this->local = true;
+                self::$overriddenDefaults['local'] = true;
                 break;
-            }
+            case 's' :
+                $this->showSources = true;
+                self::$overriddenDefaults['showSources'] = true;
+                break;
+            case 'a' :
+                $this->interactive = true;
+                self::$overriddenDefaults['interactive'] = true;
+                break;
+            case 'e':
+                $this->explain = true;
+                self::$overriddenDefaults['explain'] = true;
+                break;
+            case 'p' :
+                if ($this->quiet === true) {
+                    // Ignore when quiet mode is enabled.
+                    break;
+                }
 
-            $this->showProgress = true;
-            self::$overriddenDefaults['showProgress'] = true;
-            break;
-        case 'q' :
-            // Quiet mode disables a few other settings as well.
-            $this->quiet        = true;
-            $this->showProgress = false;
-            $this->verbosity    = 0;
+                $this->showProgress = true;
+                self::$overriddenDefaults['showProgress'] = true;
+                break;
+            case 'q' :
+                // Quiet mode disables a few other settings as well.
+                $this->quiet        = true;
+                $this->showProgress = false;
+                $this->verbosity    = 0;
 
-            self::$overriddenDefaults['quiet'] = true;
-            break;
-        case 'm' :
-            $this->recordErrors = false;
-            self::$overriddenDefaults['recordErrors'] = true;
-            break;
-        case 'd' :
-            $ini = explode('=', $this->cliArgs[($pos + 1)]);
-            $this->cliArgs[($pos + 1)] = '';
-            if (isset($ini[1]) === true) {
-                ini_set($ini[0], $ini[1]);
-            } else {
-                ini_set($ini[0], true);
-            }
-            break;
-        case 'n' :
-            if (isset(self::$overriddenDefaults['warningSeverity']) === false) {
-                $this->warningSeverity = 0;
-                self::$overriddenDefaults['warningSeverity'] = true;
-            }
-            break;
-        case 'w' :
-            if (isset(self::$overriddenDefaults['warningSeverity']) === false) {
-                $this->warningSeverity = $this->errorSeverity;
-                self::$overriddenDefaults['warningSeverity'] = true;
-            }
-            break;
-        default:
-            if ($this->dieOnUnknownArg === false) {
-                $unknown       = $this->unknown;
-                $unknown[]     = $arg;
-                $this->unknown = $unknown;
-            } else {
-                $this->processUnknownArgument('-'.$arg, $pos);
-            }
+                self::$overriddenDefaults['quiet'] = true;
+                break;
+            case 'm' :
+                $this->recordErrors = false;
+                self::$overriddenDefaults['recordErrors'] = true;
+                break;
+            case 'd' :
+                $ini = explode('=', $this->cliArgs[($pos + 1)]);
+                $this->cliArgs[($pos + 1)] = '';
+                if (isset($ini[1]) === true) {
+                    ini_set($ini[0], $ini[1]);
+                } else {
+                    ini_set($ini[0], true);
+                }
+                break;
+            case 'n' :
+                if (isset(self::$overriddenDefaults['warningSeverity']) === false) {
+                    $this->warningSeverity = 0;
+                    self::$overriddenDefaults['warningSeverity'] = true;
+                }
+                break;
+            case 'w' :
+                if (isset(self::$overriddenDefaults['warningSeverity']) === false) {
+                    $this->warningSeverity = $this->errorSeverity;
+                    self::$overriddenDefaults['warningSeverity'] = true;
+                }
+                break;
+            default:
+                if ($this->dieOnUnknownArg === false) {
+                    $unknown       = $this->unknown;
+                    $unknown[]     = $arg;
+                    $this->unknown = $unknown;
+                } else {
+                    $this->processUnknownArgument('-'.$arg, $pos);
+                }
         }//end switch
 
     }//end processShortArgument()
-
 
     /**
      * Processes a long (--example) command-line argument.
@@ -711,529 +702,528 @@ class Config
     public function processLongArgument($arg, $pos)
     {
         switch ($arg) {
-        case 'help':
-            ob_start();
-            $this->printUsage();
-            $output = ob_get_contents();
-            ob_end_clean();
-            throw new DeepExitException($output, 0);
-        case 'version':
-            $output  = 'PHP_CodeSniffer version '.self::VERSION.' ('.self::STABILITY.') ';
-            $output .= 'by Squiz (https://www.squiz.net)'.PHP_EOL;
-            throw new DeepExitException($output, 0);
-        case 'colors':
-            if (isset(self::$overriddenDefaults['colors']) === true) {
-                break;
-            }
+            case 'help':
+                ob_start();
+                $this->printUsage();
+                $output = ob_get_contents();
+                ob_end_clean();
+                throw new DeepExitException($output, 0);
+            case 'version':
+                $output  = 'PHP_CodeSniffer version '.self::VERSION.' ('.self::STABILITY.') ';
+                $output .= 'by Squiz (https://www.squiz.net)'.PHP_EOL;
+                throw new DeepExitException($output, 0);
+            case 'colors':
+                if (isset(self::$overriddenDefaults['colors']) === true) {
+                    break;
+                }
 
-            $this->colors = true;
-            self::$overriddenDefaults['colors'] = true;
-            break;
-        case 'no-colors':
-            if (isset(self::$overriddenDefaults['colors']) === true) {
+                $this->colors = true;
+                self::$overriddenDefaults['colors'] = true;
                 break;
-            }
+            case 'no-colors':
+                if (isset(self::$overriddenDefaults['colors']) === true) {
+                    break;
+                }
 
-            $this->colors = false;
-            self::$overriddenDefaults['colors'] = true;
-            break;
-        case 'cache':
-            if (isset(self::$overriddenDefaults['cache']) === true) {
+                $this->colors = false;
+                self::$overriddenDefaults['colors'] = true;
                 break;
-            }
+            case 'cache':
+                if (isset(self::$overriddenDefaults['cache']) === true) {
+                    break;
+                }
 
-            if (defined('PHP_CODESNIFFER_IN_TESTS') === false) {
-                $this->cache = true;
+                if (defined('PHP_CODESNIFFER_IN_TESTS') === false) {
+                    $this->cache = true;
+                    self::$overriddenDefaults['cache'] = true;
+                }
+                break;
+            case 'no-cache':
+                if (isset(self::$overriddenDefaults['cache']) === true) {
+                    break;
+                }
+
+                $this->cache = false;
                 self::$overriddenDefaults['cache'] = true;
-            }
-            break;
-        case 'no-cache':
-            if (isset(self::$overriddenDefaults['cache']) === true) {
                 break;
-            }
+            case 'ignore-annotations':
+                if (isset(self::$overriddenDefaults['annotations']) === true) {
+                    break;
+                }
 
-            $this->cache = false;
-            self::$overriddenDefaults['cache'] = true;
-            break;
-        case 'ignore-annotations':
-            if (isset(self::$overriddenDefaults['annotations']) === true) {
+                $this->annotations = false;
+                self::$overriddenDefaults['annotations'] = true;
                 break;
-            }
+            case 'config-set':
+                if (isset($this->cliArgs[($pos + 1)]) === false
+                    || isset($this->cliArgs[($pos + 2)]) === false
+                ) {
+                    $error  = 'ERROR: Setting a config option requires a name and value'.PHP_EOL.PHP_EOL;
+                    $error .= $this->printShortUsage(true);
+                    throw new DeepExitException($error, 3);
+                }
 
-            $this->annotations = false;
-            self::$overriddenDefaults['annotations'] = true;
-            break;
-        case 'config-set':
-            if (isset($this->cliArgs[($pos + 1)]) === false
-                || isset($this->cliArgs[($pos + 2)]) === false
-            ) {
-                $error  = 'ERROR: Setting a config option requires a name and value'.PHP_EOL.PHP_EOL;
-                $error .= $this->printShortUsage(true);
-                throw new DeepExitException($error, 3);
-            }
+                $key     = $this->cliArgs[($pos + 1)];
+                $value   = $this->cliArgs[($pos + 2)];
+                $current = self::getConfigData($key);
 
-            $key     = $this->cliArgs[($pos + 1)];
-            $value   = $this->cliArgs[($pos + 2)];
-            $current = self::getConfigData($key);
-
-            try {
-                $this->setConfigData($key, $value);
-            } catch (\Exception $e) {
-                throw new DeepExitException($e->getMessage().PHP_EOL, 3);
-            }
-
-            $output = 'Using config file: '.self::$configDataFile.PHP_EOL.PHP_EOL;
-
-            if ($current === null) {
-                $output .= "Config value \"$key\" added successfully".PHP_EOL;
-            } else {
-                $output .= "Config value \"$key\" updated successfully; old value was \"$current\"".PHP_EOL;
-            }
-            throw new DeepExitException($output, 0);
-        case 'config-delete':
-            if (isset($this->cliArgs[($pos + 1)]) === false) {
-                $error  = 'ERROR: Deleting a config option requires the name of the option'.PHP_EOL.PHP_EOL;
-                $error .= $this->printShortUsage(true);
-                throw new DeepExitException($error, 3);
-            }
-
-            $output = 'Using config file: '.self::$configDataFile.PHP_EOL.PHP_EOL;
-
-            $key     = $this->cliArgs[($pos + 1)];
-            $current = self::getConfigData($key);
-            if ($current === null) {
-                $output .= "Config value \"$key\" has not been set".PHP_EOL;
-            } else {
                 try {
-                    $this->setConfigData($key, null);
+                    $this->setConfigData($key, $value);
                 } catch (\Exception $e) {
                     throw new DeepExitException($e->getMessage().PHP_EOL, 3);
                 }
 
-                $output .= "Config value \"$key\" removed successfully; old value was \"$current\"".PHP_EOL;
-            }
-            throw new DeepExitException($output, 0);
-        case 'config-show':
-            ob_start();
-            $data = self::getAllConfigData();
-            echo 'Using config file: '.self::$configDataFile.PHP_EOL.PHP_EOL;
-            $this->printConfigData($data);
-            $output = ob_get_contents();
-            ob_end_clean();
-            throw new DeepExitException($output, 0);
-        case 'runtime-set':
-            if (isset($this->cliArgs[($pos + 1)]) === false
-                || isset($this->cliArgs[($pos + 2)]) === false
-            ) {
-                $error  = 'ERROR: Setting a runtime config option requires a name and value'.PHP_EOL.PHP_EOL;
-                $error .= $this->printShortUsage(true);
-                throw new DeepExitException($error, 3);
-            }
+                $output = 'Using config file: '.self::$configDataFile.PHP_EOL.PHP_EOL;
 
-            $key   = $this->cliArgs[($pos + 1)];
-            $value = $this->cliArgs[($pos + 2)];
-            $this->cliArgs[($pos + 1)] = '';
-            $this->cliArgs[($pos + 2)] = '';
-            self::setConfigData($key, $value, true);
-            if (isset(self::$overriddenDefaults['runtime-set']) === false) {
-                self::$overriddenDefaults['runtime-set'] = [];
-            }
-
-            self::$overriddenDefaults['runtime-set'][$key] = true;
-            break;
-        default:
-            if (substr($arg, 0, 7) === 'sniffs=') {
-                if (isset(self::$overriddenDefaults['sniffs']) === true) {
-                    break;
-                }
-
-                $sniffs = explode(',', substr($arg, 7));
-                foreach ($sniffs as $sniff) {
-                    if (substr_count($sniff, '.') !== 2) {
-                        $error  = 'ERROR: The specified sniff code "'.$sniff.'" is invalid'.PHP_EOL.PHP_EOL;
-                        $error .= $this->printShortUsage(true);
-                        throw new DeepExitException($error, 3);
-                    }
-                }
-
-                $this->sniffs = $sniffs;
-                self::$overriddenDefaults['sniffs'] = true;
-            } else if (substr($arg, 0, 8) === 'exclude=') {
-                if (isset(self::$overriddenDefaults['exclude']) === true) {
-                    break;
-                }
-
-                $sniffs = explode(',', substr($arg, 8));
-                foreach ($sniffs as $sniff) {
-                    if (substr_count($sniff, '.') !== 2) {
-                        $error  = 'ERROR: The specified sniff code "'.$sniff.'" is invalid'.PHP_EOL.PHP_EOL;
-                        $error .= $this->printShortUsage(true);
-                        throw new DeepExitException($error, 3);
-                    }
-                }
-
-                $this->exclude = $sniffs;
-                self::$overriddenDefaults['exclude'] = true;
-            } else if (defined('PHP_CODESNIFFER_IN_TESTS') === false
-                && substr($arg, 0, 6) === 'cache='
-            ) {
-                if ((isset(self::$overriddenDefaults['cache']) === true
-                    && $this->cache === false)
-                    || isset(self::$overriddenDefaults['cacheFile']) === true
-                ) {
-                    break;
-                }
-
-                // Turn caching on.
-                $this->cache = true;
-                self::$overriddenDefaults['cache'] = true;
-
-                $this->cacheFile = Util\Common::realpath(substr($arg, 6));
-
-                // It may not exist and return false instead.
-                if ($this->cacheFile === false) {
-                    $this->cacheFile = substr($arg, 6);
-
-                    $dir = dirname($this->cacheFile);
-                    if (is_dir($dir) === false) {
-                        $error  = 'ERROR: The specified cache file path "'.$this->cacheFile.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
-                        $error .= $this->printShortUsage(true);
-                        throw new DeepExitException($error, 3);
-                    }
-
-                    if ($dir === '.') {
-                        // Passed cache file is a file in the current directory.
-                        $this->cacheFile = getcwd().'/'.basename($this->cacheFile);
-                    } else {
-                        if ($dir[0] === '/') {
-                            // An absolute path.
-                            $dir = Util\Common::realpath($dir);
-                        } else {
-                            $dir = Util\Common::realpath(getcwd().'/'.$dir);
-                        }
-
-                        if ($dir !== false) {
-                            // Cache file path is relative.
-                            $this->cacheFile = $dir.'/'.basename($this->cacheFile);
-                        }
-                    }
-                }//end if
-
-                self::$overriddenDefaults['cacheFile'] = true;
-
-                if (is_dir($this->cacheFile) === true) {
-                    $error  = 'ERROR: The specified cache file path "'.$this->cacheFile.'" is a directory'.PHP_EOL.PHP_EOL;
-                    $error .= $this->printShortUsage(true);
-                    throw new DeepExitException($error, 3);
-                }
-            } else if (substr($arg, 0, 10) === 'bootstrap=') {
-                $files     = explode(',', substr($arg, 10));
-                $bootstrap = [];
-                foreach ($files as $file) {
-                    $path = Util\Common::realpath($file);
-                    if ($path === false) {
-                        $error  = 'ERROR: The specified bootstrap file "'.$file.'" does not exist'.PHP_EOL.PHP_EOL;
-                        $error .= $this->printShortUsage(true);
-                        throw new DeepExitException($error, 3);
-                    }
-
-                    $bootstrap[] = $path;
-                }
-
-                $this->bootstrap = array_merge($this->bootstrap, $bootstrap);
-                self::$overriddenDefaults['bootstrap'] = true;
-            } else if (substr($arg, 0, 10) === 'file-list=') {
-                $fileList = substr($arg, 10);
-                $path     = Util\Common::realpath($fileList);
-                if ($path === false) {
-                    $error  = 'ERROR: The specified file list "'.$fileList.'" does not exist'.PHP_EOL.PHP_EOL;
-                    $error .= $this->printShortUsage(true);
-                    throw new DeepExitException($error, 3);
-                }
-
-                $files = file($path);
-                foreach ($files as $inputFile) {
-                    $inputFile = trim($inputFile);
-
-                    // Skip empty lines.
-                    if ($inputFile === '') {
-                        continue;
-                    }
-
-                    $this->processFilePath($inputFile);
-                }
-            } else if (substr($arg, 0, 11) === 'stdin-path=') {
-                if (isset(self::$overriddenDefaults['stdinPath']) === true) {
-                    break;
-                }
-
-                $this->stdinPath = Util\Common::realpath(substr($arg, 11));
-
-                // It may not exist and return false instead, so use whatever they gave us.
-                if ($this->stdinPath === false) {
-                    $this->stdinPath = trim(substr($arg, 11));
-                }
-
-                self::$overriddenDefaults['stdinPath'] = true;
-            } else if (PHP_CODESNIFFER_CBF === false && substr($arg, 0, 12) === 'report-file=') {
-                if (isset(self::$overriddenDefaults['reportFile']) === true) {
-                    break;
-                }
-
-                $this->reportFile = Util\Common::realpath(substr($arg, 12));
-
-                // It may not exist and return false instead.
-                if ($this->reportFile === false) {
-                    $this->reportFile = substr($arg, 12);
-
-                    $dir = Util\Common::realpath(dirname($this->reportFile));
-                    if (is_dir($dir) === false) {
-                        $error  = 'ERROR: The specified report file path "'.$this->reportFile.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
-                        $error .= $this->printShortUsage(true);
-                        throw new DeepExitException($error, 3);
-                    }
-
-                    $this->reportFile = $dir.'/'.basename($this->reportFile);
-                }//end if
-
-                self::$overriddenDefaults['reportFile'] = true;
-
-                if (is_dir($this->reportFile) === true) {
-                    $error  = 'ERROR: The specified report file path "'.$this->reportFile.'" is a directory'.PHP_EOL.PHP_EOL;
-                    $error .= $this->printShortUsage(true);
-                    throw new DeepExitException($error, 3);
-                }
-            } else if (substr($arg, 0, 13) === 'report-width=') {
-                if (isset(self::$overriddenDefaults['reportWidth']) === true) {
-                    break;
-                }
-
-                $this->reportWidth = substr($arg, 13);
-                self::$overriddenDefaults['reportWidth'] = true;
-            } else if (substr($arg, 0, 9) === 'basepath=') {
-                if (isset(self::$overriddenDefaults['basepath']) === true) {
-                    break;
-                }
-
-                self::$overriddenDefaults['basepath'] = true;
-
-                if (substr($arg, 9) === '') {
-                    $this->basepath = null;
-                    break;
-                }
-
-                $this->basepath = Util\Common::realpath(substr($arg, 9));
-
-                // It may not exist and return false instead.
-                if ($this->basepath === false) {
-                    $this->basepath = substr($arg, 9);
-                }
-
-                if (is_dir($this->basepath) === false) {
-                    $error  = 'ERROR: The specified basepath "'.$this->basepath.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
-                    $error .= $this->printShortUsage(true);
-                    throw new DeepExitException($error, 3);
-                }
-            } else if ((substr($arg, 0, 7) === 'report=' || substr($arg, 0, 7) === 'report-')) {
-                $reports = [];
-
-                if ($arg[6] === '-') {
-                    // This is a report with file output.
-                    $split = strpos($arg, '=');
-                    if ($split === false) {
-                        $report = substr($arg, 7);
-                        $output = null;
-                    } else {
-                        $report = substr($arg, 7, ($split - 7));
-                        $output = substr($arg, ($split + 1));
-                        if ($output === false) {
-                            $output = null;
-                        } else {
-                            $dir = Util\Common::realpath(dirname($output));
-                            if (is_dir($dir) === false) {
-                                $error  = 'ERROR: The specified '.$report.' report file path "'.$output.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
-                                $error .= $this->printShortUsage(true);
-                                throw new DeepExitException($error, 3);
-                            }
-
-                            $output = $dir.'/'.basename($output);
-
-                            if (is_dir($output) === true) {
-                                $error  = 'ERROR: The specified '.$report.' report file path "'.$output.'" is a directory'.PHP_EOL.PHP_EOL;
-                                $error .= $this->printShortUsage(true);
-                                throw new DeepExitException($error, 3);
-                            }
-                        }//end if
-                    }//end if
-
-                    $reports[$report] = $output;
+                if ($current === null) {
+                    $output .= "Config value \"$key\" added successfully".PHP_EOL;
                 } else {
-                    // This is a single report.
-                    if (isset(self::$overriddenDefaults['reports']) === true) {
+                    $output .= "Config value \"$key\" updated successfully; old value was \"$current\"".PHP_EOL;
+                }
+                throw new DeepExitException($output, 0);
+            case 'config-delete':
+                if (isset($this->cliArgs[($pos + 1)]) === false) {
+                    $error  = 'ERROR: Deleting a config option requires the name of the option'.PHP_EOL.PHP_EOL;
+                    $error .= $this->printShortUsage(true);
+                    throw new DeepExitException($error, 3);
+                }
+
+                $output = 'Using config file: '.self::$configDataFile.PHP_EOL.PHP_EOL;
+
+                $key     = $this->cliArgs[($pos + 1)];
+                $current = self::getConfigData($key);
+                if ($current === null) {
+                    $output .= "Config value \"$key\" has not been set".PHP_EOL;
+                } else {
+                    try {
+                        $this->setConfigData($key, null);
+                    } catch (\Exception $e) {
+                        throw new DeepExitException($e->getMessage().PHP_EOL, 3);
+                    }
+
+                    $output .= "Config value \"$key\" removed successfully; old value was \"$current\"".PHP_EOL;
+                }
+                throw new DeepExitException($output, 0);
+            case 'config-show':
+                ob_start();
+                $data = self::getAllConfigData();
+                echo 'Using config file: '.self::$configDataFile.PHP_EOL.PHP_EOL;
+                $this->printConfigData($data);
+                $output = ob_get_contents();
+                ob_end_clean();
+                throw new DeepExitException($output, 0);
+            case 'runtime-set':
+                if (isset($this->cliArgs[($pos + 1)]) === false
+                    || isset($this->cliArgs[($pos + 2)]) === false
+                ) {
+                    $error  = 'ERROR: Setting a runtime config option requires a name and value'.PHP_EOL.PHP_EOL;
+                    $error .= $this->printShortUsage(true);
+                    throw new DeepExitException($error, 3);
+                }
+
+                $key   = $this->cliArgs[($pos + 1)];
+                $value = $this->cliArgs[($pos + 2)];
+                $this->cliArgs[($pos + 1)] = '';
+                $this->cliArgs[($pos + 2)] = '';
+                self::setConfigData($key, $value, true);
+                if (isset(self::$overriddenDefaults['runtime-set']) === false) {
+                    self::$overriddenDefaults['runtime-set'] = [];
+                }
+
+                self::$overriddenDefaults['runtime-set'][$key] = true;
+                break;
+            default:
+                if (substr($arg, 0, 7) === 'sniffs=') {
+                    if (isset(self::$overriddenDefaults['sniffs']) === true) {
                         break;
                     }
 
-                    $reportNames = explode(',', substr($arg, 7));
-                    foreach ($reportNames as $report) {
-                        $reports[$report] = null;
+                    $sniffs = explode(',', substr($arg, 7));
+                    foreach ($sniffs as $sniff) {
+                        if (substr_count($sniff, '.') !== 2) {
+                            $error  = 'ERROR: The specified sniff code "'.$sniff.'" is invalid'.PHP_EOL.PHP_EOL;
+                            $error .= $this->printShortUsage(true);
+                            throw new DeepExitException($error, 3);
+                        }
+                    }
+
+                    $this->sniffs = $sniffs;
+                    self::$overriddenDefaults['sniffs'] = true;
+                } elseif (substr($arg, 0, 8) === 'exclude=') {
+                    if (isset(self::$overriddenDefaults['exclude']) === true) {
+                        break;
+                    }
+
+                    $sniffs = explode(',', substr($arg, 8));
+                    foreach ($sniffs as $sniff) {
+                        if (substr_count($sniff, '.') !== 2) {
+                            $error  = 'ERROR: The specified sniff code "'.$sniff.'" is invalid'.PHP_EOL.PHP_EOL;
+                            $error .= $this->printShortUsage(true);
+                            throw new DeepExitException($error, 3);
+                        }
+                    }
+
+                    $this->exclude = $sniffs;
+                    self::$overriddenDefaults['exclude'] = true;
+                } elseif (defined('PHP_CODESNIFFER_IN_TESTS') === false
+                    && substr($arg, 0, 6) === 'cache='
+                ) {
+                    if ((isset(self::$overriddenDefaults['cache']) === true
+                        && $this->cache === false)
+                        || isset(self::$overriddenDefaults['cacheFile']) === true
+                    ) {
+                        break;
+                    }
+
+                    // Turn caching on.
+                    $this->cache = true;
+                    self::$overriddenDefaults['cache'] = true;
+
+                    $this->cacheFile = Util\Common::realpath(substr($arg, 6));
+
+                    // It may not exist and return false instead.
+                    if ($this->cacheFile === false) {
+                        $this->cacheFile = substr($arg, 6);
+
+                        $dir = dirname($this->cacheFile);
+                        if (is_dir($dir) === false) {
+                            $error  = 'ERROR: The specified cache file path "'.$this->cacheFile.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
+                            $error .= $this->printShortUsage(true);
+                            throw new DeepExitException($error, 3);
+                        }
+
+                        if ($dir === '.') {
+                            // Passed cache file is a file in the current directory.
+                            $this->cacheFile = getcwd().'/'.basename($this->cacheFile);
+                        } else {
+                            if ($dir[0] === '/') {
+                                // An absolute path.
+                                $dir = Util\Common::realpath($dir);
+                            } else {
+                                $dir = Util\Common::realpath(getcwd().'/'.$dir);
+                            }
+
+                            if ($dir !== false) {
+                                // Cache file path is relative.
+                                $this->cacheFile = $dir.'/'.basename($this->cacheFile);
+                            }
+                        }
+                    }//end if
+
+                    self::$overriddenDefaults['cacheFile'] = true;
+
+                    if (is_dir($this->cacheFile) === true) {
+                        $error  = 'ERROR: The specified cache file path "'.$this->cacheFile.'" is a directory'.PHP_EOL.PHP_EOL;
+                        $error .= $this->printShortUsage(true);
+                        throw new DeepExitException($error, 3);
+                    }
+                } elseif (substr($arg, 0, 10) === 'bootstrap=') {
+                    $files     = explode(',', substr($arg, 10));
+                    $bootstrap = [];
+                    foreach ($files as $file) {
+                        $path = Util\Common::realpath($file);
+                        if ($path === false) {
+                            $error  = 'ERROR: The specified bootstrap file "'.$file.'" does not exist'.PHP_EOL.PHP_EOL;
+                            $error .= $this->printShortUsage(true);
+                            throw new DeepExitException($error, 3);
+                        }
+
+                        $bootstrap[] = $path;
+                    }
+
+                    $this->bootstrap = array_merge($this->bootstrap, $bootstrap);
+                    self::$overriddenDefaults['bootstrap'] = true;
+                } elseif (substr($arg, 0, 10) === 'file-list=') {
+                    $fileList = substr($arg, 10);
+                    $path     = Util\Common::realpath($fileList);
+                    if ($path === false) {
+                        $error  = 'ERROR: The specified file list "'.$fileList.'" does not exist'.PHP_EOL.PHP_EOL;
+                        $error .= $this->printShortUsage(true);
+                        throw new DeepExitException($error, 3);
+                    }
+
+                    $files = file($path);
+                    foreach ($files as $inputFile) {
+                        $inputFile = trim($inputFile);
+
+                        // Skip empty lines.
+                        if ($inputFile === '') {
+                            continue;
+                        }
+
+                        $this->processFilePath($inputFile);
+                    }
+                } elseif (substr($arg, 0, 11) === 'stdin-path=') {
+                    if (isset(self::$overriddenDefaults['stdinPath']) === true) {
+                        break;
+                    }
+
+                    $this->stdinPath = Util\Common::realpath(substr($arg, 11));
+
+                    // It may not exist and return false instead, so use whatever they gave us.
+                    if ($this->stdinPath === false) {
+                        $this->stdinPath = trim(substr($arg, 11));
+                    }
+
+                    self::$overriddenDefaults['stdinPath'] = true;
+                } elseif (PHP_CODESNIFFER_CBF === false && substr($arg, 0, 12) === 'report-file=') {
+                    if (isset(self::$overriddenDefaults['reportFile']) === true) {
+                        break;
+                    }
+
+                    $this->reportFile = Util\Common::realpath(substr($arg, 12));
+
+                    // It may not exist and return false instead.
+                    if ($this->reportFile === false) {
+                        $this->reportFile = substr($arg, 12);
+
+                        $dir = Util\Common::realpath(dirname($this->reportFile));
+                        if (is_dir($dir) === false) {
+                            $error  = 'ERROR: The specified report file path "'.$this->reportFile.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
+                            $error .= $this->printShortUsage(true);
+                            throw new DeepExitException($error, 3);
+                        }
+
+                        $this->reportFile = $dir.'/'.basename($this->reportFile);
+                    }//end if
+
+                    self::$overriddenDefaults['reportFile'] = true;
+
+                    if (is_dir($this->reportFile) === true) {
+                        $error  = 'ERROR: The specified report file path "'.$this->reportFile.'" is a directory'.PHP_EOL.PHP_EOL;
+                        $error .= $this->printShortUsage(true);
+                        throw new DeepExitException($error, 3);
+                    }
+                } elseif (substr($arg, 0, 13) === 'report-width=') {
+                    if (isset(self::$overriddenDefaults['reportWidth']) === true) {
+                        break;
+                    }
+
+                    $this->reportWidth = substr($arg, 13);
+                    self::$overriddenDefaults['reportWidth'] = true;
+                } elseif (substr($arg, 0, 9) === 'basepath=') {
+                    if (isset(self::$overriddenDefaults['basepath']) === true) {
+                        break;
+                    }
+
+                    self::$overriddenDefaults['basepath'] = true;
+
+                    if (substr($arg, 9) === '') {
+                        $this->basepath = null;
+                        break;
+                    }
+
+                    $this->basepath = Util\Common::realpath(substr($arg, 9));
+
+                    // It may not exist and return false instead.
+                    if ($this->basepath === false) {
+                        $this->basepath = substr($arg, 9);
+                    }
+
+                    if (is_dir($this->basepath) === false) {
+                        $error  = 'ERROR: The specified basepath "'.$this->basepath.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
+                        $error .= $this->printShortUsage(true);
+                        throw new DeepExitException($error, 3);
+                    }
+                } elseif ((substr($arg, 0, 7) === 'report=' || substr($arg, 0, 7) === 'report-')) {
+                    $reports = [];
+
+                    if ($arg[6] === '-') {
+                        // This is a report with file output.
+                        $split = strpos($arg, '=');
+                        if ($split === false) {
+                            $report = substr($arg, 7);
+                            $output = null;
+                        } else {
+                            $report = substr($arg, 7, ($split - 7));
+                            $output = substr($arg, ($split + 1));
+                            if ($output === false) {
+                                $output = null;
+                            } else {
+                                $dir = Util\Common::realpath(dirname($output));
+                                if (is_dir($dir) === false) {
+                                    $error  = 'ERROR: The specified '.$report.' report file path "'.$output.'" points to a non-existent directory'.PHP_EOL.PHP_EOL;
+                                    $error .= $this->printShortUsage(true);
+                                    throw new DeepExitException($error, 3);
+                                }
+
+                                $output = $dir.'/'.basename($output);
+
+                                if (is_dir($output) === true) {
+                                    $error  = 'ERROR: The specified '.$report.' report file path "'.$output.'" is a directory'.PHP_EOL.PHP_EOL;
+                                    $error .= $this->printShortUsage(true);
+                                    throw new DeepExitException($error, 3);
+                                }
+                            }//end if
+                        }//end if
+
+                        $reports[$report] = $output;
+                    } else {
+                        // This is a single report.
+                        if (isset(self::$overriddenDefaults['reports']) === true) {
+                            break;
+                        }
+
+                        $reportNames = explode(',', substr($arg, 7));
+                        foreach ($reportNames as $report) {
+                            $reports[$report] = null;
+                        }
+                    }//end if
+
+                    // Remove the default value so the CLI value overrides it.
+                    if (isset(self::$overriddenDefaults['reports']) === false) {
+                        $this->reports = $reports;
+                    } else {
+                        $this->reports = array_merge($this->reports, $reports);
+                    }
+
+                    self::$overriddenDefaults['reports'] = true;
+                } elseif (substr($arg, 0, 7) === 'filter=') {
+                    if (isset(self::$overriddenDefaults['filter']) === true) {
+                        break;
+                    }
+
+                    $this->filter = substr($arg, 7);
+                    self::$overriddenDefaults['filter'] = true;
+                } elseif (substr($arg, 0, 9) === 'standard=') {
+                    $standards = trim(substr($arg, 9));
+                    if ($standards !== '') {
+                        $this->standards = explode(',', $standards);
+                    }
+
+                    self::$overriddenDefaults['standards'] = true;
+                } elseif (substr($arg, 0, 11) === 'extensions=') {
+                    if (isset(self::$overriddenDefaults['extensions']) === true) {
+                        break;
+                    }
+
+                    $extensions    = explode(',', substr($arg, 11));
+                    $newExtensions = [];
+                    foreach ($extensions as $ext) {
+                        $slash = strpos($ext, '/');
+                        if ($slash !== false) {
+                            // They specified the tokenizer too.
+                            list($ext, $tokenizer) = explode('/', $ext);
+                            $newExtensions[$ext]   = strtoupper($tokenizer);
+                            continue;
+                        }
+
+                        if (isset($this->extensions[$ext]) === true) {
+                            $newExtensions[$ext] = $this->extensions[$ext];
+                        } else {
+                            $newExtensions[$ext] = 'PHP';
+                        }
+                    }
+
+                    $this->extensions = $newExtensions;
+                    self::$overriddenDefaults['extensions'] = true;
+                } elseif (substr($arg, 0, 7) === 'suffix=') {
+                    if (isset(self::$overriddenDefaults['suffix']) === true) {
+                        break;
+                    }
+
+                    $this->suffix = substr($arg, 7);
+                    self::$overriddenDefaults['suffix'] = true;
+                } elseif (substr($arg, 0, 9) === 'parallel=') {
+                    if (isset(self::$overriddenDefaults['parallel']) === true) {
+                        break;
+                    }
+
+                    $this->parallel = max((int) substr($arg, 9), 1);
+                    self::$overriddenDefaults['parallel'] = true;
+                } elseif (substr($arg, 0, 9) === 'severity=') {
+                    $this->errorSeverity   = (int) substr($arg, 9);
+                    $this->warningSeverity = $this->errorSeverity;
+                    if (isset(self::$overriddenDefaults['errorSeverity']) === false) {
+                        self::$overriddenDefaults['errorSeverity'] = true;
+                    }
+
+                    if (isset(self::$overriddenDefaults['warningSeverity']) === false) {
+                        self::$overriddenDefaults['warningSeverity'] = true;
+                    }
+                } elseif (substr($arg, 0, 15) === 'error-severity=') {
+                    if (isset(self::$overriddenDefaults['errorSeverity']) === true) {
+                        break;
+                    }
+
+                    $this->errorSeverity = (int) substr($arg, 15);
+                    self::$overriddenDefaults['errorSeverity'] = true;
+                } elseif (substr($arg, 0, 17) === 'warning-severity=') {
+                    if (isset(self::$overriddenDefaults['warningSeverity']) === true) {
+                        break;
+                    }
+
+                    $this->warningSeverity = (int) substr($arg, 17);
+                    self::$overriddenDefaults['warningSeverity'] = true;
+                } elseif (substr($arg, 0, 7) === 'ignore=') {
+                    if (isset(self::$overriddenDefaults['ignored']) === true) {
+                        break;
+                    }
+
+                    // Split the ignore string on commas, unless the comma is escaped
+                    // using 1 or 3 slashes (\, or \\\,).
+                    $patterns = preg_split(
+                        '/(?<=(?<!\\\\)\\\\\\\\),|(?<!\\\\),/',
+                        substr($arg, 7)
+                    );
+
+                    $ignored = [];
+                    foreach ($patterns as $pattern) {
+                        $pattern = trim($pattern);
+                        if ($pattern === '') {
+                            continue;
+                        }
+
+                        $ignored[$pattern] = 'absolute';
+                    }
+
+                    $this->ignored = $ignored;
+                    self::$overriddenDefaults['ignored'] = true;
+                } elseif (substr($arg, 0, 10) === 'generator='
+                    && PHP_CODESNIFFER_CBF === false
+                ) {
+                    if (isset(self::$overriddenDefaults['generator']) === true) {
+                        break;
+                    }
+
+                    $this->generator = substr($arg, 10);
+                    self::$overriddenDefaults['generator'] = true;
+                } elseif (substr($arg, 0, 9) === 'encoding=') {
+                    if (isset(self::$overriddenDefaults['encoding']) === true) {
+                        break;
+                    }
+
+                    $this->encoding = strtolower(substr($arg, 9));
+                    self::$overriddenDefaults['encoding'] = true;
+                } elseif (substr($arg, 0, 10) === 'tab-width=') {
+                    if (isset(self::$overriddenDefaults['tabWidth']) === true) {
+                        break;
+                    }
+
+                    $this->tabWidth = (int) substr($arg, 10);
+                    self::$overriddenDefaults['tabWidth'] = true;
+                } else {
+                    if ($this->dieOnUnknownArg === false) {
+                        $eqPos = strpos($arg, '=');
+                        try {
+                            if ($eqPos === false) {
+                                $this->values[$arg] = $arg;
+                            } else {
+                                $value = substr($arg, ($eqPos + 1));
+                                $arg   = substr($arg, 0, $eqPos);
+                                $this->values[$arg] = $value;
+                            }
+                        } catch (RuntimeException $e) {
+                            // Value is not valid, so just ignore it.
+                        }
+                    } else {
+                        $this->processUnknownArgument('--'.$arg, $pos);
                     }
                 }//end if
-
-                // Remove the default value so the CLI value overrides it.
-                if (isset(self::$overriddenDefaults['reports']) === false) {
-                    $this->reports = $reports;
-                } else {
-                    $this->reports = array_merge($this->reports, $reports);
-                }
-
-                self::$overriddenDefaults['reports'] = true;
-            } else if (substr($arg, 0, 7) === 'filter=') {
-                if (isset(self::$overriddenDefaults['filter']) === true) {
-                    break;
-                }
-
-                $this->filter = substr($arg, 7);
-                self::$overriddenDefaults['filter'] = true;
-            } else if (substr($arg, 0, 9) === 'standard=') {
-                $standards = trim(substr($arg, 9));
-                if ($standards !== '') {
-                    $this->standards = explode(',', $standards);
-                }
-
-                self::$overriddenDefaults['standards'] = true;
-            } else if (substr($arg, 0, 11) === 'extensions=') {
-                if (isset(self::$overriddenDefaults['extensions']) === true) {
-                    break;
-                }
-
-                $extensions    = explode(',', substr($arg, 11));
-                $newExtensions = [];
-                foreach ($extensions as $ext) {
-                    $slash = strpos($ext, '/');
-                    if ($slash !== false) {
-                        // They specified the tokenizer too.
-                        list($ext, $tokenizer) = explode('/', $ext);
-                        $newExtensions[$ext]   = strtoupper($tokenizer);
-                        continue;
-                    }
-
-                    if (isset($this->extensions[$ext]) === true) {
-                        $newExtensions[$ext] = $this->extensions[$ext];
-                    } else {
-                        $newExtensions[$ext] = 'PHP';
-                    }
-                }
-
-                $this->extensions = $newExtensions;
-                self::$overriddenDefaults['extensions'] = true;
-            } else if (substr($arg, 0, 7) === 'suffix=') {
-                if (isset(self::$overriddenDefaults['suffix']) === true) {
-                    break;
-                }
-
-                $this->suffix = substr($arg, 7);
-                self::$overriddenDefaults['suffix'] = true;
-            } else if (substr($arg, 0, 9) === 'parallel=') {
-                if (isset(self::$overriddenDefaults['parallel']) === true) {
-                    break;
-                }
-
-                $this->parallel = max((int) substr($arg, 9), 1);
-                self::$overriddenDefaults['parallel'] = true;
-            } else if (substr($arg, 0, 9) === 'severity=') {
-                $this->errorSeverity   = (int) substr($arg, 9);
-                $this->warningSeverity = $this->errorSeverity;
-                if (isset(self::$overriddenDefaults['errorSeverity']) === false) {
-                    self::$overriddenDefaults['errorSeverity'] = true;
-                }
-
-                if (isset(self::$overriddenDefaults['warningSeverity']) === false) {
-                    self::$overriddenDefaults['warningSeverity'] = true;
-                }
-            } else if (substr($arg, 0, 15) === 'error-severity=') {
-                if (isset(self::$overriddenDefaults['errorSeverity']) === true) {
-                    break;
-                }
-
-                $this->errorSeverity = (int) substr($arg, 15);
-                self::$overriddenDefaults['errorSeverity'] = true;
-            } else if (substr($arg, 0, 17) === 'warning-severity=') {
-                if (isset(self::$overriddenDefaults['warningSeverity']) === true) {
-                    break;
-                }
-
-                $this->warningSeverity = (int) substr($arg, 17);
-                self::$overriddenDefaults['warningSeverity'] = true;
-            } else if (substr($arg, 0, 7) === 'ignore=') {
-                if (isset(self::$overriddenDefaults['ignored']) === true) {
-                    break;
-                }
-
-                // Split the ignore string on commas, unless the comma is escaped
-                // using 1 or 3 slashes (\, or \\\,).
-                $patterns = preg_split(
-                    '/(?<=(?<!\\\\)\\\\\\\\),|(?<!\\\\),/',
-                    substr($arg, 7)
-                );
-
-                $ignored = [];
-                foreach ($patterns as $pattern) {
-                    $pattern = trim($pattern);
-                    if ($pattern === '') {
-                        continue;
-                    }
-
-                    $ignored[$pattern] = 'absolute';
-                }
-
-                $this->ignored = $ignored;
-                self::$overriddenDefaults['ignored'] = true;
-            } else if (substr($arg, 0, 10) === 'generator='
-                && PHP_CODESNIFFER_CBF === false
-            ) {
-                if (isset(self::$overriddenDefaults['generator']) === true) {
-                    break;
-                }
-
-                $this->generator = substr($arg, 10);
-                self::$overriddenDefaults['generator'] = true;
-            } else if (substr($arg, 0, 9) === 'encoding=') {
-                if (isset(self::$overriddenDefaults['encoding']) === true) {
-                    break;
-                }
-
-                $this->encoding = strtolower(substr($arg, 9));
-                self::$overriddenDefaults['encoding'] = true;
-            } else if (substr($arg, 0, 10) === 'tab-width=') {
-                if (isset(self::$overriddenDefaults['tabWidth']) === true) {
-                    break;
-                }
-
-                $this->tabWidth = (int) substr($arg, 10);
-                self::$overriddenDefaults['tabWidth'] = true;
-            } else {
-                if ($this->dieOnUnknownArg === false) {
-                    $eqPos = strpos($arg, '=');
-                    try {
-                        if ($eqPos === false) {
-                            $this->values[$arg] = $arg;
-                        } else {
-                            $value = substr($arg, ($eqPos + 1));
-                            $arg   = substr($arg, 0, $eqPos);
-                            $this->values[$arg] = $value;
-                        }
-                    } catch (RuntimeException $e) {
-                        // Value is not valid, so just ignore it.
-                    }
-                } else {
-                    $this->processUnknownArgument('--'.$arg, $pos);
-                }
-            }//end if
-            break;
+                break;
         }//end switch
 
     }//end processLongArgument()
-
 
     /**
      * Processes an unknown command line argument.
@@ -1262,7 +1252,6 @@ class Config
         $this->processFilePath($arg);
 
     }//end processUnknownArgument()
-
 
     /**
      * Processes a file path and add it to the file list.
@@ -1298,7 +1287,6 @@ class Config
 
     }//end processFilePath()
 
-
     /**
      * Prints out the usage information for this script.
      *
@@ -1318,7 +1306,6 @@ class Config
 
     }//end printUsage()
 
-
     /**
      * Prints out the short usage information for this script.
      *
@@ -1327,7 +1314,7 @@ class Config
      *
      * @return string|void
      */
-    public function printShortUsage($return=false)
+    public function printShortUsage($return = false)
     {
         if (PHP_CODESNIFFER_CBF === true) {
             $usage = 'Run "phpcbf --help" for usage information';
@@ -1344,7 +1331,6 @@ class Config
         echo $usage;
 
     }//end printShortUsage()
-
 
     /**
      * Prints out the usage information for PHPCS.
@@ -1421,7 +1407,6 @@ class Config
 
     }//end printPHPCSUsage()
 
-
     /**
      * Prints out the usage information for PHPCBF.
      *
@@ -1475,7 +1460,6 @@ class Config
 
     }//end printPHPCBFUsage()
 
-
     /**
      * Get a single config value.
      *
@@ -1501,7 +1485,6 @@ class Config
 
     }//end getConfigData()
 
-
     /**
      * Get the path to an executable utility.
      *
@@ -1517,7 +1500,7 @@ class Config
             return $data;
         }
 
-        if ($name === "php") {
+        if ($name === 'php') {
             // For php, we know the executable path. There's no need to look it up.
             return PHP_BINARY;
         }
@@ -1542,7 +1525,6 @@ class Config
 
     }//end getExecutablePath()
 
-
     /**
      * Set a single config value.
      *
@@ -1558,7 +1540,7 @@ class Config
      * @see    getConfigData()
      * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the config file can not be written.
      */
-    public static function setConfigData($key, $value, $temp=false)
+    public static function setConfigData($key, $value, $temp = false)
     {
         if (isset(self::$overriddenDefaults['runtime-set']) === true
             && isset(self::$overriddenDefaults['runtime-set'][$key]) === true
@@ -1631,7 +1613,6 @@ class Config
 
     }//end setConfigData()
 
-
     /**
      * Get all config data.
      *
@@ -1678,7 +1659,6 @@ class Config
 
     }//end getAllConfigData()
 
-
     /**
      * Prints out the gathered config data.
      *
@@ -1708,6 +1688,5 @@ class Config
         }
 
     }//end printConfigData()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Ruleset class using a Windows-style absolute path to include a sniff.
  *
@@ -15,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 class RuleInclusionAbsoluteWindowsTest extends TestCase
 {
-
     /**
      * The Ruleset object.
      *
@@ -36,7 +37,6 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
      * @var string
      */
     private $contents = '';
-
 
     /**
      * Initialize the config and ruleset objects.
@@ -75,7 +75,6 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
 
     }//end setUp()
 
-
     /**
      * Reset ruleset file.
      *
@@ -88,7 +87,6 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
         }
 
     }//end tearDown()
-
 
     /**
      * Test that sniffs registed with a Windows absolute path are correctly recognized and that
@@ -114,6 +112,5 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
         );
 
     }//end testWindowsStylePathRuleInclusion()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the RequireStrictType sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class RequireStrictTypesUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,18 +25,17 @@ class RequireStrictTypesUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'RequireStrictTypesUnitTest.1.inc':
-            return [];
-            break;
+            case 'RequireStrictTypesUnitTest.1.inc':
+                return [];
+                break;
         }
 
         return [1 => 1];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -51,6 +50,5 @@ class RequireStrictTypesUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

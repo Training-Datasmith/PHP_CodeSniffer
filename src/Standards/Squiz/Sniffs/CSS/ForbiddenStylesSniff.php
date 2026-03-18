@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Bans the use of some styles, such as deprecated or browser-specific styles.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ForbiddenStylesSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -62,7 +63,6 @@ class ForbiddenStylesSniff implements Sniff
      */
     public $error = true;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -81,7 +81,6 @@ class ForbiddenStylesSniff implements Sniff
         return [T_STYLE];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -124,7 +123,6 @@ class ForbiddenStylesSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Generates the error or warning for this sniff.
      *
@@ -136,7 +134,7 @@ class ForbiddenStylesSniff implements Sniff
      *
      * @return void
      */
-    protected function addError($phpcsFile, $stackPtr, $style, $pattern=null)
+    protected function addError($phpcsFile, $stackPtr, $style, $pattern = null)
     {
         $data  = [$style];
         $error = 'The use of style %s is ';
@@ -172,6 +170,5 @@ class ForbiddenStylesSniff implements Sniff
         }
 
     }//end addError()
-
 
 }//end class

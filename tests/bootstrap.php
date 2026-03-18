@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Bootstrap file for PHP_CodeSniffer unit tests.
  *
@@ -50,7 +52,6 @@ $GLOBALS['PHP_CODESNIFFER_PEAR'] = false;
 if (is_file(__DIR__.'/../autoload.php') === false) {
     $GLOBALS['PHP_CODESNIFFER_PEAR'] = true;
 }
-
 
 /**
  * A global util function to help print unit test fixing data.

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that open PHP tags are paired with closing tags.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ClosingPHPTagSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -29,7 +29,6 @@ class ClosingPHPTagSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -49,6 +48,5 @@ class ClosingPHPTagSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

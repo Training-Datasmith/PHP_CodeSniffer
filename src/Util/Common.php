@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Basic util functions.
  *
@@ -11,7 +13,6 @@ namespace PHP_CodeSniffer\Util;
 
 class Common
 {
-
     /**
      * An array of variable types for param/var we will check.
      *
@@ -29,7 +30,6 @@ class Common
         'callable',
     ];
 
-
     /**
      * Return TRUE if the path is a PHAR file.
      *
@@ -46,7 +46,6 @@ class Common
         return false;
 
     }//end isPharFile()
-
 
     /**
      * Checks if a file is readable.
@@ -74,7 +73,6 @@ class Common
         return false;
 
     }//end isReadable()
-
 
     /**
      * CodeSniffer alternative for realpath.
@@ -128,7 +126,6 @@ class Common
 
     }//end realpath()
 
-
     /**
      * Removes a base path from the front of a file path.
      *
@@ -158,7 +155,6 @@ class Common
 
     }//end stripBasepath()
 
-
     /**
      * Detects the EOL character being used in a string.
      *
@@ -176,7 +172,6 @@ class Common
         return $matches[0];
 
     }//end detectLineEndings()
-
 
     /**
      * Check if STDIN is a TTY.
@@ -236,7 +231,6 @@ class Common
 
     }//end isStdinATTY()
 
-
     /**
      * Escape a path to a system command.
      *
@@ -258,7 +252,6 @@ class Common
 
     }//end escapeshellcmd()
 
-
     /**
      * Prepares token content for output to screen.
      *
@@ -271,7 +264,7 @@ class Common
      *
      * @return string
      */
-    public static function prepareForOutput($content, $exclude=[])
+    public static function prepareForOutput($content, $exclude = [])
     {
         if (stripos(PHP_OS, 'WIN') === 0) {
             if (in_array("\r", $exclude, true) === false) {
@@ -307,7 +300,6 @@ class Common
 
     }//end prepareForOutput()
 
-
     /**
      * Returns true if the specified string is in the camel caps format.
      *
@@ -330,9 +322,9 @@ class Common
      */
     public static function isCamelCaps(
         $string,
-        $classFormat=false,
-        $public=true,
-        $strict=true
+        $classFormat = false,
+        $public = true,
+        $strict = true
     ) {
         // Check the first character first.
         if ($classFormat === false) {
@@ -392,7 +384,6 @@ class Common
 
     }//end isCamelCaps()
 
-
     /**
      * Returns true if the specified string is in the underscore caps format.
      *
@@ -430,7 +421,6 @@ class Common
 
     }//end isUnderscoreName()
 
-
     /**
      * Returns a valid variable type for param/var tags.
      *
@@ -452,19 +442,19 @@ class Common
         }
         $lowerVarType = strtolower($varType);
         switch ($lowerVarType) {
-        case 'bool':
-        case 'boolean':
-            return 'boolean';
-        case 'double':
-        case 'real':
-        case 'float':
-            return 'float';
-        case 'int':
-        case 'integer':
-            return 'integer';
-        case 'array()':
-        case 'array':
-            return 'array';
+            case 'bool':
+            case 'boolean':
+                return 'boolean';
+            case 'double':
+            case 'real':
+            case 'float':
+                return 'float';
+            case 'int':
+            case 'integer':
+                return 'integer';
+            case 'array()':
+            case 'array':
+                return 'array';
         }
         //end switch
         if (strpos($lowerVarType, 'array(') !== false) {
@@ -505,7 +495,6 @@ class Common
 
     }//end suggestType()
 
-
     /**
      * Given a sniff class name, returns the code for the sniff.
      *
@@ -532,7 +521,6 @@ class Common
         return $standard.'.'.$category.'.'.$sniff;
 
     }//end getSniffCode()
-
 
     /**
      * Removes project-specific information from a sniff class name.
@@ -561,6 +549,5 @@ class Common
         return substr($newName, ($start + 1));
 
     }//end cleanSniffClass()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A base filter class for filtering out files and folders during a run.
  *
@@ -9,14 +11,13 @@
 
 namespace PHP_CodeSniffer\Filters;
 
-use PHP_CodeSniffer\Util;
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Config;
+use PHP_CodeSniffer\Ruleset;
+use PHP_CodeSniffer\Util;
 use ReturnTypeWillChange;
 
 class Filter extends \RecursiveFilterIterator
 {
-
     /**
      * The top-level path we are filtering.
      *
@@ -61,7 +62,6 @@ class Filter extends \RecursiveFilterIterator
      */
     protected $acceptedPaths = [];
 
-
     /**
      * Constructs a filter.
      *
@@ -78,7 +78,6 @@ class Filter extends \RecursiveFilterIterator
         $this->ruleset = $ruleset;
 
     }//end __construct()
-
 
     /**
      * Check whether the current element of the iterator is acceptable.
@@ -108,7 +107,7 @@ class Filter extends \RecursiveFilterIterator
             if ($this->config->local === true) {
                 return false;
             }
-        } else if ($this->shouldProcessFile($filePath) === false) {
+        } elseif ($this->shouldProcessFile($filePath) === false) {
             return false;
         }
 
@@ -120,7 +119,6 @@ class Filter extends \RecursiveFilterIterator
         return true;
 
     }//end accept()
-
 
     /**
      * Returns an iterator for the current entry.
@@ -148,7 +146,6 @@ class Filter extends \RecursiveFilterIterator
         return $children;
 
     }//end getChildren()
-
 
     /**
      * Checks filtering rules to see if a file should be checked.
@@ -187,7 +184,6 @@ class Filter extends \RecursiveFilterIterator
         return true;
 
     }//end shouldProcessFile()
-
 
     /**
      * Checks filtering rules to see if a path should be ignored.
@@ -278,6 +274,5 @@ class Filter extends \RecursiveFilterIterator
         return false;
 
     }//end shouldIgnorePath()
-
 
 }//end class

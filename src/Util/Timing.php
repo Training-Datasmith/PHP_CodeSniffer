@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Timing functions for the run.
  *
@@ -11,7 +13,6 @@ namespace PHP_CodeSniffer\Util;
 
 class Timing
 {
-
     /**
      * The start time of the run.
      *
@@ -26,7 +27,6 @@ class Timing
      */
     private static $printed = false;
 
-
     /**
      * Start recording time for the run.
      *
@@ -39,7 +39,6 @@ class Timing
 
     }//end startTiming()
 
-
     /**
      * Print information about the run.
      *
@@ -48,7 +47,7 @@ class Timing
      *
      * @return void
      */
-    public static function printRunTime($force=false)
+    public static function printRunTime($force = false)
     {
         if ($force === false && self::$printed === true) {
             // A double call.
@@ -67,7 +66,7 @@ class Timing
             $secs = round((fmod($time, 60000) / 1000), 2);
             $time = $mins.' mins';
             $time .= ", $secs secs";
-        } else if ($time > 1000) {
+        } elseif ($time > 1000) {
             $time = round(($time / 1000), 2).' secs';
         } else {
             $time = round($time).'ms';
@@ -79,6 +78,5 @@ class Timing
         self::$printed = true;
 
     }//end printRunTime()
-
 
 }//end class

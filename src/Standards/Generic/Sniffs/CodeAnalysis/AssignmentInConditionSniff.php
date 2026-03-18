@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Detects variable assignments being made within conditions.
  *
@@ -19,7 +21,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class AssignmentInConditionSniff implements Sniff
 {
-
     /**
      * Assignment tokens to trigger on.
      *
@@ -35,7 +36,6 @@ class AssignmentInConditionSniff implements Sniff
      * @var array
      */
     protected $conditionStartTokens = [];
-
 
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -64,7 +64,6 @@ class AssignmentInConditionSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -100,7 +99,7 @@ class AssignmentInConditionSniff implements Sniff
 
             $closer = $semicolon;
             unset($semicolon);
-        } else if ($token['code'] === T_CASE) {
+        } elseif ($token['code'] === T_CASE) {
             if (isset($token['scope_opener']) === false) {
                 return;
             }
@@ -166,6 +165,5 @@ class AssignmentInConditionSniff implements Sniff
         } while ($startPos < $closer);
 
     }//end process()
-
 
 }//end class

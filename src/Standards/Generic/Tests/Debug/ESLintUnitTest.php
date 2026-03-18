@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the ESLint sniff.
  *
@@ -9,18 +11,17 @@
 
 namespace PHP_CodeSniffer\Standards\Generic\Tests\Debug;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 use PHP_CodeSniffer\Config;
+use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class ESLintUnitTest extends AbstractSniffUnitTest
 {
-
     /**
      * Basic ESLint config to use for testing the sniff.
      *
      * @var string
      */
-    const ESLINT_CONFIG = '{
+    public const ESLINT_CONFIG = '{
     "parserOptions": {
         "ecmaVersion": 5,
         "sourceType": "script",
@@ -31,7 +32,6 @@ class ESLintUnitTest extends AbstractSniffUnitTest
         "no-unused-vars": 2
     }
 }';
-
 
     /**
      * Sets up this unit test.
@@ -47,7 +47,6 @@ class ESLintUnitTest extends AbstractSniffUnitTest
 
     }//end setUp()
 
-
     /**
      * Remove artifact.
      *
@@ -61,7 +60,6 @@ class ESLintUnitTest extends AbstractSniffUnitTest
         unlink($cwd.'/.eslintrc.json');
 
     }//end tearDown()
-
 
     /**
      * Should this test be skipped for some reason.
@@ -79,7 +77,6 @@ class ESLintUnitTest extends AbstractSniffUnitTest
 
     }//end shouldSkipTest()
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -94,7 +91,6 @@ class ESLintUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -108,6 +104,5 @@ class ESLintUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

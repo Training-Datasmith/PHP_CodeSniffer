@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the FunctionDeclaration sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class FunctionDeclarationUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,7 +25,7 @@ class FunctionDeclarationUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='FunctionDeclarationUnitTest.inc')
+    public function getErrorList($testFile = 'FunctionDeclarationUnitTest.inc')
     {
         if ($testFile === 'FunctionDeclarationUnitTest.inc') {
             $errors = [
@@ -119,7 +119,6 @@ class FunctionDeclarationUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -133,6 +132,5 @@ class FunctionDeclarationUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

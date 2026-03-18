@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that systems and asset types are used if they are included.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Channels;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class UnusedSystemSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class UnusedSystemSniff implements Sniff
         return [T_DOUBLE_COLON];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -61,7 +60,7 @@ class UnusedSystemSniff implements Sniff
 
         if ($methodName === 'includeasset') {
             $systemName .= 'assettype';
-        } else if ($methodName === 'includewidget') {
+        } elseif ($methodName === 'includewidget') {
             $systemName .= 'widgettype';
         }
 
@@ -100,33 +99,33 @@ class UnusedSystemSniff implements Sniff
             }
 
             switch ($tokens[$i]['code']) {
-            case T_DOUBLE_COLON:
-                $usedName = strtolower($tokens[($i - 1)]['content']);
-                if ($usedName === $systemName) {
-                    // The included system was used, so it is fine.
-                    return;
-                }
-                break;
-            case T_EXTENDS:
-                $classNameToken = $phpcsFile->findNext(T_STRING, ($i + 1));
-                $className      = strtolower($tokens[$classNameToken]['content']);
-                if ($className === $systemName) {
-                    // The included system was used, so it is fine.
-                    return;
-                }
-                break;
-            case T_IMPLEMENTS:
-                $endImplements = $phpcsFile->findNext([T_EXTENDS, T_OPEN_CURLY_BRACKET], ($i + 1));
-                for ($x = ($i + 1); $x < $endImplements; $x++) {
-                    if ($tokens[$x]['code'] === T_STRING) {
-                        $className = strtolower($tokens[$x]['content']);
-                        if ($className === $systemName) {
-                            // The included system was used, so it is fine.
-                            return;
+                case T_DOUBLE_COLON:
+                    $usedName = strtolower($tokens[($i - 1)]['content']);
+                    if ($usedName === $systemName) {
+                        // The included system was used, so it is fine.
+                        return;
+                    }
+                    break;
+                case T_EXTENDS:
+                    $classNameToken = $phpcsFile->findNext(T_STRING, ($i + 1));
+                    $className      = strtolower($tokens[$classNameToken]['content']);
+                    if ($className === $systemName) {
+                        // The included system was used, so it is fine.
+                        return;
+                    }
+                    break;
+                case T_IMPLEMENTS:
+                    $endImplements = $phpcsFile->findNext([T_EXTENDS, T_OPEN_CURLY_BRACKET], ($i + 1));
+                    for ($x = ($i + 1); $x < $endImplements; $x++) {
+                        if ($tokens[$x]['code'] === T_STRING) {
+                            $className = strtolower($tokens[$x]['content']);
+                            if ($className === $systemName) {
+                                // The included system was used, so it is fine.
+                                return;
+                            }
                         }
                     }
-                }
-                break;
+                    break;
             }//end switch
         }//end for
 
@@ -136,6 +135,5 @@ class UnusedSystemSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'Found', $data);
 
     }//end process()
-
 
 }//end class

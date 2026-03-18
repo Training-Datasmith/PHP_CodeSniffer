@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the support of PHP 8.1 "readonly" keyword.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillReadonlyTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that the "readonly" keyword is tokenized as such.
      *
@@ -35,7 +35,6 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
         $this->assertSame('T_READONLY', $tokens[$target]['type']);
 
     }//end testReadonly()
-
 
     /**
      * Data provider.
@@ -159,7 +158,6 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
 
     }//end dataReadonly()
 
-
     /**
      * Test that "readonly" when not used as the keyword is still tokenized as `T_STRING`.
      *
@@ -180,7 +178,6 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
         $this->assertSame('T_STRING', $tokens[$target]['type']);
 
     }//end testNotReadonly()
-
 
     /**
      * Data provider.
@@ -231,6 +228,5 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
         ];
 
     }//end dataNotReadonly()
-
 
 }//end class

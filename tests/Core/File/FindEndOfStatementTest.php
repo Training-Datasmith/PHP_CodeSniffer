@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:findEndOfStatement method.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class FindEndOfStatementTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test a simple assignment.
      *
@@ -28,7 +28,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 5), $found);
 
     }//end testSimpleAssignment()
-
 
     /**
      * Test a direct call to a control structure.
@@ -44,7 +43,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testControlStructure()
 
-
     /**
      * Test the assignment of a closure.
      *
@@ -58,7 +56,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 13), $found);
 
     }//end testClosureAssignment()
-
 
     /**
      * Test using a heredoc in a function argument.
@@ -87,7 +84,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testHeredocFunctionArg()
 
-
     /**
      * Test parts of a switch statement.
      *
@@ -114,7 +110,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 6), $found);
 
     }//end testSwitch()
-
 
     /**
      * Test statements that are array values.
@@ -143,7 +138,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testStatementAsArrayValue()
 
-
     /**
      * Test a use group.
      *
@@ -158,7 +152,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testUseGroup()
 
-
     /**
      * Test arrow function as array value.
      *
@@ -172,7 +165,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 9), $found);
 
     }//end testArrowFunctionArrayValue()
-
 
     /**
      * Test static arrow function.
@@ -191,7 +183,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testStaticArrowFunction()
 
-
     /**
      * Test arrow function with return value.
      *
@@ -205,7 +196,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 18), $found);
 
     }//end testArrowFunctionReturnValue()
-
 
     /**
      * Test arrow function used as a function argument.
@@ -221,7 +211,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testArrowFunctionAsArgument()
 
-
     /**
      * Test arrow function with arrays used as a function argument.
      *
@@ -235,7 +224,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 17), $found);
 
     }//end testArrowFunctionWithArrayAsArgument()
-
 
     /**
      * Test simple match expression case.
@@ -256,7 +244,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchCase()
 
-
     /**
      * Test simple match expression default case.
      *
@@ -276,7 +263,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchDefault()
 
-
     /**
      * Test multiple comma-separated match expression case values.
      *
@@ -294,7 +280,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchMultipleCase()
 
-
     /**
      * Test match expression default case with trailing comma.
      *
@@ -308,7 +293,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 5), $found);
 
     }//end testMatchDefaultComma()
-
 
     /**
      * Test match expression with function call.
@@ -328,7 +312,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 1), $found);
 
     }//end testMatchFunctionCall()
-
 
     /**
      * Test match expression with function call in the arm.
@@ -351,7 +334,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchFunctionCallArm()
 
-
     /**
      * Test match expression with closure.
      *
@@ -370,7 +352,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 14), $found);
 
     }//end testMatchClosure()
-
 
     /**
      * Test match expression with array declaration.
@@ -391,7 +372,6 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchArray()
 
-
     /**
      * Test nested match expressions.
      *
@@ -410,6 +390,5 @@ class FindEndOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start + 5), $found);
 
     }//end testNestedMatch()
-
 
 }//end class

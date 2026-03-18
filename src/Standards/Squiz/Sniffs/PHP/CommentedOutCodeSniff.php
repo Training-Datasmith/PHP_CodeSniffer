@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Warn about commented out code.
  *
@@ -16,7 +18,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class CommentedOutCodeSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -34,7 +35,6 @@ class CommentedOutCodeSniff implements Sniff
      */
     public $maxPercentage = 35;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -45,7 +45,6 @@ class CommentedOutCodeSniff implements Sniff
         return [T_COMMENT];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -245,7 +244,7 @@ class CommentedOutCodeSniff implements Sniff
             if (isset($emptyTokens[$stringTokens[$i]['code']]) === true) {
                 // Looks like comment.
                 $numComment++;
-            } else if (isset(Tokens::$comparisonTokens[$stringTokens[$i]['code']]) === true
+            } elseif (isset(Tokens::$comparisonTokens[$stringTokens[$i]['code']]) === true
                 || isset(Tokens::$arithmeticTokens[$stringTokens[$i]['code']]) === true
                 || $stringTokens[$i]['code'] === T_GOTO_LABEL
             ) {
@@ -281,6 +280,5 @@ class CommentedOutCodeSniff implements Sniff
         return ($lastCommentBlockToken + 1);
 
     }//end process()
-
 
 }//end class

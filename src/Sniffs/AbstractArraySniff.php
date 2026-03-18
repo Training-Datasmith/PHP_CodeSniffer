@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Processes single and multi-line arrays.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 abstract class AbstractArraySniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -29,7 +29,6 @@ abstract class AbstractArraySniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -100,7 +99,6 @@ abstract class AbstractArraySniff implements Sniff
 
     }//end process()
 
-
     /**
      * Find next separator in array - either: comma or double arrow.
      *
@@ -117,9 +115,9 @@ abstract class AbstractArraySniff implements Sniff
         while ($ptr < $arrayEnd) {
             if (isset($tokens[$ptr]['scope_closer']) === true) {
                 $ptr = $tokens[$ptr]['scope_closer'];
-            } else if (isset($tokens[$ptr]['parenthesis_closer']) === true) {
+            } elseif (isset($tokens[$ptr]['parenthesis_closer']) === true) {
                 $ptr = $tokens[$ptr]['parenthesis_closer'];
-            } else if (isset($tokens[$ptr]['bracket_closer']) === true) {
+            } elseif (isset($tokens[$ptr]['bracket_closer']) === true) {
                 $ptr = $tokens[$ptr]['bracket_closer'];
             }
 
@@ -136,7 +134,6 @@ abstract class AbstractArraySniff implements Sniff
 
     }//end getNext()
 
-
     /**
      * Processes a single-line array definition.
      *
@@ -152,7 +149,6 @@ abstract class AbstractArraySniff implements Sniff
      */
     abstract protected function processSingleLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices);
 
-
     /**
      * Processes a multi-line array definition.
      *
@@ -167,6 +163,5 @@ abstract class AbstractArraySniff implements Sniff
      * @return void
      */
     abstract protected function processMultiLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices);
-
 
 }//end class

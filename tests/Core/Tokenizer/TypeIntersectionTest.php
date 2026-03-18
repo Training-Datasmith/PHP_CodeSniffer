@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the conversion of bitwise and tokens to type intersection tokens.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class TypeIntersectionTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that non-intersection type bitwise and tokens are still tokenized as bitwise and.
      *
@@ -35,7 +35,6 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
         $this->assertSame('T_BITWISE_AND', $tokens[$opener]['type']);
 
     }//end testBitwiseAnd()
-
 
     /**
      * Data provider.
@@ -68,7 +67,6 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
 
     }//end dataBitwiseAnd()
 
-
     /**
      * Test that bitwise and tokens when used as part of a intersection type are tokenized as `T_TYPE_INTERSECTION`.
      *
@@ -88,7 +86,6 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
         $this->assertSame('T_TYPE_INTERSECTION', $tokens[$opener]['type']);
 
     }//end testTypeIntersection()
-
 
     /**
      * Data provider.
@@ -133,6 +130,5 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
         ];
 
     }//end dataTypeIntersection()
-
 
 }//end class

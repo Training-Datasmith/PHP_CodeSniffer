@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the DisallowObEndFlush sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class DisallowInlineIfUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,25 +25,24 @@ class DisallowInlineIfUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='DisallowInlineIfUnitTest.inc')
+    public function getErrorList($testFile = 'DisallowInlineIfUnitTest.inc')
     {
         switch ($testFile) {
-        case 'DisallowInlineIfUnitTest.inc':
-            return [
-                8  => 1,
-                18 => 1,
-            ];
-            break;
-        case 'DisallowInlineIfUnitTest.js':
-            return [1 => 1];
-            break;
-        default:
-            return [];
-            break;
+            case 'DisallowInlineIfUnitTest.inc':
+                return [
+                    8  => 1,
+                    18 => 1,
+                ];
+                break;
+            case 'DisallowInlineIfUnitTest.js':
+                return [1 => 1];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -58,6 +57,5 @@ class DisallowInlineIfUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

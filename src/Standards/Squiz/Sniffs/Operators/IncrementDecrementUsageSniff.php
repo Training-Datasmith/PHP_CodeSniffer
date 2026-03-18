@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that the ++ operators are used when possible.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class IncrementDecrementUsageSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -33,7 +33,6 @@ class IncrementDecrementUsageSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -55,7 +54,6 @@ class IncrementDecrementUsageSniff implements Sniff
         }
 
     }//end process()
-
 
     /**
      * Checks to ensure increment and decrement operators are not confusing.
@@ -105,7 +103,6 @@ class IncrementDecrementUsageSniff implements Sniff
         }
 
     }//end processIncDec()
-
 
     /**
      * Checks to ensure increment and decrement operators are used.
@@ -220,6 +217,5 @@ class IncrementDecrementUsageSniff implements Sniff
         }//end if
 
     }//end processAssignment()
-
 
 }//end class

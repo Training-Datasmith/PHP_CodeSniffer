@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the Todo sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class TodoUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,12 +25,11 @@ class TodoUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='TodoUnitTest.inc')
+    public function getErrorList($testFile = 'TodoUnitTest.inc')
     {
         return [];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -42,7 +41,7 @@ class TodoUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getWarningList($testFile='TodoUnitTest.inc')
+    public function getWarningList($testFile = 'TodoUnitTest.inc')
     {
         return [
             3  => 1,
@@ -56,6 +55,5 @@ class TodoUnitTest extends AbstractSniffUnitTest
         ];
 
     }//end getWarningList()
-
 
 }//end class

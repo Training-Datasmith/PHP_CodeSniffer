@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the backfilling of numeric separators to PHP < 7.4.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that numbers using numeric separators are tokenized correctly.
      *
@@ -35,7 +35,6 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
         $this->assertSame($testData['value'], $tokens[$number]['content']);
 
     }//end testBackfill()
-
 
     /**
      * Data provider.
@@ -157,7 +156,6 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
 
     }//end dataTestBackfill()
 
-
     /**
      * Test that numbers using numeric separators which are considered parse errors and/or
      * which aren't relevant to the backfill, do not incorrectly trigger the backfill anyway.
@@ -182,7 +180,6 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
         }
 
     }//end testNoBackfill()
-
 
     /**
      * Data provider.
@@ -415,6 +412,5 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
         ];
 
     }//end dataNoBackfill()
-
 
 }//end class

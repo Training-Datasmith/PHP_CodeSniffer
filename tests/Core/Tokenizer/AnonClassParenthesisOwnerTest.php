@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the adding of the "parenthesis" keys to an anonymous class token.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that anonymous class tokens without parenthesis do not get assigned a parenthesis owner.
      *
@@ -35,7 +35,6 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
         $this->assertFalse(array_key_exists('parenthesis_closer', $tokens[$anonClass]));
 
     }//end testAnonClassNoParentheses()
-
 
     /**
      * Test that the next open/close parenthesis after an anonymous class without parenthesis
@@ -63,7 +62,6 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
 
     }//end testAnonClassNoParenthesesNextOpenClose()
 
-
     /**
      * Data provider.
      *
@@ -80,7 +78,6 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
         ];
 
     }//end dataAnonClassNoParentheses()
-
 
     /**
      * Test that anonymous class tokens with parenthesis get assigned a parenthesis owner,
@@ -123,7 +120,6 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
 
     }//end testAnonClassWithParentheses()
 
-
     /**
      * Data provider.
      *
@@ -139,6 +135,5 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
         ];
 
     }//end dataAnonClassWithParentheses()
-
 
 }//end class

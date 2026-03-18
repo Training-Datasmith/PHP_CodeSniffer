@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Throws an error or warning when any code prefixed with an asperand is encountered.
  *
@@ -21,14 +23,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class NoSilencedErrorsSniff implements Sniff
 {
-
     /**
      * If true, an error will be thrown; otherwise a warning.
      *
      * @var boolean
      */
     public $error = false;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -40,7 +40,6 @@ class NoSilencedErrorsSniff implements Sniff
         return [T_ASPERAND];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -72,6 +71,5 @@ class NoSilencedErrorsSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that self and static are not used to call public methods in action classes.
  *
@@ -9,14 +11,12 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Channels;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 class DisallowSelfActionsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class DisallowSelfActionsSniff implements Sniff
         return [T_CLASS];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -121,6 +120,5 @@ class DisallowSelfActionsSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

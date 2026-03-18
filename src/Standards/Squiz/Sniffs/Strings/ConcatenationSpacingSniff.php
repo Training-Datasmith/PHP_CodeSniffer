@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Makes sure there are no spaces around the concatenation operator.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ConcatenationSpacingSniff implements Sniff
 {
-
     /**
      * The number of spaces before and after a string concat.
      *
@@ -30,7 +31,6 @@ class ConcatenationSpacingSniff implements Sniff
      */
     public $ignoreNewlines = false;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -41,7 +41,6 @@ class ConcatenationSpacingSniff implements Sniff
         return [T_STRING_CONCAT];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -135,7 +134,7 @@ class ConcatenationSpacingSniff implements Sniff
                     }
 
                     $phpcsFile->fixer->endChangeset();
-                } else if ($this->spacing > 0) {
+                } elseif ($this->spacing > 0) {
                     $phpcsFile->fixer->addContent(($stackPtr - 1), $padding);
                 }
             }
@@ -152,13 +151,12 @@ class ConcatenationSpacingSniff implements Sniff
                     }
 
                     $phpcsFile->fixer->endChangeset();
-                } else if ($this->spacing > 0) {
+                } elseif ($this->spacing > 0) {
                     $phpcsFile->fixer->addContent($stackPtr, $padding);
                 }
             }
         }//end if
 
     }//end process()
-
 
 }//end class

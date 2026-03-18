@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Test fixture.
  *
@@ -12,7 +14,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class SetPropertyAllowedAsDeclaredSniff implements Sniff
 {
-
     public $arbitrarystring;
     public $arbitraryarray;
 

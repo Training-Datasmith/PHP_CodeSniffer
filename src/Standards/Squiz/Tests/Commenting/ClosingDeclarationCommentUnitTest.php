@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the ClosingDeclarationComment sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class ClosingDeclarationCommentUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -39,7 +39,6 @@ class ClosingDeclarationCommentUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -53,6 +52,5 @@ class ClosingDeclarationCommentUnitTest extends AbstractSniffUnitTest
         return [71 => 1];
 
     }//end getWarningList()
-
 
 }//end class

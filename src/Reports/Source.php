@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Source report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Util\Timing;
 
 class Source implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,7 +30,7 @@ class Source implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
             // Nothing to print.
@@ -63,7 +63,6 @@ class Source implements Report
 
     }//end generateFileReport()
 
-
     /**
      * Prints the source of all errors and warnings.
      *
@@ -86,10 +85,10 @@ class Source implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         $lines = explode(PHP_EOL, $cachedData);
         array_pop($lines);
@@ -271,7 +270,6 @@ class Source implements Report
 
     }//end generate()
 
-
     /**
      * Converts a camel caps name into a readable string.
      *
@@ -331,6 +329,5 @@ class Source implements Report
         return $friendlyName;
 
     }//end makeFriendlyName()
-
 
 }//end class

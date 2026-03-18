@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the Fixme sniff.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class FixmeUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -26,7 +26,7 @@ class FixmeUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='FixmeUnitTest.inc')
+    public function getErrorList($testFile = 'FixmeUnitTest.inc')
     {
         return [
             3  => 1,
@@ -41,7 +41,6 @@ class FixmeUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -52,11 +51,10 @@ class FixmeUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getWarningList($testFile='FixmeUnitTest.inc')
+    public function getWarningList($testFile = 'FixmeUnitTest.inc')
     {
         return [];
 
     }//end getWarningList()
-
 
 }//end class

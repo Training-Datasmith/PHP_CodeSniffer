@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that control structures are structured and indented correctly.
  *
@@ -13,7 +15,6 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace\ScopeIndentSniff as Gene
 
 class ScopeIndentSniff extends GenericScopeIndentSniff
 {
-
     /**
      * Any scope openers that should not cause an indent.
      *

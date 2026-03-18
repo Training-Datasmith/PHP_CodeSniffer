@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that only one object structure is declared per file.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class OneObjectStructurePerFileSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -31,7 +31,6 @@ class OneObjectStructurePerFileSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -57,6 +56,5 @@ class OneObjectStructurePerFileSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

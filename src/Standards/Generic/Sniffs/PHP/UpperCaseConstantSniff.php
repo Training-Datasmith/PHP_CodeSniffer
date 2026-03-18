@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that all uses of TRUE, FALSE and NULL are uppercase.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Files\File;
 
 class UpperCaseConstantSniff extends LowerCaseConstantSniff
 {
-
-
     /**
      * Processes a non-type declaration constant.
      *
@@ -52,6 +52,5 @@ class UpperCaseConstantSniff extends LowerCaseConstantSniff
         }
 
     }//end processConstant()
-
 
 }//end class

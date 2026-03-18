@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the comment tokenization with Windows line endings.
  *
@@ -17,8 +19,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that comment tokenization with new lines at the end of the comment is stable.
      *
@@ -44,7 +44,6 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
         }
 
     }//end testCommentTokenization()
-
 
     /**
      * Data provider.
@@ -362,6 +361,5 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
         ];
 
     }//end dataCommentTokenization()
-
 
 }//end class

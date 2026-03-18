@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the LineEndings sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class LineEndingsUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Get a list of CLI values to set before the file is tested.
      *
@@ -28,7 +28,6 @@ class LineEndingsUnitTest extends AbstractSniffUnitTest
         $config->tabWidth = 4;
 
     }//end setCliValues()
-
 
     /**
      * Returns the lines where errors should occur.
@@ -44,7 +43,6 @@ class LineEndingsUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -58,6 +56,5 @@ class LineEndingsUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the DisallowLongArraySyntax sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class DisallowLongArraySyntaxUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,28 +25,27 @@ class DisallowLongArraySyntaxUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'DisallowLongArraySyntaxUnitTest.1.inc':
-            return [
-                2  => 1,
-                4  => 1,
-                6  => 1,
-                7  => 1,
-                12 => 1,
-            ];
-        case 'DisallowLongArraySyntaxUnitTest.2.inc':
-            return [
-                2 => 1,
-                9 => 1,
-            ];
-        default:
-            return [];
+            case 'DisallowLongArraySyntaxUnitTest.1.inc':
+                return [
+                    2  => 1,
+                    4  => 1,
+                    6  => 1,
+                    7  => 1,
+                    12 => 1,
+                ];
+            case 'DisallowLongArraySyntaxUnitTest.2.inc':
+                return [
+                    2 => 1,
+                    9 => 1,
+                ];
+            default:
+                return [];
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -61,6 +60,5 @@ class DisallowLongArraySyntaxUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

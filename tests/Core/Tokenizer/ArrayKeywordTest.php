@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests that the array keyword is tokenized correctly.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class ArrayKeywordTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that the array keyword is correctly tokenized as `T_ARRAY`.
      *
@@ -27,7 +27,7 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testArrayKeyword($testMarker, $testContent='array')
+    public function testArrayKeyword($testMarker, $testContent = 'array')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -42,7 +42,6 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
         $this->assertArrayHasKey('parenthesis_closer', $tokenArray, 'Parenthesis closer is not set');
 
     }//end testArrayKeyword()
-
 
     /**
      * Data provider.
@@ -66,7 +65,6 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
 
     }//end dataArrayKeyword()
 
-
     /**
      * Test that the array keyword when used in a type declaration is correctly tokenized as `T_STRING`.
      *
@@ -79,7 +77,7 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testArrayType($testMarker, $testContent='array')
+    public function testArrayType($testMarker, $testContent = 'array')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -94,7 +92,6 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
         $this->assertArrayNotHasKey('parenthesis_closer', $tokenArray, 'Parenthesis closer is set');
 
     }//end testArrayType()
-
 
     /**
      * Data provider.
@@ -116,7 +113,6 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
 
     }//end dataArrayType()
 
-
     /**
      * Verify that the retokenization of `T_ARRAY` tokens to `T_STRING` is handled correctly
      * for tokens with the contents 'array' which aren't in actual fact the array keyword.
@@ -130,7 +126,7 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testNotArrayKeyword($testMarker, $testContent='array')
+    public function testNotArrayKeyword($testMarker, $testContent = 'array')
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -145,7 +141,6 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
         $this->assertArrayNotHasKey('parenthesis_closer', $tokenArray, 'Parenthesis closer is set');
 
     }//end testNotArrayKeyword()
-
 
     /**
      * Data provider.
@@ -165,6 +160,5 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
         ];
 
     }//end dataNotArrayKeyword()
-
 
 }//end class

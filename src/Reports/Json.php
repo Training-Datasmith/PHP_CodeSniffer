@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * JSON report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Files\File;
 
 class Json implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,7 +30,7 @@ class Json implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         $filename = str_replace('\\', '\\\\', $report['filename']);
         $filename = str_replace('"', '\"', $filename);
@@ -56,7 +56,7 @@ class Json implements Report
                     $messagesObject->column  = $column;
                     $messagesObject->fixable = $fixable;
 
-                    $messages .= json_encode($messagesObject).",";
+                    $messages .= json_encode($messagesObject).',';
                 }
             }
         }//end foreach
@@ -67,7 +67,6 @@ class Json implements Report
         return true;
 
     }//end generateFileReport()
-
 
     /**
      * Generates a JSON report.
@@ -91,16 +90,15 @@ class Json implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         echo '{"totals":{"errors":'.$totalErrors.',"warnings":'.$totalWarnings.',"fixable":'.$totalFixable.'},"files":{';
         echo rtrim($cachedData, ',');
-        echo "}}".PHP_EOL;
+        echo '}}'.PHP_EOL;
 
     }//end generate()
-
 
 }//end class

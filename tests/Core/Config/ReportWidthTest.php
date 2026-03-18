@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Config reportWidth value.
  *
@@ -15,8 +17,6 @@ use ReflectionProperty;
 
 class ReportWidthTest extends TestCase
 {
-
-
     /**
      * Set static properties in the Config class to prevent tests influencing each other.
      *
@@ -39,7 +39,6 @@ class ReportWidthTest extends TestCase
 
     }//end cleanConfig()
 
-
     /**
      * Clean up after each finished test.
      *
@@ -52,7 +51,6 @@ class ReportWidthTest extends TestCase
         $_SERVER['argv'] = [];
 
     }//end resetConfig()
-
 
     /**
      * Reset the static properties in the Config class to their true defaults to prevent this class
@@ -72,7 +70,6 @@ class ReportWidthTest extends TestCase
 
     }//end resetConfigToDefaults()
 
-
     /**
      * Test that report width without overrules will always be set to a non-0 positive integer.
      *
@@ -87,7 +84,6 @@ class ReportWidthTest extends TestCase
         $this->assertGreaterThan(0, $config->reportWidth, 'Report width is not greater than 0');
 
     }//end testReportWidthDefault()
-
 
     /**
      * Test that the report width will be set to a non-0 positive integer when not found in the CodeSniffer.conf file.
@@ -111,7 +107,6 @@ class ReportWidthTest extends TestCase
 
     }//end testReportWidthWillBeSetFromAutoWhenNotFoundInConfFile()
 
-
     /**
      * Test that the report width will be set correctly when found in the CodeSniffer.conf file.
      *
@@ -131,7 +126,6 @@ class ReportWidthTest extends TestCase
 
     }//end testReportWidthCanBeSetFromConfFile()
 
-
     /**
      * Test that the report width will be set correctly when passed as a CLI argument.
      *
@@ -148,7 +142,6 @@ class ReportWidthTest extends TestCase
         $this->assertSame(100, $config->reportWidth);
 
     }//end testReportWidthCanBeSetFromCLI()
-
 
     /**
      * Test that the report width will be set correctly when multiple report widths are passed on the CLI.
@@ -167,7 +160,6 @@ class ReportWidthTest extends TestCase
         $this->assertSame(100, $config->reportWidth);
 
     }//end testReportWidthWhenSetFromCLIFirstValuePrevails()
-
 
     /**
      * Test that a report width passed as a CLI argument will overrule a report width set in a CodeSniffer.conf file.
@@ -196,7 +188,6 @@ class ReportWidthTest extends TestCase
 
     }//end testReportWidthSetFromCLIOverrulesConfFile()
 
-
     /**
      * Test that the report width will be set to a non-0 positive integer when set to "auto".
      *
@@ -212,7 +203,6 @@ class ReportWidthTest extends TestCase
         $this->assertGreaterThan(0, $config->reportWidth, 'Report width is not greater than 0');
 
     }//end testReportWidthInputHandlingForAuto()
-
 
     /**
      * Test that the report width will be set correctly for various types of input.
@@ -232,7 +222,6 @@ class ReportWidthTest extends TestCase
         $this->assertSame($expected, $config->reportWidth);
 
     }//end testReportWidthInputHandling()
-
 
     /**
      * Data provider.
@@ -282,7 +271,6 @@ class ReportWidthTest extends TestCase
 
     }//end dataReportWidthInputHandling()
 
-
     /**
      * Helper function to set a static property on the Config class.
      *
@@ -299,6 +287,5 @@ class ReportWidthTest extends TestCase
         $property->setAccessible(false);
 
     }//end setStaticProperty()
-
 
 }//end class

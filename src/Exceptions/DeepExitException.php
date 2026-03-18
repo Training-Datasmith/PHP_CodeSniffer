@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * An exception thrown by PHP_CodeSniffer when it wants to exit from somewhere not in the main runner.
  *
@@ -14,5 +16,4 @@ namespace PHP_CodeSniffer\Exceptions;
 
 class DeepExitException extends \Exception
 {
-
 }//end class

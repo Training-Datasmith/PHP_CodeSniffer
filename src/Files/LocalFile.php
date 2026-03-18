@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A local file represents a chunk of text has a file system location.
  *
@@ -9,15 +11,13 @@
 
 namespace PHP_CodeSniffer\Files;
 
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Config;
+use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Util\Cache;
 use PHP_CodeSniffer\Util\Common;
 
 class LocalFile extends File
 {
-
-
     /**
      * Creates a LocalFile object and sets the content.
      *
@@ -62,7 +62,6 @@ class LocalFile extends File
 
     }//end __construct()
 
-
     /**
      * Loads the latest version of the file's content from the file system.
      *
@@ -73,7 +72,6 @@ class LocalFile extends File
         $this->setContent(file_get_contents($this->path));
 
     }//end reloadContent()
-
 
     /**
      * Processes the file.
@@ -113,7 +111,7 @@ class LocalFile extends File
             if (PHP_CODESNIFFER_VERBOSITY > 0
                 || (PHP_CODESNIFFER_CBF === true && empty($this->config->files) === false)
             ) {
-                echo "[loaded from cache]... ";
+                echo '[loaded from cache]... ';
             }
 
             $this->numTokens = $cache['numTokens'];
@@ -149,7 +147,6 @@ class LocalFile extends File
         }
 
     }//end process()
-
 
     /**
      * Clears and replays error and warnings for the file.
@@ -212,6 +209,5 @@ class LocalFile extends File
         $this->replayingErrors = false;
 
     }//end replayErrors()
-
 
 }//end class

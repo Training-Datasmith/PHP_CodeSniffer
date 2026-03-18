@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Functions for helping process standards.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Config;
 
 class Standards
 {
-
-
     /**
      * Get a list of paths where standards are installed.
      *
@@ -48,7 +48,6 @@ class Standards
 
     }//end getInstalledStandardPaths()
 
-
     /**
      * Get the details of all coding standards installed.
      *
@@ -76,8 +75,8 @@ class Standards
      * @see    getInstalledStandardPaths()
      */
     public static function getInstalledStandardDetails(
-        $includeGeneric=false,
-        $standardsDir=''
+        $includeGeneric = false,
+        $standardsDir = ''
     ) {
         $rulesets = [];
 
@@ -146,7 +145,6 @@ class Standards
 
     }//end getInstalledStandardDetails()
 
-
     /**
      * Get a list of all coding standards installed.
      *
@@ -165,8 +163,8 @@ class Standards
      * @see    isInstalledStandard()
      */
     public static function getInstalledStandards(
-        $includeGeneric=false,
-        $standardsDir=''
+        $includeGeneric = false,
+        $standardsDir = ''
     ) {
         $installedStandards = [];
 
@@ -217,7 +215,6 @@ class Standards
 
     }//end getInstalledStandards()
 
-
     /**
      * Determine if a standard is installed.
      *
@@ -260,7 +257,6 @@ class Standards
         return false;
 
     }//end isInstalledStandard()
-
 
     /**
      * Return the path of an installed coding standard.
@@ -307,7 +303,6 @@ class Standards
 
     }//end getInstalledStandardPath()
 
-
     /**
      * Prints out a list of installed coding standards.
      *
@@ -332,6 +327,5 @@ class Standards
         }
 
     }//end printInstalledStandards()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests that the correct Subversion properties are set.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class SubversionPropertiesSniff implements Sniff
 {
-
     /**
      * The Subversion properties that should be set.
      *
@@ -30,7 +31,6 @@ class SubversionPropertiesSniff implements Sniff
         'svn:eol-style' => 'native',
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -41,7 +41,6 @@ class SubversionPropertiesSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -104,7 +103,6 @@ class SubversionPropertiesSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
     /**
      * Returns the Subversion properties which are actually set on a path.
@@ -181,6 +179,5 @@ class SubversionPropertiesSniff implements Sniff
         return $properties;
 
     }//end getProperties()
-
 
 }//end class

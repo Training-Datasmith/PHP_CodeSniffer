@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A doc generator that outputs documentation in Markdown format.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Config;
 
 class Markdown extends Generator
 {
-
-
     /**
      * Generates the documentation for a standard.
      *
@@ -41,7 +41,6 @@ class Markdown extends Generator
 
     }//end generate()
 
-
     /**
      * Print the markdown header.
      *
@@ -54,7 +53,6 @@ class Markdown extends Generator
         echo "# $standard Coding Standard".PHP_EOL;
 
     }//end printHeader()
-
 
     /**
      * Print the markdown footer.
@@ -70,7 +68,6 @@ class Markdown extends Generator
         echo ' by [PHP_CodeSniffer '.Config::VERSION.'](https://github.com/squizlabs/PHP_CodeSniffer)'.PHP_EOL;
 
     }//end printFooter()
-
 
     /**
      * Process the documentation for a single sniff.
@@ -89,13 +86,12 @@ class Markdown extends Generator
         foreach ($doc->childNodes as $node) {
             if ($node->nodeName === 'standard') {
                 $this->printTextBlock($node);
-            } else if ($node->nodeName === 'code_comparison') {
+            } elseif ($node->nodeName === 'code_comparison') {
                 $this->printCodeComparisonBlock($node);
             }
         }
 
     }//end processSniff()
-
 
     /**
      * Print a text block found in a standard.
@@ -115,7 +111,6 @@ class Markdown extends Generator
         echo $content.PHP_EOL;
 
     }//end printTextBlock()
-
 
     /**
      * Print a code comparison block found in a standard.
@@ -156,6 +151,5 @@ class Markdown extends Generator
         echo '  </table>'.PHP_EOL;
 
     }//end printCodeComparisonBlock()
-
 
 }//end class

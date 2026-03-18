@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the spacing of shorthand IF statements.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class InlineIfDeclarationSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class InlineIfDeclarationSniff implements Sniff
         return [T_INLINE_THEN];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -150,6 +149,5 @@ class InlineIfDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

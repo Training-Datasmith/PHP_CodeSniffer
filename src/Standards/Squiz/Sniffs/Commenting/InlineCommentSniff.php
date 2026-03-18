@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that there is adequate spacing between comments.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class InlineCommentSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -25,7 +26,6 @@ class InlineCommentSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -40,7 +40,6 @@ class InlineCommentSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -222,14 +221,14 @@ class InlineCommentSniff implements Sniff
                     $comment,
                 ];
                 $fix   = $phpcsFile->addFixableError($error, $lastCommentToken, 'TabBefore', $data);
-            } else if ($spaceCount === 0) {
+            } elseif ($spaceCount === 0) {
                 $error = 'No space found before comment text; expected "// %s" but found "%s"';
                 $data  = [
                     substr($comment, 2),
                     $comment,
                 ];
                 $fix   = $phpcsFile->addFixableError($error, $lastCommentToken, 'NoSpaceBefore', $data);
-            } else if ($spaceCount > 1) {
+            } elseif ($spaceCount > 1) {
                 $error = 'Expected 1 space before comment text but found %s; use block comment if you need indentation';
                 $data  = [
                     $spaceCount,
@@ -320,7 +319,7 @@ class InlineCommentSniff implements Sniff
                     if ($tokens[$i]['code'] !== T_WHITESPACE) {
                         return ($lastCommentToken + 1);
                     }
-                } else if ($tokens[$i]['line'] > ($tokens[$lastCommentToken]['line'] + 1)) {
+                } elseif ($tokens[$i]['line'] > ($tokens[$lastCommentToken]['line'] + 1)) {
                     break;
                 }
             }
@@ -344,6 +343,5 @@ class InlineCommentSniff implements Sniff
         return ($lastCommentToken + 1);
 
     }//end process()
-
 
 }//end class

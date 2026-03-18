@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that a property or label colon has a single space after it and no space before it.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class PropertyLabelSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['JS'];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -36,7 +36,6 @@ class PropertyLabelSpacingSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -74,6 +73,5 @@ class PropertyLabelSpacingSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

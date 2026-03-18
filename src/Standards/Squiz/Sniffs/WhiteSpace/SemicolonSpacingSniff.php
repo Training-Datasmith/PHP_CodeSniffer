@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure there is no whitespace before a semicolon.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class SemicolonSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -25,7 +26,6 @@ class SemicolonSpacingSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -37,7 +37,6 @@ class SemicolonSpacingSniff implements Sniff
         return [T_SEMICOLON];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -111,6 +110,5 @@ class SemicolonSpacingSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the ClosingTag sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class ClosingTagUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,26 +25,25 @@ class ClosingTagUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='')
+    public function getErrorList($testFile = '')
     {
         switch ($testFile) {
-        case 'ClosingTagUnitTest.1.inc':
-            return [11 => 1];
+            case 'ClosingTagUnitTest.1.inc':
+                return [11 => 1];
 
-        case 'ClosingTagUnitTest.4.inc':
-        case 'ClosingTagUnitTest.5.inc':
-            return [1 => 1];
+            case 'ClosingTagUnitTest.4.inc':
+            case 'ClosingTagUnitTest.5.inc':
+                return [1 => 1];
 
-        case 'ClosingTagUnitTest.6.inc':
-        case 'ClosingTagUnitTest.7.inc':
-            return [5 => 1];
+            case 'ClosingTagUnitTest.6.inc':
+            case 'ClosingTagUnitTest.7.inc':
+                return [5 => 1];
 
-        default:
-            return [];
+            default:
+                return [];
         }
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -59,6 +58,5 @@ class ClosingTagUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

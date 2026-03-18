@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Discourages the use of debug functions.
  *
@@ -13,7 +15,6 @@ use PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\ForbiddenFunctionsSniff as Gene
 
 class DiscouragedFunctionsSniff extends GenericForbiddenFunctionsSniff
 {
-
     /**
      * A list of forbidden functions with their alternatives.
      *

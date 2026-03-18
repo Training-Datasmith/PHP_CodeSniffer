@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures styles are indented 4 spaces.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class IndentationSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -30,7 +31,6 @@ class IndentationSniff implements Sniff
      */
     public $indent = 4;
 
-
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -41,7 +41,6 @@ class IndentationSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -128,7 +127,7 @@ class IndentationSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($i, '');
                     }
                 }
-            } else if ($foundIndent !== $expectedIndent) {
+            } elseif ($foundIndent !== $expectedIndent) {
                 $error = 'Line indented incorrectly; expected %s spaces, found %s';
                 $data  = [
                     $expectedIndent,
@@ -148,6 +147,5 @@ class IndentationSniff implements Sniff
         }//end for
 
     }//end process()
-
 
 }//end class

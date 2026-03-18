@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the tokenization of identifier names.
  *
@@ -23,8 +25,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that identifier names are tokenized the same across PHP versions, based on the PHP 5/7 tokenization.
      *
@@ -50,7 +50,6 @@ class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
         }
 
     }//end testIdentifierTokenization()
-
 
     /**
      * Data provider.
@@ -1290,6 +1289,5 @@ class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
         ];
 
     }//end dataIdentifierTokenization()
-
 
 }//end class

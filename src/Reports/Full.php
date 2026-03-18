@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Full report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Util;
 
 class Full implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,7 +30,7 @@ class Full implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
             // Nothing to print.
@@ -187,7 +187,6 @@ class Full implements Report
 
     }//end generateFileReport()
 
-
     /**
      * Prints all errors and warnings for each file processed.
      *
@@ -210,10 +209,10 @@ class Full implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         if ($cachedData === '') {
             return;
@@ -226,6 +225,5 @@ class Full implements Report
         }
 
     }//end generate()
-
 
 }//end class

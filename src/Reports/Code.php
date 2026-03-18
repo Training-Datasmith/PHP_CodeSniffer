@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Full report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Util;
 
 class Code implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,7 +30,7 @@ class Code implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
             // Nothing to print.
@@ -46,7 +46,7 @@ class Code implements Report
             if (PHP_CODESNIFFER_VERBOSITY === 1) {
                 $startTime = microtime(true);
                 echo 'CODE report is parsing '.basename($file).' ';
-            } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
+            } elseif (PHP_CODESNIFFER_VERBOSITY > 1) {
                 echo "CODE report is forcing parse of $file".PHP_EOL;
             }
 
@@ -318,7 +318,6 @@ class Code implements Report
 
     }//end generateFileReport()
 
-
     /**
      * Prints all errors and warnings for each file processed.
      *
@@ -341,10 +340,10 @@ class Code implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         if ($cachedData === '') {
             return;
@@ -357,6 +356,5 @@ class Code implements Report
         }
 
     }//end generate()
-
 
 }//end class

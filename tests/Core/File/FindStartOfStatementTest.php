@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:findStartOfStatement method.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class FindStartOfStatementTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test a simple assignment.
      *
@@ -28,7 +28,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start - 5), $found);
 
     }//end testSimpleAssignment()
-
 
     /**
      * Test a function call.
@@ -44,7 +43,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testFunctionCall()
 
-
     /**
      * Test a function call.
      *
@@ -58,7 +56,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame($start, $found);
 
     }//end testFunctionCallArgument()
-
 
     /**
      * Test a direct call to a control structure.
@@ -74,7 +71,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testControlStructure()
 
-
     /**
      * Test the assignment of a closure.
      *
@@ -88,7 +84,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start - 12), $found);
 
     }//end testClosureAssignment()
-
 
     /**
      * Test using a heredoc in a function argument.
@@ -116,7 +111,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame($start, $found);
 
     }//end testHeredocFunctionArg()
-
 
     /**
      * Test parts of a switch statement.
@@ -157,7 +151,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testSwitch()
 
-
     /**
      * Test statements that are array values.
      *
@@ -191,7 +184,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testStatementAsArrayValue()
 
-
     /**
      * Test a use group.
      *
@@ -205,7 +197,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start - 23), $found);
 
     }//end testUseGroup()
-
 
     /**
      * Test arrow function as array value.
@@ -221,7 +212,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testArrowFunctionArrayValue()
 
-
     /**
      * Test static arrow function.
      *
@@ -236,7 +226,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testStaticArrowFunction()
 
-
     /**
      * Test arrow function with return value.
      *
@@ -250,7 +239,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start - 18), $found);
 
     }//end testArrowFunctionReturnValue()
-
 
     /**
      * Test arrow function used as a function argument.
@@ -267,7 +255,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testArrowFunctionAsArgument()
 
-
     /**
      * Test arrow function with arrays used as a function argument.
      *
@@ -283,7 +270,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testArrowFunctionWithArrayAsArgument()
 
-
     /**
      * Test simple match expression case.
      *
@@ -298,7 +284,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchCase()
 
-
     /**
      * Test simple match expression default case.
      *
@@ -312,7 +297,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame($start, $found);
 
     }//end testMatchDefault()
-
 
     /**
      * Test multiple comma-separated match expression case values.
@@ -333,7 +317,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchMultipleCase()
 
-
     /**
      * Test match expression default case with trailing comma.
      *
@@ -353,7 +336,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchDefaultComma()
 
-
     /**
      * Test match expression with function call.
      *
@@ -367,7 +349,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start - 6), $found);
 
     }//end testMatchFunctionCall()
-
 
     /**
      * Test match expression with function call in the arm.
@@ -390,7 +371,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchFunctionCallArm()
 
-
     /**
      * Test match expression with closure.
      *
@@ -410,7 +390,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start - 10), $found);
 
     }//end testMatchClosure()
-
 
     /**
      * Test match expression with array declaration.
@@ -441,7 +420,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testMatchArray()
 
-
     /**
      * Test nested match expressions.
      *
@@ -467,7 +445,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testNestedMatch()
 
-
     /**
      * Test PHP open tag.
      *
@@ -483,7 +460,6 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
 
     }//end testOpenTag()
 
-
     /**
      * Test PHP short open echo tag.
      *
@@ -498,6 +474,5 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
         $this->assertSame(($start - 1), $found);
 
     }//end testOpenTagWithEcho()
-
 
 }//end class

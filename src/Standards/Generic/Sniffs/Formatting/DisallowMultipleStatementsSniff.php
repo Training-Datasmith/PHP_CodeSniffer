@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures each statement is on a line by itself.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowMultipleStatementsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class DisallowMultipleStatementsSniff implements Sniff
         return [T_SEMICOLON];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -100,6 +99,5 @@ class DisallowMultipleStatementsSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

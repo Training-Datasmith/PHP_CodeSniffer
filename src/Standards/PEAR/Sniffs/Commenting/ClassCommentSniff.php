@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Parses and verifies the doc comments for classes.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Files\File;
 
 class ClassCommentSniff extends FileCommentSniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -30,7 +30,6 @@ class ClassCommentSniff extends FileCommentSniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -90,7 +89,6 @@ class ClassCommentSniff extends FileCommentSniff
 
     }//end process()
 
-
     /**
      * Process the version tag.
      *
@@ -117,6 +115,5 @@ class ClassCommentSniff extends FileCommentSniff
         }
 
     }//end processVersion()
-
 
 }//end class

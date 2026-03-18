@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the SemicolonSpacing sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class SemicolonSpacingUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,45 +25,44 @@ class SemicolonSpacingUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='SemicolonSpacingUnitTest.inc')
+    public function getErrorList($testFile = 'SemicolonSpacingUnitTest.inc')
     {
         switch ($testFile) {
-        case 'SemicolonSpacingUnitTest.inc':
-            return [
-                3  => 1,
-                4  => 1,
-                5  => 2,
-                6  => 1,
-                8  => 1,
-                9  => 1,
-                14 => 1,
-                16 => 1,
-                18 => 1,
-                29 => 1,
-                30 => 2,
-                36 => 1,
-            ];
-            break;
-        case 'SemicolonSpacingUnitTest.js':
-            return [
-                3  => 1,
-                4  => 1,
-                6  => 1,
-                10 => 2,
-                11 => 1,
-                13 => 1,
-                19 => 1,
-                22 => 1,
-                25 => 1,
-            ];
-            break;
-        default:
-            return [];
-            break;
+            case 'SemicolonSpacingUnitTest.inc':
+                return [
+                    3  => 1,
+                    4  => 1,
+                    5  => 2,
+                    6  => 1,
+                    8  => 1,
+                    9  => 1,
+                    14 => 1,
+                    16 => 1,
+                    18 => 1,
+                    29 => 1,
+                    30 => 2,
+                    36 => 1,
+                ];
+                break;
+            case 'SemicolonSpacingUnitTest.js':
+                return [
+                    3  => 1,
+                    4  => 1,
+                    6  => 1,
+                    10 => 2,
+                    11 => 1,
+                    13 => 1,
+                    19 => 1,
+                    22 => 1,
+                    25 => 1,
+                ];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -78,6 +77,5 @@ class SemicolonSpacingUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

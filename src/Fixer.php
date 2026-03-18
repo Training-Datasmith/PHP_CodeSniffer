@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A helper class for fixing errors.
  *
@@ -17,7 +19,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class Fixer
 {
-
     /**
      * Is the fixer enabled and fixing a file?
      *
@@ -105,7 +106,6 @@ class Fixer
      */
     private $numFixes = 0;
 
-
     /**
      * Starts fixing a new file.
      *
@@ -130,7 +130,6 @@ class Fixer
         }
 
     }//end startFile()
-
 
     /**
      * Attempt to fix the file by processing it until no fixes are made.
@@ -192,7 +191,7 @@ class Fixer
             if ($this->numFixes === 0 && $this->inConflict === false) {
                 // Nothing left to do.
                 break;
-            } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
+            } elseif (PHP_CODESNIFFER_VERBOSITY > 1) {
                 echo "\t* fixed $this->numFixes violations, starting loop ".($this->loops + 1).' *'.PHP_EOL;
             }
         }//end while
@@ -216,7 +215,6 @@ class Fixer
 
     }//end fixFile()
 
-
     /**
      * Generates a text diff of the original file and the new content.
      *
@@ -227,7 +225,7 @@ class Fixer
      *
      * @return string
      */
-    public function generateDiff($filePath=null, $colors=true)
+    public function generateDiff($filePath = null, $colors = true)
     {
         if ($filePath === null) {
             $filePath = $this->currentFile->getFilename();
@@ -276,14 +274,14 @@ class Fixer
         foreach ($diffLines as $line) {
             if (isset($line[0]) === true) {
                 switch ($line[0]) {
-                case '-':
-                    $diff[] = "\033[31m$line\033[0m";
-                    break;
-                case '+':
-                    $diff[] = "\033[32m$line\033[0m";
-                    break;
-                default:
-                    $diff[] = $line;
+                    case '-':
+                        $diff[] = "\033[31m$line\033[0m";
+                        break;
+                    case '+':
+                        $diff[] = "\033[32m$line\033[0m";
+                        break;
+                    default:
+                        $diff[] = $line;
                 }
             }
         }
@@ -291,7 +289,6 @@ class Fixer
         return implode(PHP_EOL, $diff);
 
     }//end generateDiff()
-
 
     /**
      * Get a count of fixes that have been performed on the file.
@@ -307,7 +304,6 @@ class Fixer
 
     }//end getFixCount()
 
-
     /**
      * Get the current content of the file, as a string.
      *
@@ -318,7 +314,6 @@ class Fixer
         return implode('', $this->tokens);
 
     }//end getContents()
-
 
     /**
      * Get the current fixed content of a token.
@@ -340,7 +335,6 @@ class Fixer
         return $this->tokens[$stackPtr];
 
     }//end getTokenContent()
-
 
     /**
      * Start recording actions for a changeset.
@@ -372,7 +366,6 @@ class Fixer
         $this->inChangeset = true;
 
     }//end beginChangeset()
-
 
     /**
      * Stop recording actions for a changeset, and apply logged changes.
@@ -409,7 +402,7 @@ class Fixer
                 echo "\t=> Changeset failed to apply".PHP_EOL;
                 ob_start();
             }
-        } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
+        } elseif (PHP_CODESNIFFER_VERBOSITY > 1) {
             $fixes = count($this->changeset);
             @ob_end_clean();
             echo "\t=> Changeset ended: $fixes changes applied".PHP_EOL;
@@ -420,7 +413,6 @@ class Fixer
         return true;
 
     }//end endChangeset()
-
 
     /**
      * Stop recording actions for a changeset, and discard logged changes.
@@ -457,7 +449,6 @@ class Fixer
         }//end if
 
     }//end rollbackChangeset()
-
 
     /**
      * Replace the entire contents of a token.
@@ -591,7 +582,6 @@ class Fixer
 
     }//end replaceToken()
 
-
     /**
      * Reverts the previous fix made to a token.
      *
@@ -649,7 +639,6 @@ class Fixer
 
     }//end revertToken()
 
-
     /**
      * Replace the content of a token with a part of its current content.
      *
@@ -660,7 +649,7 @@ class Fixer
      *
      * @return bool If the change was accepted.
      */
-    public function substrToken($stackPtr, $start, $length=null)
+    public function substrToken($stackPtr, $start, $length = null)
     {
         $current = $this->getTokenContent($stackPtr);
 
@@ -673,7 +662,6 @@ class Fixer
         return $this->replaceToken($stackPtr, $newContent);
 
     }//end substrToken()
-
 
     /**
      * Adds a newline to end of a token's content.
@@ -689,7 +677,6 @@ class Fixer
 
     }//end addNewline()
 
-
     /**
      * Adds a newline to the start of a token's content.
      *
@@ -703,7 +690,6 @@ class Fixer
         return $this->replaceToken($stackPtr, $this->currentFile->eolChar.$current);
 
     }//end addNewlineBefore()
-
 
     /**
      * Adds content to the end of a token's current content.
@@ -720,7 +706,6 @@ class Fixer
 
     }//end addContent()
 
-
     /**
      * Adds content to the start of a token's current content.
      *
@@ -735,7 +720,6 @@ class Fixer
         return $this->replaceToken($stackPtr, $content.$current);
 
     }//end addContentBefore()
-
 
     /**
      * Adjust the indent of a code block.
@@ -797,6 +781,5 @@ class Fixer
         }
 
     }//end changeCodeBlockIndent()
-
 
 }//end class

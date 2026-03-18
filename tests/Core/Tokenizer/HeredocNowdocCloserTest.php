@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the tokenization of goto declarations and statements.
  *
@@ -10,8 +12,8 @@
 namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
 
 use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Files\DummyFile;
+use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 /**
@@ -21,8 +23,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  */
 class HeredocNowdocCloserTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Initialize & tokenize \PHP_CodeSniffer\Files\File with code from the test case file.
      *
@@ -53,7 +53,6 @@ class HeredocNowdocCloserTest extends AbstractMethodUnitTest
 
     }//end setUpBeforeClass()
 
-
     /**
      * Verify that leading (indent) whitespace in a heredoc/nowdoc closer token get the tab replacement treatment.
      *
@@ -82,7 +81,6 @@ class HeredocNowdocCloserTest extends AbstractMethodUnitTest
         }
 
     }//end testHeredocNowdocCloserTabReplacement()
-
 
     /**
      * Data provider.
@@ -145,6 +143,5 @@ class HeredocNowdocCloserTest extends AbstractMethodUnitTest
         ];
 
     }//end dataHeredocNowdocCloserTabReplacement()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the MemberVarScope sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class MemberVarScopeUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -38,7 +38,6 @@ class MemberVarScopeUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -52,6 +51,5 @@ class MemberVarScopeUnitTest extends AbstractSniffUnitTest
         return [71 => 1];
 
     }//end getWarningList()
-
 
 }//end class

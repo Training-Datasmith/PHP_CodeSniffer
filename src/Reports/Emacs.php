@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Emacs report for PHP_CodeSniffer.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Files\File;
 
 class Emacs implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -29,7 +29,7 @@ class Emacs implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
             // Nothing to print.
@@ -54,7 +54,6 @@ class Emacs implements Report
 
     }//end generateFileReport()
 
-
     /**
      * Generates an emacs report.
      *
@@ -77,14 +76,13 @@ class Emacs implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         echo $cachedData;
 
     }//end generate()
-
 
 }//end class

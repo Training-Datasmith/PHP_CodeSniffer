@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the closing braces of scopes are aligned correctly.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ScopeClosingBraceSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -27,7 +27,6 @@ class ScopeClosingBraceSniff implements Sniff
         return Tokens::$scopeOpeners;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -108,6 +107,5 @@ class ScopeClosingBraceSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

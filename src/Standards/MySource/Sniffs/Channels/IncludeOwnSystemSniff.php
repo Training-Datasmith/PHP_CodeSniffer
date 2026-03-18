@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that a system does not include itself.
  *
@@ -9,13 +11,11 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Channels;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class IncludeOwnSystemSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class IncludeOwnSystemSniff implements Sniff
         return [T_DOUBLE_COLON];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -52,17 +51,17 @@ class IncludeOwnSystemSniff implements Sniff
         $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 2), null, false, true);
         $typeName = trim($tokens[$typeName]['content'], " '");
         switch (strtolower($tokens[($stackPtr + 1)]['content'])) {
-        case 'includesystem' :
-            $included = strtolower($typeName);
-            break;
-        case 'includeasset' :
-            $included = strtolower($typeName).'assettype';
-            break;
-        case 'includewidget' :
-            $included = strtolower($typeName).'widgettype';
-            break;
-        default:
-            return;
+            case 'includesystem' :
+                $included = strtolower($typeName);
+                break;
+            case 'includeasset' :
+                $included = strtolower($typeName).'assettype';
+                break;
+            case 'includewidget' :
+                $included = strtolower($typeName).'widgettype';
+                break;
+            default:
+                return;
         }
 
         if ($included === strtolower($ownClass)) {
@@ -72,7 +71,6 @@ class IncludeOwnSystemSniff implements Sniff
         }
 
     }//end process()
-
 
     /**
      * Determines the included class name from given token.
@@ -93,6 +91,5 @@ class IncludeOwnSystemSniff implements Sniff
         return false;
 
     }//end getIncludedClassFromToken()
-
 
 }//end class

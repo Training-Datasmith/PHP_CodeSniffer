@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the support of PHP 8 attributes
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class AttributesTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that attributes are parsed correctly.
      *
@@ -57,7 +57,6 @@ class AttributesTest extends AbstractMethodUnitTest
         $this->assertSame($tokenCodes, $map);
 
     }//end testAttribute()
-
 
     /**
      * Data provider.
@@ -239,7 +238,6 @@ class AttributesTest extends AbstractMethodUnitTest
 
     }//end dataAttribute()
 
-
     /**
      * Test that multiple attributes on the same line are parsed correctly.
      *
@@ -263,7 +261,6 @@ class AttributesTest extends AbstractMethodUnitTest
 
     }//end testTwoAttributesOnTheSameLine()
 
-
     /**
      * Test that attribute followed by a line comment is parsed correctly.
      *
@@ -285,7 +282,6 @@ class AttributesTest extends AbstractMethodUnitTest
         $this->assertSame(T_COMMENT, $tokens[($closer + 2)]['code']);
 
     }//end testAttributeAndLineComment()
-
 
     /**
      * Test that attributes on function declaration parameters are parsed correctly.
@@ -336,7 +332,6 @@ class AttributesTest extends AbstractMethodUnitTest
         $this->assertSame($tokenCodes, $map);
 
     }//end testAttributeOnParameters()
-
 
     /**
      * Data provider.
@@ -393,7 +388,6 @@ class AttributesTest extends AbstractMethodUnitTest
 
     }//end dataAttributeOnParameters()
 
-
     /**
      * Test that an attribute containing text which looks like a PHP close tag is tokenized correctly.
      *
@@ -442,7 +436,6 @@ class AttributesTest extends AbstractMethodUnitTest
         }
 
     }//end testAttributeContainingTextLookingLikeCloseTag()
-
 
     /**
      * Data provider.
@@ -509,7 +502,7 @@ class AttributesTest extends AbstractMethodUnitTest
                     ],
                     [
                         'T_WHITESPACE',
-                        "    ",
+                        '    ',
                     ],
                     [
                         'T_CONSTANT_ENCAPSED_STRING',
@@ -544,7 +537,6 @@ class AttributesTest extends AbstractMethodUnitTest
 
     }//end dataAttributeOnTextLookingLikeCloseTag()
 
-
     /**
      * Test that invalid attribute (or comment starting with #[ and without ]) are parsed correctly.
      *
@@ -564,7 +556,6 @@ class AttributesTest extends AbstractMethodUnitTest
         $this->assertNull($tokens[$attribute]['attribute_closer']);
 
     }//end testInvalidAttribute()
-
 
     /**
      * Test that nested attributes are parsed correctly.
@@ -653,6 +644,5 @@ class AttributesTest extends AbstractMethodUnitTest
         $this->assertSame($tokenCodes, $map);
 
     }//end testNestedAttributes()
-
 
 }//end class

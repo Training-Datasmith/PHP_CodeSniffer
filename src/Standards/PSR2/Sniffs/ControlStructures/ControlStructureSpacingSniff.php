@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that control structures have the correct spacing around brackets.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ControlStructureSpacingSniff implements Sniff
 {
-
     /**
      * How many spaces should follow the opening bracket.
      *
@@ -29,7 +30,6 @@ class ControlStructureSpacingSniff implements Sniff
      * @var integer
      */
     public $requiredSpacesBeforeClose = 0;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -51,7 +51,6 @@ class ControlStructureSpacingSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -100,7 +99,7 @@ class ControlStructureSpacingSniff implements Sniff
                     $padding = str_repeat(' ', $this->requiredSpacesAfterOpen);
                     if ($spaceAfterOpen === 0) {
                         $phpcsFile->fixer->addContent($parenOpener, $padding);
-                    } else if ($spaceAfterOpen === 'newline') {
+                    } elseif ($spaceAfterOpen === 'newline') {
                         $phpcsFile->fixer->replaceToken(($parenOpener + 1), '');
                     } else {
                         $phpcsFile->fixer->replaceToken(($parenOpener + 1), $padding);
@@ -137,6 +136,5 @@ class ControlStructureSpacingSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

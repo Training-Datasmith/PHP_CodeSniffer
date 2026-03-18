@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures all control structure keywords are lowercase.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class LowercaseDeclarationSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -38,7 +38,6 @@ class LowercaseDeclarationSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -70,6 +69,5 @@ class LowercaseDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

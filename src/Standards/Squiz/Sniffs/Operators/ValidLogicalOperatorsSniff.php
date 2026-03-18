@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures logical operators 'and' and 'or' are not used.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ValidLogicalOperatorsSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -29,7 +29,6 @@ class ValidLogicalOperatorsSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -62,6 +61,5 @@ class ValidLogicalOperatorsSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'NotAllowed', $data);
 
     }//end process()
-
 
 }//end class

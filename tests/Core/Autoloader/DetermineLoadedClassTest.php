@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Autoload::determineLoadedClass method.
  *
@@ -14,8 +16,6 @@ use PHPUnit\Framework\TestCase;
 
 class DetermineLoadedClassTest extends TestCase
 {
-
-
     /**
      * Load the test files.
      *
@@ -26,7 +26,6 @@ class DetermineLoadedClassTest extends TestCase
         include __DIR__.'/TestFiles/Sub/C.inc';
 
     }//end setUpBeforeClass()
-
 
     /**
      * Test for when class list is ordered.
@@ -56,7 +55,6 @@ class DetermineLoadedClassTest extends TestCase
         $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
 
     }//end testOrdered()
-
 
     /**
      * Test for when class list is out of order.
@@ -114,6 +112,5 @@ class DetermineLoadedClassTest extends TestCase
         $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
 
     }//end testUnordered()
-
 
 }//end class

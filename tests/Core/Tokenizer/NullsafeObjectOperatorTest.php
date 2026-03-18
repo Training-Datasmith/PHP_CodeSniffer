@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the backfill for the PHP >= 8.0 nullsafe object operator.
  *
@@ -14,7 +16,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
 {
-
     /**
      * Tokens to search for.
      *
@@ -25,7 +26,6 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
         T_OBJECT_OPERATOR,
         T_INLINE_THEN,
     ];
-
 
     /**
      * Test that a normal object operator is still tokenized as such.
@@ -43,7 +43,6 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
         $this->assertSame('T_OBJECT_OPERATOR', $tokens[$operator]['type'], 'Failed asserting type is object operator');
 
     }//end testObjectOperator()
-
 
     /**
      * Test that a nullsafe object operator is tokenized as such.
@@ -65,7 +64,6 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
 
     }//end testNullsafeObjectOperator()
 
-
     /**
      * Data provider.
      *
@@ -82,7 +80,6 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
 
     }//end dataNullsafeObjectOperator()
 
-
     /**
      * Test that a question mark not followed by an object operator is tokenized as T_TERNARY_THEN.
      *
@@ -95,7 +92,7 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testTernaryThen($testMarker, $testObjectOperator=false)
+    public function testTernaryThen($testMarker, $testObjectOperator = false)
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -110,7 +107,6 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
         }
 
     }//end testTernaryThen()
-
 
     /**
      * Data provider.
@@ -135,6 +131,5 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
         ];
 
     }//end dataTernaryThen()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Runs eslint on the file.
  *
@@ -16,7 +18,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class ESLintSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -31,7 +32,6 @@ class ESLintSniff implements Sniff
      */
     public $configFile;
 
-
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -42,7 +42,6 @@ class ESLintSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -108,6 +107,5 @@ class ESLintSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
 }//end class

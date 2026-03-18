@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Files\File:findExtendedClassName method.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class FindExtendedClassNameTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test retrieving the name of the class being extended by another class
      * (or interface).
@@ -33,7 +33,6 @@ class FindExtendedClassNameTest extends AbstractMethodUnitTest
         $this->assertSame($expected, $result);
 
     }//end testFindExtendedClassName()
-
 
     /**
      * Data provider for the FindExtendedClassName test.
@@ -88,6 +87,5 @@ class FindExtendedClassNameTest extends AbstractMethodUnitTest
         ];
 
     }//end dataExtendedClass()
-
 
 }//end class

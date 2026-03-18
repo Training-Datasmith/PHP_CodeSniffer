@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure multi-line IF conditions are defined correctly.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class MultiLineConditionSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -33,7 +34,6 @@ class MultiLineConditionSniff implements Sniff
      */
     public $indent = 4;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -47,7 +47,6 @@ class MultiLineConditionSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -238,9 +237,9 @@ class MultiLineConditionSniff implements Sniff
 
         if ($tokens[$openBrace]['line'] > $tokens[$closeBracket]['line']) {
             $length = -1;
-        } else if ($openBrace === ($closeBracket + 1)) {
+        } elseif ($openBrace === ($closeBracket + 1)) {
             $length = 0;
-        } else if ($openBrace === ($closeBracket + 2)
+        } elseif ($openBrace === ($closeBracket + 2)
             && $tokens[($closeBracket + 1)]['code'] === T_WHITESPACE
         ) {
             $length = $tokens[($closeBracket + 1)]['length'];
@@ -274,6 +273,5 @@ class MultiLineConditionSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

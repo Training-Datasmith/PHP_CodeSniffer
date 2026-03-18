@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Base class to use when testing utility methods.
  *
@@ -10,13 +12,12 @@
 namespace PHP_CodeSniffer\Tests\Core;
 
 use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
 use PHP_CodeSniffer\Files\DummyFile;
+use PHP_CodeSniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractMethodUnitTest extends TestCase
 {
-
     /**
      * The file extension of the test case file (without leading dot).
      *
@@ -33,7 +34,6 @@ abstract class AbstractMethodUnitTest extends TestCase
      * @var \PHP_CodeSniffer\Files\File
      */
     protected static $phpcsFile;
-
 
     /**
      * Initialize & tokenize \PHP_CodeSniffer\Files\File with code from the test case file.
@@ -64,7 +64,6 @@ abstract class AbstractMethodUnitTest extends TestCase
 
     }//end setUpBeforeClass()
 
-
     /**
      * Clean up after finished test.
      *
@@ -75,7 +74,6 @@ abstract class AbstractMethodUnitTest extends TestCase
         self::$phpcsFile = null;
 
     }//end tearDownAfterClass()
-
 
     /**
      * Get the token pointer for a target token based on a specific comment found on the line before.
@@ -89,7 +87,7 @@ abstract class AbstractMethodUnitTest extends TestCase
      *
      * @return int
      */
-    public function getTargetToken($commentString, $tokenType, $tokenContent=null)
+    public function getTargetToken($commentString, $tokenType, $tokenContent = null)
     {
         $start   = (self::$phpcsFile->numTokens - 1);
         $comment = self::$phpcsFile->findPrevious(
@@ -135,6 +133,5 @@ abstract class AbstractMethodUnitTest extends TestCase
         return $target;
 
     }//end getTargetToken()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that operators have valid spacing surrounding them.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class OperatorSpacingSniff extends SquizOperatorSpacingSniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -38,7 +38,6 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
         return $targets;
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -107,6 +106,5 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that the closing braces of scopes are aligned correctly.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ScopeClosingBraceSniff implements Sniff
 {
-
     /**
      * The number of spaces code should be indented.
      *
@@ -23,18 +24,16 @@ class ScopeClosingBraceSniff implements Sniff
      */
     public $indent = 4;
 
-
-     /**
-      * Returns an array of tokens this test wants to listen for.
-      *
-      * @return int[]
-      */
+    /**
+     * Returns an array of tokens this test wants to listen for.
+     *
+     * @return int[]
+     */
     public function register()
     {
         return Tokens::$scopeOpeners;
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -83,7 +82,7 @@ class ScopeClosingBraceSniff implements Sniff
         $startColumn = 1;
         if ($tokens[$lineStart]['code'] === T_WHITESPACE) {
             $startColumn = $tokens[($lineStart + 1)]['column'];
-        } else if ($tokens[$lineStart]['code'] === T_INLINE_HTML) {
+        } elseif ($tokens[$lineStart]['code'] === T_INLINE_HTML) {
             $trimmed = ltrim($tokens[$lineStart]['content']);
             if ($trimmed === '') {
                 $startColumn = $tokens[($lineStart + 1)]['column'];
@@ -127,7 +126,7 @@ class ScopeClosingBraceSniff implements Sniff
         $braceIndent = 0;
         if ($tokens[$lineStart]['code'] === T_WHITESPACE) {
             $braceIndent = ($tokens[($lineStart + 1)]['column'] - 1);
-        } else if ($tokens[$lineStart]['code'] === T_INLINE_HTML) {
+        } elseif ($tokens[$lineStart]['code'] === T_INLINE_HTML) {
             $trimmed = ltrim($tokens[$lineStart]['content']);
             if ($trimmed === '') {
                 $braceIndent = ($tokens[($lineStart + 1)]['column'] - 1);
@@ -174,6 +173,5 @@ class ScopeClosingBraceSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

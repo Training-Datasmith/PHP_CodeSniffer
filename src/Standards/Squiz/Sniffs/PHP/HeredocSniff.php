@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Bans the use of heredocs and nowdocs.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class HeredocSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -29,7 +29,6 @@ class HeredocSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -46,6 +45,5 @@ class HeredocSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'NotAllowed');
 
     }//end process()
-
 
 }//end class

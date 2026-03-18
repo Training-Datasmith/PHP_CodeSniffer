@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures the use of else if over elseif.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ElseIfDeclarationSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class ElseIfDeclarationSniff implements Sniff
         return [T_ELSEIF];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -46,6 +45,5 @@ class ElseIfDeclarationSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that block comments are used appropriately.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class BlockCommentSniff implements Sniff
 {
-
     /**
      * The --tab-width CLI value that is being used.
      *
      * @var integer
      */
     private $tabWidth;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -37,7 +37,6 @@ class BlockCommentSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -398,6 +397,5 @@ class BlockCommentSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

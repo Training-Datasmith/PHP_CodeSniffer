@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Version control report base class for PHP_CodeSniffer.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Timing;
 
 abstract class VersionControl implements Report
 {
-
     /**
      * The name of the report we want in the output.
      *
      * @var string
      */
     protected $reportName = 'VERSION CONTROL';
-
 
     /**
      * Generate a partial report for a single processed file.
@@ -38,7 +38,7 @@ abstract class VersionControl implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         $blames = $this->getBlameContent($report['filename']);
 
@@ -130,7 +130,6 @@ abstract class VersionControl implements Report
 
     }//end generateFileReport()
 
-
     /**
      * Prints the author of all errors and warnings, as given by "version control blame".
      *
@@ -153,10 +152,10 @@ abstract class VersionControl implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         $errorsShown = ($totalErrors + $totalWarnings);
         if ($errorsShown === 0) {
@@ -178,40 +177,40 @@ abstract class VersionControl implements Report
         foreach ($lines as $line) {
             $parts = explode('>>', $line);
             switch ($parts[0]) {
-            case 'AUTHOR':
-                if (isset($authorCache[$parts[1]]) === false) {
-                    $authorCache[$parts[1]] = $parts[2];
-                } else {
-                    $authorCache[$parts[1]] += $parts[2];
-                }
-                break;
-            case 'PRAISE':
-                if (isset($praiseCache[$parts[1]]) === false) {
-                    $praiseCache[$parts[1]] = [
-                        'good' => $parts[2],
-                        'bad'  => $parts[3],
-                    ];
-                } else {
-                    $praiseCache[$parts[1]]['good'] += $parts[2];
-                    $praiseCache[$parts[1]]['bad']  += $parts[3];
-                }
-                break;
-            case 'SOURCE':
-                if (isset($praiseCache[$parts[1]]) === false) {
-                    $praiseCache[$parts[1]] = [];
-                }
+                case 'AUTHOR':
+                    if (isset($authorCache[$parts[1]]) === false) {
+                        $authorCache[$parts[1]] = $parts[2];
+                    } else {
+                        $authorCache[$parts[1]] += $parts[2];
+                    }
+                    break;
+                case 'PRAISE':
+                    if (isset($praiseCache[$parts[1]]) === false) {
+                        $praiseCache[$parts[1]] = [
+                            'good' => $parts[2],
+                            'bad'  => $parts[3],
+                        ];
+                    } else {
+                        $praiseCache[$parts[1]]['good'] += $parts[2];
+                        $praiseCache[$parts[1]]['bad']  += $parts[3];
+                    }
+                    break;
+                case 'SOURCE':
+                    if (isset($praiseCache[$parts[1]]) === false) {
+                        $praiseCache[$parts[1]] = [];
+                    }
 
-                if (isset($sourceCache[$parts[1]][$parts[2]]) === false) {
-                    $sourceCache[$parts[1]][$parts[2]] = [
-                        'count'   => $parts[3],
-                        'fixable' => (bool) $parts[4],
-                    ];
-                } else {
-                    $sourceCache[$parts[1]][$parts[2]]['count'] += $parts[3];
-                }
-                break;
-            default:
-                break;
+                    if (isset($sourceCache[$parts[1]][$parts[2]]) === false) {
+                        $sourceCache[$parts[1]][$parts[2]] = [
+                            'count'   => $parts[3],
+                            'fixable' => (bool) $parts[4],
+                        ];
+                    } else {
+                        $sourceCache[$parts[1]][$parts[2]]['count'] += $parts[3];
+                    }
+                    break;
+                default:
+                    break;
             }//end switch
         }//end foreach
 
@@ -352,7 +351,6 @@ abstract class VersionControl implements Report
 
     }//end generate()
 
-
     /**
      * Extract the author from a blame line.
      *
@@ -362,7 +360,6 @@ abstract class VersionControl implements Report
      */
     abstract protected function getAuthor($line);
 
-
     /**
      * Gets the blame output.
      *
@@ -371,6 +368,5 @@ abstract class VersionControl implements Report
      * @return array
      */
     abstract protected function getBlameContent($filename);
-
 
 }//end class

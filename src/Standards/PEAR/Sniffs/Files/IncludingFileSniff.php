@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure include_once is used in conditional situations and require_once is used elsewhere.
  *
@@ -17,8 +19,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class IncludingFileSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -34,7 +34,6 @@ class IncludingFileSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -103,7 +102,7 @@ class IncludingFileSniff implements Sniff
                 if ($fix === true) {
                     $phpcsFile->fixer->replaceToken($stackPtr, 'include_once');
                 }
-            } else if ($tokenCode === T_REQUIRE) {
+            } elseif ($tokenCode === T_REQUIRE) {
                 $error  = 'File is being conditionally included; ';
                 $error .= 'use "include" instead';
                 $fix    = $phpcsFile->addFixableError($error, $stackPtr, 'UseInclude');
@@ -120,7 +119,7 @@ class IncludingFileSniff implements Sniff
                 if ($fix === true) {
                     $phpcsFile->fixer->replaceToken($stackPtr, 'require_once');
                 }
-            } else if ($tokenCode === T_INCLUDE) {
+            } elseif ($tokenCode === T_INCLUDE) {
                 $error  = 'File is being unconditionally included; ';
                 $error .= 'use "require" instead';
                 $fix    = $phpcsFile->addFixableError($error, $stackPtr, 'UseRequire');
@@ -131,6 +130,5 @@ class IncludingFileSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

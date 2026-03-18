@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests self member references.
  *
@@ -20,8 +22,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class SelfMemberReferenceSniff extends AbstractScopeSniff
 {
-
-
     /**
      * Constructs a Squiz_Sniffs_Classes_SelfMemberReferenceSniff.
      */
@@ -30,7 +30,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
         parent::__construct([T_CLASS], [T_DOUBLE_COLON]);
 
     }//end __construct()
-
 
     /**
      * Processes the function tokens within the class.
@@ -75,7 +74,7 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
 
                 return;
             }
-        } else if ($tokens[$calledClassName]['code'] === T_STRING) {
+        } elseif ($tokens[$calledClassName]['code'] === T_STRING) {
             // If the class is called with a namespace prefix, build fully qualified
             // namespace calls for both current scope class and requested class.
             $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($calledClassName - 1), null, true);
@@ -162,7 +161,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -177,7 +175,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
     {
 
     }//end processTokenOutsideScope()
-
 
     /**
      * Returns the declaration names for classes/interfaces/functions with a namespace.
@@ -209,7 +206,6 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
 
     }//end getDeclarationNameWithNamespace()
 
-
     /**
      * Returns the namespace declaration of a file.
      *
@@ -235,6 +231,5 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
         return $namespace;
 
     }//end getNamespaceOfScope()
-
 
 }//end class

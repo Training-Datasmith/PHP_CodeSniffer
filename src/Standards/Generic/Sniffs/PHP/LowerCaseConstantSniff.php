@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks that all uses of true, false and null are lowercase.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class LowerCaseConstantSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -37,7 +38,6 @@ class LowerCaseConstantSniff implements Sniff
         T_NULL  => T_NULL,
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -55,7 +55,6 @@ class LowerCaseConstantSniff implements Sniff
         return $targets;
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -134,7 +133,6 @@ class LowerCaseConstantSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Processes a non-type declaration constant.
      *
@@ -172,6 +170,5 @@ class LowerCaseConstantSniff implements Sniff
         }
 
     }//end processConstant()
-
 
 }//end class

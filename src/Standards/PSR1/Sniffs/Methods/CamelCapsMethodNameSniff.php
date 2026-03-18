@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures method names are defined using camel case.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
 {
-
-
     /**
      * Processes the tokens within the scope.
      *
@@ -72,7 +72,6 @@ class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Processes the tokens outside the scope.
      *
@@ -86,6 +85,5 @@ class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
     {
 
     }//end processTokenOutsideScope()
-
 
 }//end class

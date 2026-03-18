@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures that console is not used for function or var names.
  *
@@ -9,19 +11,17 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Debug;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class FirebugConsoleSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['JS'];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -38,7 +38,6 @@ class FirebugConsoleSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -59,6 +58,5 @@ class FirebugConsoleSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests the adding of the "bracket_opener/closer" keys to use group tokens.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that the scope opener/closers are set correctly when the namespace keyword is encountered as an operator.
      *
@@ -28,7 +28,7 @@ class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public function testScopeSetting($testMarker, $tokenTypes, $open=T_OPEN_CURLY_BRACKET, $close=T_CLOSE_CURLY_BRACKET)
+    public function testScopeSetting($testMarker, $tokenTypes, $open = T_OPEN_CURLY_BRACKET, $close = T_CLOSE_CURLY_BRACKET)
     {
         $tokens = self::$phpcsFile->getTokens();
 
@@ -52,7 +52,6 @@ class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
         $this->assertSame($closer, $tokens[$closer]['scope_closer'], 'Scope closer not same for close curly');
 
     }//end testScopeSetting()
-
 
     /**
      * Data provider.
@@ -93,6 +92,5 @@ class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
         ];
 
     }//end dataScopeSetting()
-
 
 }//end class

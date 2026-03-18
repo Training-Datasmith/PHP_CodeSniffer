@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Mercurial blame report for PHP_CodeSniffer.
  *
@@ -14,14 +16,12 @@ use PHP_CodeSniffer\Exceptions\DeepExitException;
 
 class Hgblame extends VersionControl
 {
-
     /**
      * The name of the report we want in the output
      *
      * @var string
      */
     protected $reportName = 'MERCURIAL';
-
 
     /**
      * Extract the author from a blame line.
@@ -56,7 +56,6 @@ class Hgblame extends VersionControl
         return trim(preg_replace('|<.+>|', '', implode(' ', $parts)));
 
     }//end getAuthor()
-
 
     /**
      * Gets the blame output.
@@ -105,6 +104,5 @@ class Hgblame extends VersionControl
         return $blames;
 
     }//end getBlameContent()
-
 
 }//end class

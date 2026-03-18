@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the FunctionClosingBraceSpace sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class FunctionClosingBraceSpaceUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,38 +25,37 @@ class FunctionClosingBraceSpaceUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='FunctionClosingBraceSpaceUnitTest.inc')
+    public function getErrorList($testFile = 'FunctionClosingBraceSpaceUnitTest.inc')
     {
         switch ($testFile) {
-        case 'FunctionClosingBraceSpaceUnitTest.inc':
-            return [
-                10 => 1,
-                21 => 1,
-                28 => 1,
-                29 => 1,
-                31 => 1,
-                39 => 1,
-            ];
-            break;
-        case 'FunctionClosingBraceSpaceUnitTest.js':
-            return [
-                13  => 1,
-                25  => 1,
-                32  => 1,
-                53  => 1,
-                59  => 1,
-                67  => 1,
-                84  => 1,
-                128 => 1,
-            ];
-            break;
-        default:
-            return [];
-            break;
+            case 'FunctionClosingBraceSpaceUnitTest.inc':
+                return [
+                    10 => 1,
+                    21 => 1,
+                    28 => 1,
+                    29 => 1,
+                    31 => 1,
+                    39 => 1,
+                ];
+                break;
+            case 'FunctionClosingBraceSpaceUnitTest.js':
+                return [
+                    13  => 1,
+                    25  => 1,
+                    32  => 1,
+                    53  => 1,
+                    59  => 1,
+                    67  => 1,
+                    84  => 1,
+                    128 => 1,
+                ];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -71,6 +70,5 @@ class FunctionClosingBraceSpaceUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

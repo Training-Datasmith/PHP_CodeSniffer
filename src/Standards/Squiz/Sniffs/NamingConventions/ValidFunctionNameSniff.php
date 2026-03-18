@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures method names are correct.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Common;
 
 class ValidFunctionNameSniff extends PEARValidFunctionNameSniff
 {
-
-
     /**
      * Processes the tokens outside the scope.
      *
@@ -49,6 +49,5 @@ class ValidFunctionNameSniff extends PEARValidFunctionNameSniff
         }
 
     }//end processTokenOutsideScope()
-
 
 }//end class

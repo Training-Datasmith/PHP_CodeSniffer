@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that operators have valid spacing surrounding them.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class LogicalOperatorSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -25,7 +26,6 @@ class LogicalOperatorSpacingSniff implements Sniff
         'PHP',
         'JS',
     ];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -37,7 +37,6 @@ class LogicalOperatorSpacingSniff implements Sniff
         return Tokens::$booleanOperators;
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -97,6 +96,5 @@ class LogicalOperatorSpacingSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

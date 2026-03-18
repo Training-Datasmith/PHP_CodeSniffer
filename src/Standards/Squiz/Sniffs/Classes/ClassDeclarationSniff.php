@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks the declaration of the class and its inheritance is correct.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
 {
-
-
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -40,7 +40,6 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
         }
 
     }//end process()
-
 
     /**
      * Processes the opening section of a class declaration.
@@ -85,7 +84,6 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
         }//end if
 
     }//end processOpen()
-
 
     /**
      * Processes the closing section of a class declaration.
@@ -145,7 +143,7 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
                     $phpcsFile->fixer->addNewlineBefore($closeBrace);
                 }
             }
-        } else if ($tokens[($closeBrace - 1)]['code'] === T_WHITESPACE) {
+        } elseif ($tokens[($closeBrace - 1)]['code'] === T_WHITESPACE) {
             $prevContent = $tokens[($closeBrace - 1)]['content'];
             if ($prevContent !== $phpcsFile->eolChar) {
                 $blankSpace = substr($prevContent, strpos($prevContent, $phpcsFile->eolChar));
@@ -203,6 +201,5 @@ class ClassDeclarationSniff extends PSR2ClassDeclarationSniff
         }//end if
 
     }//end processClose()
-
 
 }//end class

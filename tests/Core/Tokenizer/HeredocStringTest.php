@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests that embedded variables and expressions in heredoc strings are tokenized
  * as one heredoc string token.
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class HeredocStringTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that heredoc strings contain the complete interpolated string.
      *
@@ -35,7 +35,6 @@ class HeredocStringTest extends AbstractMethodUnitTest
         $this->assertSame($expectedContent."\n", $tokens[$target]['content']);
 
     }//end testHeredocString()
-
 
     /**
      * Test that heredoc strings contain the complete interpolated string when combined with other texts.
@@ -57,7 +56,6 @@ class HeredocStringTest extends AbstractMethodUnitTest
         $this->assertSame('Do '.$expectedContent." Something\n", $tokens[$target]['content']);
 
     }//end testHeredocStringWrapped()
-
 
     /**
      * Data provider.
@@ -148,6 +146,5 @@ class HeredocStringTest extends AbstractMethodUnitTest
         ];
 
     }//end dataHeredocString()
-
 
 }//end class

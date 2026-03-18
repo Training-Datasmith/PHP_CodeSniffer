@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the DisallowSizeFunctionsInLoops sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class DisallowSizeFunctionsInLoopsUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,35 +25,34 @@ class DisallowSizeFunctionsInLoopsUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='DisallowSizeFunctionsInLoopsUnitTest.inc')
+    public function getErrorList($testFile = 'DisallowSizeFunctionsInLoopsUnitTest.inc')
     {
         switch ($testFile) {
-        case 'DisallowSizeFunctionsInLoopsUnitTest.inc':
-            return [
-                2  => 1,
-                7  => 1,
-                11 => 1,
-                13 => 1,
-                18 => 1,
-                23 => 1,
-                27 => 1,
-                29 => 1,
-                35 => 1,
-                40 => 1,
-                44 => 1,
-                46 => 1,
-            ];
-            break;
-        case 'DisallowSizeFunctionsInLoopsUnitTest.js':
-            return [1 => 1];
-            break;
-        default:
-            return [];
-            break;
+            case 'DisallowSizeFunctionsInLoopsUnitTest.inc':
+                return [
+                    2  => 1,
+                    7  => 1,
+                    11 => 1,
+                    13 => 1,
+                    18 => 1,
+                    23 => 1,
+                    27 => 1,
+                    29 => 1,
+                    35 => 1,
+                    40 => 1,
+                    44 => 1,
+                    46 => 1,
+                ];
+                break;
+            case 'DisallowSizeFunctionsInLoopsUnitTest.js':
+                return [1 => 1];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -68,6 +67,5 @@ class DisallowSizeFunctionsInLoopsUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

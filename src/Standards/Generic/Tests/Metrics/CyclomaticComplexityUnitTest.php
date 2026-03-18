@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the CyclomaticComplexity sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class CyclomaticComplexityUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -28,7 +28,6 @@ class CyclomaticComplexityUnitTest extends AbstractSniffUnitTest
         return [118 => 1];
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -53,6 +52,5 @@ class CyclomaticComplexityUnitTest extends AbstractSniffUnitTest
         ];
 
     }//end getWarningList()
-
 
 }//end class

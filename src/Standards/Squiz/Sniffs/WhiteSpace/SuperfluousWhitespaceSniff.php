@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks for unneeded whitespace.
  *
@@ -18,7 +20,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class SuperfluousWhitespaceSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
@@ -39,7 +40,6 @@ class SuperfluousWhitespaceSniff implements Sniff
      */
     public $ignoreBlankLines = false;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -58,7 +58,6 @@ class SuperfluousWhitespaceSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this sniff, when one of its tokens is encountered.
@@ -122,7 +121,7 @@ class SuperfluousWhitespaceSniff implements Sniff
 
                 $phpcsFile->fixer->endChangeset();
             }
-        } else if ($tokens[$stackPtr]['code'] === T_CLOSE_TAG) {
+        } elseif ($tokens[$stackPtr]['code'] === T_CLOSE_TAG) {
             /*
                 Check for end of file whitespace.
             */
@@ -212,7 +211,7 @@ class SuperfluousWhitespaceSniff implements Sniff
                         $phpcsFile->fixer->replaceToken($stackPtr, rtrim($tokenContent).$phpcsFile->eolChar);
                     }
                 }
-            } else if ($tokens[($stackPtr - 1)]['content'] !== rtrim($tokens[($stackPtr - 1)]['content'])
+            } elseif ($tokens[($stackPtr - 1)]['content'] !== rtrim($tokens[($stackPtr - 1)]['content'])
                 && $tokens[($stackPtr - 1)]['line'] === $tokens[$stackPtr]['line']
             ) {
                 $fix = $phpcsFile->addFixableError('Whitespace found at end of line', ($stackPtr - 1), 'EndLine');
@@ -260,6 +259,5 @@ class SuperfluousWhitespaceSniff implements Sniff
         }//end if
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests converting enum "case" to T_ENUM_CASE.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 
 class EnumCaseTest extends AbstractMethodUnitTest
 {
-
-
     /**
      * Test that the enum "case" is converted to T_ENUM_CASE.
      *
@@ -41,7 +41,6 @@ class EnumCaseTest extends AbstractMethodUnitTest
 
     }//end testEnumCases()
 
-
     /**
      * Data provider.
      *
@@ -62,7 +61,6 @@ class EnumCaseTest extends AbstractMethodUnitTest
         ];
 
     }//end dataEnumCases()
-
 
     /**
      * Test that "case" that is not enum case is still tokenized as `T_CASE`.
@@ -90,7 +88,6 @@ class EnumCaseTest extends AbstractMethodUnitTest
 
     }//end testNotEnumCases()
 
-
     /**
      * Data provider.
      *
@@ -111,7 +108,6 @@ class EnumCaseTest extends AbstractMethodUnitTest
         ];
 
     }//end dataNotEnumCases()
-
 
     /**
      * Test that "case" that is not enum case is still tokenized as `T_CASE`.
@@ -134,7 +130,6 @@ class EnumCaseTest extends AbstractMethodUnitTest
 
     }//end testKeywordAsEnumCaseNameShouldBeString()
 
-
     /**
      * Data provider.
      *
@@ -152,6 +147,5 @@ class EnumCaseTest extends AbstractMethodUnitTest
         ];
 
     }//end dataKeywordAsEnumCaseNameShouldBeString()
-
 
 }//end class

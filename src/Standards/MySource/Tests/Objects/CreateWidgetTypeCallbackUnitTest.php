@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the CreateWidgetTypeCallback sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class CreateWidgetTypeCallbackUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -25,7 +25,7 @@ class CreateWidgetTypeCallbackUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='CreateWidgetTypeCallbackUnitTest.js')
+    public function getErrorList($testFile = 'CreateWidgetTypeCallbackUnitTest.js')
     {
         return [
             18  => 1,
@@ -40,7 +40,6 @@ class CreateWidgetTypeCallbackUnitTest extends AbstractSniffUnitTest
 
     }//end getErrorList()
 
-
     /**
      * Returns the lines where warnings should occur.
      *
@@ -54,6 +53,5 @@ class CreateWidgetTypeCallbackUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

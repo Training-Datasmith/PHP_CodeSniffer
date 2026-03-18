@@ -1,5 +1,7 @@
 #!/usr/bin/env php
 <?php
+
+declare(strict_types=1);
 /**
  * Validate the PHP_CodeSniffer PEAR package.xml file.
  *

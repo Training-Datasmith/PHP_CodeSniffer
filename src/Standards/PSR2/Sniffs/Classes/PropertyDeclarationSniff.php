@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that properties are declared correctly.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class PropertyDeclarationSniff extends AbstractVariableSniff
 {
-
-
     /**
      * Processes the function tokens within the class.
      *
@@ -80,7 +80,7 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
                 if ($fix === true) {
                     $phpcsFile->fixer->addContent($typeToken, ' ');
                 }
-            } else if ($tokens[($typeToken + 1)]['content'] !== ' ') {
+            } elseif ($tokens[($typeToken + 1)]['content'] !== ' ') {
                 $next = $phpcsFile->findNext(T_WHITESPACE, ($typeToken + 1), null, true);
                 if ($tokens[$next]['line'] !== $tokens[$typeToken]['line']) {
                     $found = 'newline';
@@ -187,7 +187,6 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
 
     }//end processMemberVar()
 
-
     /**
      * Processes normal variables.
      *
@@ -204,7 +203,6 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
 
     }//end processVariable()
 
-
     /**
      * Processes variables in double quoted strings.
      *
@@ -220,6 +218,5 @@ class PropertyDeclarationSniff extends AbstractVariableSniff
         */
 
     }//end processVariableInString()
-
 
 }//end class

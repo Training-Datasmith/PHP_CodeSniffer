@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure there is a single blank line after the closing brace of a class definition.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ClassDefinitionClosingBraceSpaceSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class ClassDefinitionClosingBraceSpaceSniff implements Sniff
         return [T_CLOSE_CURLY_BRACKET];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -81,7 +80,7 @@ class ClassDefinitionClosingBraceSpaceSniff implements Sniff
                     if ($found < 0) {
                         // Next statement on same line as the closing brace.
                         $phpcsFile->fixer->addContentBefore($next, $phpcsFile->eolChar.$phpcsFile->eolChar);
-                    } else if ($found === 0) {
+                    } elseif ($found === 0) {
                         // Next statement on next line, no blank line.
                         $phpcsFile->fixer->addContentBefore($firstOnLine, $phpcsFile->eolChar);
                     } else {
@@ -129,6 +128,5 @@ class ClassDefinitionClosingBraceSpaceSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

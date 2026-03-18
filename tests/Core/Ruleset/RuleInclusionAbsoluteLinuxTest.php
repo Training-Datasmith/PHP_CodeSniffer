@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Tests for the \PHP_CodeSniffer\Ruleset class using a Linux-style absolute path to include a sniff.
  *
@@ -15,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 class RuleInclusionAbsoluteLinuxTest extends TestCase
 {
-
     /**
      * The Ruleset object.
      *
@@ -36,7 +37,6 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
      * @var string
      */
     private $contents = '';
-
 
     /**
      * Initialize the config and ruleset objects.
@@ -76,7 +76,6 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
 
     }//end setUp()
 
-
     /**
      * Reset ruleset file.
      *
@@ -87,7 +86,6 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
         file_put_contents($this->standard, $this->contents);
 
     }//end tearDown()
-
 
     /**
      * Test that sniffs registed with a Linux absolute path are correctly recognized and that
@@ -113,6 +111,5 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
         );
 
     }//end testLinuxStylePathRuleInclusion()
-
 
 }//end class

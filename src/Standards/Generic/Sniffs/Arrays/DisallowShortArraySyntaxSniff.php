@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Bans the use of the PHP short array syntax.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class DisallowShortArraySyntaxSniff implements Sniff
 {
-
-
     /**
      * Registers the tokens that this sniff wants to listen for.
      *
@@ -26,7 +26,6 @@ class DisallowShortArraySyntaxSniff implements Sniff
         return [T_OPEN_SHORT_ARRAY];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -56,6 +55,5 @@ class DisallowShortArraySyntaxSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

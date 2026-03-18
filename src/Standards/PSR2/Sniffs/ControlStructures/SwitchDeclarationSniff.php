@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures all switch statements are defined correctly.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class SwitchDeclarationSniff implements Sniff
 {
-
     /**
      * The number of spaces code should be indented.
      *
      * @var integer
      */
     public $indent = 4;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -34,7 +34,6 @@ class SwitchDeclarationSniff implements Sniff
         return [T_SWITCH];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -202,7 +201,6 @@ class SwitchDeclarationSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Find the next CASE or DEFAULT statement from a point in the file.
      *
@@ -230,7 +228,6 @@ class SwitchDeclarationSniff implements Sniff
         return $stackPtr;
 
     }//end findNextCase()
-
 
     /**
      * Returns the position of the nested terminating statement.
@@ -300,7 +297,7 @@ class SwitchDeclarationSniff implements Sniff
                     if ($tokens[$prevToken]['code'] === T_ELSE) {
                         $hasElseBlock = true;
                     }
-                } else if ($tokens[$prevToken]['code'] === T_FINALLY) {
+                } elseif ($tokens[$prevToken]['code'] === T_FINALLY) {
                     // If we find a terminating statement within this block,
                     // the whole try/catch/finally statement is covered.
                     $hasTerminator = $this->findNestedTerminator($phpcsFile, ($scopeOpener + 1), $scopeCloser);
@@ -401,6 +398,5 @@ class SwitchDeclarationSniff implements Sniff
         return false;
 
     }//end findNestedTerminator()
-
 
 }//end class

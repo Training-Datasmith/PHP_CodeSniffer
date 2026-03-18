@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Verifies that class members have scope modifiers.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 
 class MemberVarScopeSniff extends AbstractVariableSniff
 {
-
-
     /**
      * Processes the function tokens within the class.
      *
@@ -39,7 +39,6 @@ class MemberVarScopeSniff extends AbstractVariableSniff
 
     }//end processMemberVar()
 
-
     /**
      * Processes normal variables.
      *
@@ -56,7 +55,6 @@ class MemberVarScopeSniff extends AbstractVariableSniff
 
     }//end processVariable()
 
-
     /**
      * Processes variables in double quoted strings.
      *
@@ -72,6 +70,5 @@ class MemberVarScopeSniff extends AbstractVariableSniff
         */
 
     }//end processVariableInString()
-
 
 }//end class

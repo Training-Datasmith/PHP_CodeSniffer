@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures the create() method of widget types properly uses callbacks.
  *
@@ -9,20 +11,18 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Objects;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
 class CreateWidgetTypeCallbackSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['JS'];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -34,7 +34,6 @@ class CreateWidgetTypeCallbackSniff implements Sniff
         return [T_OBJECT];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -96,7 +95,7 @@ class CreateWidgetTypeCallbackSniff implements Sniff
                     $nestedFunction = null;
                     continue;
                 }
-            } else if (($tokens[$i]['code'] === T_FUNCTION
+            } elseif (($tokens[$i]['code'] === T_FUNCTION
                 || $tokens[$i]['code'] === T_CLOSURE)
                 && isset($tokens[$i]['scope_closer']) === true
             ) {
@@ -212,6 +211,5 @@ class CreateWidgetTypeCallbackSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks against empty PHP statements.
  *
@@ -18,8 +20,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class EmptyPHPStatementSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -33,7 +33,6 @@ class EmptyPHPStatementSniff implements Sniff
         ];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -49,114 +48,113 @@ class EmptyPHPStatementSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         switch ($tokens[$stackPtr]['type']) {
-        // Detect `something();;`.
-        case 'T_SEMICOLON':
-            $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
+            // Detect `something();;`.
+            case 'T_SEMICOLON':
+                $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
 
-            if ($prevNonEmpty === false) {
-                return;
-            }
-
-            if ($tokens[$prevNonEmpty]['code'] !== T_SEMICOLON
-                && $tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG
-                && $tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG_WITH_ECHO
-            ) {
-                if (isset($tokens[$prevNonEmpty]['scope_condition']) === false) {
+                if ($prevNonEmpty === false) {
                     return;
                 }
 
-                if ($tokens[$prevNonEmpty]['scope_opener'] !== $prevNonEmpty
-                    && $tokens[$prevNonEmpty]['code'] !== T_CLOSE_CURLY_BRACKET
+                if ($tokens[$prevNonEmpty]['code'] !== T_SEMICOLON
+                    && $tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG
+                    && $tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG_WITH_ECHO
                 ) {
-                    return;
-                }
-
-                $scopeOwner = $tokens[$tokens[$prevNonEmpty]['scope_condition']]['code'];
-                if ($scopeOwner === T_CLOSURE || $scopeOwner === T_ANON_CLASS || $scopeOwner === T_MATCH) {
-                    return;
-                }
-
-                // Else, it's something like `if (foo) {};` and the semi-colon is not needed.
-            }
-
-            if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
-                $nested     = $tokens[$stackPtr]['nested_parenthesis'];
-                $lastCloser = array_pop($nested);
-                if (isset($tokens[$lastCloser]['parenthesis_owner']) === true
-                    && $tokens[$tokens[$lastCloser]['parenthesis_owner']]['code'] === T_FOR
-                ) {
-                    // Empty for() condition.
-                    return;
-                }
-            }
-
-            $fix = $phpcsFile->addFixableWarning(
-                'Empty PHP statement detected: superfluous semi-colon.',
-                $stackPtr,
-                'SemicolonWithoutCodeDetected'
-            );
-            if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-
-                if ($tokens[$prevNonEmpty]['code'] === T_OPEN_TAG
-                    || $tokens[$prevNonEmpty]['code'] === T_OPEN_TAG_WITH_ECHO
-                ) {
-                    // Check for superfluous whitespace after the semi-colon which will be
-                    // removed as the `<?php ` open tag token already contains whitespace,
-                    // either a space or a new line.
-                    if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
-                        $replacement = str_replace(' ', '', $tokens[($stackPtr + 1)]['content']);
-                        $phpcsFile->fixer->replaceToken(($stackPtr + 1), $replacement);
+                    if (isset($tokens[$prevNonEmpty]['scope_condition']) === false) {
+                        return;
                     }
-                }
 
-                for ($i = $stackPtr; $i > $prevNonEmpty; $i--) {
-                    if ($tokens[$i]['code'] !== T_SEMICOLON
-                        && $tokens[$i]['code'] !== T_WHITESPACE
+                    if ($tokens[$prevNonEmpty]['scope_opener'] !== $prevNonEmpty
+                        && $tokens[$prevNonEmpty]['code'] !== T_CLOSE_CURLY_BRACKET
                     ) {
-                        break;
+                        return;
                     }
 
-                    $phpcsFile->fixer->replaceToken($i, '');
+                    $scopeOwner = $tokens[$tokens[$prevNonEmpty]['scope_condition']]['code'];
+                    if ($scopeOwner === T_CLOSURE || $scopeOwner === T_ANON_CLASS || $scopeOwner === T_MATCH) {
+                        return;
+                    }
+
+                    // Else, it's something like `if (foo) {};` and the semi-colon is not needed.
                 }
 
-                $phpcsFile->fixer->endChangeset();
-            }//end if
-            break;
-
-        // Detect `<?php ? >`.
-        case 'T_CLOSE_TAG':
-            $prevNonEmpty = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-
-            if ($prevNonEmpty === false
-                || ($tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG
-                && $tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG_WITH_ECHO)
-            ) {
-                return;
-            }
-
-            $fix = $phpcsFile->addFixableWarning(
-                'Empty PHP open/close tag combination detected.',
-                $prevNonEmpty,
-                'EmptyPHPOpenCloseTagsDetected'
-            );
-            if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-
-                for ($i = $prevNonEmpty; $i <= $stackPtr; $i++) {
-                    $phpcsFile->fixer->replaceToken($i, '');
+                if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
+                    $nested     = $tokens[$stackPtr]['nested_parenthesis'];
+                    $lastCloser = array_pop($nested);
+                    if (isset($tokens[$lastCloser]['parenthesis_owner']) === true
+                        && $tokens[$tokens[$lastCloser]['parenthesis_owner']]['code'] === T_FOR
+                    ) {
+                        // Empty for() condition.
+                        return;
+                    }
                 }
 
-                $phpcsFile->fixer->endChangeset();
-            }
-            break;
+                $fix = $phpcsFile->addFixableWarning(
+                    'Empty PHP statement detected: superfluous semi-colon.',
+                    $stackPtr,
+                    'SemicolonWithoutCodeDetected'
+                );
+                if ($fix === true) {
+                    $phpcsFile->fixer->beginChangeset();
 
-        default:
-            // Deliberately left empty.
-            break;
+                    if ($tokens[$prevNonEmpty]['code'] === T_OPEN_TAG
+                        || $tokens[$prevNonEmpty]['code'] === T_OPEN_TAG_WITH_ECHO
+                    ) {
+                        // Check for superfluous whitespace after the semi-colon which will be
+                        // removed as the `<?php ` open tag token already contains whitespace,
+                        // either a space or a new line.
+                        if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
+                            $replacement = str_replace(' ', '', $tokens[($stackPtr + 1)]['content']);
+                            $phpcsFile->fixer->replaceToken(($stackPtr + 1), $replacement);
+                        }
+                    }
+
+                    for ($i = $stackPtr; $i > $prevNonEmpty; $i--) {
+                        if ($tokens[$i]['code'] !== T_SEMICOLON
+                            && $tokens[$i]['code'] !== T_WHITESPACE
+                        ) {
+                            break;
+                        }
+
+                        $phpcsFile->fixer->replaceToken($i, '');
+                    }
+
+                    $phpcsFile->fixer->endChangeset();
+                }//end if
+                break;
+
+                // Detect `<?php ? >`.
+            case 'T_CLOSE_TAG':
+                $prevNonEmpty = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+
+                if ($prevNonEmpty === false
+                    || ($tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG
+                    && $tokens[$prevNonEmpty]['code'] !== T_OPEN_TAG_WITH_ECHO)
+                ) {
+                    return;
+                }
+
+                $fix = $phpcsFile->addFixableWarning(
+                    'Empty PHP open/close tag combination detected.',
+                    $prevNonEmpty,
+                    'EmptyPHPOpenCloseTagsDetected'
+                );
+                if ($fix === true) {
+                    $phpcsFile->fixer->beginChangeset();
+
+                    for ($i = $prevNonEmpty; $i <= $stackPtr; $i++) {
+                        $phpcsFile->fixer->replaceToken($i, '');
+                    }
+
+                    $phpcsFile->fixer->endChangeset();
+                }
+                break;
+
+            default:
+                // Deliberately left empty.
+                break;
         }//end switch
 
     }//end process()
-
 
 }//end class

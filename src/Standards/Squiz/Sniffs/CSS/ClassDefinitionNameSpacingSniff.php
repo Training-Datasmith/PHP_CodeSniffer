@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensure there are no blank lines between the names of classes/IDs.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ClassDefinitionNameSpacingSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['CSS'];
-
 
     /**
      * Returns the token types that this sniff is interested in.
@@ -34,7 +34,6 @@ class ClassDefinitionNameSpacingSniff implements Sniff
         return [T_OPEN_CURLY_BRACKET];
 
     }//end register()
-
 
     /**
      * Processes the tokens that this sniff is interested in.
@@ -106,6 +105,5 @@ class ClassDefinitionNameSpacingSniff implements Sniff
         }//end for
 
     }//end process()
-
 
 }//end class

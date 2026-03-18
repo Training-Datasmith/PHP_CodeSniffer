@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Stops the usage of the "global" keyword.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class GlobalKeywordSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class GlobalKeywordSniff implements Sniff
         return [T_GLOBAL];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -48,6 +47,5 @@ class GlobalKeywordSniff implements Sniff
         $phpcsFile->addError($error, $stackPtr, 'NotAllowed', $data);
 
     }//end process()
-
 
 }//end class

@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures method and functions are named correctly.
  *
@@ -16,7 +18,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class CamelCapsFunctionNameSniff extends AbstractScopeSniff
 {
-
     /**
      * A list of all PHP magic methods.
      *
@@ -78,7 +79,6 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
      */
     public $strict = true;
 
-
     /**
      * Constructs a Generic_Sniffs_NamingConventions_CamelCapsFunctionNameSniff.
      */
@@ -87,7 +87,6 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
         parent::__construct(Tokens::$ooScopeTokens, [T_FUNCTION], true);
 
     }//end __construct()
-
 
     /**
      * Processes the tokens within the scope.
@@ -174,7 +173,6 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Processes the tokens outside the scope.
      *
@@ -217,6 +215,5 @@ class CamelCapsFunctionNameSniff extends AbstractScopeSniff
         }
 
     }//end processTokenOutsideScope()
-
 
 }//end class

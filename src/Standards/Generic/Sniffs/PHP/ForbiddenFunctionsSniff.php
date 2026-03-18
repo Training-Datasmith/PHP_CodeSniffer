@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Discourages the use of alias functions.
  *
@@ -17,7 +19,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class ForbiddenFunctionsSniff implements Sniff
 {
-
     /**
      * A list of forbidden functions with their alternatives.
      *
@@ -51,7 +52,6 @@ class ForbiddenFunctionsSniff implements Sniff
      * @var boolean
      */
     public $error = true;
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -104,7 +104,6 @@ class ForbiddenFunctionsSniff implements Sniff
         return array_unique($register);
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -197,7 +196,6 @@ class ForbiddenFunctionsSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Generates the error or warning for this sniff.
      *
@@ -209,7 +207,7 @@ class ForbiddenFunctionsSniff implements Sniff
      *
      * @return void
      */
-    protected function addError($phpcsFile, $stackPtr, $function, $pattern=null)
+    protected function addError($phpcsFile, $stackPtr, $function, $pattern = null)
     {
         $data  = [$function];
         $error = 'The use of function %s() is ';
@@ -240,6 +238,5 @@ class ForbiddenFunctionsSniff implements Sniff
         }
 
     }//end addError()
-
 
 }//end class

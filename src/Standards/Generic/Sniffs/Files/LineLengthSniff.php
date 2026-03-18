@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks the length of all lines in a file.
  *
@@ -19,7 +21,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class LineLengthSniff implements Sniff
 {
-
     /**
      * The limit that the length of a line should not exceed.
      *
@@ -46,7 +47,6 @@ class LineLengthSniff implements Sniff
      */
     public $ignoreComments = false;
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -57,7 +57,6 @@ class LineLengthSniff implements Sniff
         return [T_OPEN_TAG];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -83,7 +82,6 @@ class LineLengthSniff implements Sniff
         return ($phpcsFile->numTokens + 1);
 
     }//end process()
-
 
     /**
      * Checks if a line is too long.
@@ -144,9 +142,9 @@ class LineLengthSniff implements Sniff
         // Record metrics for common line length groupings.
         if ($lineLength <= 80) {
             $phpcsFile->recordMetric($stackPtr, 'Line length', '80 or less');
-        } else if ($lineLength <= 120) {
+        } elseif ($lineLength <= 120) {
             $phpcsFile->recordMetric($stackPtr, 'Line length', '81-120');
-        } else if ($lineLength <= 150) {
+        } elseif ($lineLength <= 150) {
             $phpcsFile->recordMetric($stackPtr, 'Line length', '121-150');
         } else {
             $phpcsFile->recordMetric($stackPtr, 'Line length', '151 or more');
@@ -185,7 +183,7 @@ class LineLengthSniff implements Sniff
 
             $error = 'Line exceeds maximum limit of %s characters; contains %s characters';
             $phpcsFile->addError($error, $stackPtr, 'MaxExceeded', $data);
-        } else if ($lineLength > $this->lineLimit) {
+        } elseif ($lineLength > $this->lineLimit) {
             $data = [
                 $this->lineLimit,
                 $lineLength,
@@ -196,6 +194,5 @@ class LineLengthSniff implements Sniff
         }
 
     }//end checkLineLength()
-
 
 }//end class

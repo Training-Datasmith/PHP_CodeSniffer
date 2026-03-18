@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures this is not assigned to any other var but self.
  *
@@ -9,19 +11,17 @@
 
 namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Objects;
 
-use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 class AssignThisSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['JS'];
-
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -33,7 +33,6 @@ class AssignThisSniff implements Sniff
         return [T_THIS];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -76,6 +75,5 @@ class AssignThisSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

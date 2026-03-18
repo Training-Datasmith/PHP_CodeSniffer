@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Function for caching between runs.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Ruleset;
 
 class Cache
 {
-
     /**
      * The filesystem location of the cache file.
      *
@@ -29,7 +30,6 @@ class Cache
      * @var array<string, mixed>
      */
     private static $cache = [];
-
 
     /**
      * Loads existing cache data for the run, if any.
@@ -68,7 +68,7 @@ class Cache
                 if (PHP_CODESNIFFER_VERBOSITY > 1) {
                     echo "\t\t=> external file: $file".PHP_EOL;
                 }
-            } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
+            } elseif (PHP_CODESNIFFER_VERBOSITY > 1) {
                 echo "\t\t=> internal sniff: $file".PHP_EOL;
             }
 
@@ -84,7 +84,7 @@ class Cache
                 if (PHP_CODESNIFFER_VERBOSITY > 1) {
                     echo "\t\t=> external ruleset: $file".PHP_EOL;
                 }
-            } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
+            } elseif (PHP_CODESNIFFER_VERBOSITY > 1) {
                 echo "\t\t=> internal ruleset: $file".PHP_EOL;
             }
 
@@ -272,14 +272,13 @@ class Cache
                     echo "\t* cache was invalid and has been cleared *".PHP_EOL;
                 }
             }
-        } else if (PHP_CODESNIFFER_VERBOSITY > 1) {
+        } elseif (PHP_CODESNIFFER_VERBOSITY > 1) {
             echo "\t* cache file does not exist *".PHP_EOL;
         }
 
         self::$cache['config'] = $configData;
 
     }//end load()
-
 
     /**
      * Saves the current cache to the filesystem.
@@ -292,7 +291,6 @@ class Cache
 
     }//end save()
 
-
     /**
      * Retrieves a single entry from the cache.
      *
@@ -301,7 +299,7 @@ class Cache
      *
      * @return mixed
      */
-    public static function get($key=null)
+    public static function get($key = null)
     {
         if ($key === null) {
             return self::$cache;
@@ -314,7 +312,6 @@ class Cache
         return false;
 
     }//end get()
-
 
     /**
      * Retrieves a single entry from the cache.
@@ -335,7 +332,6 @@ class Cache
 
     }//end set()
 
-
     /**
      * Retrieves the number of cache entries.
      *
@@ -346,6 +342,5 @@ class Cache
         return (count(self::$cache) - 1);
 
     }//end getSize()
-
 
 }//end class

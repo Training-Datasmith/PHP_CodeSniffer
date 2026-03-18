@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Bans PHP 4 style constructors.
  *
@@ -18,7 +20,6 @@ use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
 
 class ConstructorNameSniff extends AbstractScopeSniff
 {
-
     /**
      * The name of the class we are currently checking.
      *
@@ -33,7 +34,6 @@ class ConstructorNameSniff extends AbstractScopeSniff
      */
     private $functionList = [];
 
-
     /**
      * Constructs the test with the tokens it wishes to listen for.
      */
@@ -42,7 +42,6 @@ class ConstructorNameSniff extends AbstractScopeSniff
         parent::__construct([T_CLASS, T_ANON_CLASS], [T_FUNCTION], true);
 
     }//end __construct()
-
 
     /**
      * Processes this test when one of its tokens is encountered.
@@ -84,7 +83,7 @@ class ConstructorNameSniff extends AbstractScopeSniff
                 $error = 'PHP4 style constructors are not allowed; use "__construct()" instead';
                 $phpcsFile->addError($error, $stackPtr, 'OldStyle');
             }
-        } else if ($methodName !== '__construct') {
+        } elseif ($methodName !== '__construct') {
             // Not a constructor.
             return;
         }
@@ -114,7 +113,6 @@ class ConstructorNameSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -129,7 +127,6 @@ class ConstructorNameSniff extends AbstractScopeSniff
     {
 
     }//end processTokenOutsideScope()
-
 
     /**
      * Extracts all the function names found in the given scope.
@@ -158,6 +155,5 @@ class ConstructorNameSniff extends AbstractScopeSniff
         }
 
     }//end loadFunctionNamesInScope()
-
 
 }//end class

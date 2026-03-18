@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks for usage of $this in static methods, which will cause runtime errors.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class StaticThisUsageSniff extends AbstractScopeSniff
 {
-
-
     /**
      * Constructs the test with the tokens it wishes to listen for.
      */
@@ -25,7 +25,6 @@ class StaticThisUsageSniff extends AbstractScopeSniff
         parent::__construct([T_CLASS, T_TRAIT, T_ENUM, T_ANON_CLASS], [T_FUNCTION]);
 
     }//end __construct()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -72,7 +71,6 @@ class StaticThisUsageSniff extends AbstractScopeSniff
 
     }//end processTokenWithinScope()
 
-
     /**
      * Check for $this variable usage between $next and $end tokens.
      *
@@ -108,7 +106,6 @@ class StaticThisUsageSniff extends AbstractScopeSniff
 
     }//end checkThisUsage()
 
-
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -123,6 +120,5 @@ class StaticThisUsageSniff extends AbstractScopeSniff
     {
 
     }//end processTokenOutsideScope()
-
 
 }//end class

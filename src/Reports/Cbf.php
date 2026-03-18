@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * CBF report for PHP_CodeSniffer.
  *
@@ -19,8 +21,6 @@ use PHP_CodeSniffer\Util;
 
 class Cbf implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -36,7 +36,7 @@ class Cbf implements Report
      * @return bool
      * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         $errors = $phpcsFile->getFixableCount();
         if ($errors !== 0) {
@@ -116,7 +116,6 @@ class Cbf implements Report
 
     }//end generateFileReport()
 
-
     /**
      * Prints a summary of fixed files.
      *
@@ -139,10 +138,10 @@ class Cbf implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         $lines = explode(PHP_EOL, $cachedData);
         array_pop($lines);
@@ -248,6 +247,5 @@ class Cbf implements Report
         }
 
     }//end generate()
-
 
 }//end class

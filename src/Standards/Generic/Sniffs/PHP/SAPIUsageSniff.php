@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures the PHP_SAPI constant is used instead of php_sapi_name().
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 
 class SAPIUsageSniff implements Sniff
 {
-
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -26,7 +26,6 @@ class SAPIUsageSniff implements Sniff
         return [T_STRING];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -62,6 +61,5 @@ class SAPIUsageSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

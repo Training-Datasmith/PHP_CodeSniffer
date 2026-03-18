@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * A filter to only include files that have been staged for commit in a Git repository.
  *
@@ -15,8 +17,6 @@ use PHP_CodeSniffer\Util;
 
 class GitStaged extends ExactMatch
 {
-
-
     /**
      * Get a list of blacklisted file paths.
      *
@@ -27,7 +27,6 @@ class GitStaged extends ExactMatch
         return [];
 
     }//end getBlacklist()
-
 
     /**
      * Get a list of whitelisted file paths.
@@ -63,6 +62,5 @@ class GitStaged extends ExactMatch
         return $modified;
 
     }//end getWhitelist()
-
 
 }//end class

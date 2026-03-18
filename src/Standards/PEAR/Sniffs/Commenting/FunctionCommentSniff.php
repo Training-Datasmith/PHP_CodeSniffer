@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Parses and verifies the doc comments for functions.
  *
@@ -15,7 +17,6 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class FunctionCommentSniff implements Sniff
 {
-
     /**
      * Disable the check for functions with a lower visibility than the value given.
      *
@@ -35,7 +36,6 @@ class FunctionCommentSniff implements Sniff
         '__destruct',
     ];
 
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -46,7 +46,6 @@ class FunctionCommentSniff implements Sniff
         return [T_FUNCTION];
 
     }//end register()
-
 
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -166,7 +165,6 @@ class FunctionCommentSniff implements Sniff
 
     }//end process()
 
-
     /**
      * Process the return comment of this function comment.
      *
@@ -183,7 +181,7 @@ class FunctionCommentSniff implements Sniff
 
         // Skip constructor and destructor.
         $methodName      = $phpcsFile->getDeclarationName($stackPtr);
-        $isSpecialMethod = in_array($methodName,  $this->specialMethods, true);
+        $isSpecialMethod = in_array($methodName, $this->specialMethods, true);
 
         $return = null;
         foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
@@ -214,7 +212,6 @@ class FunctionCommentSniff implements Sniff
         }//end if
 
     }//end processReturn()
-
 
     /**
      * Process any throw tags that this function comment has.
@@ -249,7 +246,6 @@ class FunctionCommentSniff implements Sniff
         }//end foreach
 
     }//end processThrows()
-
 
     /**
      * Process the function parameter comments.
@@ -425,7 +421,7 @@ class FunctionCommentSniff implements Sniff
 
                     $phpcsFile->addError($error, $param['tag'], $code, $data);
                 }
-            } else if (substr($param['var'], -4) !== ',...') {
+            } elseif (substr($param['var'], -4) !== ',...') {
                 // We must have an extra parameter comment.
                 $error = 'Superfluous parameter comment';
                 $phpcsFile->addError($error, $param['tag'], 'ExtraParamComment');
@@ -533,6 +529,5 @@ class FunctionCommentSniff implements Sniff
         }
 
     }//end processParams()
-
 
 }//end class

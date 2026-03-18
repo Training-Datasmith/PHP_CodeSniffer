@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Ensures the last member of an object is not followed by a comma.
  *
@@ -15,14 +17,12 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ObjectMemberCommaSniff implements Sniff
 {
-
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
     public $supportedTokenizers = ['JS'];
-
 
     /**
      * Registers the token types that this sniff wishes to listen to.
@@ -34,7 +34,6 @@ class ObjectMemberCommaSniff implements Sniff
         return [T_CLOSE_OBJECT];
 
     }//end register()
-
 
     /**
      * Process the tokens that this sniff is listening for.
@@ -59,6 +58,5 @@ class ObjectMemberCommaSniff implements Sniff
         }
 
     }//end process()
-
 
 }//end class

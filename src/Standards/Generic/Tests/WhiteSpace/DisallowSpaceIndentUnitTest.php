@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Unit test class for the DisallowSpaceIndent sniff.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class DisallowSpaceIndentUnitTest extends AbstractSniffUnitTest
 {
-
-
     /**
      * Get a list of CLI values to set before the file is tested.
      *
@@ -33,7 +33,6 @@ class DisallowSpaceIndentUnitTest extends AbstractSniffUnitTest
 
     }//end setCliValues()
 
-
     /**
      * Returns the lines where errors should occur.
      *
@@ -44,72 +43,71 @@ class DisallowSpaceIndentUnitTest extends AbstractSniffUnitTest
      *
      * @return array<int, int>
      */
-    public function getErrorList($testFile='DisallowSpaceIndentUnitTest.1.inc')
+    public function getErrorList($testFile = 'DisallowSpaceIndentUnitTest.1.inc')
     {
         switch ($testFile) {
-        case 'DisallowSpaceIndentUnitTest.1.inc':
-        case 'DisallowSpaceIndentUnitTest.2.inc':
-            return [
-                5   => 1,
-                9   => 1,
-                15  => 1,
-                22  => 1,
-                24  => 1,
-                30  => 1,
-                35  => 1,
-                50  => 1,
-                55  => 1,
-                57  => 1,
-                58  => 1,
-                59  => 1,
-                60  => 1,
-                65  => 1,
-                66  => 1,
-                67  => 1,
-                68  => 1,
-                69  => 1,
-                70  => 1,
-                73  => 1,
-                77  => 1,
-                81  => 1,
-                104 => 1,
-                105 => 1,
-                106 => 1,
-                107 => 1,
-                108 => 1,
-                110 => 1,
-                111 => 1,
-                112 => 1,
-                114 => 1,
-                115 => 1,
-                117 => 1,
-                118 => 1,
-            ];
-            break;
-        case 'DisallowSpaceIndentUnitTest.3.inc':
-            return [
-                2  => 1,
-                5  => 1,
-                10 => 1,
-                12 => 1,
-                13 => 1,
-                14 => 1,
-                15 => 1,
-            ];
-            break;
-        case 'DisallowSpaceIndentUnitTest.js':
-            return [3 => 1];
-            break;
-        case 'DisallowSpaceIndentUnitTest.css':
-            return [2 => 1];
-            break;
-        default:
-            return [];
-            break;
+            case 'DisallowSpaceIndentUnitTest.1.inc':
+            case 'DisallowSpaceIndentUnitTest.2.inc':
+                return [
+                    5   => 1,
+                    9   => 1,
+                    15  => 1,
+                    22  => 1,
+                    24  => 1,
+                    30  => 1,
+                    35  => 1,
+                    50  => 1,
+                    55  => 1,
+                    57  => 1,
+                    58  => 1,
+                    59  => 1,
+                    60  => 1,
+                    65  => 1,
+                    66  => 1,
+                    67  => 1,
+                    68  => 1,
+                    69  => 1,
+                    70  => 1,
+                    73  => 1,
+                    77  => 1,
+                    81  => 1,
+                    104 => 1,
+                    105 => 1,
+                    106 => 1,
+                    107 => 1,
+                    108 => 1,
+                    110 => 1,
+                    111 => 1,
+                    112 => 1,
+                    114 => 1,
+                    115 => 1,
+                    117 => 1,
+                    118 => 1,
+                ];
+                break;
+            case 'DisallowSpaceIndentUnitTest.3.inc':
+                return [
+                    2  => 1,
+                    5  => 1,
+                    10 => 1,
+                    12 => 1,
+                    13 => 1,
+                    14 => 1,
+                    15 => 1,
+                ];
+                break;
+            case 'DisallowSpaceIndentUnitTest.js':
+                return [3 => 1];
+                break;
+            case 'DisallowSpaceIndentUnitTest.css':
+                return [2 => 1];
+                break;
+            default:
+                return [];
+                break;
         }//end switch
 
     }//end getErrorList()
-
 
     /**
      * Returns the lines where warnings should occur.
@@ -124,6 +122,5 @@ class DisallowSpaceIndentUnitTest extends AbstractSniffUnitTest
         return [];
 
     }//end getWarningList()
-
 
 }//end class

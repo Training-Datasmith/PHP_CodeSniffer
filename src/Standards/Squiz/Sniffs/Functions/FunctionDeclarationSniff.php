@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Checks the function declaration is correct.
  *
@@ -13,8 +15,6 @@ use PHP_CodeSniffer\Sniffs\AbstractPatternSniff;
 
 class FunctionDeclarationSniff extends AbstractPatternSniff
 {
-
-
     /**
      * Returns an array of patterns to check are correct.
      *
@@ -29,6 +29,5 @@ class FunctionDeclarationSniff extends AbstractPatternSniff
         ];
 
     }//end getPatterns()
-
 
 }//end class

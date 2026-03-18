@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Summary report for PHP_CodeSniffer.
  *
@@ -14,8 +16,6 @@ use PHP_CodeSniffer\Util;
 
 class Summary implements Report
 {
-
-
     /**
      * Generate a partial report for a single processed file.
      *
@@ -30,7 +30,7 @@ class Summary implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources=false, $width=80)
+    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
     {
         if (PHP_CODESNIFFER_VERBOSITY === 0
             && $report['errors'] === 0
@@ -44,7 +44,6 @@ class Summary implements Report
         return true;
 
     }//end generateFileReport()
-
 
     /**
      * Generates a summary of errors and warnings for each file processed.
@@ -68,10 +67,10 @@ class Summary implements Report
         $totalErrors,
         $totalWarnings,
         $totalFixable,
-        $showSources=false,
-        $width=80,
-        $interactive=false,
-        $toScreen=true
+        $showSources = false,
+        $width = 80,
+        $interactive = false,
+        $toScreen = true
     ) {
         $lines = explode(PHP_EOL, $cachedData);
         array_pop($lines);
@@ -178,6 +177,5 @@ class Summary implements Report
         }
 
     }//end generate()
-
 
 }//end class
