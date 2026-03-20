@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks the naming of member variables.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PEAR\Sniffs\Naming_Conventions;
 
-namespace PHP_CodeSniffer\Standards\PEAR\Sniffs\NamingConventions;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
-
-class ValidVariableNameSniff extends AbstractVariableSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Abstract_Variable_Sniff;
+class Valid_Variable_Name_Sniff extends Abstract_Variable_Sniff
 {
     /**
      * Processes class member variables.
@@ -25,46 +23,37 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processMemberVar(File $phpcsFile, $stackPtr)
+    protected function process_member_var(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $memberProps = $phpcsFile->getMemberProperties($stackPtr);
-        if (empty($memberProps) === true) {
+        $tokens = $phpcs_file->get_tokens();
+        $member_props = $phpcs_file->get_member_properties($stack_ptr);
+        if (empty($member_props) === true) {
             return;
         }
-
-        $memberName     = ltrim($tokens[$stackPtr]['content'], '$');
-        $scope          = $memberProps['scope'];
-        $scopeSpecified = $memberProps['scope_specified'];
-
-        if ($memberProps['scope'] === 'private') {
-            $isPublic = false;
+        $member_name = ltrim($tokens[$stack_ptr]['content'], '$');
+        $scope = $member_props['scope'];
+        $scope_specified = $member_props['scope_specified'];
+        if ($member_props['scope'] === 'private') {
+            $is_public = false;
         } else {
-            $isPublic = true;
+            $is_public = true;
         }
-
         // If it's a private member, it must have an underscore on the front.
-        if ($isPublic === false && $memberName[0] !== '_') {
+        if ($is_public === false && $member_name[0] !== '_') {
             $error = 'Private member variable "%s" must be prefixed with an underscore';
-            $data  = [$memberName];
-            $phpcsFile->addError($error, $stackPtr, 'PrivateNoUnderscore', $data);
+            $data = [$member_name];
+            $phpcs_file->add_error($error, $stack_ptr, 'PrivateNoUnderscore', $data);
             return;
         }
-
         // If it's not a private member, it must not have an underscore on the front.
-        if ($isPublic === true && $scopeSpecified === true && $memberName[0] === '_') {
+        if ($is_public === true && $scope_specified === true && $member_name[0] === '_') {
             $error = '%s member variable "%s" must not be prefixed with an underscore';
-            $data  = [
-                ucfirst($scope),
-                $memberName,
-            ];
-            $phpcsFile->addError($error, $stackPtr, 'PublicUnderscore', $data);
+            $data = [ucfirst($scope), $member_name];
+            $phpcs_file->add_error($error, $stack_ptr, 'PublicUnderscore', $data);
             return;
         }
-
-    }//end processMemberVar()
-
+    }
+    //end processMemberVar()
     /**
      * Processes normal variables.
      *
@@ -73,14 +62,13 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariable(File $phpcsFile, $stackPtr)
+    protected function process_variable(File $phpcs_file, $stack_ptr)
     {
         /*
             We don't care about normal variables.
         */
-
-    }//end processVariable()
-
+    }
+    //end processVariable()
     /**
      * Processes variables in double quoted strings.
      *
@@ -89,12 +77,12 @@ class ValidVariableNameSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariableInString(File $phpcsFile, $stackPtr)
+    protected function process_variable_in_string(File $phpcs_file, $stack_ptr)
     {
         /*
             We don't care about normal variables.
         */
-
-    }//end processVariableInString()
-
-}//end class
+    }
+    //end processVariableInString()
+}
+//end class

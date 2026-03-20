@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * A local file represents a chunk of text has a file system location.
  *
@@ -8,15 +8,13 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Files;
 
-namespace PHP_CodeSniffer\Files;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
-use PHP_CodeSniffer\Util\Cache;
-use PHP_CodeSniffer\Util\Common;
-
-class LocalFile extends File
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Ruleset;
+use Php_code_Sniffer\Util\Cache;
+use Php_code_Sniffer\Util\Common;
+class Local_File extends File
 {
     /**
      * Creates a LocalFile object and sets the content.
@@ -28,51 +26,43 @@ class LocalFile extends File
     public function __construct($path, Ruleset $ruleset, Config $config)
     {
         $this->path = trim($path);
-        if (Common::isReadable($this->path) === false) {
+        if (Common::is_readable($this->path) === false) {
             parent::__construct($this->path, $ruleset, $config);
             $error = 'Error opening file; file no longer exists or you do not have access to read the file';
-            $this->addMessage(true, $error, 1, 1, 'Internal.LocalFile', [], 5, false);
+            $this->add_message(true, $error, 1, 1, 'Internal.LocalFile', [], 5, false);
             $this->ignored = true;
             return;
         }
-
         // Before we go and spend time tokenizing this file, just check
         // to see if there is a tag up top to indicate that the whole
         // file should be ignored. It must be on one of the first two lines.
         if ($config->annotations === true) {
             $handle = fopen($this->path, 'r');
             if ($handle !== false) {
-                $firstContent  = fgets($handle);
-                $firstContent .= fgets($handle);
+                $first_content = fgets($handle);
+                $first_content .= fgets($handle);
                 fclose($handle);
-
-                if (strpos($firstContent, '@codingStandardsIgnoreFile') !== false
-                    || stripos($firstContent, 'phpcs:ignorefile') !== false
-                ) {
+                if (strpos($first_content, '@codingStandardsIgnoreFile') !== false || stripos($first_content, 'phpcs:ignorefile') !== false) {
                     // We are ignoring the whole file.
                     $this->ignored = true;
                     return;
                 }
             }
         }
-
-        $this->reloadContent();
-
+        $this->reload_content();
         parent::__construct($this->path, $ruleset, $config);
-
-    }//end __construct()
-
+    }
+    //end __construct()
     /**
      * Loads the latest version of the file's content from the file system.
      *
      * @return void
      */
-    public function reloadContent()
+    public function reload_content()
     {
-        $this->setContent(file_get_contents($this->path));
-
-    }//end reloadContent()
-
+        $this->set_content(file_get_contents($this->path));
+    }
+    //end reloadContent()
     /**
      * Processes the file.
      *
@@ -83,71 +73,50 @@ class LocalFile extends File
         if ($this->ignored === true) {
             return;
         }
-
-        if ($this->configCache['cache'] === false) {
+        if ($this->config_cache['cache'] === false) {
             parent::process();
             return;
         }
-
-        $hash  = md5_file($this->path);
+        $hash = md5_file($this->path);
         $hash .= fileperms($this->path);
         $cache = Cache::get($this->path);
         if ($cache !== false && $cache['hash'] === $hash) {
             // We can't filter metrics, so just load all of them.
             $this->metrics = $cache['metrics'];
-
-            if ($this->configCache['recordErrors'] === true) {
+            if ($this->config_cache['recordErrors'] === true) {
                 // Replay the cached errors and warnings to filter out the ones
                 // we don't need for this specific run.
-                $this->configCache['cache'] = false;
-                $this->replayErrors($cache['errors'], $cache['warnings']);
-                $this->configCache['cache'] = true;
+                $this->config_cache['cache'] = false;
+                $this->replay_errors($cache['errors'], $cache['warnings']);
+                $this->config_cache['cache'] = true;
             } else {
-                $this->errorCount   = $cache['errorCount'];
-                $this->warningCount = $cache['warningCount'];
-                $this->fixableCount = $cache['fixableCount'];
+                $this->error_count = $cache['errorCount'];
+                $this->warning_count = $cache['warningCount'];
+                $this->fixable_count = $cache['fixableCount'];
             }
-
-            if (PHP_CODESNIFFER_VERBOSITY > 0
-                || (PHP_CODESNIFFER_CBF === true && empty($this->config->files) === false)
-            ) {
+            if (PHP_CODESNIFFER_VERBOSITY > 0 || PHP_CODESNIFFER_CBF === true && empty($this->config->files) === false) {
                 echo '[loaded from cache]... ';
             }
-
-            $this->numTokens = $cache['numTokens'];
-            $this->fromCache = true;
+            $this->num_tokens = $cache['numTokens'];
+            $this->from_cache = true;
             return;
-        }//end if
-
+        }
+        //end if
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             echo PHP_EOL;
         }
-
         parent::process();
-
-        $cache = [
-            'hash'         => $hash,
-            'errors'       => $this->errors,
-            'warnings'     => $this->warnings,
-            'metrics'      => $this->metrics,
-            'errorCount'   => $this->errorCount,
-            'warningCount' => $this->warningCount,
-            'fixableCount' => $this->fixableCount,
-            'numTokens'    => $this->numTokens,
-        ];
-
+        $cache = ['hash' => $hash, 'errors' => $this->errors, 'warnings' => $this->warnings, 'metrics' => $this->metrics, 'errorCount' => $this->error_count, 'warningCount' => $this->warning_count, 'fixableCount' => $this->fixable_count, 'numTokens' => $this->num_tokens];
         Cache::set($this->path, $cache);
-
         // During caching, we don't filter out errors in any way, so
         // we need to do that manually now by replaying them.
-        if ($this->configCache['recordErrors'] === true) {
-            $this->configCache['cache'] = false;
-            $this->replayErrors($this->errors, $this->warnings);
-            $this->configCache['cache'] = true;
+        if ($this->config_cache['recordErrors'] === true) {
+            $this->config_cache['cache'] = false;
+            $this->replay_errors($this->errors, $this->warnings);
+            $this->config_cache['cache'] = true;
         }
-
-    }//end process()
-
+    }
+    //end process()
     /**
      * Clears and replays error and warnings for the file.
      *
@@ -160,54 +129,32 @@ class LocalFile extends File
      *
      * @return void
      */
-    private function replayErrors($errors, $warnings)
+    private function replay_errors($errors, $warnings)
     {
-        $this->errors       = [];
-        $this->warnings     = [];
-        $this->errorCount   = 0;
-        $this->warningCount = 0;
-        $this->fixableCount = 0;
-
-        $this->replayingErrors = true;
-
-        foreach ($errors as $line => $lineErrors) {
-            foreach ($lineErrors as $column => $colErrors) {
-                foreach ($colErrors as $error) {
-                    $this->activeListener = $error['listener'];
-                    $this->addMessage(
-                        true,
-                        $error['message'],
-                        $line,
-                        $column,
-                        $error['source'],
-                        [],
-                        $error['severity'],
-                        $error['fixable']
-                    );
+        $this->errors = [];
+        $this->warnings = [];
+        $this->error_count = 0;
+        $this->warning_count = 0;
+        $this->fixable_count = 0;
+        $this->replaying_errors = true;
+        foreach ($errors as $line => $line_errors) {
+            foreach ($line_errors as $column => $col_errors) {
+                foreach ($col_errors as $error) {
+                    $this->active_listener = $error['listener'];
+                    $this->add_message(true, $error['message'], $line, $column, $error['source'], [], $error['severity'], $error['fixable']);
                 }
             }
         }
-
-        foreach ($warnings as $line => $lineErrors) {
-            foreach ($lineErrors as $column => $colErrors) {
-                foreach ($colErrors as $error) {
-                    $this->activeListener = $error['listener'];
-                    $this->addMessage(
-                        false,
-                        $error['message'],
-                        $line,
-                        $column,
-                        $error['source'],
-                        [],
-                        $error['severity'],
-                        $error['fixable']
-                    );
+        foreach ($warnings as $line => $line_errors) {
+            foreach ($line_errors as $column => $col_errors) {
+                foreach ($col_errors as $error) {
+                    $this->active_listener = $error['listener'];
+                    $this->add_message(false, $error['message'], $line, $column, $error['source'], [], $error['severity'], $error['fixable']);
                 }
             }
         }
-
-        $this->replayingErrors = false;
-
-    }//end replayErrors()
-
-}//end class
+        $this->replaying_errors = false;
+    }
+    //end replayErrors()
+}
+//end class

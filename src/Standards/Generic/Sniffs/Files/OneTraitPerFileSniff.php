@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that only one trait is declared per file.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2010-2014 Alexander Obuhovich
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Files;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Files;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class OneTraitPerFileSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class One_Trait_Per_File_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class OneTraitPerFileSniff implements Sniff
     public function register()
     {
         return [T_TRAIT];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -36,20 +33,19 @@ class OneTraitPerFileSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $start  = ($stackPtr + 1);
-        if (isset($tokens[$stackPtr]['scope_closer']) === true) {
-            $start = ($tokens[$stackPtr]['scope_closer'] + 1);
+        $tokens = $phpcs_file->get_tokens();
+        $start = $stack_ptr + 1;
+        if (isset($tokens[$stack_ptr]['scope_closer']) === true) {
+            $start = $tokens[$stack_ptr]['scope_closer'] + 1;
         }
-
-        $nextClass = $phpcsFile->findNext($this->register(), $start);
-        if ($nextClass !== false) {
+        $next_class = $phpcs_file->find_next($this->register(), $start);
+        if ($next_class !== false) {
             $error = 'Only one trait is allowed in a file';
-            $phpcsFile->addError($error, $nextClass, 'MultipleFound');
+            $phpcs_file->add_error($error, $next_class, 'MultipleFound');
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

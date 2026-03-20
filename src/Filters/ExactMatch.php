@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * An abstract filter class for checking files and folders against exact matches.
  *
@@ -10,12 +10,10 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Filters;
 
-namespace PHP_CodeSniffer\Filters;
-
-use PHP_CodeSniffer\Util;
-
-abstract class ExactMatch extends Filter
+use Php_code_Sniffer\Util;
+abstract class Exact_Match extends Filter
 {
     /**
      * A list of files to exclude.
@@ -23,7 +21,6 @@ abstract class ExactMatch extends Filter
      * @var array
      */
     private $blacklist;
-
     /**
      * A list of files to include.
      *
@@ -32,7 +29,6 @@ abstract class ExactMatch extends Filter
      * @var array
      */
     private $whitelist;
-
     /**
      * Check whether the current element of the iterator is acceptable.
      *
@@ -45,31 +41,24 @@ abstract class ExactMatch extends Filter
         if (parent::accept() === false) {
             return false;
         }
-
         if ($this->blacklist === null) {
             $this->blacklist = $this->getblacklist();
         }
-
         if ($this->whitelist === null) {
             $this->whitelist = $this->getwhitelist();
         }
-
-        $filePath = Util\Common::realpath($this->current());
-
+        $file_path = Util\Common::realpath($this->current());
         // If file is both blacklisted and whitelisted, the blacklist takes precedence.
-        if (isset($this->blacklist[$filePath]) === true) {
+        if (isset($this->blacklist[$file_path]) === true) {
             return false;
         }
-
         if (empty($this->whitelist) === true && empty($this->blacklist) === false) {
             // We are only checking a blacklist, so everything else should be whitelisted.
             return true;
         }
-
-        return isset($this->whitelist[$filePath]);
-
-    }//end accept()
-
+        return isset($this->whitelist[$file_path]);
+    }
+    //end accept()
     /**
      * Returns an iterator for the current entry.
      *
@@ -78,27 +67,25 @@ abstract class ExactMatch extends Filter
      *
      * @return \RecursiveIterator
      */
-    public function getChildren()
+    public function get_children()
     {
-        $children            = parent::getChildren();
+        $children = parent::get_children();
         $children->blacklist = $this->blacklist;
         $children->whitelist = $this->whitelist;
         return $children;
-
-    }//end getChildren()
-
+    }
+    //end getChildren()
     /**
      * Get a list of blacklisted file paths.
      *
      * @return array
      */
-    abstract protected function getBlacklist();
-
+    abstract protected function get_blacklist();
     /**
      * Get a list of whitelisted file paths.
      *
      * @return array
      */
-    abstract protected function getWhitelist();
-
-}//end class
+    abstract protected function get_whitelist();
+}
+//end class

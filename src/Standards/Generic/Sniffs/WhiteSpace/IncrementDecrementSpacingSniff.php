@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies spacing between variables and increment/decrement operators.
  *
@@ -8,25 +8,19 @@ declare(strict_types=1);
  * @copyright 2018 Juliette Reinders Folmer. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\White_Space;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\WhiteSpace;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class IncrementDecrementSpacingSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Increment_Decrement_Spacing_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -34,13 +28,9 @@ class IncrementDecrementSpacingSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_DEC,
-            T_INC,
-        ];
-
-    }//end register()
-
+        return [T_DEC, T_INC];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -50,119 +40,87 @@ class IncrementDecrementSpacingSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $tokenName = 'increment';
-        if ($tokens[$stackPtr]['code'] === T_DEC) {
-            $tokenName = 'decrement';
+        $tokens = $phpcs_file->get_tokens();
+        $token_name = 'increment';
+        if ($tokens[$stack_ptr]['code'] === T_DEC) {
+            $token_name = 'decrement';
         }
-
         // Is this a pre-increment/decrement ?
-        $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-        if ($nextNonEmpty !== false
-            && (($phpcsFile->tokenizerType === 'PHP' && $tokens[$nextNonEmpty]['code'] === T_VARIABLE)
-            || ($phpcsFile->tokenizerType === 'JS' && $tokens[$nextNonEmpty]['code'] === T_STRING))
-        ) {
-            if ($nextNonEmpty === ($stackPtr + 1)) {
-                $phpcsFile->recordMetric($stackPtr, 'Spacing between in/decrementor and variable', 0);
+        $next_non_empty = $phpcs_file->find_next(Tokens::$empty_tokens, $stack_ptr + 1, null, true);
+        if ($next_non_empty !== false && ($phpcs_file->tokenizer_type === 'PHP' && $tokens[$next_non_empty]['code'] === T_VARIABLE || $phpcs_file->tokenizer_type === 'JS' && $tokens[$next_non_empty]['code'] === T_STRING)) {
+            if ($next_non_empty === $stack_ptr + 1) {
+                $phpcs_file->record_metric($stack_ptr, 'Spacing between in/decrementor and variable', 0);
                 return;
             }
-
-            $spaces            = 0;
-            $fixable           = true;
-            $nextNonWhitespace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-            if ($nextNonWhitespace !== $nextNonEmpty) {
+            $spaces = 0;
+            $fixable = true;
+            $next_non_whitespace = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
+            if ($next_non_whitespace !== $next_non_empty) {
                 $fixable = false;
-                $spaces  = 'comment';
+                $spaces = 'comment';
+            } else if ($tokens[$stack_ptr]['line'] !== $tokens[$next_non_empty]['line']) {
+                $spaces = 'newline';
             } else {
-                if ($tokens[$stackPtr]['line'] !== $tokens[$nextNonEmpty]['line']) {
-                    $spaces = 'newline';
-                } else {
-                    $spaces = $tokens[($stackPtr + 1)]['length'];
-                }
+                $spaces = $tokens[$stack_ptr + 1]['length'];
             }
-
-            $phpcsFile->recordMetric($stackPtr, 'Spacing between in/decrementor and variable', $spaces);
-
-            $error     = 'Expected no spaces between the %s operator and %s; %s found';
-            $errorCode = 'SpaceAfter'.ucfirst($tokenName);
-            $data      = [
-                $tokenName,
-                $tokens[$nextNonEmpty]['content'],
-                $spaces,
-            ];
-
+            $phpcs_file->record_metric($stack_ptr, 'Spacing between in/decrementor and variable', $spaces);
+            $error = 'Expected no spaces between the %s operator and %s; %s found';
+            $error_code = 'SpaceAfter' . ucfirst($token_name);
+            $data = [$token_name, $tokens[$next_non_empty]['content'], $spaces];
             if ($fixable === false) {
-                $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
+                $phpcs_file->add_error($error, $stack_ptr, $error_code, $data);
                 return;
             }
-
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, $error_code, $data);
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                for ($i = ($stackPtr + 1); $i < $nextNonEmpty; $i++) {
-                    $phpcsFile->fixer->replaceToken($i, '');
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $stack_ptr + 1; $i < $next_non_empty; $i++) {
+                    $phpcs_file->fixer->replace_token($i, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
-
             return;
-        }//end if
-
+        }
+        //end if
         // Is this a post-increment/decrement ?
-        $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
-        if ($prevNonEmpty !== false
-            && (($phpcsFile->tokenizerType === 'PHP' && $tokens[$prevNonEmpty]['code'] === T_VARIABLE)
-            || ($phpcsFile->tokenizerType === 'JS' && $tokens[$prevNonEmpty]['code'] === T_STRING))
-        ) {
-            if ($prevNonEmpty === ($stackPtr - 1)) {
-                $phpcsFile->recordMetric($stackPtr, 'Spacing between in/decrementor and variable', 0);
+        $prev_non_empty = $phpcs_file->find_previous(Tokens::$empty_tokens, $stack_ptr - 1, null, true);
+        if ($prev_non_empty !== false && ($phpcs_file->tokenizer_type === 'PHP' && $tokens[$prev_non_empty]['code'] === T_VARIABLE || $phpcs_file->tokenizer_type === 'JS' && $tokens[$prev_non_empty]['code'] === T_STRING)) {
+            if ($prev_non_empty === $stack_ptr - 1) {
+                $phpcs_file->record_metric($stack_ptr, 'Spacing between in/decrementor and variable', 0);
                 return;
             }
-
-            $spaces            = 0;
-            $fixable           = true;
-            $prevNonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-            if ($prevNonWhitespace !== $prevNonEmpty) {
+            $spaces = 0;
+            $fixable = true;
+            $prev_non_whitespace = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
+            if ($prev_non_whitespace !== $prev_non_empty) {
                 $fixable = false;
-                $spaces  = 'comment';
+                $spaces = 'comment';
+            } else if ($tokens[$stack_ptr]['line'] !== $tokens[$next_non_empty]['line']) {
+                $spaces = 'newline';
             } else {
-                if ($tokens[$stackPtr]['line'] !== $tokens[$nextNonEmpty]['line']) {
-                    $spaces = 'newline';
-                } else {
-                    $spaces = $tokens[($stackPtr - 1)]['length'];
-                }
+                $spaces = $tokens[$stack_ptr - 1]['length'];
             }
-
-            $phpcsFile->recordMetric($stackPtr, 'Spacing between in/decrementor and variable', $spaces);
-
-            $error     = 'Expected no spaces between %s and the %s operator; %s found';
-            $errorCode = 'SpaceAfter'.ucfirst($tokenName);
-            $data      = [
-                $tokens[$prevNonEmpty]['content'],
-                $tokenName,
-                $spaces,
-            ];
-
+            $phpcs_file->record_metric($stack_ptr, 'Spacing between in/decrementor and variable', $spaces);
+            $error = 'Expected no spaces between %s and the %s operator; %s found';
+            $error_code = 'SpaceAfter' . ucfirst($token_name);
+            $data = [$tokens[$prev_non_empty]['content'], $token_name, $spaces];
             if ($fixable === false) {
-                $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
+                $phpcs_file->add_error($error, $stack_ptr, $error_code, $data);
                 return;
             }
-
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, $error_code, $data);
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                for ($i = ($stackPtr - 1); $prevNonEmpty < $i; $i--) {
-                    $phpcsFile->fixer->replaceToken($i, '');
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $stack_ptr - 1; $prev_non_empty < $i; $i--) {
+                    $phpcs_file->fixer->replace_token($i, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
-        }//end if
-
-    }//end process()
-
-}//end class
+        }
+        //end if
+    }
+    //end process()
+}
+//end class

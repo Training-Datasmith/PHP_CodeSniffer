@@ -1,19 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that traits are suffixed by Trait.
  *
  * @author  Anna Borzenko <annnechko@gmail.com>
  * @license https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Naming_Conventions;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class TraitNameSuffixSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Trait_Name_Suffix_Sniff implements Sniff
 {
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -23,9 +21,8 @@ class TraitNameSuffixSniff implements Sniff
     public function register()
     {
         return [T_TRAIT];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -35,18 +32,17 @@ class TraitNameSuffixSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $traitName = $phpcsFile->getDeclarationName($stackPtr);
-        if ($traitName === null) {
+        $trait_name = $phpcs_file->get_declaration_name($stack_ptr);
+        if ($trait_name === null) {
             return;
         }
-
-        $suffix = substr($traitName, -5);
+        $suffix = substr($trait_name, -5);
         if (strtolower($suffix) !== 'trait') {
-            $phpcsFile->addError('Trait names must be suffixed with "Trait"; found "%s"', $stackPtr, 'Missing', [$traitName]);
+            $phpcs_file->add_error('Trait names must be suffixed with "Trait"; found "%s"', $stack_ptr, 'Missing', [$trait_name]);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

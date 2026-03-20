@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensure sizes are defined using shorthand notation where possible.
  *
@@ -8,21 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\CSS;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\CSS;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ShorthandSizeSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Shorthand_Size_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = ['CSS'];
-
+    public $supported_tokenizers = ['CSS'];
     /**
      * A list of styles that we shouldn't check.
      *
@@ -30,14 +27,7 @@ class ShorthandSizeSniff implements Sniff
      *
      * @var array
      */
-    protected $excludeStyles = [
-        'background-position'      => 'background-position',
-        'box-shadow'               => 'box-shadow',
-        'transform-origin'         => 'transform-origin',
-        '-webkit-transform-origin' => '-webkit-transform-origin',
-        '-ms-transform-origin'     => '-ms-transform-origin',
-    ];
-
+    protected $exclude_styles = ['background-position' => 'background-position', 'box-shadow' => 'box-shadow', 'transform-origin' => 'transform-origin', '-webkit-transform-origin' => '-webkit-transform-origin', '-ms-transform-origin' => '-ms-transform-origin'];
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -46,9 +36,8 @@ class ShorthandSizeSniff implements Sniff
     public function register()
     {
         return [T_STYLE];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes the tokens that this sniff is interested in.
      *
@@ -58,83 +47,65 @@ class ShorthandSizeSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Some styles look like shorthand but are not actually a set of 4 sizes.
-        $style = strtolower($tokens[$stackPtr]['content']);
-        if (isset($this->excludeStyles[$style]) === true) {
+        $style = strtolower($tokens[$stack_ptr]['content']);
+        if (isset($this->exclude_styles[$style]) === true) {
             return;
         }
-
-        $end = $phpcsFile->findNext(T_SEMICOLON, ($stackPtr + 1));
+        $end = $phpcs_file->find_next(T_SEMICOLON, $stack_ptr + 1);
         if ($end === false) {
             // Live coding or parse error.
             return;
         }
-
         // Get the whole style content.
-        $origContent = $phpcsFile->getTokensAsString(($stackPtr + 1), ($end - $stackPtr - 1));
-        $origContent = trim($origContent, ':');
-        $origContent = trim($origContent);
-
+        $orig_content = $phpcs_file->get_tokens_as_string($stack_ptr + 1, $end - $stack_ptr - 1);
+        $orig_content = trim($orig_content, ':');
+        $orig_content = trim($orig_content);
         // Account for a !important annotation.
-        $content = $origContent;
+        $content = $orig_content;
         if (substr($content, -10) === '!important') {
             $content = substr($content, 0, -10);
             $content = trim($content);
         }
-
         // Check if this style value is a set of numbers with optional prefixes.
         $content = preg_replace('/\s+/', ' ', $content);
-        $values  = [];
-        $num     = preg_match_all(
-            '/(?:[0-9]+)(?:[a-zA-Z]{2}\s+|%\s+|\s+)/',
-            $content.' ',
-            $values,
-            PREG_SET_ORDER
-        );
-
+        $values = [];
+        $num = preg_match_all('/(?:[0-9]+)(?:[a-zA-Z]{2}\s+|%\s+|\s+)/', $content . ' ', $values, PREG_SET_ORDER);
         // Only interested in styles that have multiple sizes defined.
         if ($num < 2) {
             return;
         }
-
         // Rebuild the content we matched to ensure we got everything.
         $matched = '';
         foreach ($values as $value) {
             $matched .= $value[0];
         }
-
         if ($content !== trim($matched)) {
             return;
         }
-
         if ($num === 3) {
-            $expected = trim($content.' '.$values[1][0]);
-            $error    = 'Shorthand syntax not allowed here; use %s instead';
-            $data     = [$expected];
-            $fix      = $phpcsFile->addFixableError($error, $stackPtr, 'NotAllowed', $data);
-
+            $expected = trim($content . ' ' . $values[1][0]);
+            $error = 'Shorthand syntax not allowed here; use %s instead';
+            $data = [$expected];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NotAllowed', $data);
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                if (substr($origContent, -10) === '!important') {
+                $phpcs_file->fixer->begin_changeset();
+                if (substr($orig_content, -10) === '!important') {
                     $expected .= ' !important';
                 }
-
-                $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 2), null, true);
-                $phpcsFile->fixer->replaceToken($next, $expected);
+                $next = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 2, null, true);
+                $phpcs_file->fixer->replace_token($next, $expected);
                 for ($next++; $next < $end; $next++) {
-                    $phpcsFile->fixer->replaceToken($next, '');
+                    $phpcs_file->fixer->replace_token($next, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
-
             return;
-        }//end if
-
+        }
+        //end if
         if ($num === 2) {
             if ($values[0][0] !== $values[1][0]) {
                 // Both values are different, so it is already shorthand.
@@ -144,36 +115,28 @@ class ShorthandSizeSniff implements Sniff
             // Can't shorthand this.
             return;
         }
-
         if ($values[0][0] === $values[1][0]) {
             // All values are the same.
             $expected = trim($values[0][0]);
         } else {
-            $expected = trim($values[0][0]).' '.trim($values[1][0]);
+            $expected = trim($values[0][0]) . ' ' . trim($values[1][0]);
         }
-
         $error = 'Size definitions must use shorthand if available; expected "%s" but found "%s"';
-        $data  = [
-            $expected,
-            $content,
-        ];
-
-        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NotUsed', $data);
+        $data = [$expected, $content];
+        $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NotUsed', $data);
         if ($fix === true) {
-            $phpcsFile->fixer->beginChangeset();
-            if (substr($origContent, -10) === '!important') {
+            $phpcs_file->fixer->begin_changeset();
+            if (substr($orig_content, -10) === '!important') {
                 $expected .= ' !important';
             }
-
-            $next = $phpcsFile->findNext(T_COLON, ($stackPtr + 1));
-            $phpcsFile->fixer->addContent($next, ' '.$expected);
+            $next = $phpcs_file->find_next(T_COLON, $stack_ptr + 1);
+            $phpcs_file->fixer->add_content($next, ' ' . $expected);
             for ($next++; $next < $end; $next++) {
-                $phpcsFile->fixer->replaceToken($next, '');
+                $phpcs_file->fixer->replace_token($next, '');
             }
-
-            $phpcsFile->fixer->endChangeset();
+            $phpcs_file->fixer->end_changeset();
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

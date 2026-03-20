@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensure there is no whitespace before/after an object operator.
  *
@@ -8,21 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\White_Space;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ObjectOperatorSpacingSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Object_Operator_Spacing_Sniff implements Sniff
 {
     /**
      * Allow newlines instead of spaces.
      *
      * @var boolean
      */
-    public $ignoreNewlines = false;
-
+    public $ignore_newlines = false;
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -30,14 +27,9 @@ class ObjectOperatorSpacingSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_OBJECT_OPERATOR,
-            T_DOUBLE_COLON,
-            T_NULLSAFE_OBJECT_OPERATOR,
-        ];
-
-    }//end register()
-
+        return [T_OBJECT_OPERATOR, T_DOUBLE_COLON, T_NULLSAFE_OBJECT_OPERATOR];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -47,43 +39,32 @@ class ObjectOperatorSpacingSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
+        $tokens = $phpcs_file->get_tokens();
+        if ($tokens[$stack_ptr - 1]['code'] !== T_WHITESPACE) {
             $before = 0;
+        } else if ($tokens[$stack_ptr - 2]['line'] !== $tokens[$stack_ptr]['line']) {
+            $before = 'newline';
         } else {
-            if ($tokens[($stackPtr - 2)]['line'] !== $tokens[$stackPtr]['line']) {
-                $before = 'newline';
-            } else {
-                $before = $tokens[($stackPtr - 1)]['length'];
-            }
+            $before = $tokens[$stack_ptr - 1]['length'];
         }
-
-        $phpcsFile->recordMetric($stackPtr, 'Spacing before object operator', $before);
-        $this->checkSpacingBeforeOperator($phpcsFile, $stackPtr, $before);
-
-        if (isset($tokens[($stackPtr + 1)]) === false
-            || isset($tokens[($stackPtr + 2)]) === false
-        ) {
+        $phpcs_file->record_metric($stack_ptr, 'Spacing before object operator', $before);
+        $this->check_spacing_before_operator($phpcs_file, $stack_ptr, $before);
+        if (isset($tokens[$stack_ptr + 1]) === false || isset($tokens[$stack_ptr + 2]) === false) {
             return;
         }
-
-        if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+        if ($tokens[$stack_ptr + 1]['code'] !== T_WHITESPACE) {
             $after = 0;
+        } else if ($tokens[$stack_ptr + 2]['line'] !== $tokens[$stack_ptr]['line']) {
+            $after = 'newline';
         } else {
-            if ($tokens[($stackPtr + 2)]['line'] !== $tokens[$stackPtr]['line']) {
-                $after = 'newline';
-            } else {
-                $after = $tokens[($stackPtr + 1)]['length'];
-            }
+            $after = $tokens[$stack_ptr + 1]['length'];
         }
-
-        $phpcsFile->recordMetric($stackPtr, 'Spacing after object operator', $after);
-        $this->checkSpacingAfterOperator($phpcsFile, $stackPtr, $after);
-
-    }//end process()
-
+        $phpcs_file->record_metric($stack_ptr, 'Spacing after object operator', $after);
+        $this->check_spacing_after_operator($phpcs_file, $stack_ptr, $after);
+    }
+    //end process()
     /**
      * Check the spacing before the operator.
      *
@@ -95,33 +76,26 @@ class ObjectOperatorSpacingSniff implements Sniff
      *
      * @return boolean true if there was no error, false otherwise.
      */
-    protected function checkSpacingBeforeOperator(File $phpcsFile, $stackPtr, $before)
+    protected function check_spacing_before_operator(File $phpcs_file, $stack_ptr, $before)
     {
-        if ($before !== 0
-            && ($before !== 'newline' || $this->ignoreNewlines === false)
-        ) {
+        if ($before !== 0 && ($before !== 'newline' || $this->ignore_newlines === false)) {
             $error = 'Space found before object operator';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'Before');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'Before');
             if ($fix === true) {
-                $tokens = $phpcsFile->getTokens();
-                $curPos = ($stackPtr - 1);
-
-                $phpcsFile->fixer->beginChangeset();
-                while ($tokens[$curPos]['code'] === T_WHITESPACE) {
-                    $phpcsFile->fixer->replaceToken($curPos, '');
-                    --$curPos;
+                $tokens = $phpcs_file->get_tokens();
+                $cur_pos = $stack_ptr - 1;
+                $phpcs_file->fixer->begin_changeset();
+                while ($tokens[$cur_pos]['code'] === T_WHITESPACE) {
+                    $phpcs_file->fixer->replace_token($cur_pos, '');
+                    --$cur_pos;
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
-
             return false;
         }
-
         return true;
-
-    }//end checkSpacingBeforeOperator()
-
+    }
+    //end checkSpacingBeforeOperator()
     /**
      * Check the spacing after the operator.
      *
@@ -133,31 +107,25 @@ class ObjectOperatorSpacingSniff implements Sniff
      *
      * @return boolean true if there was no error, false otherwise.
      */
-    protected function checkSpacingAfterOperator(File $phpcsFile, $stackPtr, $after)
+    protected function check_spacing_after_operator(File $phpcs_file, $stack_ptr, $after)
     {
-        if ($after !== 0
-            && ($after !== 'newline' || $this->ignoreNewlines === false)
-        ) {
+        if ($after !== 0 && ($after !== 'newline' || $this->ignore_newlines === false)) {
             $error = 'Space found after object operator';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'After');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'After');
             if ($fix === true) {
-                $tokens = $phpcsFile->getTokens();
-                $curPos = ($stackPtr + 1);
-
-                $phpcsFile->fixer->beginChangeset();
-                while ($tokens[$curPos]['code'] === T_WHITESPACE) {
-                    $phpcsFile->fixer->replaceToken($curPos, '');
-                    ++$curPos;
+                $tokens = $phpcs_file->get_tokens();
+                $cur_pos = $stack_ptr + 1;
+                $phpcs_file->fixer->begin_changeset();
+                while ($tokens[$cur_pos]['code'] === T_WHITESPACE) {
+                    $phpcs_file->fixer->replace_token($cur_pos, '');
+                    ++$cur_pos;
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
-
             return false;
         }
-
         return true;
-
-    }//end checkSpacingAfterOperator()
-
-}//end class
+    }
+    //end checkSpacingAfterOperator()
+}
+//end class

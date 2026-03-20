@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that control structures have the correct spacing.
  *
@@ -8,15 +8,13 @@ declare(strict_types=1);
  * @copyright 2006-2019 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Control_Structures;
 
-namespace PHP_CodeSniffer\Standards\PSR12\Sniffs\ControlStructures;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ControlStructureSpacingSniff as PSR2Spacing;
-use PHP_CodeSniffer\Util\Tokens;
-
-class ControlStructureSpacingSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Standards\PSR2\Sniffs\Control_Structures\Control_Structure_Spacing_Sniff as PSR2Spacing;
+use Php_code_Sniffer\Util\Tokens;
+class Control_Structure_Spacing_Sniff implements Sniff
 {
     /**
      * The number of spaces code should be indented.
@@ -24,7 +22,6 @@ class ControlStructureSpacingSniff implements Sniff
      * @var integer
      */
     public $indent = 4;
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -32,20 +29,9 @@ class ControlStructureSpacingSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_IF,
-            T_WHILE,
-            T_FOREACH,
-            T_FOR,
-            T_SWITCH,
-            T_ELSE,
-            T_ELSEIF,
-            T_CATCH,
-            T_MATCH,
-        ];
-
-    }//end register()
-
+        return [T_IF, T_WHILE, T_FOREACH, T_FOR, T_SWITCH, T_ELSE, T_ELSEIF, T_CATCH, T_MATCH];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -55,138 +41,120 @@ class ControlStructureSpacingSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if (isset($tokens[$stackPtr]['parenthesis_opener']) === false
-            || isset($tokens[$stackPtr]['parenthesis_closer']) === false
-        ) {
+        $tokens = $phpcs_file->get_tokens();
+        if (isset($tokens[$stack_ptr]['parenthesis_opener']) === false || isset($tokens[$stack_ptr]['parenthesis_closer']) === false) {
             return;
         }
-
-        $parenOpener = $tokens[$stackPtr]['parenthesis_opener'];
-        $parenCloser = $tokens[$stackPtr]['parenthesis_closer'];
-
-        if ($tokens[$parenOpener]['line'] === $tokens[$parenCloser]['line']) {
+        $paren_opener = $tokens[$stack_ptr]['parenthesis_opener'];
+        $paren_closer = $tokens[$stack_ptr]['parenthesis_closer'];
+        if ($tokens[$paren_opener]['line'] === $tokens[$paren_closer]['line']) {
             // Conditions are all on the same line, so follow PSR2.
             $sniff = new PSR2Spacing();
-            return $sniff->process($phpcsFile, $stackPtr);
+            return $sniff->process($phpcs_file, $stack_ptr);
         }
-
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($parenOpener + 1), $parenCloser, true);
+        $next = $phpcs_file->find_next(T_WHITESPACE, $paren_opener + 1, $paren_closer, true);
         if ($next === false) {
             // No conditions; parse error.
             return;
         }
-
         // Check the first expression.
-        if ($tokens[$next]['line'] !== ($tokens[$parenOpener]['line'] + 1)) {
+        if ($tokens[$next]['line'] !== $tokens[$paren_opener]['line'] + 1) {
             $error = 'The first expression of a multi-line control structure must be on the line after the opening parenthesis';
-            $fix   = $phpcsFile->addFixableError($error, $next, 'FirstExpressionLine');
+            $fix = $phpcs_file->add_fixable_error($error, $next, 'FirstExpressionLine');
             if ($fix === true) {
-                $phpcsFile->fixer->addNewline($parenOpener);
+                $phpcs_file->fixer->add_newline($paren_opener);
             }
         }
-
         // Check the indent of each line.
-        $first          = $phpcsFile->findFirstOnLine(T_WHITESPACE, $stackPtr, true);
-        $requiredIndent = ($tokens[$first]['column'] + $this->indent - 1);
-        for ($i = $parenOpener; $i < $parenCloser; $i++) {
+        $first = $phpcs_file->find_first_on_line(T_WHITESPACE, $stack_ptr, true);
+        $required_indent = $tokens[$first]['column'] + $this->indent - 1;
+        for ($i = $paren_opener; $i < $paren_closer; $i++) {
             if ($tokens[$i]['column'] !== 1) {
                 continue;
             }
-            if ($tokens[($i + 1)]['line'] > $tokens[$i]['line']) {
+            if ($tokens[$i + 1]['line'] > $tokens[$i]['line']) {
                 continue;
             }
-            if (isset(Tokens::$commentTokens[$tokens[$i]['code']]) === true) {
+            if (isset(Tokens::$comment_tokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
-            if (($i + 1) === $parenCloser) {
+            if ($i + 1 === $paren_closer) {
                 break;
             }
             // Leave indentation inside multi-line strings.
-            if (isset(Tokens::$textStringTokens[$tokens[$i]['code']]) === true) {
+            if (isset(Tokens::$text_string_tokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
-            if (isset(Tokens::$heredocTokens[$tokens[$i]['code']]) === true) {
+            if (isset(Tokens::$heredoc_tokens[$tokens[$i]['code']]) === true) {
                 continue;
             }
-
             if ($tokens[$i]['code'] !== T_WHITESPACE) {
-                $foundIndent = 0;
+                $found_indent = 0;
             } else {
-                $foundIndent = $tokens[$i]['length'];
+                $found_indent = $tokens[$i]['length'];
             }
-
-            if ($foundIndent < $requiredIndent) {
+            if ($found_indent < $required_indent) {
                 $error = 'Each line in a multi-line control structure must be indented at least once; expected at least %s spaces, but found %s';
-                $data  = [
-                    $requiredIndent,
-                    $foundIndent,
-                ];
-                $fix   = $phpcsFile->addFixableError($error, $i, 'LineIndent', $data);
+                $data = [$required_indent, $found_indent];
+                $fix = $phpcs_file->add_fixable_error($error, $i, 'LineIndent', $data);
                 if ($fix === true) {
-                    $padding = str_repeat(' ', $requiredIndent);
-                    if ($foundIndent === 0) {
-                        $phpcsFile->fixer->addContentBefore($i, $padding);
+                    $padding = str_repeat(' ', $required_indent);
+                    if ($found_indent === 0) {
+                        $phpcs_file->fixer->add_content_before($i, $padding);
                     } else {
-                        $phpcsFile->fixer->replaceToken($i, $padding);
+                        $phpcs_file->fixer->replace_token($i, $padding);
                     }
                 }
             }
-        }//end for
-
+        }
+        //end for
         // Check the closing parenthesis.
-        $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($parenCloser - 1), $parenOpener, true);
-        if ($tokens[$parenCloser]['line'] !== ($tokens[$prev]['line'] + 1)) {
+        $prev = $phpcs_file->find_previous(T_WHITESPACE, $paren_closer - 1, $paren_opener, true);
+        if ($tokens[$paren_closer]['line'] !== $tokens[$prev]['line'] + 1) {
             $error = 'The closing parenthesis of a multi-line control structure must be on the line after the last expression';
-            $fix   = $phpcsFile->addFixableError($error, $parenCloser, 'CloseParenthesisLine');
+            $fix = $phpcs_file->add_fixable_error($error, $paren_closer, 'CloseParenthesisLine');
             if ($fix === true) {
-                if ($tokens[$parenCloser]['line'] === $tokens[$prev]['line']) {
-                    $phpcsFile->fixer->addNewlineBefore($parenCloser);
+                if ($tokens[$paren_closer]['line'] === $tokens[$prev]['line']) {
+                    $phpcs_file->fixer->add_newline_before($paren_closer);
                 } else {
-                    $phpcsFile->fixer->beginChangeset();
-                    for ($i = ($prev + 1); $i < $parenCloser; $i++) {
+                    $phpcs_file->fixer->begin_changeset();
+                    for ($i = $prev + 1; $i < $paren_closer; $i++) {
                         // Maintain existing newline.
                         if ($tokens[$i]['line'] === $tokens[$prev]['line']) {
                             continue;
                         }
-
                         // Maintain existing indent.
-                        if ($tokens[$i]['line'] === $tokens[$parenCloser]['line']) {
+                        if ($tokens[$i]['line'] === $tokens[$paren_closer]['line']) {
                             break;
                         }
-
-                        $phpcsFile->fixer->replaceToken($i, '');
+                        $phpcs_file->fixer->replace_token($i, '');
                     }
-
-                    $phpcsFile->fixer->endChangeset();
+                    $phpcs_file->fixer->end_changeset();
                 }
-            }//end if
-        }//end if
-
-        if ($tokens[$parenCloser]['line'] !== $tokens[$prev]['line']) {
-            $requiredIndent = ($tokens[$first]['column'] - 1);
-            $foundIndent    = ($tokens[$parenCloser]['column'] - 1);
-            if ($foundIndent !== $requiredIndent) {
+            }
+            //end if
+        }
+        //end if
+        if ($tokens[$paren_closer]['line'] !== $tokens[$prev]['line']) {
+            $required_indent = $tokens[$first]['column'] - 1;
+            $found_indent = $tokens[$paren_closer]['column'] - 1;
+            if ($found_indent !== $required_indent) {
                 $error = 'The closing parenthesis of a multi-line control structure must be indented to the same level as start of the control structure; expected %s spaces but found %s';
-                $data  = [
-                    $requiredIndent,
-                    $foundIndent,
-                ];
-                $fix   = $phpcsFile->addFixableError($error, $parenCloser, 'CloseParenthesisIndent', $data);
+                $data = [$required_indent, $found_indent];
+                $fix = $phpcs_file->add_fixable_error($error, $paren_closer, 'CloseParenthesisIndent', $data);
                 if ($fix === true) {
-                    $padding = str_repeat(' ', $requiredIndent);
-                    if ($foundIndent === 0) {
-                        $phpcsFile->fixer->addContentBefore($parenCloser, $padding);
+                    $padding = str_repeat(' ', $required_indent);
+                    if ($found_indent === 0) {
+                        $phpcs_file->fixer->add_content_before($paren_closer, $padding);
                     } else {
-                        $phpcsFile->fixer->replaceToken(($parenCloser - 1), $padding);
+                        $phpcs_file->fixer->replace_token($paren_closer - 1, $padding);
                     }
                 }
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Represents a PHP_CodeSniffer sniff for sniffing coding standards.
  *
@@ -13,11 +13,9 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Sniffs;
 
-namespace PHP_CodeSniffer\Sniffs;
-
-use PHP_CodeSniffer\Files\File;
-
+use Php_code_Sniffer\Files\File;
 interface Sniff
 {
     /**
@@ -38,7 +36,6 @@ interface Sniff
      * @see    Tokens.php
      */
     public function register();
-
     /**
      * Called when one of the token types that this sniff is listening for
      * is found.
@@ -73,6 +70,6 @@ interface Sniff
      *                  pointer is reached. Return (count($tokens) + 1) to skip
      *                  the rest of the file.
      */
-    public function process(File $phpcsFile, $stackPtr);
-
-}//end interface
+    public function process(File $phpcs_file, $stack_ptr);
+}
+//end interface

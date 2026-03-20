@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures there is no space after cast tokens.
  *
@@ -11,14 +11,12 @@ declare(strict_types=1);
  * @deprecated 3.4.0 Use the Generic.Formatting.SpaceAfterCast sniff with
  *                   the $spacing property set to 0 instead.
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Formatting;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class NoSpaceAfterCastSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class No_Space_After_Cast_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -27,10 +25,9 @@ class NoSpaceAfterCastSniff implements Sniff
      */
     public function register()
     {
-        return Tokens::$castTokens;
-
-    }//end register()
-
+        return Tokens::$cast_tokens;
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -40,20 +37,18 @@ class NoSpaceAfterCastSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+        $tokens = $phpcs_file->get_tokens();
+        if ($tokens[$stack_ptr + 1]['code'] !== T_WHITESPACE) {
             return;
         }
-
         $error = 'A cast statement must not be followed by a space';
-        $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceFound');
+        $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpaceFound');
         if ($fix === true) {
-            $phpcsFile->fixer->replaceToken(($stackPtr + 1), '');
+            $phpcs_file->fixer->replace_token($stack_ptr + 1, '');
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

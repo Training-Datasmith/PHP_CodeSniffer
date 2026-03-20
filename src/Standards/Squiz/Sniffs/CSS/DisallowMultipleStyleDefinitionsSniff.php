@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensure that each style definition is on a line by itself.
  *
@@ -8,21 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\CSS;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\CSS;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class DisallowMultipleStyleDefinitionsSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Disallow_Multiple_Style_Definitions_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = ['CSS'];
-
+    public $supported_tokenizers = ['CSS'];
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -31,9 +28,8 @@ class DisallowMultipleStyleDefinitionsSniff implements Sniff
     public function register()
     {
         return [T_STYLE];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes the tokens that this sniff is interested in.
      *
@@ -43,27 +39,25 @@ class DisallowMultipleStyleDefinitionsSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $next   = $phpcsFile->findNext(T_STYLE, ($stackPtr + 1));
+        $tokens = $phpcs_file->get_tokens();
+        $next = $phpcs_file->find_next(T_STYLE, $stack_ptr + 1);
         if ($next === false) {
             return;
         }
-
         if ($tokens[$next]['content'] === 'progid') {
             // Special case for IE filters.
             return;
         }
-
-        if ($tokens[$next]['line'] === $tokens[$stackPtr]['line']) {
+        if ($tokens[$next]['line'] === $tokens[$stack_ptr]['line']) {
             $error = 'Each style definition must be on a line by itself';
-            $fix   = $phpcsFile->addFixableError($error, $next, 'Found');
+            $fix = $phpcs_file->add_fixable_error($error, $next, 'Found');
             if ($fix === true) {
-                $phpcsFile->fixer->addNewlineBefore($next);
+                $phpcs_file->fixer->add_newline_before($next);
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that import statements are defined correctly.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Files;
 
-namespace PHP_CodeSniffer\Standards\PSR12\Sniffs\Files;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class ImportStatementSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Import_Statement_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -25,9 +23,8 @@ class ImportStatementSniff implements Sniff
     public function register()
     {
         return [T_USE];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -37,39 +34,30 @@ class ImportStatementSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Make sure this is not a closure USE group.
-        $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $next = $phpcs_file->find_next(Tokens::$empty_tokens, $stack_ptr + 1, null, true);
         if ($tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
             return;
         }
-
-        if ($phpcsFile->hasCondition($stackPtr, Tokens::$ooScopeTokens) === true) {
+        if ($phpcs_file->has_condition($stack_ptr, Tokens::$oo_scope_tokens) === true) {
             // This rule only applies to import statements.
             return;
         }
-
-        if ($tokens[$next]['code'] === T_STRING
-            && (strtolower($tokens[$next]['content']) === 'function'
-            || strtolower($tokens[$next]['content']) === 'const')
-        ) {
-            $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), null, true);
+        if ($tokens[$next]['code'] === T_STRING && (strtolower($tokens[$next]['content']) === 'function' || strtolower($tokens[$next]['content']) === 'const')) {
+            $next = $phpcs_file->find_next(Tokens::$empty_tokens, $next + 1, null, true);
         }
-
         if ($tokens[$next]['code'] !== T_NS_SEPARATOR) {
             return;
         }
-
         $error = 'Import statements must not begin with a leading backslash';
-        $fix   = $phpcsFile->addFixableError($error, $next, 'LeadingSlash');
-
+        $fix = $phpcs_file->add_fixable_error($error, $next, 'LeadingSlash');
         if ($fix === true) {
-            $phpcsFile->fixer->replaceToken($next, '');
+            $phpcs_file->fixer->replace_token($next, '');
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

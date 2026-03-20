@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures PHP believes the syntax is clean.
  *
@@ -9,23 +9,20 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Common;
-
-class SyntaxSniff implements Sniff
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Common;
+class Syntax_Sniff implements Sniff
 {
     /**
      * The path to the PHP version we are checking with.
      *
      * @var string
      */
-    private $phpPath;
-
+    private $php_path;
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -33,13 +30,9 @@ class SyntaxSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_OPEN_TAG,
-            T_OPEN_TAG_WITH_ECHO,
-        ];
-
-    }//end register()
-
+        return [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -49,25 +42,23 @@ class SyntaxSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        if ($this->phpPath === null) {
-            $this->phpPath = Config::getExecutablePath('php');
+        if ($this->php_path === null) {
+            $this->php_path = Config::get_executable_path('php');
         }
-
-        $fileName = escapeshellarg($phpcsFile->getFilename());
-        $cmd      = Common::escapeshellcmd($this->phpPath)." -l -d display_errors=1 -d error_prepend_string='' $fileName 2>&1";
-        $output   = shell_exec($cmd);
-        $matches  = [];
+        $file_name = escapeshellarg($phpcs_file->get_filename());
+        $cmd = Common::escapeshellcmd($this->php_path) . " -l -d display_errors=1 -d error_prepend_string='' {$file_name} 2>&1";
+        $output = shell_exec($cmd);
+        $matches = [];
         if (preg_match('/^.*error:(.*) in .* on line ([0-9]+)/m', trim($output), $matches) === 1) {
             $error = trim($matches[1]);
-            $line  = (int) $matches[2];
-            $phpcsFile->addErrorOnLine("PHP syntax error: $error", $line, 'PHPSyntax');
+            $line = (int) $matches[2];
+            $phpcs_file->add_error_on_line("PHP syntax error: {$error}", $line, 'PHPSyntax');
         }
-
         // Ignore the rest of the file.
-        return ($phpcsFile->numTokens + 1);
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens + 1;
+    }
+    //end process()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks the declaration of the class is correct.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR1\Sniffs\Classes;
 
-namespace PHP_CodeSniffer\Standards\PSR1\Sniffs\Classes;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ClassDeclarationSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Class_Declaration_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -23,15 +21,9 @@ class ClassDeclarationSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-            T_ENUM,
-        ];
-
-    }//end register()
-
+        return [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -41,33 +33,30 @@ class ClassDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        if (isset($tokens[$stackPtr]['scope_closer']) === false) {
+        $tokens = $phpcs_file->get_tokens();
+        if (isset($tokens[$stack_ptr]['scope_closer']) === false) {
             return;
         }
-
-        $errorData = [strtolower($tokens[$stackPtr]['content'])];
-
-        $nextClass = $phpcsFile->findNext([T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], ($tokens[$stackPtr]['scope_closer'] + 1));
-        if ($nextClass !== false) {
+        $error_data = [strtolower($tokens[$stack_ptr]['content'])];
+        $next_class = $phpcs_file->find_next([T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], $tokens[$stack_ptr]['scope_closer'] + 1);
+        if ($next_class !== false) {
             $error = 'Each %s must be in a file by itself';
-            $phpcsFile->addError($error, $nextClass, 'MultipleClasses', $errorData);
-            $phpcsFile->recordMetric($stackPtr, 'One class per file', 'no');
+            $phpcs_file->add_error($error, $next_class, 'MultipleClasses', $error_data);
+            $phpcs_file->record_metric($stack_ptr, 'One class per file', 'no');
         } else {
-            $phpcsFile->recordMetric($stackPtr, 'One class per file', 'yes');
+            $phpcs_file->record_metric($stack_ptr, 'One class per file', 'yes');
         }
-
-        $namespace = $phpcsFile->findNext([T_NAMESPACE, T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], 0);
+        $namespace = $phpcs_file->find_next([T_NAMESPACE, T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], 0);
         if ($tokens[$namespace]['code'] !== T_NAMESPACE) {
             $error = 'Each %s must be in a namespace of at least one level (a top-level vendor name)';
-            $phpcsFile->addError($error, $stackPtr, 'MissingNamespace', $errorData);
-            $phpcsFile->recordMetric($stackPtr, 'Class defined in namespace', 'no');
+            $phpcs_file->add_error($error, $stack_ptr, 'MissingNamespace', $error_data);
+            $phpcs_file->record_metric($stack_ptr, 'Class defined in namespace', 'no');
         } else {
-            $phpcsFile->recordMetric($stackPtr, 'Class defined in namespace', 'yes');
+            $phpcs_file->record_metric($stack_ptr, 'Class defined in namespace', 'yes');
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

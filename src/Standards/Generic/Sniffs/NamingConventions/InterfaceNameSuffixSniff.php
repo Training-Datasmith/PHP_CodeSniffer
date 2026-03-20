@@ -1,19 +1,17 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that interfaces are suffixed by Interface.
  *
  * @author  Anna Borzenko <annnechko@gmail.com>
  * @license https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Naming_Conventions;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class InterfaceNameSuffixSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Interface_Name_Suffix_Sniff implements Sniff
 {
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -23,9 +21,8 @@ class InterfaceNameSuffixSniff implements Sniff
     public function register()
     {
         return [T_INTERFACE];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -35,18 +32,17 @@ class InterfaceNameSuffixSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $interfaceName = $phpcsFile->getDeclarationName($stackPtr);
-        if ($interfaceName === null) {
+        $interface_name = $phpcs_file->get_declaration_name($stack_ptr);
+        if ($interface_name === null) {
             return;
         }
-
-        $suffix = substr($interfaceName, -9);
+        $suffix = substr($interface_name, -9);
         if (strtolower($suffix) !== 'interface') {
-            $phpcsFile->addError('Interface names must be suffixed with "Interface"; found "%s"', $stackPtr, 'Missing', [$interfaceName]);
+            $phpcs_file->add_error('Interface names must be suffixed with "Interface"; found "%s"', $stack_ptr, 'Missing', [$interface_name]);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures the file does not end with a newline character.
  *
@@ -8,25 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Files;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Files;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class EndFileNoNewlineSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class End_File_No_Newline_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-        'CSS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS', 'CSS'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -34,13 +27,9 @@ class EndFileNoNewlineSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_OPEN_TAG,
-            T_OPEN_TAG_WITH_ECHO,
-        ];
-
-    }//end register()
-
+        return [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO];
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -50,40 +39,34 @@ class EndFileNoNewlineSniff implements Sniff
      *
      * @return int
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
         // Skip to the end of the file.
-        $tokens   = $phpcsFile->getTokens();
-        $stackPtr = ($phpcsFile->numTokens - 1);
-
-        if ($tokens[$stackPtr]['content'] === '') {
-            --$stackPtr;
+        $tokens = $phpcs_file->get_tokens();
+        $stack_ptr = $phpcs_file->num_tokens - 1;
+        if ($tokens[$stack_ptr]['content'] === '') {
+            --$stack_ptr;
         }
-
-        $eolCharLen = strlen($phpcsFile->eolChar);
-        $lastChars  = substr($tokens[$stackPtr]['content'], ($eolCharLen * -1));
-        if ($lastChars === $phpcsFile->eolChar) {
+        $eol_char_len = strlen($phpcs_file->eol_char);
+        $last_chars = substr($tokens[$stack_ptr]['content'], $eol_char_len * -1);
+        if ($last_chars === $phpcs_file->eol_char) {
             $error = 'File must not end with a newline character';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'Found');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'Found');
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-
-                for ($i = $stackPtr; $i > 0; $i--) {
-                    $newContent = rtrim($tokens[$i]['content'], $phpcsFile->eolChar);
-                    $phpcsFile->fixer->replaceToken($i, $newContent);
-
-                    if ($newContent !== '') {
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $stack_ptr; $i > 0; $i--) {
+                    $new_content = rtrim($tokens[$i]['content'], $phpcs_file->eol_char);
+                    $phpcs_file->fixer->replace_token($i, $new_content);
+                    if ($new_content !== '') {
                         break;
                     }
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
         }
-
         // Ignore the rest of the file.
-        return ($phpcsFile->numTokens + 1);
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens + 1;
+    }
+    //end process()
+}
+//end class

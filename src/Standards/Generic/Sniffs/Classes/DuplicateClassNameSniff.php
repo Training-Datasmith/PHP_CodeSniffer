@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Reports errors if the same class or interface name is used in multiple files.
  *
@@ -8,21 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Classes;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Classes;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class DuplicateClassNameSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Duplicate_Class_Name_Sniff implements Sniff
 {
     /**
      * List of classes that have been found during checking.
      *
      * @var array
      */
-    protected $foundClasses = [];
-
+    protected $found_classes = [];
     /**
      * Registers the tokens that this sniff wants to listen for.
      *
@@ -31,9 +28,8 @@ class DuplicateClassNameSniff implements Sniff
     public function register()
     {
         return [T_OPEN_TAG];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -43,74 +39,46 @@ class DuplicateClassNameSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $namespace  = '';
-        $findTokens = [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-            T_ENUM,
-            T_NAMESPACE,
-            T_CLOSE_TAG,
-        ];
-
-        $stackPtr = $phpcsFile->findNext($findTokens, ($stackPtr + 1));
-        while ($stackPtr !== false) {
-            if ($tokens[$stackPtr]['code'] === T_CLOSE_TAG) {
+        $tokens = $phpcs_file->get_tokens();
+        $namespace = '';
+        $find_tokens = [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM, T_NAMESPACE, T_CLOSE_TAG];
+        $stack_ptr = $phpcs_file->find_next($find_tokens, $stack_ptr + 1);
+        while ($stack_ptr !== false) {
+            if ($tokens[$stack_ptr]['code'] === T_CLOSE_TAG) {
                 // We can stop here. The sniff will continue from the next open
                 // tag when PHPCS reaches that token, if there is one.
                 return;
             }
-
             // Keep track of what namespace we are in.
-            if ($tokens[$stackPtr]['code'] === T_NAMESPACE) {
-                $nsEnd = $phpcsFile->findNext(
-                    [
-                        T_NS_SEPARATOR,
-                        T_STRING,
-                        T_WHITESPACE,
-                    ],
-                    ($stackPtr + 1),
-                    null,
-                    true
-                );
-
-                $namespace = trim($phpcsFile->getTokensAsString(($stackPtr + 1), ($nsEnd - $stackPtr - 1)));
-                $stackPtr  = $nsEnd;
+            if ($tokens[$stack_ptr]['code'] === T_NAMESPACE) {
+                $ns_end = $phpcs_file->find_next([T_NS_SEPARATOR, T_STRING, T_WHITESPACE], $stack_ptr + 1, null, true);
+                $namespace = trim($phpcs_file->get_tokens_as_string($stack_ptr + 1, $ns_end - $stack_ptr - 1));
+                $stack_ptr = $ns_end;
             } else {
-                $nameToken = $phpcsFile->findNext(T_STRING, $stackPtr);
-                $name      = $tokens[$nameToken]['content'];
+                $name_token = $phpcs_file->find_next(T_STRING, $stack_ptr);
+                $name = $tokens[$name_token]['content'];
                 if ($namespace !== '') {
-                    $name = $namespace.'\\'.$name;
+                    $name = $namespace . '\\' . $name;
                 }
-
-                $compareName = strtolower($name);
-                if (isset($this->foundClasses[$compareName]) === true) {
-                    $type  = strtolower($tokens[$stackPtr]['content']);
-                    $file  = $this->foundClasses[$compareName]['file'];
-                    $line  = $this->foundClasses[$compareName]['line'];
+                $compare_name = strtolower($name);
+                if (isset($this->found_classes[$compare_name]) === true) {
+                    $type = strtolower($tokens[$stack_ptr]['content']);
+                    $file = $this->found_classes[$compare_name]['file'];
+                    $line = $this->found_classes[$compare_name]['line'];
                     $error = 'Duplicate %s name "%s" found; first defined in %s on line %s';
-                    $data  = [
-                        $type,
-                        $name,
-                        $file,
-                        $line,
-                    ];
-                    $phpcsFile->addWarning($error, $stackPtr, 'Found', $data);
+                    $data = [$type, $name, $file, $line];
+                    $phpcs_file->add_warning($error, $stack_ptr, 'Found', $data);
                 } else {
-                    $this->foundClasses[$compareName] = [
-                        'file' => $phpcsFile->getFilename(),
-                        'line' => $tokens[$stackPtr]['line'],
-                    ];
+                    $this->found_classes[$compare_name] = ['file' => $phpcs_file->get_filename(), 'line' => $tokens[$stack_ptr]['line']];
                 }
-            }//end if
-
-            $stackPtr = $phpcsFile->findNext($findTokens, ($stackPtr + 1));
-        }//end while
-
-    }//end process()
-
-}//end class
+            }
+            //end if
+            $stack_ptr = $phpcs_file->find_next($find_tokens, $stack_ptr + 1);
+        }
+        //end while
+    }
+    //end process()
+}
+//end class

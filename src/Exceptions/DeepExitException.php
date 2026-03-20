@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * An exception thrown by PHP_CodeSniffer when it wants to exit from somewhere not in the main runner.
  *
@@ -11,9 +11,9 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Exceptions;
 
-namespace PHP_CodeSniffer\Exceptions;
-
-class DeepExitException extends \Exception
+class Deep_Exit_Exception extends \Exception
 {
-}//end class
+}
+//end class

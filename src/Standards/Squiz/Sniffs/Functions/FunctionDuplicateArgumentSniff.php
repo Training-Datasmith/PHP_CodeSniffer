@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that duplicate arguments are not used in function declarations.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Functions;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class FunctionDuplicateArgumentSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Function_Duplicate_Argument_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class FunctionDuplicateArgumentSniff implements Sniff
     public function register()
     {
         return [T_FUNCTION];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -36,27 +33,25 @@ class FunctionDuplicateArgumentSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $openBracket  = $tokens[$stackPtr]['parenthesis_opener'];
-        $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
-
-        $foundVariables = [];
-        for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
+        $tokens = $phpcs_file->get_tokens();
+        $open_bracket = $tokens[$stack_ptr]['parenthesis_opener'];
+        $close_bracket = $tokens[$stack_ptr]['parenthesis_closer'];
+        $found_variables = [];
+        for ($i = $open_bracket + 1; $i < $close_bracket; $i++) {
             if ($tokens[$i]['code'] === T_VARIABLE) {
                 $variable = $tokens[$i]['content'];
-                if (in_array($variable, $foundVariables, true) === true) {
+                if (in_array($variable, $found_variables, true) === true) {
                     $error = 'Variable "%s" appears more than once in function declaration';
-                    $data  = [$variable];
-                    $phpcsFile->addError($error, $i, 'Found', $data);
+                    $data = [$variable];
+                    $phpcs_file->add_error($error, $i, 'Found', $data);
                 } else {
-                    $foundVariables[] = $variable;
+                    $found_variables[] = $variable;
                 }
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

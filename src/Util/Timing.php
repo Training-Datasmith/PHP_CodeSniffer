@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Timing functions for the run.
  *
@@ -8,8 +8,7 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
-
-namespace PHP_CodeSniffer\Util;
+namespace Php_code_Sniffer\Util;
 
 class Timing
 {
@@ -18,27 +17,23 @@ class Timing
      *
      * @var float
      */
-    private static $startTime;
-
+    private static $start_time;
     /**
      * Used to make sure we only print the run time once per run.
      *
      * @var boolean
      */
     private static $printed = false;
-
     /**
      * Start recording time for the run.
      *
      * @return void
      */
-    public static function startTiming()
+    public static function start_timing()
     {
-
-        self::$startTime = microtime(true);
-
-    }//end startTiming()
-
+        self::$start_time = microtime(true);
+    }
+    //end startTiming()
     /**
      * Print information about the run.
      *
@@ -47,36 +42,31 @@ class Timing
      *
      * @return void
      */
-    public static function printRunTime($force = false)
+    public static function print_run_time($force = false)
     {
         if ($force === false && self::$printed === true) {
             // A double call.
             return;
         }
-
-        if (self::$startTime === null) {
+        if (self::$start_time === null) {
             // Timing was never started.
             return;
         }
-
-        $time = ((microtime(true) - self::$startTime) * 1000);
-
+        $time = (microtime(true) - self::$start_time) * 1000;
         if ($time > 60000) {
             $mins = floor($time / 60000);
-            $secs = round((fmod($time, 60000) / 1000), 2);
-            $time = $mins.' mins';
-            $time .= ", $secs secs";
+            $secs = round(fmod($time, 60000) / 1000, 2);
+            $time = $mins . ' mins';
+            $time .= ", {$secs} secs";
         } elseif ($time > 1000) {
-            $time = round(($time / 1000), 2).' secs';
+            $time = round($time / 1000, 2) . ' secs';
         } else {
-            $time = round($time).'ms';
+            $time = round($time) . 'ms';
         }
-
-        $mem = round((memory_get_peak_usage(true) / (1024 * 1024)), 2).'MB';
-        echo "Time: $time; Memory: $mem".PHP_EOL.PHP_EOL;
-
+        $mem = round(memory_get_peak_usage(true) / (1024 * 1024), 2) . 'MB';
+        echo "Time: {$time}; Memory: {$mem}" . PHP_EOL . PHP_EOL;
         self::$printed = true;
-
-    }//end printRunTime()
-
-}//end class
+    }
+    //end printRunTime()
+}
+//end class

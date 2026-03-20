@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * A doc generator that outputs documentation in Markdown format.
  *
@@ -8,11 +8,9 @@ declare(strict_types=1);
  * @copyright 2014 Arroba IT
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Generators;
 
-namespace PHP_CodeSniffer\Generators;
-
-use PHP_CodeSniffer\Config;
-
+use Php_code_Sniffer\Config;
 class Markdown extends Generator
 {
     /**
@@ -24,51 +22,44 @@ class Markdown extends Generator
     public function generate()
     {
         ob_start();
-        $this->printHeader();
-
-        foreach ($this->docFiles as $file) {
-            $doc = new \DOMDocument();
+        $this->print_header();
+        foreach ($this->doc_files as $file) {
+            $doc = new \Dom_Document();
             $doc->load($file);
-            $documentation = $doc->getElementsByTagName('documentation')->item(0);
-            $this->processSniff($documentation);
+            $documentation = $doc->get_elements_by_tag_name('documentation')->item(0);
+            $this->process_sniff($documentation);
         }
-
-        $this->printFooter();
+        $this->print_footer();
         $content = ob_get_contents();
         ob_end_clean();
-
         echo $content;
-
-    }//end generate()
-
+    }
+    //end generate()
     /**
      * Print the markdown header.
      *
      * @return void
      */
-    protected function printHeader()
+    protected function print_header()
     {
         $standard = $this->ruleset->name;
-
-        echo "# $standard Coding Standard".PHP_EOL;
-
-    }//end printHeader()
-
+        echo "# {$standard} Coding Standard" . PHP_EOL;
+    }
+    //end printHeader()
     /**
      * Print the markdown footer.
      *
      * @return void
      */
-    protected function printFooter()
+    protected function print_footer()
     {
         // Turn off errors so we don't get timezone warnings if people
         // don't have their timezone set.
         error_reporting(0);
-        echo 'Documentation generated on '.date('r');
-        echo ' by [PHP_CodeSniffer '.Config::VERSION.'](https://github.com/squizlabs/PHP_CodeSniffer)'.PHP_EOL;
-
-    }//end printFooter()
-
+        echo 'Documentation generated on ' . date('r');
+        echo ' by [PHP_CodeSniffer ' . Config::VERSION . '](https://github.com/squizlabs/PHP_CodeSniffer)' . PHP_EOL;
+    }
+    //end printFooter()
     /**
      * Process the documentation for a single sniff.
      *
@@ -78,21 +69,19 @@ class Markdown extends Generator
      *
      * @return void
      */
-    protected function processSniff(\DOMNode $doc)
+    protected function process_sniff(\Dom_Node $doc)
     {
-        $title = $this->getTitle($doc);
-        echo PHP_EOL."## $title".PHP_EOL;
-
-        foreach ($doc->childNodes as $node) {
-            if ($node->nodeName === 'standard') {
-                $this->printTextBlock($node);
-            } elseif ($node->nodeName === 'code_comparison') {
-                $this->printCodeComparisonBlock($node);
+        $title = $this->get_title($doc);
+        echo PHP_EOL . "## {$title}" . PHP_EOL;
+        foreach ($doc->child_nodes as $node) {
+            if ($node->node_name === 'standard') {
+                $this->print_text_block($node);
+            } elseif ($node->node_name === 'code_comparison') {
+                $this->print_code_comparison_block($node);
             }
         }
-
-    }//end processSniff()
-
+    }
+    //end processSniff()
     /**
      * Print a text block found in a standard.
      *
@@ -100,18 +89,15 @@ class Markdown extends Generator
      *
      * @return void
      */
-    protected function printTextBlock(\DOMNode $node)
+    protected function print_text_block(\Dom_Node $node)
     {
-        $content = trim($node->nodeValue);
+        $content = trim($node->node_value);
         $content = htmlspecialchars($content);
-
         $content = str_replace('&lt;em&gt;', '*', $content);
         $content = str_replace('&lt;/em&gt;', '*', $content);
-
-        echo $content.PHP_EOL;
-
-    }//end printTextBlock()
-
+        echo $content . PHP_EOL;
+    }
+    //end printTextBlock()
     /**
      * Print a code comparison block found in a standard.
      *
@@ -119,37 +105,34 @@ class Markdown extends Generator
      *
      * @return void
      */
-    protected function printCodeComparisonBlock(\DOMNode $node)
+    protected function print_code_comparison_block(\Dom_Node $node)
     {
-        $codeBlocks = $node->getElementsByTagName('code');
-
-        $firstTitle = $codeBlocks->item(0)->getAttribute('title');
-        $first      = trim($codeBlocks->item(0)->nodeValue);
-        $first      = str_replace("\n", "\n    ", $first);
-        $first      = str_replace('<em>', '', $first);
-        $first      = str_replace('</em>', '', $first);
-
-        $secondTitle = $codeBlocks->item(1)->getAttribute('title');
-        $second      = trim($codeBlocks->item(1)->nodeValue);
-        $second      = str_replace("\n", "\n    ", $second);
-        $second      = str_replace('<em>', '', $second);
-        $second      = str_replace('</em>', '', $second);
-
-        echo '  <table>'.PHP_EOL;
-        echo '   <tr>'.PHP_EOL;
-        echo "    <th>$firstTitle</th>".PHP_EOL;
-        echo "    <th>$secondTitle</th>".PHP_EOL;
-        echo '   </tr>'.PHP_EOL;
-        echo '   <tr>'.PHP_EOL;
-        echo '<td>'.PHP_EOL.PHP_EOL;
-        echo "    $first".PHP_EOL.PHP_EOL;
-        echo '</td>'.PHP_EOL;
-        echo '<td>'.PHP_EOL.PHP_EOL;
-        echo "    $second".PHP_EOL.PHP_EOL;
-        echo '</td>'.PHP_EOL;
-        echo '   </tr>'.PHP_EOL;
-        echo '  </table>'.PHP_EOL;
-
-    }//end printCodeComparisonBlock()
-
-}//end class
+        $code_blocks = $node->get_elements_by_tag_name('code');
+        $first_title = $code_blocks->item(0)->get_attribute('title');
+        $first = trim($code_blocks->item(0)->node_value);
+        $first = str_replace("\n", "\n    ", $first);
+        $first = str_replace('<em>', '', $first);
+        $first = str_replace('</em>', '', $first);
+        $second_title = $code_blocks->item(1)->get_attribute('title');
+        $second = trim($code_blocks->item(1)->node_value);
+        $second = str_replace("\n", "\n    ", $second);
+        $second = str_replace('<em>', '', $second);
+        $second = str_replace('</em>', '', $second);
+        echo '  <table>' . PHP_EOL;
+        echo '   <tr>' . PHP_EOL;
+        echo "    <th>{$first_title}</th>" . PHP_EOL;
+        echo "    <th>{$second_title}</th>" . PHP_EOL;
+        echo '   </tr>' . PHP_EOL;
+        echo '   <tr>' . PHP_EOL;
+        echo '<td>' . PHP_EOL . PHP_EOL;
+        echo "    {$first}" . PHP_EOL . PHP_EOL;
+        echo '</td>' . PHP_EOL;
+        echo '<td>' . PHP_EOL . PHP_EOL;
+        echo "    {$second}" . PHP_EOL . PHP_EOL;
+        echo '</td>' . PHP_EOL;
+        echo '   </tr>' . PHP_EOL;
+        echo '  </table>' . PHP_EOL;
+    }
+    //end printCodeComparisonBlock()
+}
+//end class

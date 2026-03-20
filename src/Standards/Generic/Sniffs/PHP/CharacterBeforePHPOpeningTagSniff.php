@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that the opening PHP tag is the first content in a file.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2010-2014 Andy Grunwald
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class CharacterBeforePHPOpeningTagSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Character_Before_Php_Opening_Tag_Sniff implements Sniff
 {
     /**
      * List of supported BOM definitions.
@@ -23,12 +21,7 @@ class CharacterBeforePHPOpeningTagSniff implements Sniff
      *
      * @var array
      */
-    protected $bomDefinitions = [
-        'UTF-8'       => 'efbbbf',
-        'UTF-16 (BE)' => 'feff',
-        'UTF-16 (LE)' => 'fffe',
-    ];
-
+    protected $bom_definitions = ['UTF-8' => 'efbbbf', 'UTF-16 (BE)' => 'feff', 'UTF-16 (LE)' => 'fffe'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -37,9 +30,8 @@ class CharacterBeforePHPOpeningTagSniff implements Sniff
     public function register()
     {
         return [T_OPEN_TAG];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -49,36 +41,33 @@ class CharacterBeforePHPOpeningTagSniff implements Sniff
      *
      * @return int
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
         $expected = 0;
-        if ($stackPtr > 0) {
+        if ($stack_ptr > 0) {
             // Allow a byte-order mark.
-            $tokens = $phpcsFile->getTokens();
-            foreach ($this->bomDefinitions as $expectedBomHex) {
-                $bomByteLength = (strlen($expectedBomHex) / 2);
-                $htmlBomHex    = bin2hex(substr($tokens[0]['content'], 0, $bomByteLength));
-                if ($htmlBomHex === $expectedBomHex) {
+            $tokens = $phpcs_file->get_tokens();
+            foreach ($this->bom_definitions as $expected_bom_hex) {
+                $bom_byte_length = strlen($expected_bom_hex) / 2;
+                $html_bom_hex = bin2hex(substr($tokens[0]['content'], 0, $bom_byte_length));
+                if ($html_bom_hex === $expected_bom_hex) {
                     $expected++;
                     break;
                 }
             }
-
             // Allow a shebang line.
             if (substr($tokens[0]['content'], 0, 2) === '#!') {
                 $expected++;
             }
         }
-
-        if ($stackPtr !== $expected) {
+        if ($stack_ptr !== $expected) {
             $error = 'The opening PHP tag must be the first content in the file';
-            $phpcsFile->addError($error, $stackPtr, 'Found');
+            $phpcs_file->add_error($error, $stack_ptr, 'Found');
         }
-
         // Skip the rest of the file so we don't pick up additional
         // open tags, typically embedded in HTML.
-        return $phpcsFile->numTokens;
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens;
+    }
+    //end process()
+}
+//end class

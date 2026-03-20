@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that class methods have scope modifiers.
  *
@@ -8,24 +8,21 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Scope;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class MethodScopeSniff extends AbstractScopeSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Abstract_Scope_Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Method_Scope_Sniff extends Abstract_Scope_Sniff
 {
     /**
      * Constructs a Squiz_Sniffs_Scope_MethodScopeSniff.
      */
     public function __construct()
     {
-        parent::__construct(Tokens::$ooScopeTokens, [T_FUNCTION]);
-
-    }//end __construct()
-
+        parent::__construct(Tokens::$oo_scope_tokens, [T_FUNCTION]);
+    }
+    //end __construct()
     /**
      * Processes the function tokens within the class.
      *
@@ -35,33 +32,29 @@ class MethodScopeSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
+    protected function process_token_within_scope(File $phpcs_file, $stack_ptr, $curr_scope)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Determine if this is a function which needs to be examined.
-        $conditions = $tokens[$stackPtr]['conditions'];
+        $conditions = $tokens[$stack_ptr]['conditions'];
         end($conditions);
-        $deepestScope = key($conditions);
-        if ($deepestScope !== $currScope) {
+        $deepest_scope = key($conditions);
+        if ($deepest_scope !== $curr_scope) {
             return;
         }
-
-        $methodName = $phpcsFile->getDeclarationName($stackPtr);
-        if ($methodName === null) {
+        $method_name = $phpcs_file->get_declaration_name($stack_ptr);
+        if ($method_name === null) {
             // Ignore closures.
             return;
         }
-
-        $properties = $phpcsFile->getMethodProperties($stackPtr);
+        $properties = $phpcs_file->get_method_properties($stack_ptr);
         if ($properties['scope_specified'] === false) {
             $error = 'Visibility must be declared on method "%s"';
-            $data  = [$methodName];
-            $phpcsFile->addError($error, $stackPtr, 'Missing', $data);
+            $data = [$method_name];
+            $phpcs_file->add_error($error, $stack_ptr, 'Missing', $data);
         }
-
-    }//end processTokenWithinScope()
-
+    }
+    //end processTokenWithinScope()
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -72,9 +65,9 @@ class MethodScopeSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    protected function process_token_outside_scope(File $phpcs_file, $stack_ptr)
     {
-
-    }//end processTokenOutsideScope()
-
-}//end class
+    }
+    //end processTokenOutsideScope()
+}
+//end class

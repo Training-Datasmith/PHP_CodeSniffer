@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures USE blocks are declared correctly.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR2\Sniffs\Namespaces;
 
-namespace PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class UseDeclarationSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Use_Declaration_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -25,9 +23,8 @@ class UseDeclarationSniff implements Sniff
     public function register()
     {
         return [T_USE];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -37,232 +34,197 @@ class UseDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        if ($this->shouldIgnoreUse($phpcsFile, $stackPtr) === true) {
+        if ($this->should_ignore_use($phpcs_file, $stack_ptr) === true) {
             return;
         }
-
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // One space after the use keyword.
-        if ($tokens[($stackPtr + 1)]['content'] !== ' ') {
+        if ($tokens[$stack_ptr + 1]['content'] !== ' ') {
             $error = 'There must be a single space after the USE keyword';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterUse');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpaceAfterUse');
             if ($fix === true) {
-                $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
+                $phpcs_file->fixer->replace_token($stack_ptr + 1, ' ');
             }
         }
-
         // Only one USE declaration allowed per statement.
-        $next = $phpcsFile->findNext([T_COMMA, T_SEMICOLON, T_OPEN_USE_GROUP, T_CLOSE_TAG], ($stackPtr + 1));
-        if ($next !== false
-            && $tokens[$next]['code'] !== T_SEMICOLON
-            && $tokens[$next]['code'] !== T_CLOSE_TAG
-        ) {
+        $next = $phpcs_file->find_next([T_COMMA, T_SEMICOLON, T_OPEN_USE_GROUP, T_CLOSE_TAG], $stack_ptr + 1);
+        if ($next !== false && $tokens[$next]['code'] !== T_SEMICOLON && $tokens[$next]['code'] !== T_CLOSE_TAG) {
             $error = 'There must be one USE keyword per declaration';
-
             if ($tokens[$next]['code'] === T_COMMA) {
-                $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MultipleDeclarations');
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'MultipleDeclarations');
                 if ($fix === true) {
-                    switch ($tokens[($stackPtr + 2)]['content']) {
+                    switch ($tokens[$stack_ptr + 2]['content']) {
                         case 'const':
-                            $baseUse = 'use const';
+                            $base_use = 'use const';
                             break;
                         case 'function':
-                            $baseUse = 'use function';
+                            $base_use = 'use function';
                             break;
                         default:
-                            $baseUse = 'use';
+                            $base_use = 'use';
                     }
-
-                    if ($tokens[($next + 1)]['code'] !== T_WHITESPACE) {
-                        $baseUse .= ' ';
+                    if ($tokens[$next + 1]['code'] !== T_WHITESPACE) {
+                        $base_use .= ' ';
                     }
-
-                    $phpcsFile->fixer->replaceToken($next, ';'.$phpcsFile->eolChar.$baseUse);
+                    $phpcs_file->fixer->replace_token($next, ';' . $phpcs_file->eol_char . $base_use);
                 }
             } else {
-                $closingCurly = $phpcsFile->findNext(T_CLOSE_USE_GROUP, ($next + 1));
-                if ($closingCurly === false) {
+                $closing_curly = $phpcs_file->find_next(T_CLOSE_USE_GROUP, $next + 1);
+                if ($closing_curly === false) {
                     // Parse error or live coding. Not auto-fixable.
-                    $phpcsFile->addError($error, $stackPtr, 'MultipleDeclarations');
+                    $phpcs_file->add_error($error, $stack_ptr, 'MultipleDeclarations');
                 } else {
-                    $fix = $phpcsFile->addFixableError($error, $stackPtr, 'MultipleDeclarations');
+                    $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'MultipleDeclarations');
                     if ($fix === true) {
-                        $baseUse           = rtrim($phpcsFile->getTokensAsString($stackPtr, ($next - $stackPtr)));
-                        $lastNonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($closingCurly - 1), null, true);
-
-                        $phpcsFile->fixer->beginChangeset();
-
+                        $base_use = rtrim($phpcs_file->get_tokens_as_string($stack_ptr, $next - $stack_ptr));
+                        $last_non_whitespace = $phpcs_file->find_previous(T_WHITESPACE, $closing_curly - 1, null, true);
+                        $phpcs_file->fixer->begin_changeset();
                         // Remove base use statement.
-                        for ($i = $stackPtr; $i <= $next; $i++) {
-                            $phpcsFile->fixer->replaceToken($i, '');
+                        for ($i = $stack_ptr; $i <= $next; $i++) {
+                            $phpcs_file->fixer->replace_token($i, '');
                         }
-
-                        if (preg_match('`^[\r\n]+$`', $tokens[($next + 1)]['content']) === 1) {
-                            $phpcsFile->fixer->replaceToken(($next + 1), '');
+                        if (preg_match('`^[\r\n]+$`', $tokens[$next + 1]['content']) === 1) {
+                            $phpcs_file->fixer->replace_token($next + 1, '');
                         }
-
                         // Convert grouped use statements into full use statements.
                         do {
-                            $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), $closingCurly, true);
+                            $next = $phpcs_file->find_next(Tokens::$empty_tokens, $next + 1, $closing_curly, true);
                             if ($next === false) {
                                 // Group use statement with trailing comma after last item.
                                 break;
                             }
-
-                            $nonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($next - 1), null, true);
-                            for ($i = ($nonWhitespace + 1); $i < $next; $i++) {
+                            $non_whitespace = $phpcs_file->find_previous(T_WHITESPACE, $next - 1, null, true);
+                            for ($i = $non_whitespace + 1; $i < $next; $i++) {
                                 if (preg_match('`^[\r\n]+$`', $tokens[$i]['content']) === 1) {
                                     // Preserve new lines.
                                     continue;
                                 }
-
-                                $phpcsFile->fixer->replaceToken($i, '');
+                                $phpcs_file->fixer->replace_token($i, '');
                             }
-
                             if ($tokens[$next]['content'] === 'const' || $tokens[$next]['content'] === 'function') {
-                                $phpcsFile->fixer->addContentBefore($next, 'use ');
-                                $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), $closingCurly, true);
-                                $phpcsFile->fixer->addContentBefore($next, str_replace('use ', '', $baseUse));
+                                $phpcs_file->fixer->add_content_before($next, 'use ');
+                                $next = $phpcs_file->find_next(Tokens::$empty_tokens, $next + 1, $closing_curly, true);
+                                $phpcs_file->fixer->add_content_before($next, str_replace('use ', '', $base_use));
                             } else {
-                                $phpcsFile->fixer->addContentBefore($next, $baseUse);
+                                $phpcs_file->fixer->add_content_before($next, $base_use);
                             }
-
-                            $next = $phpcsFile->findNext(T_COMMA, ($next + 1), $closingCurly);
+                            $next = $phpcs_file->find_next(T_COMMA, $next + 1, $closing_curly);
                             if ($next !== false) {
-                                $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), $closingCurly, true);
-                                if ($nextNonEmpty !== false && $tokens[$nextNonEmpty]['line'] === $tokens[$next]['line']) {
-                                    $prevNonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($nextNonEmpty - 1), $next, true);
-                                    if ($prevNonWhitespace === $next) {
-                                        $phpcsFile->fixer->replaceToken($next, ';'.$phpcsFile->eolChar);
+                                $next_non_empty = $phpcs_file->find_next(Tokens::$empty_tokens, $next + 1, $closing_curly, true);
+                                if ($next_non_empty !== false && $tokens[$next_non_empty]['line'] === $tokens[$next]['line']) {
+                                    $prev_non_whitespace = $phpcs_file->find_previous(T_WHITESPACE, $next_non_empty - 1, $next, true);
+                                    if ($prev_non_whitespace === $next) {
+                                        $phpcs_file->fixer->replace_token($next, ';' . $phpcs_file->eol_char);
                                     } else {
-                                        $phpcsFile->fixer->replaceToken($next, ';');
-                                        $phpcsFile->fixer->addNewline($prevNonWhitespace);
+                                        $phpcs_file->fixer->replace_token($next, ';');
+                                        $phpcs_file->fixer->add_newline($prev_non_whitespace);
                                     }
                                 } else {
                                     // Last item with trailing comma or next item already on new line.
-                                    $phpcsFile->fixer->replaceToken($next, ';');
+                                    $phpcs_file->fixer->replace_token($next, ';');
                                 }
                             } else {
                                 // Last item without trailing comma.
-                                $phpcsFile->fixer->addContent($lastNonWhitespace, ';');
+                                $phpcs_file->fixer->add_content($last_non_whitespace, ';');
                             }
                         } while ($next !== false);
-
                         // Remove closing curly,semi-colon and any whitespace between last child and closing curly.
-                        $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($closingCurly + 1), null, true);
+                        $next = $phpcs_file->find_next(Tokens::$empty_tokens, $closing_curly + 1, null, true);
                         if ($next === false || $tokens[$next]['code'] !== T_SEMICOLON) {
                             // Parse error, forgotten semi-colon.
-                            $next = $closingCurly;
+                            $next = $closing_curly;
                         }
-
-                        for ($i = ($lastNonWhitespace + 1); $i <= $next; $i++) {
-                            $phpcsFile->fixer->replaceToken($i, '');
+                        for ($i = $last_non_whitespace + 1; $i <= $next; $i++) {
+                            $phpcs_file->fixer->replace_token($i, '');
                         }
-
-                        $phpcsFile->fixer->endChangeset();
-                    }//end if
-                }//end if
-            }//end if
-        }//end if
-
+                        $phpcs_file->fixer->end_changeset();
+                    }
+                    //end if
+                }
+                //end if
+            }
+            //end if
+        }
+        //end if
         // Make sure this USE comes after the first namespace declaration.
-        $prev = $phpcsFile->findPrevious(T_NAMESPACE, ($stackPtr - 1));
+        $prev = $phpcs_file->find_previous(T_NAMESPACE, $stack_ptr - 1);
         if ($prev === false) {
-            $next = $phpcsFile->findNext(T_NAMESPACE, ($stackPtr + 1));
+            $next = $phpcs_file->find_next(T_NAMESPACE, $stack_ptr + 1);
             if ($next !== false) {
                 $error = 'USE declarations must go after the namespace declaration';
-                $phpcsFile->addError($error, $stackPtr, 'UseBeforeNamespace');
+                $phpcs_file->add_error($error, $stack_ptr, 'UseBeforeNamespace');
             }
         }
-
         // Only interested in the last USE statement from here onwards.
-        $nextUse = $phpcsFile->findNext(T_USE, ($stackPtr + 1));
-        while ($this->shouldIgnoreUse($phpcsFile, $nextUse) === true) {
-            $nextUse = $phpcsFile->findNext(T_USE, ($nextUse + 1));
-            if ($nextUse === false) {
+        $next_use = $phpcs_file->find_next(T_USE, $stack_ptr + 1);
+        while ($this->should_ignore_use($phpcs_file, $next_use) === true) {
+            $next_use = $phpcs_file->find_next(T_USE, $next_use + 1);
+            if ($next_use === false) {
                 break;
             }
         }
-
-        if ($nextUse !== false) {
+        if ($next_use !== false) {
             return;
         }
-
-        $end = $phpcsFile->findNext([T_SEMICOLON, T_CLOSE_USE_GROUP, T_CLOSE_TAG], ($stackPtr + 1));
+        $end = $phpcs_file->find_next([T_SEMICOLON, T_CLOSE_USE_GROUP, T_CLOSE_TAG], $stack_ptr + 1);
         if ($end === false) {
             return;
         }
-
         if ($tokens[$end]['code'] === T_CLOSE_USE_GROUP) {
-            $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($end + 1), null, true);
-            if ($tokens[$nextNonEmpty]['code'] === T_SEMICOLON) {
-                $end = $nextNonEmpty;
+            $next_non_empty = $phpcs_file->find_next(Tokens::$empty_tokens, $end + 1, null, true);
+            if ($tokens[$next_non_empty]['code'] === T_SEMICOLON) {
+                $end = $next_non_empty;
             }
         }
-
         // Find either the start of the next line or the beginning of the next statement,
         // whichever comes first.
-        for ($end = ++$end; $end < $phpcsFile->numTokens; $end++) {
-            if (isset(Tokens::$emptyTokens[$tokens[$end]['code']]) === false) {
+        for ($end = ++$end; $end < $phpcs_file->num_tokens; $end++) {
+            if (isset(Tokens::$empty_tokens[$tokens[$end]['code']]) === false) {
                 break;
             }
-
             if ($tokens[$end]['column'] === 1) {
                 // Reached the next line.
                 break;
             }
         }
-
         --$end;
-
-        if (($tokens[$end]['code'] === T_COMMENT
-            || isset(Tokens::$phpcsCommentTokens[$tokens[$end]['code']]) === true)
-            && substr($tokens[$end]['content'], 0, 2) === '/*'
-            && substr($tokens[$end]['content'], -2) !== '*/'
-        ) {
+        if (($tokens[$end]['code'] === T_COMMENT || isset(Tokens::$phpcs_comment_tokens[$tokens[$end]['code']]) === true) && substr($tokens[$end]['content'], 0, 2) === '/*' && substr($tokens[$end]['content'], -2) !== '*/') {
             // Multi-line block comments are not allowed as trailing comment after a use statement.
             --$end;
         }
-
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($end + 1), null, true);
-
+        $next = $phpcs_file->find_next(T_WHITESPACE, $end + 1, null, true);
         if ($next === false || $tokens[$next]['code'] === T_CLOSE_TAG) {
             return;
         }
-
-        $diff = ($tokens[$next]['line'] - $tokens[$end]['line'] - 1);
+        $diff = $tokens[$next]['line'] - $tokens[$end]['line'] - 1;
         if ($diff !== 1) {
             if ($diff < 0) {
                 $diff = 0;
             }
-
             $error = 'There must be one blank line after the last USE statement; %s found;';
-            $data  = [$diff];
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterLastUse', $data);
+            $data = [$diff];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpaceAfterLastUse', $data);
             if ($fix === true) {
                 if ($diff === 0) {
-                    $phpcsFile->fixer->addNewline($end);
+                    $phpcs_file->fixer->add_newline($end);
                 } else {
-                    $phpcsFile->fixer->beginChangeset();
-                    for ($i = ($end + 1); $i < $next; $i++) {
+                    $phpcs_file->fixer->begin_changeset();
+                    for ($i = $end + 1; $i < $next; $i++) {
                         if ($tokens[$i]['line'] === $tokens[$next]['line']) {
                             break;
                         }
-
-                        $phpcsFile->fixer->replaceToken($i, '');
+                        $phpcs_file->fixer->replace_token($i, '');
                     }
-
-                    $phpcsFile->fixer->addNewline($end);
-                    $phpcsFile->fixer->endChangeset();
+                    $phpcs_file->fixer->add_newline($end);
+                    $phpcs_file->fixer->end_changeset();
                 }
             }
-        }//end if
-
-    }//end process()
-
+        }
+        //end if
+    }
+    //end process()
     /**
      * Check if this use statement is part of the namespace block.
      *
@@ -272,23 +234,20 @@ class UseDeclarationSniff implements Sniff
      *
      * @return bool
      */
-    private function shouldIgnoreUse(\PHP_CodeSniffer\Files\File $phpcsFile, $stackPtr)
+    private function should_ignore_use(\Php_code_Sniffer\Files\File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Ignore USE keywords inside closures and during live coding.
-        $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $next = $phpcs_file->find_next(Tokens::$empty_tokens, $stack_ptr + 1, null, true);
         if ($next === false || $tokens[$next]['code'] === T_OPEN_PARENTHESIS) {
             return true;
         }
-
         // Ignore USE keywords for traits.
-        if ($phpcsFile->hasCondition($stackPtr, [T_CLASS, T_TRAIT, T_ENUM]) === true) {
+        if ($phpcs_file->has_condition($stack_ptr, [T_CLASS, T_TRAIT, T_ENUM]) === true) {
             return true;
         }
-
         return false;
-
-    }//end shouldIgnoreUse()
-
-}//end class
+    }
+    //end shouldIgnoreUse()
+}
+//end class

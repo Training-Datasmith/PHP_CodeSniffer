@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures that eval() is not used to create objects.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\My_Source\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\MySource\Sniffs\PHP;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class EvalObjectFactorySniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Eval_Object_Factory_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -25,9 +23,8 @@ class EvalObjectFactorySniff implements Sniff
     public function register()
     {
         return [T_EVAL];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -37,65 +34,57 @@ class EvalObjectFactorySniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         /*
             We need to find all strings that will be in the eval
             to determine if the "new" keyword is being used.
         */
-
-        $openBracket  = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($stackPtr + 1));
-        $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
-
+        $open_bracket = $phpcs_file->find_next(T_OPEN_PARENTHESIS, $stack_ptr + 1);
+        $close_bracket = $tokens[$open_bracket]['parenthesis_closer'];
         $strings = [];
-        $vars    = [];
-
-        for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
-            if (isset(Tokens::$stringTokens[$tokens[$i]['code']]) === true) {
+        $vars = [];
+        for ($i = $open_bracket + 1; $i < $close_bracket; $i++) {
+            if (isset(Tokens::$string_tokens[$tokens[$i]['code']]) === true) {
                 $strings[$i] = $tokens[$i]['content'];
             } elseif ($tokens[$i]['code'] === T_VARIABLE) {
                 $vars[$i] = $tokens[$i]['content'];
             }
         }
-
         /*
             We now have some variables that we need to expand into
             the strings that were assigned to them, if any.
         */
-
-        foreach ($vars as $varPtr => $varName) {
-            while (($prev = $phpcsFile->findPrevious(T_VARIABLE, ($varPtr - 1))) !== false) {
+        foreach ($vars as $var_ptr => $var_name) {
+            while (($prev = $phpcs_file->find_previous(T_VARIABLE, $var_ptr - 1)) !== false) {
                 // Make sure this is an assignment of the variable. That means
                 // it will be the first thing on the line.
-                $prevContent = $phpcsFile->findPrevious(T_WHITESPACE, ($prev - 1), null, true);
-                if ($tokens[$prevContent]['line'] === $tokens[$prev]['line']) {
-                    $varPtr = $prevContent;
+                $prev_content = $phpcs_file->find_previous(T_WHITESPACE, $prev - 1, null, true);
+                if ($tokens[$prev_content]['line'] === $tokens[$prev]['line']) {
+                    $var_ptr = $prev_content;
                     continue;
                 }
-
-                if ($tokens[$prev]['content'] !== $varName) {
+                if ($tokens[$prev]['content'] !== $var_name) {
                     // This variable has a different name.
-                    $varPtr = $prevContent;
+                    $var_ptr = $prev_content;
                     continue;
                 }
-
                 // We found one.
                 break;
-            }//end while
-
+            }
+            //end while
             if ($prev !== false) {
                 // Find all strings on the line.
-                $lineEnd = $phpcsFile->findNext(T_SEMICOLON, ($prev + 1));
-                for ($i = ($prev + 1); $i < $lineEnd; $i++) {
-                    if (isset(Tokens::$stringTokens[$tokens[$i]['code']]) === true) {
+                $line_end = $phpcs_file->find_next(T_SEMICOLON, $prev + 1);
+                for ($i = $prev + 1; $i < $line_end; $i++) {
+                    if (isset(Tokens::$string_tokens[$tokens[$i]['code']]) === true) {
                         $strings[$i] = $tokens[$i]['content'];
                     }
                 }
             }
-        }//end foreach
-
+        }
+        //end foreach
         foreach ($strings as $string) {
             // If the string has "new" in it, it is not allowed.
             // We don't bother checking if the word "new" is printed to screen
@@ -103,10 +92,10 @@ class EvalObjectFactorySniff implements Sniff
             // of "new" is for object instantiation.
             if (strstr($string, ' new ') !== false) {
                 $error = 'Do not use eval() to create objects dynamically; use reflection instead';
-                $phpcsFile->addWarning($error, $stackPtr, 'Found');
+                $phpcs_file->add_warning($error, $stack_ptr, 'Found');
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

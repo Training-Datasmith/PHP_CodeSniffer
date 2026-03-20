@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Notify-send report for PHP_CodeSniffer.
  *
@@ -15,13 +15,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Common;
-
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Util\Common;
 class Notifysend implements Report
 {
     /**
@@ -30,56 +28,44 @@ class Notifysend implements Report
      * @var integer
      */
     protected $timeout = 3000;
-
     /**
      * Path to notify-send command.
      *
      * @var string
      */
     protected $path = 'notify-send';
-
     /**
      * Show "ok, all fine" messages.
      *
      * @var boolean
      */
-    protected $showOk = true;
-
+    protected $show_ok = true;
     /**
      * Version of installed notify-send executable.
      *
      * @var string
      */
     protected $version;
-
     /**
      * Load configuration data.
      */
     public function __construct()
     {
-        $path = Config::getExecutablePath('notifysend');
+        $path = Config::get_executable_path('notifysend');
         if ($path !== null) {
             $this->path = Common::escapeshellcmd($path);
         }
-
-        $timeout = Config::getConfigData('notifysend_timeout');
+        $timeout = Config::get_config_data('notifysend_timeout');
         if ($timeout !== null) {
             $this->timeout = (int) $timeout;
         }
-
-        $showOk = Config::getConfigData('notifysend_showok');
-        if ($showOk !== null) {
-            $this->showOk = (bool) $showOk;
+        $show_ok = Config::get_config_data('notifysend_showok');
+        if ($show_ok !== null) {
+            $this->show_ok = (bool) $show_ok;
         }
-
-        $this->version = str_replace(
-            'notify-send ',
-            '',
-            exec($this->path.' --version')
-        );
-
-    }//end __construct()
-
+        $this->version = str_replace('notify-send ', '', exec($this->path . ' --version'));
+    }
+    //end __construct()
     /**
      * Generate a partial report for a single processed file.
      *
@@ -94,16 +80,14 @@ class Notifysend implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {
-        echo $report['filename'].PHP_EOL;
-
+        echo $report['filename'] . PHP_EOL;
         // We want this file counted in the total number
         // of checked files even if it has no errors.
         return true;
-
-    }//end generateFileReport()
-
+    }
+    //end generateFileReport()
     /**
      * Generates a summary of errors and warnings for each file processed.
      *
@@ -120,30 +104,19 @@ class Notifysend implements Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    ) {
-        $checkedFiles = explode(PHP_EOL, trim($cachedData));
-
-        $msg = $this->generateMessage($checkedFiles, $totalErrors, $totalWarnings);
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true)
+    {
+        $checked_files = explode(PHP_EOL, trim($cached_data));
+        $msg = $this->generate_message($checked_files, $total_errors, $total_warnings);
         if ($msg === null) {
-            if ($this->showOk === true) {
-                $this->notifyAllFine();
+            if ($this->show_ok === true) {
+                $this->notify_all_fine();
             }
         } else {
-            $this->notifyErrors($msg);
+            $this->notify_errors($msg);
         }
-
-    }//end generate()
-
+    }
+    //end generate()
     /**
      * Generate the error message to show to the user.
      *
@@ -153,49 +126,42 @@ class Notifysend implements Report
      *
      * @return string Error message or NULL if no error/warning found.
      */
-    protected function generateMessage(array $checkedFiles, $totalErrors, $totalWarnings)
+    protected function generate_message(array $checked_files, $total_errors, $total_warnings)
     {
-        if ($totalErrors === 0 && $totalWarnings === 0) {
+        if ($total_errors === 0 && $total_warnings === 0) {
             // Nothing to print.
             return null;
         }
-
-        $totalFiles = count($checkedFiles);
-
+        $total_files = count($checked_files);
         $msg = '';
-        if ($totalFiles > 1) {
-            $msg .= 'Checked '.$totalFiles.' files'.PHP_EOL;
+        if ($total_files > 1) {
+            $msg .= 'Checked ' . $total_files . ' files' . PHP_EOL;
         } else {
-            $msg .= $checkedFiles[0].PHP_EOL;
+            $msg .= $checked_files[0] . PHP_EOL;
         }
-
-        if ($totalWarnings > 0) {
-            $msg .= $totalWarnings.' warnings'.PHP_EOL;
+        if ($total_warnings > 0) {
+            $msg .= $total_warnings . ' warnings' . PHP_EOL;
         }
-
-        if ($totalErrors > 0) {
-            $msg .= $totalErrors.' errors'.PHP_EOL;
+        if ($total_errors > 0) {
+            $msg .= $total_errors . ' errors' . PHP_EOL;
         }
-
         return $msg;
-
-    }//end generateMessage()
-
+    }
+    //end generateMessage()
     /**
      * Tell the user that all is fine and no error/warning has been found.
      *
      * @return void
      */
-    protected function notifyAllFine()
+    protected function notify_all_fine()
     {
-        $cmd  = $this->getBasicCommand();
+        $cmd = $this->get_basic_command();
         $cmd .= ' -i info';
         $cmd .= ' "PHP CodeSniffer: Ok"';
         $cmd .= ' "All fine"';
         exec($cmd);
-
-    }//end notifyAllFine()
-
+    }
+    //end notifyAllFine()
     /**
      * Tell the user that errors/warnings have been found.
      *
@@ -203,33 +169,31 @@ class Notifysend implements Report
      *
      * @return void
      */
-    protected function notifyErrors($msg)
+    protected function notify_errors($msg)
     {
-        $cmd  = $this->getBasicCommand();
+        $cmd = $this->get_basic_command();
         $cmd .= ' -i error';
         $cmd .= ' "PHP CodeSniffer: Error"';
-        $cmd .= ' '.escapeshellarg(trim($msg));
+        $cmd .= ' ' . escapeshellarg(trim($msg));
         exec($cmd);
-
-    }//end notifyErrors()
-
+    }
+    //end notifyErrors()
     /**
      * Generate and return the basic notify-send command string to execute.
      *
      * @return string Shell command with common parameters.
      */
-    protected function getBasicCommand()
+    protected function get_basic_command()
     {
-        $cmd  = $this->path;
+        $cmd = $this->path;
         $cmd .= ' --category dev.validate';
         $cmd .= ' -h int:transient:1';
-        $cmd .= ' -t '.(int) $this->timeout;
+        $cmd .= ' -t ' . (int) $this->timeout;
         if (version_compare($this->version, '0.7.3', '>=') === true) {
             $cmd .= ' -a phpcs';
         }
-
         return $cmd;
-
-    }//end getBasicCommand()
-
-}//end class
+    }
+    //end getBasicCommand()
+}
+//end class

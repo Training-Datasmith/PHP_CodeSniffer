@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Tests self member references.
  *
@@ -13,14 +13,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Classes;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class SelfMemberReferenceSniff extends AbstractScopeSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Abstract_Scope_Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Self_Member_Reference_Sniff extends Abstract_Scope_Sniff
 {
     /**
      * Constructs a Squiz_Sniffs_Classes_SelfMemberReferenceSniff.
@@ -28,9 +26,8 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
     public function __construct()
     {
         parent::__construct([T_CLASS], [T_DOUBLE_COLON]);
-
-    }//end __construct()
-
+    }
+    //end __construct()
     /**
      * Processes the function tokens within the class.
      *
@@ -40,127 +37,106 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
+    protected function process_token_within_scope(File $phpcs_file, $stack_ptr, $curr_scope)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Determine if this is a double colon which needs to be examined.
-        $conditions = $tokens[$stackPtr]['conditions'];
+        $conditions = $tokens[$stack_ptr]['conditions'];
         $conditions = array_reverse($conditions, true);
-        foreach ($conditions as $conditionToken => $tokenCode) {
-            if ($tokenCode === T_CLASS || $tokenCode === T_ANON_CLASS || $tokenCode === T_CLOSURE) {
+        foreach ($conditions as $condition_token => $token_code) {
+            if ($token_code === T_CLASS || $token_code === T_ANON_CLASS || $token_code === T_CLOSURE) {
                 break;
             }
         }
-
-        if ($conditionToken !== $currScope) {
+        if ($condition_token !== $curr_scope) {
             return;
         }
-
-        $calledClassName = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
-        if ($calledClassName === false) {
+        $called_class_name = $phpcs_file->find_previous(Tokens::$empty_tokens, $stack_ptr - 1, null, true);
+        if ($called_class_name === false) {
             // Parse error.
             return;
         }
-
-        if ($tokens[$calledClassName]['code'] === T_SELF) {
-            if ($tokens[$calledClassName]['content'] !== 'self') {
+        if ($tokens[$called_class_name]['code'] === T_SELF) {
+            if ($tokens[$called_class_name]['content'] !== 'self') {
                 $error = 'Must use "self::" for local static member reference; found "%s::"';
-                $data  = [$tokens[$calledClassName]['content']];
-                $fix   = $phpcsFile->addFixableError($error, $calledClassName, 'IncorrectCase', $data);
+                $data = [$tokens[$called_class_name]['content']];
+                $fix = $phpcs_file->add_fixable_error($error, $called_class_name, 'IncorrectCase', $data);
                 if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken($calledClassName, 'self');
+                    $phpcs_file->fixer->replace_token($called_class_name, 'self');
                 }
-
                 return;
             }
-        } elseif ($tokens[$calledClassName]['code'] === T_STRING) {
+        } elseif ($tokens[$called_class_name]['code'] === T_STRING) {
             // If the class is called with a namespace prefix, build fully qualified
             // namespace calls for both current scope class and requested class.
-            $prevNonEmpty = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($calledClassName - 1), null, true);
-            if ($prevNonEmpty !== false && $tokens[$prevNonEmpty]['code'] === T_NS_SEPARATOR) {
-                $declarationName        = $this->getDeclarationNameWithNamespace($tokens, $calledClassName);
-                $declarationName        = ltrim($declarationName, '\\');
-                $fullQualifiedClassName = $this->getNamespaceOfScope($phpcsFile, $currScope);
-                if ($fullQualifiedClassName === '\\') {
-                    $fullQualifiedClassName = '';
+            $prev_non_empty = $phpcs_file->find_previous(Tokens::$empty_tokens, $called_class_name - 1, null, true);
+            if ($prev_non_empty !== false && $tokens[$prev_non_empty]['code'] === T_NS_SEPARATOR) {
+                $declaration_name = $this->get_declaration_name_with_namespace($tokens, $called_class_name);
+                $declaration_name = ltrim($declaration_name, '\\');
+                $full_qualified_class_name = $this->get_namespace_of_scope($phpcs_file, $curr_scope);
+                if ($full_qualified_class_name === '\\') {
+                    $full_qualified_class_name = '';
                 } else {
-                    $fullQualifiedClassName .= '\\';
+                    $full_qualified_class_name .= '\\';
                 }
-
-                $fullQualifiedClassName .= $phpcsFile->getDeclarationName($currScope);
+                $full_qualified_class_name .= $phpcs_file->get_declaration_name($curr_scope);
             } else {
-                $declarationName        = $phpcsFile->getDeclarationName($currScope);
-                $fullQualifiedClassName = $tokens[$calledClassName]['content'];
+                $declaration_name = $phpcs_file->get_declaration_name($curr_scope);
+                $full_qualified_class_name = $tokens[$called_class_name]['content'];
             }
-
-            if ($declarationName === $fullQualifiedClassName) {
+            if ($declaration_name === $full_qualified_class_name) {
                 // Class name is the same as the current class, which is not allowed.
                 $error = 'Must use "self::" for local static member reference';
-                $fix   = $phpcsFile->addFixableError($error, $calledClassName, 'NotUsed');
-
+                $fix = $phpcs_file->add_fixable_error($error, $called_class_name, 'NotUsed');
                 if ($fix === true) {
-                    $phpcsFile->fixer->beginChangeset();
-
-                    $currentPointer = ($stackPtr - 1);
-                    while ($tokens[$currentPointer]['code'] === T_NS_SEPARATOR
-                        || $tokens[$currentPointer]['code'] === T_STRING
-                        || isset(Tokens::$emptyTokens[$tokens[$currentPointer]['code']]) === true
-                    ) {
-                        if (isset(Tokens::$emptyTokens[$tokens[$currentPointer]['code']]) === true) {
-                            --$currentPointer;
+                    $phpcs_file->fixer->begin_changeset();
+                    $current_pointer = $stack_ptr - 1;
+                    while ($tokens[$current_pointer]['code'] === T_NS_SEPARATOR || $tokens[$current_pointer]['code'] === T_STRING || isset(Tokens::$empty_tokens[$tokens[$current_pointer]['code']]) === true) {
+                        if (isset(Tokens::$empty_tokens[$tokens[$current_pointer]['code']]) === true) {
+                            --$current_pointer;
                             continue;
                         }
-
-                        $phpcsFile->fixer->replaceToken($currentPointer, '');
-                        --$currentPointer;
+                        $phpcs_file->fixer->replace_token($current_pointer, '');
+                        --$current_pointer;
                     }
-
-                    $phpcsFile->fixer->replaceToken($stackPtr, 'self::');
-                    $phpcsFile->fixer->endChangeset();
-
+                    $phpcs_file->fixer->replace_token($stack_ptr, 'self::');
+                    $phpcs_file->fixer->end_changeset();
                     // Fix potential whitespace issues in the next loop.
                     return;
-                }//end if
-            }//end if
-        }//end if
-
-        if ($tokens[($stackPtr - 1)]['code'] === T_WHITESPACE) {
-            $found = $tokens[($stackPtr - 1)]['length'];
+                }
+                //end if
+            }
+            //end if
+        }
+        //end if
+        if ($tokens[$stack_ptr - 1]['code'] === T_WHITESPACE) {
+            $found = $tokens[$stack_ptr - 1]['length'];
             $error = 'Expected 0 spaces before double colon; %s found';
-            $data  = [$found];
-            $fix   = $phpcsFile->addFixableError($error, ($stackPtr - 1), 'SpaceBefore', $data);
-
+            $data = [$found];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr - 1, 'SpaceBefore', $data);
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-
-                for ($i = ($stackPtr - 1); $tokens[$i]['code'] === T_WHITESPACE; $i--) {
-                    $phpcsFile->fixer->replaceToken($i, '');
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $stack_ptr - 1; $tokens[$i]['code'] === T_WHITESPACE; $i--) {
+                    $phpcs_file->fixer->replace_token($i, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
         }
-
-        if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
-            $found = $tokens[($stackPtr + 1)]['length'];
+        if ($tokens[$stack_ptr + 1]['code'] === T_WHITESPACE) {
+            $found = $tokens[$stack_ptr + 1]['length'];
             $error = 'Expected 0 spaces after double colon; %s found';
-            $data  = [$found];
-            $fix   = $phpcsFile->addFixableError($error, ($stackPtr - 1), 'SpaceAfter', $data);
-
+            $data = [$found];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr - 1, 'SpaceAfter', $data);
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-
-                for ($i = ($stackPtr + 1); $tokens[$i]['code'] === T_WHITESPACE; $i++) {
-                    $phpcsFile->fixer->replaceToken($i, '');
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $stack_ptr + 1; $tokens[$i]['code'] === T_WHITESPACE; $i++) {
+                    $phpcs_file->fixer->replace_token($i, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
         }
-
-    }//end processTokenWithinScope()
-
+    }
+    //end processTokenWithinScope()
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -171,11 +147,10 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    protected function process_token_outside_scope(File $phpcs_file, $stack_ptr)
     {
-
-    }//end processTokenOutsideScope()
-
+    }
+    //end processTokenOutsideScope()
     /**
      * Returns the declaration names for classes/interfaces/functions with a namespace.
      *
@@ -184,28 +159,22 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
      *
      * @return string
      */
-    protected function getDeclarationNameWithNamespace(array $tokens, $stackPtr)
+    protected function get_declaration_name_with_namespace(array $tokens, $stack_ptr)
     {
-        $nameParts      = [];
-        $currentPointer = $stackPtr;
-        while ($tokens[$currentPointer]['code'] === T_NS_SEPARATOR
-            || $tokens[$currentPointer]['code'] === T_STRING
-            || isset(Tokens::$emptyTokens[$tokens[$currentPointer]['code']]) === true
-        ) {
-            if (isset(Tokens::$emptyTokens[$tokens[$currentPointer]['code']]) === true) {
-                --$currentPointer;
+        $name_parts = [];
+        $current_pointer = $stack_ptr;
+        while ($tokens[$current_pointer]['code'] === T_NS_SEPARATOR || $tokens[$current_pointer]['code'] === T_STRING || isset(Tokens::$empty_tokens[$tokens[$current_pointer]['code']]) === true) {
+            if (isset(Tokens::$empty_tokens[$tokens[$current_pointer]['code']]) === true) {
+                --$current_pointer;
                 continue;
             }
-
-            $nameParts[] = $tokens[$currentPointer]['content'];
-            --$currentPointer;
+            $name_parts[] = $tokens[$current_pointer]['content'];
+            --$current_pointer;
         }
-
-        $nameParts = array_reverse($nameParts);
-        return implode('', $nameParts);
-
-    }//end getDeclarationNameWithNamespace()
-
+        $name_parts = array_reverse($name_parts);
+        return implode('', $name_parts);
+    }
+    //end getDeclarationNameWithNamespace()
     /**
      * Returns the namespace declaration of a file.
      *
@@ -215,21 +184,16 @@ class SelfMemberReferenceSniff extends AbstractScopeSniff
      *
      * @return string
      */
-    protected function getNamespaceOfScope(File $phpcsFile, $stackPtr)
+    protected function get_namespace_of_scope(File $phpcs_file, $stack_ptr)
     {
-        $namespace            = '\\';
-        $namespaceDeclaration = $phpcsFile->findPrevious(T_NAMESPACE, $stackPtr);
-
-        if ($namespaceDeclaration !== false) {
-            $endOfNamespaceDeclaration = $phpcsFile->findNext([T_SEMICOLON, T_OPEN_CURLY_BRACKET], $namespaceDeclaration);
-            $namespace = $this->getDeclarationNameWithNamespace(
-                $phpcsFile->getTokens(),
-                ($endOfNamespaceDeclaration - 1)
-            );
+        $namespace = '\\';
+        $namespace_declaration = $phpcs_file->find_previous(T_NAMESPACE, $stack_ptr);
+        if ($namespace_declaration !== false) {
+            $end_of_namespace_declaration = $phpcs_file->find_next([T_SEMICOLON, T_OPEN_CURLY_BRACKET], $namespace_declaration);
+            $namespace = $this->get_declaration_name_with_namespace($phpcs_file->get_tokens(), $end_of_namespace_declaration - 1);
         }
-
         return $namespace;
-
-    }//end getNamespaceOfScope()
-
-}//end class
+    }
+    //end getNamespaceOfScope()
+}
+//end class

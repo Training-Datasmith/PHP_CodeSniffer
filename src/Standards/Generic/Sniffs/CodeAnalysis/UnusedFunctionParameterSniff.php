@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks for unused function parameters.
  *
@@ -15,22 +15,19 @@ declare(strict_types=1);
  * @copyright 2007-2014 Manuel Pichler. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Code_Analysis;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class UnusedFunctionParameterSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Unused_Function_Parameter_Sniff implements Sniff
 {
     /**
      * The list of class type hints which will be ignored.
      *
      * @var array
      */
-    public $ignoreTypeHints = [];
-
+    public $ignore_type_hints = [];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -38,14 +35,9 @@ class UnusedFunctionParameterSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_FUNCTION,
-            T_CLOSURE,
-            T_FN,
-        ];
-
-    }//end register()
-
+        return [T_FUNCTION, T_CLOSURE, T_FN];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -55,209 +47,169 @@ class UnusedFunctionParameterSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-
+        $tokens = $phpcs_file->get_tokens();
+        $token = $tokens[$stack_ptr];
         // Skip broken function declarations.
         if (isset($token['scope_opener']) === false || isset($token['parenthesis_opener']) === false) {
             return;
         }
-
-        $errorCode  = 'Found';
+        $error_code = 'Found';
         $implements = false;
-        $extends    = false;
-        $classPtr   = $phpcsFile->getCondition($stackPtr, T_CLASS);
-        if ($classPtr !== false) {
-            $implements = $phpcsFile->findImplementedInterfaceNames($classPtr);
-            $extends    = $phpcsFile->findExtendedClassName($classPtr);
+        $extends = false;
+        $class_ptr = $phpcs_file->get_condition($stack_ptr, T_CLASS);
+        if ($class_ptr !== false) {
+            $implements = $phpcs_file->find_implemented_interface_names($class_ptr);
+            $extends = $phpcs_file->find_extended_class_name($class_ptr);
             if ($extends !== false) {
-                $errorCode .= 'InExtendedClass';
+                $error_code .= 'InExtendedClass';
             } elseif ($implements !== false) {
-                $errorCode .= 'InImplementedInterface';
+                $error_code .= 'InImplementedInterface';
             }
         }
-
-        $params       = [];
-        $methodParams = $phpcsFile->getMethodParameters($stackPtr);
-
+        $params = [];
+        $method_params = $phpcs_file->get_method_parameters($stack_ptr);
         // Skip when no parameters found.
-        $methodParamsCount = count($methodParams);
-        if ($methodParamsCount === 0) {
+        $method_params_count = count($method_params);
+        if ($method_params_count === 0) {
             return;
         }
-
-        foreach ($methodParams as $param) {
+        foreach ($method_params as $param) {
             if (isset($param['property_visibility']) === true) {
                 // Ignore constructor property promotion.
                 continue;
             }
-
-            $params[$param['name']] = $stackPtr;
+            $params[$param['name']] = $stack_ptr;
         }
-
         $next = ++$token['scope_opener'];
-        $end  = --$token['scope_closer'];
-
+        $end = --$token['scope_closer'];
         // Check the end token for arrow functions as
         // they can end at a content token due to not having
         // a clearly defined closing token.
         if ($token['code'] === T_FN) {
             ++$end;
         }
-
-        $foundContent = false;
-        $validTokens  = [
-            T_HEREDOC              => T_HEREDOC,
-            T_NOWDOC               => T_NOWDOC,
-            T_END_HEREDOC          => T_END_HEREDOC,
-            T_END_NOWDOC           => T_END_NOWDOC,
-            T_DOUBLE_QUOTED_STRING => T_DOUBLE_QUOTED_STRING,
-        ];
-        $validTokens += Tokens::$emptyTokens;
-
+        $found_content = false;
+        $valid_tokens = [T_HEREDOC => T_HEREDOC, T_NOWDOC => T_NOWDOC, T_END_HEREDOC => T_END_HEREDOC, T_END_NOWDOC => T_END_NOWDOC, T_DOUBLE_QUOTED_STRING => T_DOUBLE_QUOTED_STRING];
+        $valid_tokens += Tokens::$empty_tokens;
         for (; $next <= $end; ++$next) {
             $token = $tokens[$next];
-            $code  = $token['code'];
-
+            $code = $token['code'];
             // Ignorable tokens.
-            if (isset(Tokens::$emptyTokens[$code]) === true) {
+            if (isset(Tokens::$empty_tokens[$code]) === true) {
                 continue;
             }
-
-            if ($foundContent === false) {
+            if ($found_content === false) {
                 // A throw statement as the first content indicates an interface method.
                 if ($code === T_THROW && $implements !== false) {
                     return;
                 }
-
                 // A return statement as the first content indicates an interface method.
                 if ($code === T_RETURN) {
-                    $tmp = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), null, true);
+                    $tmp = $phpcs_file->find_next(Tokens::$empty_tokens, $next + 1, null, true);
                     if ($tmp === false && $implements !== false) {
                         return;
                     }
-
                     // There is a return.
                     if ($tokens[$tmp]['code'] === T_SEMICOLON && $implements !== false) {
                         return;
                     }
-
-                    $tmp = $phpcsFile->findNext(Tokens::$emptyTokens, ($tmp + 1), null, true);
+                    $tmp = $phpcs_file->find_next(Tokens::$empty_tokens, $tmp + 1, null, true);
                     if ($tmp !== false && $tokens[$tmp]['code'] === T_SEMICOLON && $implements !== false) {
                         // There is a return <token>.
                         return;
                     }
-                }//end if
-            }//end if
-
-            $foundContent = true;
-
+                }
+                //end if
+            }
+            //end if
+            $found_content = true;
             if ($code === T_VARIABLE && isset($params[$token['content']]) === true) {
                 unset($params[$token['content']]);
             } elseif ($code === T_DOLLAR) {
-                $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($next + 1), null, true);
-                if ($tokens[$nextToken]['code'] === T_OPEN_CURLY_BRACKET) {
-                    $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($nextToken + 1), null, true);
-                    if ($tokens[$nextToken]['code'] === T_STRING) {
-                        $varContent = '$'.$tokens[$nextToken]['content'];
-                        if (isset($params[$varContent]) === true) {
-                            unset($params[$varContent]);
+                $next_token = $phpcs_file->find_next(T_WHITESPACE, $next + 1, null, true);
+                if ($tokens[$next_token]['code'] === T_OPEN_CURLY_BRACKET) {
+                    $next_token = $phpcs_file->find_next(T_WHITESPACE, $next_token + 1, null, true);
+                    if ($tokens[$next_token]['code'] === T_STRING) {
+                        $var_content = '$' . $tokens[$next_token]['content'];
+                        if (isset($params[$var_content]) === true) {
+                            unset($params[$var_content]);
                         }
                     }
                 }
-            } elseif ($code === T_DOUBLE_QUOTED_STRING
-                || $code === T_START_HEREDOC
-                || $code === T_START_NOWDOC
-            ) {
+            } elseif ($code === T_DOUBLE_QUOTED_STRING || $code === T_START_HEREDOC || $code === T_START_NOWDOC) {
                 // Tokenize strings that can contain variables.
                 // Make sure the string is re-joined if it occurs over multiple lines.
                 $content = $token['content'];
-                for ($i = ($next + 1); $i <= $end; $i++) {
-                    if (isset($validTokens[$tokens[$i]['code']]) === true) {
+                for ($i = $next + 1; $i <= $end; $i++) {
+                    if (isset($valid_tokens[$tokens[$i]['code']]) === true) {
                         $content .= $tokens[$i]['content'];
                         $next++;
                     } else {
                         break;
                     }
                 }
-
-                $stringTokens = token_get_all(sprintf('<?php %s;?>', $content));
-                foreach ($stringTokens as $stringPtr => $stringToken) {
-                    if (is_array($stringToken) === false) {
+                $string_tokens = token_get_all(sprintf('<?php %s;?>', $content));
+                foreach ($string_tokens as $string_ptr => $string_token) {
+                    if (is_array($string_token) === false) {
                         continue;
                     }
-
-                    $varContent = '';
-                    if ($stringToken[0] === T_DOLLAR_OPEN_CURLY_BRACES) {
-                        $varContent = '$'.$stringTokens[($stringPtr + 1)][1];
-                    } elseif ($stringToken[0] === T_VARIABLE) {
-                        $varContent = $stringToken[1];
+                    $var_content = '';
+                    if ($string_token[0] === T_DOLLAR_OPEN_CURLY_BRACES) {
+                        $var_content = '$' . $string_tokens[$string_ptr + 1][1];
+                    } elseif ($string_token[0] === T_VARIABLE) {
+                        $var_content = $string_token[1];
                     }
-
-                    if ($varContent !== '' && isset($params[$varContent]) === true) {
-                        unset($params[$varContent]);
+                    if ($var_content !== '' && isset($params[$var_content]) === true) {
+                        unset($params[$var_content]);
                     }
                 }
-            }//end if
-        }//end for
-
-        if ($foundContent === true && count($params) > 0) {
+            }
+            //end if
+        }
+        //end for
+        if ($found_content === true && count($params) > 0) {
             $error = 'The method parameter %s is never used';
-
             // If there is only one parameter and it is unused, no need for additional errorcode toggling logic.
-            if ($methodParamsCount === 1) {
-                foreach ($params as $paramName => $position) {
-                    if (in_array($methodParams[0]['type_hint'], $this->ignoreTypeHints, true) === true) {
+            if ($method_params_count === 1) {
+                foreach ($params as $param_name => $position) {
+                    if (in_array($method_params[0]['type_hint'], $this->ignore_type_hints, true) === true) {
                         continue;
                     }
-
-                    $data = [$paramName];
-                    $phpcsFile->addWarning($error, $position, $errorCode, $data);
+                    $data = [$param_name];
+                    $phpcs_file->add_warning($error, $position, $error_code, $data);
                 }
-
                 return;
             }
-
-            $foundLastUsed = false;
-            $lastIndex     = ($methodParamsCount - 1);
-            $errorInfo     = [];
-            for ($i = $lastIndex; $i >= 0; --$i) {
-                if ($foundLastUsed !== false) {
-                    if (isset($params[$methodParams[$i]['name']]) === true) {
-                        $errorInfo[$methodParams[$i]['name']] = [
-                            'position'  => $params[$methodParams[$i]['name']],
-                            'errorcode' => $errorCode.'BeforeLastUsed',
-                            'typehint'  => $methodParams[$i]['type_hint'],
-                        ];
+            $found_last_used = false;
+            $last_index = $method_params_count - 1;
+            $error_info = [];
+            for ($i = $last_index; $i >= 0; --$i) {
+                if ($found_last_used !== false) {
+                    if (isset($params[$method_params[$i]['name']]) === true) {
+                        $error_info[$method_params[$i]['name']] = ['position' => $params[$method_params[$i]['name']], 'errorcode' => $error_code . 'BeforeLastUsed', 'typehint' => $method_params[$i]['type_hint']];
                     }
+                } else if (isset($params[$method_params[$i]['name']]) === false) {
+                    $found_last_used = true;
                 } else {
-                    if (isset($params[$methodParams[$i]['name']]) === false) {
-                        $foundLastUsed = true;
-                    } else {
-                        $errorInfo[$methodParams[$i]['name']] = [
-                            'position'  => $params[$methodParams[$i]['name']],
-                            'errorcode' => $errorCode.'AfterLastUsed',
-                            'typehint'  => $methodParams[$i]['type_hint'],
-                        ];
-                    }
-                }
-            }//end for
-
-            if (count($errorInfo) > 0) {
-                $errorInfo = array_reverse($errorInfo);
-                foreach ($errorInfo as $paramName => $info) {
-                    if (in_array($info['typehint'], $this->ignoreTypeHints, true) === true) {
-                        continue;
-                    }
-
-                    $data = [$paramName];
-                    $phpcsFile->addWarning($error, $info['position'], $info['errorcode'], $data);
+                    $error_info[$method_params[$i]['name']] = ['position' => $params[$method_params[$i]['name']], 'errorcode' => $error_code . 'AfterLastUsed', 'typehint' => $method_params[$i]['type_hint']];
                 }
             }
-        }//end if
-
-    }//end process()
-
-}//end class
+            //end for
+            if (count($error_info) > 0) {
+                $error_info = array_reverse($error_info);
+                foreach ($error_info as $param_name => $info) {
+                    if (in_array($info['typehint'], $this->ignore_type_hints, true) === true) {
+                        continue;
+                    }
+                    $data = [$param_name];
+                    $phpcs_file->add_warning($error, $info['position'], $info['errorcode'], $data);
+                }
+            }
+        }
+        //end if
+    }
+    //end process()
+}
+//end class

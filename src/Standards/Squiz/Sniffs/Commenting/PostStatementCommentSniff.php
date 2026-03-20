@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks to ensure that there are no comments after statements.
  *
@@ -8,24 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Commenting;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class PostStatementCommentSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Post_Statement_Comment_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS'];
     /**
      * Exceptions to the rule.
      *
@@ -34,16 +28,7 @@ class PostStatementCommentSniff implements Sniff
      *
      * @var array
      */
-    private $controlStructureExceptions = [
-        T_IF      => true,
-        T_ELSEIF  => true,
-        T_SWITCH  => true,
-        T_WHILE   => true,
-        T_FOR     => true,
-        T_FOREACH => true,
-        T_MATCH   => true,
-    ];
-
+    private $control_structure_exceptions = [T_IF => true, T_ELSEIF => true, T_SWITCH => true, T_WHILE => true, T_FOR => true, T_FOREACH => true, T_MATCH => true];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -52,9 +37,8 @@ class PostStatementCommentSniff implements Sniff
     public function register()
     {
         return [T_COMMENT];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -64,56 +48,42 @@ class PostStatementCommentSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if (substr($tokens[$stackPtr]['content'], 0, 2) !== '//') {
+        $tokens = $phpcs_file->get_tokens();
+        if (substr($tokens[$stack_ptr]['content'], 0, 2) !== '//') {
             return;
         }
-
-        $commentLine = $tokens[$stackPtr]['line'];
-        $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-
-        if ($lastContent === false
-            || $tokens[$lastContent]['line'] !== $commentLine
-            || $tokens[$stackPtr]['column'] === 1
-        ) {
+        $comment_line = $tokens[$stack_ptr]['line'];
+        $last_content = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
+        if ($last_content === false || $tokens[$last_content]['line'] !== $comment_line || $tokens[$stack_ptr]['column'] === 1) {
             return;
         }
-
-        if ($tokens[$lastContent]['code'] === T_CLOSE_CURLY_BRACKET) {
+        if ($tokens[$last_content]['code'] === T_CLOSE_CURLY_BRACKET) {
             return;
         }
-
         // Special case for JS files and PHP closures.
-        if ($tokens[$lastContent]['code'] === T_COMMA
-            || $tokens[$lastContent]['code'] === T_SEMICOLON
-        ) {
-            $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($lastContent - 1), null, true);
-            if ($lastContent === false || $tokens[$lastContent]['code'] === T_CLOSE_CURLY_BRACKET) {
+        if ($tokens[$last_content]['code'] === T_COMMA || $tokens[$last_content]['code'] === T_SEMICOLON) {
+            $last_content = $phpcs_file->find_previous(T_WHITESPACE, $last_content - 1, null, true);
+            if ($last_content === false || $tokens[$last_content]['code'] === T_CLOSE_CURLY_BRACKET) {
                 return;
             }
         }
-
         // Special case for (trailing) comments within multi-line control structures.
-        if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
-            $nestedParens = $tokens[$stackPtr]['nested_parenthesis'];
-            foreach ($nestedParens as $open => $close) {
-                if (isset($tokens[$open]['parenthesis_owner']) === true
-                    && isset($this->controlStructureExceptions[$tokens[$tokens[$open]['parenthesis_owner']]['code']]) === true
-                ) {
+        if (isset($tokens[$stack_ptr]['nested_parenthesis']) === true) {
+            $nested_parens = $tokens[$stack_ptr]['nested_parenthesis'];
+            foreach ($nested_parens as $open => $close) {
+                if (isset($tokens[$open]['parenthesis_owner']) === true && isset($this->control_structure_exceptions[$tokens[$tokens[$open]['parenthesis_owner']]['code']]) === true) {
                     return;
                 }
             }
         }
-
         $error = 'Comments may not appear after statements';
-        $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'Found');
+        $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'Found');
         if ($fix === true) {
-            $phpcsFile->fixer->addNewlineBefore($stackPtr);
+            $phpcs_file->fixer->add_newline_before($stack_ptr);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

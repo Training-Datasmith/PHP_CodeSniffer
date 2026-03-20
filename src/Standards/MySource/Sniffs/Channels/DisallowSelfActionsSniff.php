@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures that self and static are not used to call public methods in action classes.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\My_Source\Sniffs\Channels;
 
-namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Channels;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class DisallowSelfActionsSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Disallow_Self_Actions_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -25,9 +23,8 @@ class DisallowSelfActionsSniff implements Sniff
     public function register()
     {
         return [T_CLASS];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -37,88 +34,68 @@ class DisallowSelfActionsSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // We are not interested in abstract classes.
-        $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
+        $prev = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
         if ($prev !== false && $tokens[$prev]['code'] === T_ABSTRACT) {
             return;
         }
-
         // We are only interested in Action classes.
-        $classNameToken = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-        $className      = $tokens[$classNameToken]['content'];
-        if (substr($className, -7) !== 'Actions') {
+        $class_name_token = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
+        $class_name = $tokens[$class_name_token]['content'];
+        if (substr($class_name, -7) !== 'Actions') {
             return;
         }
-
-        $foundFunctions = [];
-        $foundCalls     = [];
-
+        $found_functions = [];
+        $found_calls = [];
         // Find all static method calls in the form self::method() in the class.
-        $classEnd = $tokens[$stackPtr]['scope_closer'];
-        for ($i = ($classNameToken + 1); $i < $classEnd; $i++) {
+        $class_end = $tokens[$stack_ptr]['scope_closer'];
+        for ($i = $class_name_token + 1; $i < $class_end; $i++) {
             if ($tokens[$i]['code'] !== T_DOUBLE_COLON) {
                 if ($tokens[$i]['code'] === T_FUNCTION) {
                     // Cache the function information.
-                    $funcName  = $phpcsFile->findNext(T_STRING, ($i + 1));
-                    $funcScope = $phpcsFile->findPrevious(Tokens::$scopeModifiers, ($i - 1));
-
-                    $foundFunctions[$tokens[$funcName]['content']] = strtolower($tokens[$funcScope]['content']);
+                    $func_name = $phpcs_file->find_next(T_STRING, $i + 1);
+                    $func_scope = $phpcs_file->find_previous(Tokens::$scope_modifiers, $i - 1);
+                    $found_functions[$tokens[$func_name]['content']] = strtolower($tokens[$func_scope]['content']);
                 }
-
                 continue;
             }
-
-            $prevToken = $phpcsFile->findPrevious(T_WHITESPACE, ($i - 1), null, true);
-            if ($tokens[$prevToken]['content'] !== 'self'
-                && $tokens[$prevToken]['content'] !== 'static'
-            ) {
+            $prev_token = $phpcs_file->find_previous(T_WHITESPACE, $i - 1, null, true);
+            if ($tokens[$prev_token]['content'] !== 'self' && $tokens[$prev_token]['content'] !== 'static') {
                 continue;
             }
-
-            $funcNameToken = $phpcsFile->findNext(T_WHITESPACE, ($i + 1), null, true);
-            if ($tokens[$funcNameToken]['code'] === T_VARIABLE) {
+            $func_name_token = $phpcs_file->find_next(T_WHITESPACE, $i + 1, null, true);
+            if ($tokens[$func_name_token]['code'] === T_VARIABLE) {
                 // We are only interested in function calls.
                 continue;
             }
-
-            $funcName = $tokens[$funcNameToken]['content'];
-
+            $func_name = $tokens[$func_name_token]['content'];
             // We've found the function, now we need to find it and see if it is
             // public, private or protected. If it starts with an underscore we
             // can assume it is private.
-            if ($funcName[0] === '_') {
+            if ($func_name[0] === '_') {
                 continue;
             }
-
-            $foundCalls[$i] = [
-                'name' => $funcName,
-                'type' => strtolower($tokens[$prevToken]['content']),
-            ];
-        }//end for
-
-        $errorClassName = substr($className, 0, -7);
-
-        foreach ($foundCalls as $token => $funcData) {
-            if (isset($foundFunctions[$funcData['name']]) === false) {
+            $found_calls[$i] = ['name' => $func_name, 'type' => strtolower($tokens[$prev_token]['content'])];
+        }
+        //end for
+        $error_class_name = substr($class_name, 0, -7);
+        foreach ($found_calls as $token => $func_data) {
+            if (isset($found_functions[$func_data['name']]) === false) {
                 // Function was not in this class, might have come from the parent.
                 // Either way, we can't really check this.
                 continue;
             }
-            if ($foundFunctions[$funcData['name']] === 'public') {
-                $type  = $funcData['type'];
-                $error = "Static calls to public methods in Action classes must not use the $type keyword; use %s::%s() instead";
-                $data  = [
-                    $errorClassName,
-                    $funcName,
-                ];
-                $phpcsFile->addError($error, $token, 'Found'.ucfirst($funcData['type']), $data);
+            if ($found_functions[$func_data['name']] === 'public') {
+                $type = $func_data['type'];
+                $error = "Static calls to public methods in Action classes must not use the {$type} keyword; use %s::%s() instead";
+                $data = [$error_class_name, $func_name];
+                $phpcs_file->add_error($error, $token, 'Found' . ucfirst($func_data['type']), $data);
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

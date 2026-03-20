@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * JUnit report for PHP_CodeSniffer.
  *
@@ -9,12 +9,10 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
 class Junit implements Report
 {
     /**
@@ -31,56 +29,48 @@ class Junit implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {
-        $out = new \XMLWriter();
-        $out->openMemory();
-        $out->setIndent(true);
-
-        $out->startElement('testsuite');
-        $out->writeAttribute('name', $report['filename']);
-        $out->writeAttribute('errors', 0);
-
+        $out = new \Xml_Writer();
+        $out->open_memory();
+        $out->set_indent(true);
+        $out->start_element('testsuite');
+        $out->write_attribute('name', $report['filename']);
+        $out->write_attribute('errors', 0);
         if (count($report['messages']) === 0) {
-            $out->writeAttribute('tests', 1);
-            $out->writeAttribute('failures', 0);
-
-            $out->startElement('testcase');
-            $out->writeAttribute('name', $report['filename']);
-            $out->endElement();
+            $out->write_attribute('tests', 1);
+            $out->write_attribute('failures', 0);
+            $out->start_element('testcase');
+            $out->write_attribute('name', $report['filename']);
+            $out->end_element();
         } else {
-            $failures = ($report['errors'] + $report['warnings']);
-            $out->writeAttribute('tests', $failures);
-            $out->writeAttribute('failures', $failures);
-
-            foreach ($report['messages'] as $line => $lineErrors) {
-                foreach ($lineErrors as $column => $colErrors) {
-                    foreach ($colErrors as $error) {
-                        $out->startElement('testcase');
-                        $out->writeAttribute('name', $error['source'].' at '.$report['filename']." ($line:$column)");
-
+            $failures = $report['errors'] + $report['warnings'];
+            $out->write_attribute('tests', $failures);
+            $out->write_attribute('failures', $failures);
+            foreach ($report['messages'] as $line => $line_errors) {
+                foreach ($line_errors as $column => $col_errors) {
+                    foreach ($col_errors as $error) {
+                        $out->start_element('testcase');
+                        $out->write_attribute('name', $error['source'] . ' at ' . $report['filename'] . " ({$line}:{$column})");
                         $error['type'] = strtolower($error['type']);
-                        if ($phpcsFile->config->encoding !== 'utf-8') {
-                            $error['message'] = iconv($phpcsFile->config->encoding, 'utf-8', $error['message']);
+                        if ($phpcs_file->config->encoding !== 'utf-8') {
+                            $error['message'] = iconv($phpcs_file->config->encoding, 'utf-8', $error['message']);
                         }
-
-                        $out->startElement('failure');
-                        $out->writeAttribute('type', $error['type']);
-                        $out->writeAttribute('message', $error['message']);
-                        $out->endElement();
-
-                        $out->endElement();
+                        $out->start_element('failure');
+                        $out->write_attribute('type', $error['type']);
+                        $out->write_attribute('message', $error['message']);
+                        $out->end_element();
+                        $out->end_element();
                     }
                 }
             }
-        }//end if
-
-        $out->endElement();
+        }
+        //end if
+        $out->end_element();
         echo $out->flush();
         return true;
-
-    }//end generateFileReport()
-
+    }
+    //end generateFileReport()
     /**
      * Prints all violations for processed files, in a proprietary XML format.
      *
@@ -97,33 +87,23 @@ class Junit implements Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    ) {
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true)
+    {
         // Figure out the total number of tests.
-        $tests   = 0;
+        $tests = 0;
         $matches = [];
-        preg_match_all('/tests="([0-9]+)"/', $cachedData, $matches);
+        preg_match_all('/tests="([0-9]+)"/', $cached_data, $matches);
         if (isset($matches[1]) === true) {
             foreach ($matches[1] as $match) {
                 $tests += $match;
             }
         }
-
-        $failures = ($totalErrors + $totalWarnings);
-        echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
-        echo '<testsuites name="PHP_CodeSniffer '.Config::VERSION.'" errors="0" tests="'.$tests.'" failures="'.$failures.'">'.PHP_EOL;
-        echo $cachedData;
-        echo '</testsuites>'.PHP_EOL;
-
-    }//end generate()
-
-}//end class
+        $failures = $total_errors + $total_warnings;
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+        echo '<testsuites name="PHP_CodeSniffer ' . Config::VERSION . '" errors="0" tests="' . $tests . '" failures="' . $failures . '">' . PHP_EOL;
+        echo $cached_data;
+        echo '</testsuites>' . PHP_EOL;
+    }
+    //end generate()
+}
+//end class

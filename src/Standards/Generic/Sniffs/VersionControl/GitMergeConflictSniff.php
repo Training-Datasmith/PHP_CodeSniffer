@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Check for merge conflict artefacts.
  *
@@ -8,25 +8,18 @@ declare(strict_types=1);
  * @copyright 2017 Juliette Reinders Folmer. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Version_Control;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\VersionControl;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class GitMergeConflictSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Git_Merge_Conflict_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-        'CSS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS', 'CSS'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -34,13 +27,9 @@ class GitMergeConflictSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_OPEN_TAG,
-            T_OPEN_TAG_WITH_ECHO,
-        ];
-
-    }//end register()
-
+        return [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -50,78 +39,58 @@ class GitMergeConflictSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $error  = 'Merge conflict boundary found; type: %s';
-
-        $checkTokens = [
-            T_SL                      => true,
-            T_SR                      => true,
-            T_IS_IDENTICAL            => true,
-            T_COMMENT                 => true,
-            T_DOC_COMMENT_STRING      => true,
+        $tokens = $phpcs_file->get_tokens();
+        $error = 'Merge conflict boundary found; type: %s';
+        $check_tokens = [
+            T_SL => true,
+            T_SR => true,
+            T_IS_IDENTICAL => true,
+            T_COMMENT => true,
+            T_DOC_COMMENT_STRING => true,
             // PHP + CSS specific.
             T_ENCAPSED_AND_WHITESPACE => true,
             // PHP specific.
-            T_INLINE_HTML             => true,
-            T_HEREDOC                 => true,
-            T_NOWDOC                  => true,
+            T_INLINE_HTML => true,
+            T_HEREDOC => true,
+            T_NOWDOC => true,
             // JS specific.
-            T_ZSR                     => true,
+            T_ZSR => true,
         ];
-
-        for ($i = 0; $i < $phpcsFile->numTokens; $i++) {
+        for ($i = 0; $i < $phpcs_file->num_tokens; $i++) {
             if ($tokens[$i]['column'] !== 1) {
                 continue;
             }
-            if (isset($checkTokens[$tokens[$i]['code']]) === false) {
+            if (isset($check_tokens[$tokens[$i]['code']]) === false) {
                 continue;
             }
-            if ($phpcsFile->tokenizerType !== 'JS') {
+            if ($phpcs_file->tokenizer_type !== 'JS') {
                 switch ($tokens[$i]['code']) {
                     // Check for first non-comment, non-heredoc/nowdoc, non-inline HTML merge conflict opener.
                     case T_SL:
-                        if (isset($tokens[($i + 1)], $tokens[($i + 2)]) !== false
-                            && $tokens[($i + 1)]['code'] === T_SL
-                            && $tokens[($i + 2)]['code'] === T_STRING
-                            && trim($tokens[($i + 2)]['content']) === '<<< HEAD'
-                        ) {
-                            $phpcsFile->addError($error, $i, 'OpenerFound', ['opener']);
+                        if (isset($tokens[$i + 1], $tokens[$i + 2]) !== false && $tokens[$i + 1]['code'] === T_SL && $tokens[$i + 2]['code'] === T_STRING && trim($tokens[$i + 2]['content']) === '<<< HEAD') {
+                            $phpcs_file->add_error($error, $i, 'OpenerFound', ['opener']);
                             $i += 2;
                         }
                         break;
-
-                        // Check for merge conflict closer which was opened in a heredoc/nowdoc.
+                    // Check for merge conflict closer which was opened in a heredoc/nowdoc.
                     case T_SR:
-                        if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)], $tokens[($i + 4)]) !== false
-                            && $tokens[($i + 1)]['code'] === T_SR
-                            && $tokens[($i + 2)]['code'] === T_SR
-                            && $tokens[($i + 3)]['code'] === T_GREATER_THAN
-                            && $tokens[($i + 4)]['code'] === T_WHITESPACE
-                            && $tokens[($i + 4)]['content'] === ' '
-                        ) {
-                            $phpcsFile->addError($error, $i, 'CloserFound', ['closer']);
+                        if (isset($tokens[$i + 1], $tokens[$i + 2], $tokens[$i + 3], $tokens[$i + 4]) !== false && $tokens[$i + 1]['code'] === T_SR && $tokens[$i + 2]['code'] === T_SR && $tokens[$i + 3]['code'] === T_GREATER_THAN && $tokens[$i + 4]['code'] === T_WHITESPACE && $tokens[$i + 4]['content'] === ' ') {
+                            $phpcs_file->add_error($error, $i, 'CloserFound', ['closer']);
                             $i += 4;
                         }
                         break;
-
-                        // Check for merge conflict delimiter which opened in a CSS comment and closed outside.
+                    // Check for merge conflict delimiter which opened in a CSS comment and closed outside.
                     case T_IS_IDENTICAL:
-                        if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)]) !== false
-                            && $tokens[($i + 1)]['code'] === T_IS_IDENTICAL
-                            && $tokens[($i + 2)]['code'] === T_EQUAL
-                            && $tokens[($i + 3)]['code'] === T_WHITESPACE
-                            && $tokens[($i + 3)]['content'] === "\n"
-                        ) {
-                            $phpcsFile->addError($error, $i, 'DelimiterFound', ['delimiter']);
+                        if (isset($tokens[$i + 1], $tokens[$i + 2], $tokens[$i + 3]) !== false && $tokens[$i + 1]['code'] === T_IS_IDENTICAL && $tokens[$i + 2]['code'] === T_EQUAL && $tokens[$i + 3]['code'] === T_WHITESPACE && $tokens[$i + 3]['content'] === "\n") {
+                            $phpcs_file->add_error($error, $i, 'DelimiterFound', ['delimiter']);
                             $i += 3;
                         }
                         break;
-
-                        // - Check for delimiters and closers.
-                        // - Inspect heredoc/nowdoc content, comments and inline HTML.
-                        // - Check for subsequent merge conflict openers after the first broke the tokenizer.
+                    // - Check for delimiters and closers.
+                    // - Inspect heredoc/nowdoc content, comments and inline HTML.
+                    // - Check for subsequent merge conflict openers after the first broke the tokenizer.
                     case T_ENCAPSED_AND_WHITESPACE:
                     case T_COMMENT:
                     case T_DOC_COMMENT_STRING:
@@ -129,100 +98,75 @@ class GitMergeConflictSniff implements Sniff
                     case T_HEREDOC:
                     case T_NOWDOC:
                         if (substr($tokens[$i]['content'], 0, 12) === '<<<<<<< HEAD') {
-                            $phpcsFile->addError($error, $i, 'OpenerFound', ['opener']);
+                            $phpcs_file->add_error($error, $i, 'OpenerFound', ['opener']);
                             break;
                         } elseif (substr($tokens[$i]['content'], 0, 8) === '>>>>>>> ') {
-                            $phpcsFile->addError($error, $i, 'CloserFound', ['closer']);
+                            $phpcs_file->add_error($error, $i, 'CloserFound', ['closer']);
                             break;
                         }
-
                         if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
-                            if ($tokens[$i]['content'] === '======='
-                                && $tokens[($i + 1)]['code'] === T_DOC_COMMENT_WHITESPACE
-                            ) {
-                                $phpcsFile->addError($error, $i, 'DelimiterFound', ['delimiter']);
+                            if ($tokens[$i]['content'] === '=======' && $tokens[$i + 1]['code'] === T_DOC_COMMENT_WHITESPACE) {
+                                $phpcs_file->add_error($error, $i, 'DelimiterFound', ['delimiter']);
                                 break;
                             }
-                        } else {
-                            if ($tokens[$i]['content'] === "=======\n") {
-                                $phpcsFile->addError($error, $i, 'DelimiterFound', ['delimiter']);
-                            }
+                        } else if ($tokens[$i]['content'] === "=======\n") {
+                            $phpcs_file->add_error($error, $i, 'DelimiterFound', ['delimiter']);
                         }
                         break;
-                }//end switch
+                }
+                //end switch
             } else {
                 // Javascript file.
                 switch ($tokens[$i]['code']) {
                     // Merge conflict opener.
                     case T_SL:
-                        if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)], $tokens[($i + 4)], $tokens[($i + 5)]) !== false
-                            && $tokens[($i + 1)]['code'] === T_SL
-                            && $tokens[($i + 2)]['code'] === T_SL
-                            && $tokens[($i + 3)]['code'] === T_LESS_THAN
-                            && $tokens[($i + 4)]['code'] === T_WHITESPACE
-                            && trim($tokens[($i + 5)]['content']) === 'HEAD'
-                        ) {
-                            $phpcsFile->addError($error, $i, 'OpenerFound', ['opener']);
+                        if (isset($tokens[$i + 1], $tokens[$i + 2], $tokens[$i + 3], $tokens[$i + 4], $tokens[$i + 5]) !== false && $tokens[$i + 1]['code'] === T_SL && $tokens[$i + 2]['code'] === T_SL && $tokens[$i + 3]['code'] === T_LESS_THAN && $tokens[$i + 4]['code'] === T_WHITESPACE && trim($tokens[$i + 5]['content']) === 'HEAD') {
+                            $phpcs_file->add_error($error, $i, 'OpenerFound', ['opener']);
                             $i += 5;
                         }
                         break;
-
-                        // Check for merge conflict delimiter.
+                    // Check for merge conflict delimiter.
                     case T_IS_IDENTICAL:
-                        if (isset($tokens[($i + 1)], $tokens[($i + 2)], $tokens[($i + 3)]) !== false
-                            && $tokens[($i + 1)]['code'] === T_IS_IDENTICAL
-                            && $tokens[($i + 2)]['code'] === T_EQUAL
-                            && $tokens[($i + 3)]['code'] === T_WHITESPACE
-                            && $tokens[($i + 3)]['content'] === "\n"
-                        ) {
-                            $phpcsFile->addError($error, $i, 'DelimiterFound', ['delimiter']);
+                        if (isset($tokens[$i + 1], $tokens[$i + 2], $tokens[$i + 3]) !== false && $tokens[$i + 1]['code'] === T_IS_IDENTICAL && $tokens[$i + 2]['code'] === T_EQUAL && $tokens[$i + 3]['code'] === T_WHITESPACE && $tokens[$i + 3]['content'] === "\n") {
+                            $phpcs_file->add_error($error, $i, 'DelimiterFound', ['delimiter']);
                             $i += 3;
                         }
                         break;
-
-                        // Merge conflict closer.
+                    // Merge conflict closer.
                     case T_ZSR:
-                        if ($tokens[$i]['code'] === T_ZSR
-                            && isset($tokens[($i + 1)], $tokens[($i + 2)]) === true
-                            && $tokens[($i + 1)]['code'] === T_ZSR
-                            && $tokens[($i + 2)]['code'] === T_GREATER_THAN
-                        ) {
-                            $phpcsFile->addError($error, $i, 'CloserFound', ['closer']);
+                        if ($tokens[$i]['code'] === T_ZSR && isset($tokens[$i + 1], $tokens[$i + 2]) === true && $tokens[$i + 1]['code'] === T_ZSR && $tokens[$i + 2]['code'] === T_GREATER_THAN) {
+                            $phpcs_file->add_error($error, $i, 'CloserFound', ['closer']);
                             $i += 2;
                         }
                         break;
-
-                        // Check for merge conflicts in all comments.
+                    // Check for merge conflicts in all comments.
                     case T_COMMENT:
                     case T_DOC_COMMENT_STRING:
                         if (substr($tokens[$i]['content'], 0, 12) === '<<<<<<< HEAD') {
-                            $phpcsFile->addError($error, $i, 'OpenerFound');
+                            $phpcs_file->add_error($error, $i, 'OpenerFound');
                             break;
                         } elseif (substr($tokens[$i]['content'], 0, 8) === '>>>>>>> ') {
-                            $phpcsFile->addError($error, $i, 'CloserFound', ['closer']);
+                            $phpcs_file->add_error($error, $i, 'CloserFound', ['closer']);
                             break;
                         }
-
                         if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
-                            if ($tokens[$i]['content'] === '======='
-                                && $tokens[($i + 1)]['code'] === T_DOC_COMMENT_WHITESPACE
-                            ) {
-                                $phpcsFile->addError($error, $i, 'DelimiterFound', ['delimiter']);
+                            if ($tokens[$i]['content'] === '=======' && $tokens[$i + 1]['code'] === T_DOC_COMMENT_WHITESPACE) {
+                                $phpcs_file->add_error($error, $i, 'DelimiterFound', ['delimiter']);
                                 break;
                             }
-                        } else {
-                            if ($tokens[$i]['content'] === "=======\n") {
-                                $phpcsFile->addError($error, $i, 'DelimiterFound', ['delimiter']);
-                            }
+                        } else if ($tokens[$i]['content'] === "=======\n") {
+                            $phpcs_file->add_error($error, $i, 'DelimiterFound', ['delimiter']);
                         }
                         break;
-                }//end switch
-            }//end if
-        }//end for
-
+                }
+                //end switch
+            }
+            //end if
+        }
+        //end for
         // Ignore the rest of the file.
-        return ($phpcsFile->numTokens + 1);
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens + 1;
+    }
+    //end process()
+}
+//end class

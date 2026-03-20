@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks for unneeded whitespace.
  *
@@ -12,25 +12,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\White_Space;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class SuperfluousWhitespaceSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Superfluous_Whitespace_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-        'CSS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS', 'CSS'];
     /**
      * If TRUE, whitespace rules are not checked for blank lines.
      *
@@ -38,8 +31,7 @@ class SuperfluousWhitespaceSniff implements Sniff
      *
      * @var boolean
      */
-    public $ignoreBlankLines = false;
-
+    public $ignore_blank_lines = false;
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -47,18 +39,9 @@ class SuperfluousWhitespaceSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_OPEN_TAG,
-            T_OPEN_TAG_WITH_ECHO,
-            T_CLOSE_TAG,
-            T_WHITESPACE,
-            T_COMMENT,
-            T_DOC_COMMENT_WHITESPACE,
-            T_CLOSURE,
-        ];
-
-    }//end register()
-
+        return [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_CLOSE_TAG, T_WHITESPACE, T_COMMENT, T_DOC_COMMENT_WHITESPACE, T_CLOSURE];
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -68,84 +51,71 @@ class SuperfluousWhitespaceSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if ($tokens[$stackPtr]['code'] === T_OPEN_TAG) {
+        $tokens = $phpcs_file->get_tokens();
+        if ($tokens[$stack_ptr]['code'] === T_OPEN_TAG) {
             /*
                 Check for start of file whitespace.
             */
-
-            if ($phpcsFile->tokenizerType !== 'PHP') {
+            if ($phpcs_file->tokenizer_type !== 'PHP') {
                 // The first token is always the open tag inserted when tokenized
                 // and the second token is always the first piece of content in
                 // the file. If the second token is whitespace, there was
                 // whitespace at the start of the file.
-                if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+                if ($tokens[$stack_ptr + 1]['code'] !== T_WHITESPACE) {
                     return;
                 }
-
-                if ($phpcsFile->fixer->enabled === true) {
-                    $stackPtr = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+                if ($phpcs_file->fixer->enabled === true) {
+                    $stack_ptr = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
                 }
             } else {
                 // If it's the first token, then there is no space.
-                if ($stackPtr === 0) {
+                if ($stack_ptr === 0) {
                     return;
                 }
-
-                $beforeOpen = '';
-
-                for ($i = ($stackPtr - 1); $i >= 0; $i--) {
+                $before_open = '';
+                for ($i = $stack_ptr - 1; $i >= 0; $i--) {
                     // If we find something that isn't inline html then there is something previous in the file.
                     if ($tokens[$i]['type'] !== 'T_INLINE_HTML') {
                         return;
                     }
-
-                    $beforeOpen .= $tokens[$i]['content'];
+                    $before_open .= $tokens[$i]['content'];
                 }
-
                 // If we have ended up with inline html make sure it isn't just whitespace.
-                if (preg_match('`^[\pZ\s]+$`u', $beforeOpen) !== 1) {
+                if (preg_match('`^[\pZ\s]+$`u', $before_open) !== 1) {
                     return;
                 }
-            }//end if
-
-            $fix = $phpcsFile->addFixableError('Additional whitespace found at start of file', $stackPtr, 'StartFile');
-            if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                for ($i = 0; $i < $stackPtr; $i++) {
-                    $phpcsFile->fixer->replaceToken($i, '');
-                }
-
-                $phpcsFile->fixer->endChangeset();
             }
-        } elseif ($tokens[$stackPtr]['code'] === T_CLOSE_TAG) {
+            //end if
+            $fix = $phpcs_file->add_fixable_error('Additional whitespace found at start of file', $stack_ptr, 'StartFile');
+            if ($fix === true) {
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = 0; $i < $stack_ptr; $i++) {
+                    $phpcs_file->fixer->replace_token($i, '');
+                }
+                $phpcs_file->fixer->end_changeset();
+            }
+        } elseif ($tokens[$stack_ptr]['code'] === T_CLOSE_TAG) {
             /*
                 Check for end of file whitespace.
             */
-
-            if ($phpcsFile->tokenizerType === 'PHP') {
-                if (isset($tokens[($stackPtr + 1)]) === false) {
+            if ($phpcs_file->tokenizer_type === 'PHP') {
+                if (isset($tokens[$stack_ptr + 1]) === false) {
                     // The close PHP token is the last in the file.
                     return;
                 }
-
-                $afterClose = '';
-
-                for ($i = ($stackPtr + 1); $i < $phpcsFile->numTokens; $i++) {
+                $after_close = '';
+                for ($i = $stack_ptr + 1; $i < $phpcs_file->num_tokens; $i++) {
                     // If we find something that isn't inline HTML then there
                     // is more to the file.
                     if ($tokens[$i]['type'] !== 'T_INLINE_HTML') {
                         return;
                     }
-
-                    $afterClose .= $tokens[$i]['content'];
+                    $after_close .= $tokens[$i]['content'];
                 }
-
                 // If we have ended up with inline html make sure it isn't just whitespace.
-                if (preg_match('`^[\pZ\s]+$`u', $afterClose) !== 1) {
+                if (preg_match('`^[\pZ\s]+$`u', $after_close) !== 1) {
                     return;
                 }
             } else {
@@ -153,111 +123,90 @@ class SuperfluousWhitespaceSniff implements Sniff
                 // and the second last token is always the last piece of content in
                 // the file. If the second last token is whitespace, there was
                 // whitespace at the end of the file.
-                $stackPtr--;
-
+                $stack_ptr--;
                 // The pointer is now looking at the last content in the file and
                 // not the fake PHP end tag the tokenizer inserted.
-                if ($tokens[$stackPtr]['code'] !== T_WHITESPACE) {
+                if ($tokens[$stack_ptr]['code'] !== T_WHITESPACE) {
                     return;
                 }
-
                 // Allow a single newline at the end of the last line in the file.
-                if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE
-                    && $tokens[$stackPtr]['content'] === $phpcsFile->eolChar
-                ) {
+                if ($tokens[$stack_ptr - 1]['code'] !== T_WHITESPACE && $tokens[$stack_ptr]['content'] === $phpcs_file->eol_char) {
                     return;
                 }
-            }//end if
-
-            $fix = $phpcsFile->addFixableError('Additional whitespace found at end of file', $stackPtr, 'EndFile');
+            }
+            //end if
+            $fix = $phpcs_file->add_fixable_error('Additional whitespace found at end of file', $stack_ptr, 'EndFile');
             if ($fix === true) {
-                if ($phpcsFile->tokenizerType !== 'PHP') {
-                    $prev     = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-                    $stackPtr = ($prev + 1);
+                if ($phpcs_file->tokenizer_type !== 'PHP') {
+                    $prev = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
+                    $stack_ptr = $prev + 1;
                 }
-
-                $phpcsFile->fixer->beginChangeset();
-                for ($i = ($stackPtr + 1); $i < $phpcsFile->numTokens; $i++) {
-                    $phpcsFile->fixer->replaceToken($i, '');
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $stack_ptr + 1; $i < $phpcs_file->num_tokens; $i++) {
+                    $phpcs_file->fixer->replace_token($i, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
         } else {
             /*
                 Check for end of line whitespace.
             */
-
             // Ignore whitespace that is not at the end of a line.
-            if (isset($tokens[($stackPtr + 1)]['line']) === true
-                && $tokens[($stackPtr + 1)]['line'] === $tokens[$stackPtr]['line']
-            ) {
+            if (isset($tokens[$stack_ptr + 1]['line']) === true && $tokens[$stack_ptr + 1]['line'] === $tokens[$stack_ptr]['line']) {
                 return;
             }
-
             // Ignore blank lines if required.
-            if ($this->ignoreBlankLines === true
-                && $tokens[$stackPtr]['code'] === T_WHITESPACE
-                && $tokens[($stackPtr - 1)]['line'] !== $tokens[$stackPtr]['line']
-            ) {
+            if ($this->ignore_blank_lines === true && $tokens[$stack_ptr]['code'] === T_WHITESPACE && $tokens[$stack_ptr - 1]['line'] !== $tokens[$stack_ptr]['line']) {
                 return;
             }
-
-            $tokenContent = rtrim($tokens[$stackPtr]['content'], $phpcsFile->eolChar);
-            if (empty($tokenContent) === false) {
-                if ($tokenContent !== rtrim($tokenContent)) {
-                    $fix = $phpcsFile->addFixableError('Whitespace found at end of line', $stackPtr, 'EndLine');
+            $token_content = rtrim($tokens[$stack_ptr]['content'], $phpcs_file->eol_char);
+            if (empty($token_content) === false) {
+                if ($token_content !== rtrim($token_content)) {
+                    $fix = $phpcs_file->add_fixable_error('Whitespace found at end of line', $stack_ptr, 'EndLine');
                     if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken($stackPtr, rtrim($tokenContent).$phpcsFile->eolChar);
+                        $phpcs_file->fixer->replace_token($stack_ptr, rtrim($token_content) . $phpcs_file->eol_char);
                     }
                 }
-            } elseif ($tokens[($stackPtr - 1)]['content'] !== rtrim($tokens[($stackPtr - 1)]['content'])
-                && $tokens[($stackPtr - 1)]['line'] === $tokens[$stackPtr]['line']
-            ) {
-                $fix = $phpcsFile->addFixableError('Whitespace found at end of line', ($stackPtr - 1), 'EndLine');
+            } elseif ($tokens[$stack_ptr - 1]['content'] !== rtrim($tokens[$stack_ptr - 1]['content']) && $tokens[$stack_ptr - 1]['line'] === $tokens[$stack_ptr]['line']) {
+                $fix = $phpcs_file->add_fixable_error('Whitespace found at end of line', $stack_ptr - 1, 'EndLine');
                 if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken(($stackPtr - 1), rtrim($tokens[($stackPtr - 1)]['content']));
+                    $phpcs_file->fixer->replace_token($stack_ptr - 1, rtrim($tokens[$stack_ptr - 1]['content']));
                 }
             }
-
             /*
                 Check for multiple blank lines in a function.
             */
-
-            if (($phpcsFile->hasCondition($stackPtr, [T_FUNCTION, T_CLOSURE]) === true)
-                && $tokens[($stackPtr - 1)]['line'] < $tokens[$stackPtr]['line']
-                && $tokens[($stackPtr - 2)]['line'] === $tokens[($stackPtr - 1)]['line']
-            ) {
+            if ($phpcs_file->has_condition($stack_ptr, [T_FUNCTION, T_CLOSURE]) === true && $tokens[$stack_ptr - 1]['line'] < $tokens[$stack_ptr]['line'] && $tokens[$stack_ptr - 2]['line'] === $tokens[$stack_ptr - 1]['line']) {
                 // Properties and functions in nested classes have their own rules for spacing.
-                $conditions   = $tokens[$stackPtr]['conditions'];
-                $deepestScope = end($conditions);
-                if ($deepestScope === T_ANON_CLASS) {
+                $conditions = $tokens[$stack_ptr]['conditions'];
+                $deepest_scope = end($conditions);
+                if ($deepest_scope === T_ANON_CLASS) {
                     return;
                 }
-
                 // This is an empty line and the line before this one is not
                 // empty, so this could be the start of a multiple empty
                 // line block.
-                $next  = $phpcsFile->findNext(T_WHITESPACE, $stackPtr, null, true);
-                $lines = ($tokens[$next]['line'] - $tokens[$stackPtr]['line']);
+                $next = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr, null, true);
+                $lines = $tokens[$next]['line'] - $tokens[$stack_ptr]['line'];
                 if ($lines > 1) {
                     $error = 'Functions must not contain multiple empty lines in a row; found %s empty lines';
-                    $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'EmptyLines', [$lines]);
+                    $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'EmptyLines', [$lines]);
                     if ($fix === true) {
-                        $phpcsFile->fixer->beginChangeset();
-                        $i = $stackPtr;
+                        $phpcs_file->fixer->begin_changeset();
+                        $i = $stack_ptr;
                         while ($tokens[$i]['line'] !== $tokens[$next]['line']) {
-                            $phpcsFile->fixer->replaceToken($i, '');
+                            $phpcs_file->fixer->replace_token($i, '');
                             $i++;
                         }
-
-                        $phpcsFile->fixer->addNewlineBefore($i);
-                        $phpcsFile->fixer->endChangeset();
+                        $phpcs_file->fixer->add_newline_before($i);
+                        $phpcs_file->fixer->end_changeset();
                     }
                 }
-            }//end if
-        }//end if
-
-    }//end process()
-
-}//end class
+            }
+            //end if
+        }
+        //end if
+    }
+    //end process()
+}
+//end class

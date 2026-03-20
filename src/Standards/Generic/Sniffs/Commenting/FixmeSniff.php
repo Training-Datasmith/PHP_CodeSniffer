@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Warns about FIXME comments.
  *
@@ -9,25 +9,19 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Commenting;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class FixmeSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Fixme_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -35,10 +29,9 @@ class FixmeSniff implements Sniff
      */
     public function register()
     {
-        return array_diff(Tokens::$commentTokens, Tokens::$phpcsCommentTokens);
-
-    }//end register()
-
+        return array_diff(Tokens::$comment_tokens, Tokens::$phpcs_comment_tokens);
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -48,29 +41,27 @@ class FixmeSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $content = $tokens[$stackPtr]['content'];
+        $tokens = $phpcs_file->get_tokens();
+        $content = $tokens[$stack_ptr]['content'];
         $matches = [];
         preg_match('/(?:\A|[^\p{L}]+)fixme([^\p{L}]+(.*)|\Z)/ui', $content, $matches);
         if (empty($matches) === false) {
             // Clear whitespace and some common characters not required at
             // the end of a fixme message to make the error more informative.
-            $type         = 'CommentFound';
-            $fixmeMessage = trim($matches[1]);
-            $fixmeMessage = trim($fixmeMessage, '-:[](). ');
-            $error        = 'Comment refers to a FIXME task';
-            $data         = [$fixmeMessage];
-            if ($fixmeMessage !== '') {
-                $type   = 'TaskFound';
+            $type = 'CommentFound';
+            $fixme_message = trim($matches[1]);
+            $fixme_message = trim($fixme_message, '-:[](). ');
+            $error = 'Comment refers to a FIXME task';
+            $data = [$fixme_message];
+            if ($fixme_message !== '') {
+                $type = 'TaskFound';
                 $error .= ' "%s"';
             }
-
-            $phpcsFile->addError($error, $stackPtr, $type, $data);
+            $phpcs_file->add_error($error, $stack_ptr, $type, $data);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

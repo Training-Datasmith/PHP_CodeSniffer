@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that the short form of type keywords is used (e.g., int, bool).
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Keywords;
 
-namespace PHP_CodeSniffer\Standards\PSR12\Sniffs\Keywords;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ShortFormTypeKeywordsSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Short_Form_Type_Keywords_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -23,13 +21,9 @@ class ShortFormTypeKeywordsSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_BOOL_CAST,
-            T_INT_CAST,
-        ];
-
-    }//end register()
-
+        return [T_BOOL_CAST, T_INT_CAST];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -39,35 +33,28 @@ class ShortFormTypeKeywordsSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens     = $phpcsFile->getTokens();
-        $typecast   = str_replace(' ', '', $tokens[$stackPtr]['content']);
-        $typecast   = str_replace("\t", '', $typecast);
-        $typecast   = trim($typecast, '()');
-        $typecastLc = strtolower($typecast);
-
-        if (($tokens[$stackPtr]['code'] === T_BOOL_CAST
-            && $typecastLc === 'bool')
-            || ($tokens[$stackPtr]['code'] === T_INT_CAST
-            && $typecastLc === 'int')
-        ) {
+        $tokens = $phpcs_file->get_tokens();
+        $typecast = str_replace(' ', '', $tokens[$stack_ptr]['content']);
+        $typecast = str_replace("\t", '', $typecast);
+        $typecast = trim($typecast, '()');
+        $typecast_lc = strtolower($typecast);
+        if ($tokens[$stack_ptr]['code'] === T_BOOL_CAST && $typecast_lc === 'bool' || $tokens[$stack_ptr]['code'] === T_INT_CAST && $typecast_lc === 'int') {
             return;
         }
-
         $error = 'Short form type keywords must be used. Found: %s';
-        $data  = [$tokens[$stackPtr]['content']];
-        $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'LongFound', $data);
+        $data = [$tokens[$stack_ptr]['content']];
+        $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'LongFound', $data);
         if ($fix === true) {
-            if ($tokens[$stackPtr]['code'] === T_BOOL_CAST) {
-                $replacement = str_replace($typecast, 'bool', $tokens[$stackPtr]['content']);
+            if ($tokens[$stack_ptr]['code'] === T_BOOL_CAST) {
+                $replacement = str_replace($typecast, 'bool', $tokens[$stack_ptr]['content']);
             } else {
-                $replacement = str_replace($typecast, 'int', $tokens[$stackPtr]['content']);
+                $replacement = str_replace($typecast, 'int', $tokens[$stack_ptr]['content']);
             }
-
-            $phpcsFile->fixer->replaceToken($stackPtr, $replacement);
+            $phpcs_file->fixer->replace_token($stack_ptr, $replacement);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

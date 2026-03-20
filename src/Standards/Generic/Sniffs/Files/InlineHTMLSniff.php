@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures the whole file is PHP only, with no whitespace or inline HTML.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Files;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Files;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class InlineHTMLSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Inline_Html_Sniff implements Sniff
 {
     /**
      * List of supported BOM definitions.
@@ -23,12 +21,7 @@ class InlineHTMLSniff implements Sniff
      *
      * @var array
      */
-    protected $bomDefinitions = [
-        'UTF-8'       => 'efbbbf',
-        'UTF-16 (BE)' => 'feff',
-        'UTF-16 (LE)' => 'fffe',
-    ];
-
+    protected $bom_definitions = ['UTF-8' => 'efbbbf', 'UTF-16 (BE)' => 'feff', 'UTF-16 (LE)' => 'fffe'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -37,9 +30,8 @@ class InlineHTMLSniff implements Sniff
     public function register()
     {
         return [T_INLINE_HTML];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -49,29 +41,26 @@ class InlineHTMLSniff implements Sniff
      *
      * @return int|null
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
         // Allow a byte-order mark.
-        $tokens = $phpcsFile->getTokens();
-        foreach ($this->bomDefinitions as $expectedBomHex) {
-            $bomByteLength = (strlen($expectedBomHex) / 2);
-            $htmlBomHex    = bin2hex(substr($tokens[0]['content'], 0, $bomByteLength));
-            if ($htmlBomHex === $expectedBomHex && strlen($tokens[0]['content']) === $bomByteLength) {
+        $tokens = $phpcs_file->get_tokens();
+        foreach ($this->bom_definitions as $expected_bom_hex) {
+            $bom_byte_length = strlen($expected_bom_hex) / 2;
+            $html_bom_hex = bin2hex(substr($tokens[0]['content'], 0, $bom_byte_length));
+            if ($html_bom_hex === $expected_bom_hex && strlen($tokens[0]['content']) === $bom_byte_length) {
                 return;
             }
         }
-
         // Ignore shebang lines.
-        $tokens = $phpcsFile->getTokens();
-        if (substr($tokens[$stackPtr]['content'], 0, 2) === '#!') {
+        $tokens = $phpcs_file->get_tokens();
+        if (substr($tokens[$stack_ptr]['content'], 0, 2) === '#!') {
             return;
         }
-
         $error = 'PHP files must only contain PHP code';
-        $phpcsFile->addError($error, $stackPtr, 'Found');
-
-        return $phpcsFile->numTokens;
-
-    }//end process()
-
-}//end class
+        $phpcs_file->add_error($error, $stack_ptr, 'Found');
+        return $phpcs_file->num_tokens;
+    }
+    //end process()
+}
+//end class

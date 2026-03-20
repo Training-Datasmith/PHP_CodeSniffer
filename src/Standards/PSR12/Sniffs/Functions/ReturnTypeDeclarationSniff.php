@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensure return types are defined correctly for functions and closures.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2019 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Functions;
 
-namespace PHP_CodeSniffer\Standards\PSR12\Sniffs\Functions;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ReturnTypeDeclarationSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Return_Type_Declaration_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -23,14 +21,9 @@ class ReturnTypeDeclarationSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_FUNCTION,
-            T_CLOSURE,
-            T_FN,
-        ];
-
-    }//end register()
-
+        return [T_FUNCTION, T_CLOSURE, T_FN];
+    }
+    //end register()
     /**
      * Processes this test when one of its tokens is encountered.
      *
@@ -40,69 +33,54 @@ class ReturnTypeDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if (isset($tokens[$stackPtr]['parenthesis_opener']) === false
-            || isset($tokens[$stackPtr]['parenthesis_closer']) === false
-            || $tokens[$stackPtr]['parenthesis_opener'] === null
-            || $tokens[$stackPtr]['parenthesis_closer'] === null
-        ) {
+        $tokens = $phpcs_file->get_tokens();
+        if (isset($tokens[$stack_ptr]['parenthesis_opener']) === false || isset($tokens[$stack_ptr]['parenthesis_closer']) === false || $tokens[$stack_ptr]['parenthesis_opener'] === null || $tokens[$stack_ptr]['parenthesis_closer'] === null) {
             return;
         }
-
-        $methodProperties = $phpcsFile->getMethodProperties($stackPtr);
-        if ($methodProperties['return_type'] === '') {
+        $method_properties = $phpcs_file->get_method_properties($stack_ptr);
+        if ($method_properties['return_type'] === '') {
             return;
         }
-
-        $returnType = $methodProperties['return_type_token'];
-        if ($methodProperties['nullable_return_type'] === true) {
-            $returnType = $phpcsFile->findPrevious(T_NULLABLE, ($returnType - 1));
+        $return_type = $method_properties['return_type_token'];
+        if ($method_properties['nullable_return_type'] === true) {
+            $return_type = $phpcs_file->find_previous(T_NULLABLE, $return_type - 1);
         }
-
-        if ($tokens[($returnType - 1)]['code'] !== T_WHITESPACE
-            || $tokens[($returnType - 1)]['content'] !== ' '
-            || $tokens[($returnType - 2)]['code'] !== T_COLON
-        ) {
+        if ($tokens[$return_type - 1]['code'] !== T_WHITESPACE || $tokens[$return_type - 1]['content'] !== ' ' || $tokens[$return_type - 2]['code'] !== T_COLON) {
             $error = 'There must be a single space between the colon and type in a return type declaration';
-            if ($tokens[($returnType - 1)]['code'] === T_WHITESPACE
-                && $tokens[($returnType - 2)]['code'] === T_COLON
-            ) {
-                $fix = $phpcsFile->addFixableError($error, $returnType, 'SpaceBeforeReturnType');
+            if ($tokens[$return_type - 1]['code'] === T_WHITESPACE && $tokens[$return_type - 2]['code'] === T_COLON) {
+                $fix = $phpcs_file->add_fixable_error($error, $return_type, 'SpaceBeforeReturnType');
                 if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken(($returnType - 1), ' ');
+                    $phpcs_file->fixer->replace_token($return_type - 1, ' ');
                 }
-            } elseif ($tokens[($returnType - 1)]['code'] === T_COLON) {
-                $fix = $phpcsFile->addFixableError($error, $returnType, 'SpaceBeforeReturnType');
+            } elseif ($tokens[$return_type - 1]['code'] === T_COLON) {
+                $fix = $phpcs_file->add_fixable_error($error, $return_type, 'SpaceBeforeReturnType');
                 if ($fix === true) {
-                    $phpcsFile->fixer->addContentBefore($returnType, ' ');
+                    $phpcs_file->fixer->add_content_before($return_type, ' ');
                 }
             } else {
-                $phpcsFile->addError($error, $returnType, 'SpaceBeforeReturnType');
+                $phpcs_file->add_error($error, $return_type, 'SpaceBeforeReturnType');
             }
         }
-
-        $colon = $phpcsFile->findPrevious(T_COLON, $returnType);
-        if ($tokens[($colon - 1)]['code'] !== T_CLOSE_PARENTHESIS) {
+        $colon = $phpcs_file->find_previous(T_COLON, $return_type);
+        if ($tokens[$colon - 1]['code'] !== T_CLOSE_PARENTHESIS) {
             $error = 'There must not be a space before the colon in a return type declaration';
-            $prev  = $phpcsFile->findPrevious(T_WHITESPACE, ($colon - 1), null, true);
+            $prev = $phpcs_file->find_previous(T_WHITESPACE, $colon - 1, null, true);
             if ($tokens[$prev]['code'] === T_CLOSE_PARENTHESIS) {
-                $fix = $phpcsFile->addFixableError($error, $colon, 'SpaceBeforeColon');
+                $fix = $phpcs_file->add_fixable_error($error, $colon, 'SpaceBeforeColon');
                 if ($fix === true) {
-                    $phpcsFile->fixer->beginChangeset();
-                    for ($x = ($prev + 1); $x < $colon; $x++) {
-                        $phpcsFile->fixer->replaceToken($x, '');
+                    $phpcs_file->fixer->begin_changeset();
+                    for ($x = $prev + 1; $x < $colon; $x++) {
+                        $phpcs_file->fixer->replace_token($x, '');
                     }
-
-                    $phpcsFile->fixer->endChangeset();
+                    $phpcs_file->fixer->end_changeset();
                 }
             } else {
-                $phpcsFile->addError($error, $colon, 'SpaceBeforeColon');
+                $phpcs_file->add_error($error, $colon, 'SpaceBeforeColon');
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

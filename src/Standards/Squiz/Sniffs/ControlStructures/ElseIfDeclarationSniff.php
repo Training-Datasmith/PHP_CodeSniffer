@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures the use of else if over elseif.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Control_Structures;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\ControlStructures;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ElseIfDeclarationSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Else_If_Declaration_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class ElseIfDeclarationSniff implements Sniff
     public function register()
     {
         return [T_ELSEIF];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -36,14 +33,14 @@ class ElseIfDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
         $error = 'Usage of ELSEIF not allowed; use ELSE IF instead';
-        $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NotAllowed');
+        $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NotAllowed');
         if ($fix === true) {
-            $phpcsFile->fixer->replaceToken($stackPtr, 'else if');
+            $phpcs_file->fixer->replace_token($stack_ptr, 'else if');
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures that boolean operators are only used inside control structure conditions.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\PHP;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class DisallowBooleanStatementSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Disallow_Boolean_Statement_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,10 +22,9 @@ class DisallowBooleanStatementSniff implements Sniff
      */
     public function register()
     {
-        return Tokens::$booleanOperators;
-
-    }//end register()
-
+        return Tokens::$boolean_operators;
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -37,21 +34,20 @@ class DisallowBooleanStatementSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
-            foreach ($tokens[$stackPtr]['nested_parenthesis'] as $open => $close) {
+        $tokens = $phpcs_file->get_tokens();
+        if (isset($tokens[$stack_ptr]['nested_parenthesis']) === true) {
+            foreach ($tokens[$stack_ptr]['nested_parenthesis'] as $open => $close) {
                 if (isset($tokens[$open]['parenthesis_owner']) === true) {
                     // Any owner means we are not just a simple statement.
                     return;
                 }
             }
         }
-
         $error = 'Boolean operators are not allowed outside of control structure conditions';
-        $phpcsFile->addError($error, $stackPtr, 'Found');
-
-    }//end process()
-
-}//end class
+        $phpcs_file->add_error($error, $stack_ptr, 'Found');
+    }
+    //end process()
+}
+//end class

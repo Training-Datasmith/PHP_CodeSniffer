@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures method names are defined using camel case.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR1\Sniffs\Methods;
 
-namespace PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Standards\Generic\Sniffs\NamingConventions\CamelCapsFunctionNameSniff as GenericCamelCapsFunctionNameSniff;
-use PHP_CodeSniffer\Util\Common;
-
-class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Standards\Generic\Sniffs\Naming_Conventions\Camel_Caps_Function_Name_Sniff as GenericCamelCapsFunctionNameSniff;
+use Php_code_Sniffer\Util\Common;
+class Camel_Caps_Method_Name_Sniff extends Generic_Camel_Caps_Function_Name_Sniff
 {
     /**
      * Processes the tokens within the scope.
@@ -27,51 +25,43 @@ class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
      *
      * @return void
      */
-    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
+    protected function process_token_within_scope(File $phpcs_file, $stack_ptr, $curr_scope)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Determine if this is a function which needs to be examined.
-        $conditions = $tokens[$stackPtr]['conditions'];
+        $conditions = $tokens[$stack_ptr]['conditions'];
         end($conditions);
-        $deepestScope = key($conditions);
-        if ($deepestScope !== $currScope) {
+        $deepest_scope = key($conditions);
+        if ($deepest_scope !== $curr_scope) {
             return;
         }
-
-        $methodName = $phpcsFile->getDeclarationName($stackPtr);
-        if ($methodName === null) {
+        $method_name = $phpcs_file->get_declaration_name($stack_ptr);
+        if ($method_name === null) {
             // Ignore closures.
             return;
         }
-
         // Ignore magic methods.
-        if (preg_match('|^__[^_]|', $methodName) !== 0) {
-            $magicPart = strtolower(substr($methodName, 2));
-            if (isset($this->magicMethods[$magicPart]) === true
-                || isset($this->methodsDoubleUnderscore[$magicPart]) === true
-            ) {
+        if (preg_match('|^__[^_]|', $method_name) !== 0) {
+            $magic_part = strtolower(substr($method_name, 2));
+            if (isset($this->magic_methods[$magic_part]) === true || isset($this->methods_double_underscore[$magic_part]) === true) {
                 return;
             }
         }
-
-        $testName = ltrim($methodName, '_');
-        if ($testName !== '' &&  Common::isCamelCaps($testName, false, true, false) === false) {
-            $error     = 'Method name "%s" is not in camel caps format';
-            $className = $phpcsFile->getDeclarationName($currScope);
-            if (isset($className) === false) {
-                $className = '[Anonymous Class]';
+        $test_name = ltrim($method_name, '_');
+        if ($test_name !== '' && Common::is_camel_caps($test_name, false, true, false) === false) {
+            $error = 'Method name "%s" is not in camel caps format';
+            $class_name = $phpcs_file->get_declaration_name($curr_scope);
+            if (isset($class_name) === false) {
+                $class_name = '[Anonymous Class]';
             }
-
-            $errorData = [$className.'::'.$methodName];
-            $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
-            $phpcsFile->recordMetric($stackPtr, 'CamelCase method name', 'no');
+            $error_data = [$class_name . '::' . $method_name];
+            $phpcs_file->add_error($error, $stack_ptr, 'NotCamelCaps', $error_data);
+            $phpcs_file->record_metric($stack_ptr, 'CamelCase method name', 'no');
         } else {
-            $phpcsFile->recordMetric($stackPtr, 'CamelCase method name', 'yes');
+            $phpcs_file->record_metric($stack_ptr, 'CamelCase method name', 'yes');
         }
-
-    }//end processTokenWithinScope()
-
+    }
+    //end processTokenWithinScope()
     /**
      * Processes the tokens outside the scope.
      *
@@ -81,9 +71,9 @@ class CamelCapsMethodNameSniff extends GenericCamelCapsFunctionNameSniff
      *
      * @return void
      */
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    protected function process_token_outside_scope(File $phpcs_file, $stack_ptr)
     {
-
-    }//end processTokenOutsideScope()
-
-}//end class
+    }
+    //end processTokenOutsideScope()
+}
+//end class

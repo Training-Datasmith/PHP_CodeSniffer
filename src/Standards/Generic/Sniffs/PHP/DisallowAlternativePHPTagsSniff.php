@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that no alternative PHP tags are used.
  *
@@ -10,29 +10,25 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class DisallowAlternativePHPTagsSniff implements Sniff
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Disallow_Alternative_Php_Tags_Sniff implements Sniff
 {
     /**
      * Whether ASP tags are enabled or not.
      *
      * @var boolean
      */
-    private $aspTags = false;
-
+    private $asp_tags = false;
     /**
      * The current PHP version.
      *
      * @var integer
      */
-    private $phpVersion;
-
+    private $php_version;
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -40,25 +36,18 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      */
     public function register()
     {
-        if ($this->phpVersion === null) {
-            $this->phpVersion = Config::getConfigData('php_version');
-            if ($this->phpVersion === null) {
-                $this->phpVersion = PHP_VERSION_ID;
+        if ($this->php_version === null) {
+            $this->php_version = Config::get_config_data('php_version');
+            if ($this->php_version === null) {
+                $this->php_version = PHP_VERSION_ID;
             }
         }
-
-        if ($this->phpVersion < 70000) {
-            $this->aspTags = (bool) ini_get('asp_tags');
+        if ($this->php_version < 70000) {
+            $this->asp_tags = (bool) ini_get('asp_tags');
         }
-
-        return [
-            T_OPEN_TAG,
-            T_OPEN_TAG_WITH_ECHO,
-            T_INLINE_HTML,
-        ];
-
-    }//end register()
-
+        return [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, T_INLINE_HTML];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -68,97 +57,78 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens  = $phpcsFile->getTokens();
-        $openTag = $tokens[$stackPtr];
-        $content = $openTag['content'];
-
+        $tokens = $phpcs_file->get_tokens();
+        $open_tag = $tokens[$stack_ptr];
+        $content = $open_tag['content'];
         if (trim($content) === '') {
             return;
         }
-
-        if ($openTag['code'] === T_OPEN_TAG) {
+        if ($open_tag['code'] === T_OPEN_TAG) {
             if ($content === '<%') {
-                $error     = 'ASP style opening tag used; expected "<?php" but found "%s"';
-                $closer    = $this->findClosingTag($phpcsFile, $tokens, $stackPtr, '%>');
-                $errorCode = 'ASPOpenTagFound';
+                $error = 'ASP style opening tag used; expected "<?php" but found "%s"';
+                $closer = $this->find_closing_tag($phpcs_file, $tokens, $stack_ptr, '%>');
+                $error_code = 'ASPOpenTagFound';
             } elseif (strpos($content, '<script ') !== false) {
-                $error     = 'Script style opening tag used; expected "<?php" but found "%s"';
-                $closer    = $this->findClosingTag($phpcsFile, $tokens, $stackPtr, '</script>');
-                $errorCode = 'ScriptOpenTagFound';
+                $error = 'Script style opening tag used; expected "<?php" but found "%s"';
+                $closer = $this->find_closing_tag($phpcs_file, $tokens, $stack_ptr, '</script>');
+                $error_code = 'ScriptOpenTagFound';
             }
-
-            if (isset($error, $closer, $errorCode) === true) {
+            if (isset($error, $closer, $error_code) === true) {
                 $data = [$content];
-
                 if ($closer === false) {
-                    $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
+                    $phpcs_file->add_error($error, $stack_ptr, $error_code, $data);
                 } else {
-                    $fix = $phpcsFile->addFixableError($error, $stackPtr, $errorCode, $data);
+                    $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, $error_code, $data);
                     if ($fix === true) {
-                        $this->addChangeset($phpcsFile, $tokens, $stackPtr, $closer);
+                        $this->add_changeset($phpcs_file, $tokens, $stack_ptr, $closer);
                     }
                 }
             }
-
             return;
-        }//end if
-
-        if ($openTag['code'] === T_OPEN_TAG_WITH_ECHO && $content === '<%=') {
-            $error   = 'ASP style opening tag used with echo; expected "<?php echo %s ..." but found "%s %s ..."';
-            $nextVar = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-            $snippet = $this->getSnippet($tokens[$nextVar]['content']);
-            $data    = [
-                $snippet,
-                $content,
-                $snippet,
-            ];
-
-            $closer = $this->findClosingTag($phpcsFile, $tokens, $stackPtr, '%>');
-
+        }
+        //end if
+        if ($open_tag['code'] === T_OPEN_TAG_WITH_ECHO && $content === '<%=') {
+            $error = 'ASP style opening tag used with echo; expected "<?php echo %s ..." but found "%s %s ..."';
+            $next_var = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
+            $snippet = $this->get_snippet($tokens[$next_var]['content']);
+            $data = [$snippet, $content, $snippet];
+            $closer = $this->find_closing_tag($phpcs_file, $tokens, $stack_ptr, '%>');
             if ($closer === false) {
-                $phpcsFile->addError($error, $stackPtr, 'ASPShortOpenTagFound', $data);
+                $phpcs_file->add_error($error, $stack_ptr, 'ASPShortOpenTagFound', $data);
             } else {
-                $fix = $phpcsFile->addFixableError($error, $stackPtr, 'ASPShortOpenTagFound', $data);
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'ASPShortOpenTagFound', $data);
                 if ($fix === true) {
-                    $this->addChangeset($phpcsFile, $tokens, $stackPtr, $closer, true);
+                    $this->add_changeset($phpcs_file, $tokens, $stack_ptr, $closer, true);
                 }
             }
-
-            return;
-        }//end if
-
-        // Account for incorrect script open tags.
-        if ($openTag['code'] === T_INLINE_HTML
-            && preg_match('`(<script (?:[^>]+)?language=[\'"]?php[\'"]?(?:[^>]+)?>)`i', $content, $match) === 1
-        ) {
-            $error   = 'Script style opening tag used; expected "<?php" but found "%s"';
-            $snippet = $this->getSnippet($content, $match[1]);
-            $data    = [$match[1].$snippet];
-
-            $phpcsFile->addError($error, $stackPtr, 'ScriptOpenTagFound', $data);
             return;
         }
-
-        if ($openTag['code'] === T_INLINE_HTML && $this->aspTags === false) {
+        //end if
+        // Account for incorrect script open tags.
+        if ($open_tag['code'] === T_INLINE_HTML && preg_match('`(<script (?:[^>]+)?language=[\'"]?php[\'"]?(?:[^>]+)?>)`i', $content, $match) === 1) {
+            $error = 'Script style opening tag used; expected "<?php" but found "%s"';
+            $snippet = $this->get_snippet($content, $match[1]);
+            $data = [$match[1] . $snippet];
+            $phpcs_file->add_error($error, $stack_ptr, 'ScriptOpenTagFound', $data);
+            return;
+        }
+        if ($open_tag['code'] === T_INLINE_HTML && $this->asp_tags === false) {
             if (strpos($content, '<%=') !== false) {
-                $error   = 'Possible use of ASP style short opening tags detected; found: %s';
-                $snippet = $this->getSnippet($content, '<%=');
-                $data    = ['<%='.$snippet];
-
-                $phpcsFile->addWarning($error, $stackPtr, 'MaybeASPShortOpenTagFound', $data);
+                $error = 'Possible use of ASP style short opening tags detected; found: %s';
+                $snippet = $this->get_snippet($content, '<%=');
+                $data = ['<%=' . $snippet];
+                $phpcs_file->add_warning($error, $stack_ptr, 'MaybeASPShortOpenTagFound', $data);
             } elseif (strpos($content, '<%') !== false) {
-                $error   = 'Possible use of ASP style opening tags detected; found: %s';
-                $snippet = $this->getSnippet($content, '<%');
-                $data    = ['<%'.$snippet];
-
-                $phpcsFile->addWarning($error, $stackPtr, 'MaybeASPOpenTagFound', $data);
+                $error = 'Possible use of ASP style opening tags detected; found: %s';
+                $snippet = $this->get_snippet($content, '<%');
+                $data = ['<%' . $snippet];
+                $phpcs_file->add_warning($error, $stack_ptr, 'MaybeASPOpenTagFound', $data);
             }
         }
-
-    }//end process()
-
+    }
+    //end process()
     /**
      * Get a snippet from a HTML token.
      *
@@ -168,26 +138,22 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      *
      * @return string
      */
-    protected function getSnippet($content, $start = '', $length = 40)
+    protected function get_snippet($content, $start = '', $length = 40)
     {
-        $startPos = 0;
-
+        $start_pos = 0;
         if ($start !== '') {
-            $startPos = strpos($content, $start);
-            if ($startPos !== false) {
-                $startPos += strlen($start);
+            $start_pos = strpos($content, $start);
+            if ($start_pos !== false) {
+                $start_pos += strlen($start);
             }
         }
-
-        $snippet = substr($content, $startPos, $length);
-        if ((strlen($content) - $startPos) > $length) {
+        $snippet = substr($content, $start_pos, $length);
+        if (strlen($content) - $start_pos > $length) {
             $snippet .= '...';
         }
-
         return $snippet;
-
-    }//end getSnippet()
-
+    }
+    //end getSnippet()
     /**
      * Try and find a matching PHP closing tag.
      *
@@ -199,18 +165,15 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      *
      * @return int|false Pointer to the position in the stack for the closing tag or false if not found.
      */
-    protected function findClosingTag(File $phpcsFile, array $tokens, $stackPtr, $content)
+    protected function find_closing_tag(File $phpcs_file, array $tokens, $stack_ptr, $content)
     {
-        $closer = $phpcsFile->findNext(T_CLOSE_TAG, ($stackPtr + 1));
-
+        $closer = $phpcs_file->find_next(T_CLOSE_TAG, $stack_ptr + 1);
         if ($closer !== false && $content === trim($tokens[$closer]['content'])) {
             return $closer;
         }
-
         return false;
-
-    }//end findClosingTag()
-
+    }
+    //end findClosingTag()
     /**
      * Add a changeset to replace the alternative PHP tags.
      *
@@ -222,27 +185,24 @@ class DisallowAlternativePHPTagsSniff implements Sniff
      *
      * @return void
      */
-    protected function addChangeset(File $phpcsFile, array $tokens, $openTagPointer, $closeTagPointer, $echo = false)
+    protected function add_changeset(File $phpcs_file, array $tokens, $open_tag_pointer, $close_tag_pointer, $echo = false)
     {
         // Build up the open tag replacement and make sure there's always whitespace behind it.
-        $openReplacement = '<?php';
+        $open_replacement = '<?php';
         if ($echo === true) {
-            $openReplacement .= ' echo';
+            $open_replacement .= ' echo';
         }
-
-        if ($tokens[($openTagPointer + 1)]['code'] !== T_WHITESPACE) {
-            $openReplacement .= ' ';
+        if ($tokens[$open_tag_pointer + 1]['code'] !== T_WHITESPACE) {
+            $open_replacement .= ' ';
         }
-
         // Make sure we don't remove any line breaks after the closing tag.
-        $regex            = '`'.preg_quote(trim($tokens[$closeTagPointer]['content'])).'`';
-        $closeReplacement = preg_replace($regex, '?>', $tokens[$closeTagPointer]['content']);
-
-        $phpcsFile->fixer->beginChangeset();
-        $phpcsFile->fixer->replaceToken($openTagPointer, $openReplacement);
-        $phpcsFile->fixer->replaceToken($closeTagPointer, $closeReplacement);
-        $phpcsFile->fixer->endChangeset();
-
-    }//end addChangeset()
-
-}//end class
+        $regex = '`' . preg_quote(trim($tokens[$close_tag_pointer]['content'])) . '`';
+        $close_replacement = preg_replace($regex, '?>', $tokens[$close_tag_pointer]['content']);
+        $phpcs_file->fixer->begin_changeset();
+        $phpcs_file->fixer->replace_token($open_tag_pointer, $open_replacement);
+        $phpcs_file->fixer->replace_token($close_tag_pointer, $close_replacement);
+        $phpcs_file->fixer->end_changeset();
+    }
+    //end addChangeset()
+}
+//end class

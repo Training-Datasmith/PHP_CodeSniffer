@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * An interface that PHP_CodeSniffer reports must implement.
  *
@@ -8,11 +8,9 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Files\File;
-
+use Php_code_Sniffer\Files\File;
 interface Report
 {
     /**
@@ -29,8 +27,7 @@ interface Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80);
-
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80);
     /**
      * Generate the actual report.
      *
@@ -47,16 +44,6 @@ interface Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    );
-
-}//end interface
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true);
+}
+//end interface

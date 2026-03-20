@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * A filter to only include files that have been staged for commit in a Git repository.
  *
@@ -10,57 +10,49 @@ declare(strict_types=1);
  * @copyright 2018 Juliette Reinders Folmer. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Filters;
 
-namespace PHP_CodeSniffer\Filters;
-
-use PHP_CodeSniffer\Util;
-
-class GitStaged extends ExactMatch
+use Php_code_Sniffer\Util;
+class Git_Staged extends Exact_Match
 {
     /**
      * Get a list of blacklisted file paths.
      *
      * @return array
      */
-    protected function getBlacklist()
+    protected function get_blacklist()
     {
         return [];
-
-    }//end getBlacklist()
-
+    }
+    //end getBlacklist()
     /**
      * Get a list of whitelisted file paths.
      *
      * @return array
      */
-    protected function getWhitelist()
+    protected function get_whitelist()
     {
         $modified = [];
-
-        $cmd    = 'git diff --cached --name-only -- '.escapeshellarg($this->basedir);
+        $cmd = 'git diff --cached --name-only -- ' . escapeshellarg($this->basedir);
         $output = [];
         exec($cmd, $output);
-
         $basedir = $this->basedir;
         if (is_dir($basedir) === false) {
             $basedir = dirname($basedir);
         }
-
         foreach ($output as $path) {
             $path = Util\Common::realpath($path);
             if ($path === false) {
                 // Skip deleted files.
                 continue;
             }
-
             do {
                 $modified[$path] = true;
-                $path            = dirname($path);
+                $path = dirname($path);
             } while ($path !== $basedir);
         }
-
         return $modified;
-
-    }//end getWhitelist()
-
-}//end class
+    }
+    //end getWhitelist()
+}
+//end class

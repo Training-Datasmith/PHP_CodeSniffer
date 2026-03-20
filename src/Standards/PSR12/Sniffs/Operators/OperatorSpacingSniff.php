@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that operators have valid spacing surrounding them.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Operators;
 
-namespace PHP_CodeSniffer\Standards\PSR12\Sniffs\Operators;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\OperatorSpacingSniff as SquizOperatorSpacingSniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class OperatorSpacingSniff extends SquizOperatorSpacingSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Standards\Squiz\Sniffs\White_Space\Operator_Spacing_Sniff as SquizOperatorSpacingSniff;
+use Php_code_Sniffer\Util\Tokens;
+class Operator_Spacing_Sniff extends Squiz_Operator_Spacing_Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -25,20 +23,17 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
     public function register()
     {
         parent::register();
-
-        $targets   = Tokens::$comparisonTokens;
-        $targets  += Tokens::$operators;
-        $targets  += Tokens::$assignmentTokens;
-        $targets  += Tokens::$booleanOperators;
+        $targets = Tokens::$comparison_tokens;
+        $targets += Tokens::$operators;
+        $targets += Tokens::$assignment_tokens;
+        $targets += Tokens::$boolean_operators;
         $targets[] = T_INLINE_THEN;
         $targets[] = T_INLINE_ELSE;
         $targets[] = T_STRING_CONCAT;
         $targets[] = T_INSTANCEOF;
-
         return $targets;
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -48,63 +43,49 @@ class OperatorSpacingSniff extends SquizOperatorSpacingSniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if ($this->isOperator($phpcsFile, $stackPtr) === false) {
+        $tokens = $phpcs_file->get_tokens();
+        if ($this->is_operator($phpcs_file, $stack_ptr) === false) {
             return;
         }
-
-        $operator = $tokens[$stackPtr]['content'];
-
-        $checkBefore = true;
-        $checkAfter  = true;
-
+        $operator = $tokens[$stack_ptr]['content'];
+        $check_before = true;
+        $check_after = true;
         // Skip short ternary.
-        if ($tokens[($stackPtr)]['code'] === T_INLINE_ELSE
-            && $tokens[($stackPtr - 1)]['code'] === T_INLINE_THEN
-        ) {
-            $checkBefore = false;
+        if ($tokens[$stack_ptr]['code'] === T_INLINE_ELSE && $tokens[$stack_ptr - 1]['code'] === T_INLINE_THEN) {
+            $check_before = false;
         }
-
         // Skip operator with comment on previous line.
-        if ($tokens[($stackPtr - 1)]['code'] === T_COMMENT
-            && $tokens[($stackPtr - 1)]['line'] < $tokens[$stackPtr]['line']
-        ) {
-            $checkBefore = false;
+        if ($tokens[$stack_ptr - 1]['code'] === T_COMMENT && $tokens[$stack_ptr - 1]['line'] < $tokens[$stack_ptr]['line']) {
+            $check_before = false;
         }
-
-        if (isset($tokens[($stackPtr + 1)]) === true) {
+        if (isset($tokens[$stack_ptr + 1]) === true) {
             // Skip short ternary.
-            if ($tokens[$stackPtr]['code'] === T_INLINE_THEN
-                && $tokens[($stackPtr + 1)]['code'] === T_INLINE_ELSE
-            ) {
-                $checkAfter = false;
+            if ($tokens[$stack_ptr]['code'] === T_INLINE_THEN && $tokens[$stack_ptr + 1]['code'] === T_INLINE_ELSE) {
+                $check_after = false;
             }
         } else {
             // Skip partial files.
-            $checkAfter = false;
+            $check_after = false;
         }
-
-        if ($checkBefore === true && $tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
+        if ($check_before === true && $tokens[$stack_ptr - 1]['code'] !== T_WHITESPACE) {
             $error = 'Expected at least 1 space before "%s"; 0 found';
-            $data  = [$operator];
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBefore', $data);
+            $data = [$operator];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceBefore', $data);
             if ($fix === true) {
-                $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
+                $phpcs_file->fixer->add_content_before($stack_ptr, ' ');
             }
         }
-
-        if ($checkAfter === true && $tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+        if ($check_after === true && $tokens[$stack_ptr + 1]['code'] !== T_WHITESPACE) {
             $error = 'Expected at least 1 space after "%s"; 0 found';
-            $data  = [$operator];
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfter', $data);
+            $data = [$operator];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceAfter', $data);
             if ($fix === true) {
-                $phpcsFile->fixer->addContent($stackPtr, ' ');
+                $phpcs_file->fixer->add_content($stack_ptr, ' ');
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Diff report for PHP_CodeSniffer.
  *
@@ -8,11 +8,9 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Files\File;
-
+use Php_code_Sniffer\Files\File;
 class Diff implements Report
 {
     /**
@@ -29,68 +27,57 @@ class Diff implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {
-        $errors = $phpcsFile->getFixableCount();
+        $errors = $phpcs_file->get_fixable_count();
         if ($errors === 0) {
             return false;
         }
-
-        $phpcsFile->disableCaching();
-        $tokens = $phpcsFile->getTokens();
+        $phpcs_file->disable_caching();
+        $tokens = $phpcs_file->get_tokens();
         if (empty($tokens) === true) {
             if (PHP_CODESNIFFER_VERBOSITY === 1) {
-                $startTime = microtime(true);
-                echo 'DIFF report is parsing '.basename($report['filename']).' ';
+                $start_time = microtime(true);
+                echo 'DIFF report is parsing ' . basename($report['filename']) . ' ';
             } elseif (PHP_CODESNIFFER_VERBOSITY > 1) {
-                echo 'DIFF report is forcing parse of '.$report['filename'].PHP_EOL;
+                echo 'DIFF report is forcing parse of ' . $report['filename'] . PHP_EOL;
             }
-
-            $phpcsFile->parse();
-
+            $phpcs_file->parse();
             if (PHP_CODESNIFFER_VERBOSITY === 1) {
-                $timeTaken = ((microtime(true) - $startTime) * 1000);
-                if ($timeTaken < 1000) {
-                    $timeTaken = round($timeTaken);
-                    echo "DONE in {$timeTaken}ms";
+                $time_taken = (microtime(true) - $start_time) * 1000;
+                if ($time_taken < 1000) {
+                    $time_taken = round($time_taken);
+                    echo "DONE in {$time_taken}ms";
                 } else {
-                    $timeTaken = round(($timeTaken / 1000), 2);
-                    echo "DONE in $timeTaken secs";
+                    $time_taken = round($time_taken / 1000, 2);
+                    echo "DONE in {$time_taken} secs";
                 }
-
                 echo PHP_EOL;
             }
-
-            $phpcsFile->fixer->startFile($phpcsFile);
-        }//end if
-
+            $phpcs_file->fixer->start_file($phpcs_file);
+        }
+        //end if
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             ob_end_clean();
-            echo "\t*** START FILE FIXING ***".PHP_EOL;
+            echo "\t*** START FILE FIXING ***" . PHP_EOL;
         }
-
-        $fixed = $phpcsFile->fixer->fixFile();
-
+        $fixed = $phpcs_file->fixer->fix_file();
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
-            echo "\t*** END FILE FIXING ***".PHP_EOL;
+            echo "\t*** END FILE FIXING ***" . PHP_EOL;
             ob_start();
         }
-
         if ($fixed === false) {
             return false;
         }
-
-        $diff = $phpcsFile->fixer->generateDiff();
+        $diff = $phpcs_file->fixer->generate_diff();
         if ($diff === '') {
             // Nothing to print.
             return false;
         }
-
-        echo $diff.PHP_EOL;
+        echo $diff . PHP_EOL;
         return true;
-
-    }//end generateFileReport()
-
+    }
+    //end generateFileReport()
     /**
      * Prints all errors and warnings for each file processed.
      *
@@ -107,22 +94,13 @@ class Diff implements Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    ) {
-        echo $cachedData;
-        if ($toScreen === true && $cachedData !== '') {
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true)
+    {
+        echo $cached_data;
+        if ($to_screen === true && $cached_data !== '') {
             echo PHP_EOL;
         }
-
-    }//end generate()
-
-}//end class
+    }
+    //end generate()
+}
+//end class

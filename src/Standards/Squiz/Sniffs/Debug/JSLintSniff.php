@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Runs jslint.js on the file.
  *
@@ -8,23 +8,20 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Debug;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Debug;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Common;
-
-class JSLintSniff implements Sniff
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Common;
+class Js_Lint_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = ['JS'];
-
+    public $supported_tokenizers = ['JS'];
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -33,9 +30,8 @@ class JSLintSniff implements Sniff
     public function register()
     {
         return [T_OPEN_TAG];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes the tokens that this sniff is interested in.
      *
@@ -46,39 +42,33 @@ class JSLintSniff implements Sniff
      * @return void
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If jslint.js could not be run
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $rhinoPath  = Config::getExecutablePath('rhino');
-        $jslintPath = Config::getExecutablePath('jslint');
-        if ($rhinoPath === null || $jslintPath === null) {
+        $rhino_path = Config::get_executable_path('rhino');
+        $jslint_path = Config::get_executable_path('jslint');
+        if ($rhino_path === null || $jslint_path === null) {
             return;
         }
-
-        $fileName = $phpcsFile->getFilename();
-
-        $rhinoPath  = Common::escapeshellcmd($rhinoPath);
-        $jslintPath = Common::escapeshellcmd($jslintPath);
-
-        $cmd = "$rhinoPath \"$jslintPath\" ".escapeshellarg($fileName);
+        $file_name = $phpcs_file->get_filename();
+        $rhino_path = Common::escapeshellcmd($rhino_path);
+        $jslint_path = Common::escapeshellcmd($jslint_path);
+        $cmd = "{$rhino_path} \"{$jslint_path}\" " . escapeshellarg($file_name);
         exec($cmd, $output, $retval);
-
         if (is_array($output) === true) {
             foreach ($output as $finding) {
-                $matches    = [];
-                $numMatches = preg_match('/Lint at line ([0-9]+).*:(.*)$/', $finding, $matches);
-                if ($numMatches === 0) {
+                $matches = [];
+                $num_matches = preg_match('/Lint at line ([0-9]+).*:(.*)$/', $finding, $matches);
+                if ($num_matches === 0) {
                     continue;
                 }
-
-                $line    = (int) $matches[1];
-                $message = 'jslint says: '.trim($matches[2]);
-                $phpcsFile->addWarningOnLine($message, $line, 'ExternalTool');
+                $line = (int) $matches[1];
+                $message = 'jslint says: ' . trim($matches[2]);
+                $phpcs_file->add_warning_on_line($message, $line, 'ExternalTool');
             }
         }
-
         // Ignore the rest of the file.
-        return ($phpcsFile->numTokens + 1);
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens + 1;
+    }
+    //end process()
+}
+//end class

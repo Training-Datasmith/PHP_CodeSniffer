@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Version control report base class for PHP_CodeSniffer.
  *
@@ -9,21 +9,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Timing;
-
-abstract class VersionControl implements Report
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Util\Timing;
+abstract class Version_Control implements Report
 {
     /**
      * The name of the report we want in the output.
      *
      * @var string
      */
-    protected $reportName = 'VERSION CONTROL';
-
+    protected $report_name = 'VERSION CONTROL';
     /**
      * Generate a partial report for a single processed file.
      *
@@ -38,98 +35,75 @@ abstract class VersionControl implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {
-        $blames = $this->getBlameContent($report['filename']);
-
-        $authorCache = [];
-        $praiseCache = [];
-        $sourceCache = [];
-
-        foreach ($report['messages'] as $line => $lineErrors) {
+        $blames = $this->get_blame_content($report['filename']);
+        $author_cache = [];
+        $praise_cache = [];
+        $source_cache = [];
+        foreach ($report['messages'] as $line => $line_errors) {
             $author = 'Unknown';
-            if (isset($blames[($line - 1)]) === true) {
-                $blameAuthor = $this->getAuthor($blames[($line - 1)]);
-                if ($blameAuthor !== false) {
-                    $author = $blameAuthor;
+            if (isset($blames[$line - 1]) === true) {
+                $blame_author = $this->get_author($blames[$line - 1]);
+                if ($blame_author !== false) {
+                    $author = $blame_author;
                 }
             }
-
-            if (isset($authorCache[$author]) === false) {
-                $authorCache[$author] = 0;
-                $praiseCache[$author] = [
-                    'good' => 0,
-                    'bad'  => 0,
-                ];
+            if (isset($author_cache[$author]) === false) {
+                $author_cache[$author] = 0;
+                $praise_cache[$author] = ['good' => 0, 'bad' => 0];
             }
-
-            $praiseCache[$author]['bad']++;
-
-            foreach ($lineErrors as $colErrors) {
-                foreach ($colErrors as $error) {
-                    $authorCache[$author]++;
-
-                    if ($showSources === true) {
+            $praise_cache[$author]['bad']++;
+            foreach ($line_errors as $col_errors) {
+                foreach ($col_errors as $error) {
+                    $author_cache[$author]++;
+                    if ($show_sources === true) {
                         $source = $error['source'];
-                        if (isset($sourceCache[$author][$source]) === false) {
-                            $sourceCache[$author][$source] = [
-                                'count'   => 1,
-                                'fixable' => $error['fixable'],
-                            ];
+                        if (isset($source_cache[$author][$source]) === false) {
+                            $source_cache[$author][$source] = ['count' => 1, 'fixable' => $error['fixable']];
                         } else {
-                            $sourceCache[$author][$source]['count']++;
+                            $source_cache[$author][$source]['count']++;
                         }
                     }
                 }
             }
-
-            unset($blames[($line - 1)]);
-        }//end foreach
-
+            unset($blames[$line - 1]);
+        }
+        //end foreach
         // Now go through and give the authors some credit for
         // all the lines that do not have errors.
         foreach ($blames as $line) {
-            $author = $this->getAuthor($line);
+            $author = $this->get_author($line);
             if ($author === false) {
                 $author = 'Unknown';
             }
-
-            if (isset($authorCache[$author]) === false) {
+            if (isset($author_cache[$author]) === false) {
                 // This author doesn't have any errors.
                 if (PHP_CODESNIFFER_VERBOSITY === 0) {
                     continue;
                 }
-
-                $authorCache[$author] = 0;
-                $praiseCache[$author] = [
-                    'good' => 0,
-                    'bad'  => 0,
-                ];
+                $author_cache[$author] = 0;
+                $praise_cache[$author] = ['good' => 0, 'bad' => 0];
             }
-
-            $praiseCache[$author]['good']++;
-        }//end foreach
-
-        foreach ($authorCache as $author => $errors) {
-            echo "AUTHOR>>$author>>$errors".PHP_EOL;
+            $praise_cache[$author]['good']++;
         }
-
-        foreach ($praiseCache as $author => $praise) {
-            echo "PRAISE>>$author>>".$praise['good'].'>>'.$praise['bad'].PHP_EOL;
+        //end foreach
+        foreach ($author_cache as $author => $errors) {
+            echo "AUTHOR>>{$author}>>{$errors}" . PHP_EOL;
         }
-
-        foreach ($sourceCache as $author => $sources) {
-            foreach ($sources as $source => $sourceData) {
-                $count   = $sourceData['count'];
-                $fixable = (int) $sourceData['fixable'];
-                echo "SOURCE>>$author>>$source>>$count>>$fixable".PHP_EOL;
+        foreach ($praise_cache as $author => $praise) {
+            echo "PRAISE>>{$author}>>" . $praise['good'] . '>>' . $praise['bad'] . PHP_EOL;
+        }
+        foreach ($source_cache as $author => $sources) {
+            foreach ($sources as $source => $source_data) {
+                $count = $source_data['count'];
+                $fixable = (int) $source_data['fixable'];
+                echo "SOURCE>>{$author}>>{$source}>>{$count}>>{$fixable}" . PHP_EOL;
             }
         }
-
         return true;
-
-    }//end generateFileReport()
-
+    }
+    //end generateFileReport()
     /**
      * Prints the author of all errors and warnings, as given by "version control blame".
      *
@@ -146,211 +120,168 @@ abstract class VersionControl implements Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    ) {
-        $errorsShown = ($totalErrors + $totalWarnings);
-        if ($errorsShown === 0) {
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true)
+    {
+        $errors_shown = $total_errors + $total_warnings;
+        if ($errors_shown === 0) {
             // Nothing to show.
             return;
         }
-
-        $lines = explode(PHP_EOL, $cachedData);
+        $lines = explode(PHP_EOL, $cached_data);
         array_pop($lines);
-
         if (empty($lines) === true) {
             return;
         }
-
-        $authorCache = [];
-        $praiseCache = [];
-        $sourceCache = [];
-
+        $author_cache = [];
+        $praise_cache = [];
+        $source_cache = [];
         foreach ($lines as $line) {
             $parts = explode('>>', $line);
             switch ($parts[0]) {
                 case 'AUTHOR':
-                    if (isset($authorCache[$parts[1]]) === false) {
-                        $authorCache[$parts[1]] = $parts[2];
+                    if (isset($author_cache[$parts[1]]) === false) {
+                        $author_cache[$parts[1]] = $parts[2];
                     } else {
-                        $authorCache[$parts[1]] += $parts[2];
+                        $author_cache[$parts[1]] += $parts[2];
                     }
                     break;
                 case 'PRAISE':
-                    if (isset($praiseCache[$parts[1]]) === false) {
-                        $praiseCache[$parts[1]] = [
-                            'good' => $parts[2],
-                            'bad'  => $parts[3],
-                        ];
+                    if (isset($praise_cache[$parts[1]]) === false) {
+                        $praise_cache[$parts[1]] = ['good' => $parts[2], 'bad' => $parts[3]];
                     } else {
-                        $praiseCache[$parts[1]]['good'] += $parts[2];
-                        $praiseCache[$parts[1]]['bad']  += $parts[3];
+                        $praise_cache[$parts[1]]['good'] += $parts[2];
+                        $praise_cache[$parts[1]]['bad'] += $parts[3];
                     }
                     break;
                 case 'SOURCE':
-                    if (isset($praiseCache[$parts[1]]) === false) {
-                        $praiseCache[$parts[1]] = [];
+                    if (isset($praise_cache[$parts[1]]) === false) {
+                        $praise_cache[$parts[1]] = [];
                     }
-
-                    if (isset($sourceCache[$parts[1]][$parts[2]]) === false) {
-                        $sourceCache[$parts[1]][$parts[2]] = [
-                            'count'   => $parts[3],
-                            'fixable' => (bool) $parts[4],
-                        ];
+                    if (isset($source_cache[$parts[1]][$parts[2]]) === false) {
+                        $source_cache[$parts[1]][$parts[2]] = ['count' => $parts[3], 'fixable' => (bool) $parts[4]];
                     } else {
-                        $sourceCache[$parts[1]][$parts[2]]['count'] += $parts[3];
+                        $source_cache[$parts[1]][$parts[2]]['count'] += $parts[3];
                     }
                     break;
                 default:
                     break;
-            }//end switch
-        }//end foreach
-
+            }
+            //end switch
+        }
+        //end foreach
         // Make sure the report width isn't too big.
-        $maxLength = 0;
-        foreach ($authorCache as $author => $count) {
-            $maxLength = max($maxLength, strlen($author));
-            if ($showSources === true && isset($sourceCache[$author]) === true) {
-                foreach ($sourceCache[$author] as $source => $sourceData) {
+        $max_length = 0;
+        foreach ($author_cache as $author => $count) {
+            $max_length = max($max_length, strlen($author));
+            if ($show_sources === true && isset($source_cache[$author]) === true) {
+                foreach ($source_cache[$author] as $source => $source_data) {
                     if ($source === 'count') {
                         continue;
                     }
-
-                    $maxLength = max($maxLength, (strlen($source) + 9));
+                    $max_length = max($max_length, strlen($source) + 9);
                 }
             }
         }
-
-        $width = min($width, ($maxLength + 30));
+        $width = min($width, $max_length + 30);
         $width = max($width, 70);
-        arsort($authorCache);
-
-        echo PHP_EOL."\033[1m".'PHP CODE SNIFFER '.$this->reportName.' BLAME SUMMARY'."\033[0m".PHP_EOL;
-        echo str_repeat('-', $width).PHP_EOL."\033[1m";
-        if ($showSources === true) {
-            echo 'AUTHOR   SOURCE'.str_repeat(' ', ($width - 43)).'(Author %) (Overall %) COUNT'.PHP_EOL;
-            echo str_repeat('-', $width).PHP_EOL;
+        arsort($author_cache);
+        echo PHP_EOL . "\x1b[1m" . 'PHP CODE SNIFFER ' . $this->report_name . ' BLAME SUMMARY' . "\x1b[0m" . PHP_EOL;
+        echo str_repeat('-', $width) . PHP_EOL . "\x1b[1m";
+        if ($show_sources === true) {
+            echo 'AUTHOR   SOURCE' . str_repeat(' ', $width - 43) . '(Author %) (Overall %) COUNT' . PHP_EOL;
+            echo str_repeat('-', $width) . PHP_EOL;
         } else {
-            echo 'AUTHOR'.str_repeat(' ', ($width - 34)).'(Author %) (Overall %) COUNT'.PHP_EOL;
-            echo str_repeat('-', $width).PHP_EOL;
+            echo 'AUTHOR' . str_repeat(' ', $width - 34) . '(Author %) (Overall %) COUNT' . PHP_EOL;
+            echo str_repeat('-', $width) . PHP_EOL;
         }
-
-        echo "\033[0m";
-
-        if ($showSources === true) {
-            $maxSniffWidth = ($width - 15);
-
-            if ($totalFixable > 0) {
-                $maxSniffWidth -= 4;
+        echo "\x1b[0m";
+        if ($show_sources === true) {
+            $max_sniff_width = $width - 15;
+            if ($total_fixable > 0) {
+                $max_sniff_width -= 4;
             }
         }
-
-        $fixableSources = 0;
-
-        foreach ($authorCache as $author => $count) {
-            if ($praiseCache[$author]['good'] === 0) {
+        $fixable_sources = 0;
+        foreach ($author_cache as $author => $count) {
+            if ($praise_cache[$author]['good'] === 0) {
                 $percent = 0;
             } else {
-                $total   = ($praiseCache[$author]['bad'] + $praiseCache[$author]['good']);
-                $percent = round(($praiseCache[$author]['bad'] / $total * 100), 2);
+                $total = $praise_cache[$author]['bad'] + $praise_cache[$author]['good'];
+                $percent = round($praise_cache[$author]['bad'] / $total * 100, 2);
             }
-
-            $overallPercent = '('.round((($count / $errorsShown) * 100), 2).')';
-            $authorPercent  = '('.$percent.')';
-            $line           = str_repeat(' ', (6 - strlen($count))).$count;
-            $line           = str_repeat(' ', (12 - strlen($overallPercent))).$overallPercent.$line;
-            $line           = str_repeat(' ', (11 - strlen($authorPercent))).$authorPercent.$line;
-            $line           = $author.str_repeat(' ', ($width - strlen($author) - strlen($line))).$line;
-
-            if ($showSources === true) {
-                $line = "\033[1m$line\033[0m";
+            $overall_percent = '(' . round($count / $errors_shown * 100, 2) . ')';
+            $author_percent = '(' . $percent . ')';
+            $line = str_repeat(' ', 6 - strlen($count)) . $count;
+            $line = str_repeat(' ', 12 - strlen($overall_percent)) . $overall_percent . $line;
+            $line = str_repeat(' ', 11 - strlen($author_percent)) . $author_percent . $line;
+            $line = $author . str_repeat(' ', $width - strlen($author) - strlen($line)) . $line;
+            if ($show_sources === true) {
+                $line = "\x1b[1m{$line}\x1b[0m";
             }
-
-            echo $line.PHP_EOL;
-
-            if ($showSources === true && isset($sourceCache[$author]) === true) {
-                $errors = $sourceCache[$author];
+            echo $line . PHP_EOL;
+            if ($show_sources === true && isset($source_cache[$author]) === true) {
+                $errors = $source_cache[$author];
                 asort($errors);
                 $errors = array_reverse($errors);
-
-                foreach ($errors as $source => $sourceData) {
+                foreach ($errors as $source => $source_data) {
                     if ($source === 'count') {
                         continue;
                     }
-
-                    $count = $sourceData['count'];
-
-                    $srcLength = strlen($source);
-                    if ($srcLength > $maxSniffWidth) {
-                        $source = substr($source, 0, $maxSniffWidth);
+                    $count = $source_data['count'];
+                    $src_length = strlen($source);
+                    if ($src_length > $max_sniff_width) {
+                        $source = substr($source, 0, $max_sniff_width);
                     }
-
-                    $line = str_repeat(' ', (5 - strlen($count))).$count;
-
+                    $line = str_repeat(' ', 5 - strlen($count)) . $count;
                     echo '         ';
-                    if ($totalFixable > 0) {
+                    if ($total_fixable > 0) {
                         echo '[';
-                        if ($sourceData['fixable'] === true) {
+                        if ($source_data['fixable'] === true) {
                             echo 'x';
-                            $fixableSources++;
+                            $fixable_sources++;
                         } else {
                             echo ' ';
                         }
-
                         echo '] ';
                     }
-
                     echo $source;
-                    if ($totalFixable > 0) {
-                        echo str_repeat(' ', ($width - 18 - strlen($source)));
+                    if ($total_fixable > 0) {
+                        echo str_repeat(' ', $width - 18 - strlen($source));
                     } else {
-                        echo str_repeat(' ', ($width - 14 - strlen($source)));
+                        echo str_repeat(' ', $width - 14 - strlen($source));
                     }
-
-                    echo $line.PHP_EOL;
-                }//end foreach
-            }//end if
-        }//end foreach
-
-        echo str_repeat('-', $width).PHP_EOL;
-        echo "\033[1m".'A TOTAL OF '.$errorsShown.' SNIFF VIOLATION';
-        if ($errorsShown !== 1) {
+                    echo $line . PHP_EOL;
+                }
+                //end foreach
+            }
+            //end if
+        }
+        //end foreach
+        echo str_repeat('-', $width) . PHP_EOL;
+        echo "\x1b[1m" . 'A TOTAL OF ' . $errors_shown . ' SNIFF VIOLATION';
+        if ($errors_shown !== 1) {
             echo 'S';
         }
-
-        echo ' WERE COMMITTED BY '.count($authorCache).' AUTHOR';
-        if (count($authorCache) !== 1) {
+        echo ' WERE COMMITTED BY ' . count($author_cache) . ' AUTHOR';
+        if (count($author_cache) !== 1) {
             echo 'S';
         }
-
-        echo "\033[0m";
-
-        if ($totalFixable > 0) {
-            if ($showSources === true) {
-                echo PHP_EOL.str_repeat('-', $width).PHP_EOL;
-                echo "\033[1mPHPCBF CAN FIX THE $fixableSources MARKED SOURCES AUTOMATICALLY ($totalFixable VIOLATIONS IN TOTAL)\033[0m";
+        echo "\x1b[0m";
+        if ($total_fixable > 0) {
+            if ($show_sources === true) {
+                echo PHP_EOL . str_repeat('-', $width) . PHP_EOL;
+                echo "\x1b[1mPHPCBF CAN FIX THE {$fixable_sources} MARKED SOURCES AUTOMATICALLY ({$total_fixable} VIOLATIONS IN TOTAL)\x1b[0m";
             } else {
-                echo PHP_EOL.str_repeat('-', $width).PHP_EOL;
-                echo "\033[1mPHPCBF CAN FIX $totalFixable OF THESE SNIFF VIOLATIONS AUTOMATICALLY\033[0m";
+                echo PHP_EOL . str_repeat('-', $width) . PHP_EOL;
+                echo "\x1b[1mPHPCBF CAN FIX {$total_fixable} OF THESE SNIFF VIOLATIONS AUTOMATICALLY\x1b[0m";
             }
         }
-
-        echo PHP_EOL.str_repeat('-', $width).PHP_EOL.PHP_EOL;
-
-        if ($toScreen === true && $interactive === false) {
-            Timing::printRunTime();
+        echo PHP_EOL . str_repeat('-', $width) . PHP_EOL . PHP_EOL;
+        if ($to_screen === true && $interactive === false) {
+            Timing::print_run_time();
         }
-
-    }//end generate()
-
+    }
+    //end generate()
     /**
      * Extract the author from a blame line.
      *
@@ -358,8 +289,7 @@ abstract class VersionControl implements Report
      *
      * @return mixed string or false if impossible to recover.
      */
-    abstract protected function getAuthor($line);
-
+    abstract protected function get_author($line);
     /**
      * Gets the blame output.
      *
@@ -367,6 +297,6 @@ abstract class VersionControl implements Report
      *
      * @return array
      */
-    abstract protected function getBlameContent($filename);
-
-}//end class
+    abstract protected function get_blame_content($filename);
+}
+//end class

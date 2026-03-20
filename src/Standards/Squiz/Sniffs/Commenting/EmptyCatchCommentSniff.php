@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks for empty catch clause without a comment.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Commenting;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class EmptyCatchCommentSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Empty_Catch_Comment_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class EmptyCatchCommentSniff implements Sniff
     public function register()
     {
         return [T_CATCH];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -36,18 +33,16 @@ class EmptyCatchCommentSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $scopeStart   = $tokens[$stackPtr]['scope_opener'];
-        $firstContent = $phpcsFile->findNext(T_WHITESPACE, ($scopeStart + 1), $tokens[$stackPtr]['scope_closer'], true);
-
-        if ($firstContent === false) {
+        $tokens = $phpcs_file->get_tokens();
+        $scope_start = $tokens[$stack_ptr]['scope_opener'];
+        $first_content = $phpcs_file->find_next(T_WHITESPACE, $scope_start + 1, $tokens[$stack_ptr]['scope_closer'], true);
+        if ($first_content === false) {
             $error = 'Empty CATCH statement must have a comment to explain why the exception is not handled';
-            $phpcsFile->addError($error, $scopeStart, 'Missing');
+            $phpcs_file->add_error($error, $scope_start, 'Missing');
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

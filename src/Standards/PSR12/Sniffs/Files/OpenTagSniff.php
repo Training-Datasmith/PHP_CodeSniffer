@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that the open tag is defined correctly.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2019 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Files;
 
-namespace PHP_CodeSniffer\Standards\PSR12\Sniffs\Files;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class OpenTagSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Open_Tag_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class OpenTagSniff implements Sniff
     public function register()
     {
         return [T_OPEN_TAG];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff when one of its tokens is encountered.
      *
@@ -36,36 +33,32 @@ class OpenTagSniff implements Sniff
      *
      * @return int
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        if ($stackPtr !== 0) {
+        if ($stack_ptr !== 0) {
             // This rule only applies if the open tag is on the first line of the file.
-            return $phpcsFile->numTokens;
+            return $phpcs_file->num_tokens;
         }
-
-        $next = $phpcsFile->findNext(T_INLINE_HTML, 0);
+        $next = $phpcs_file->find_next(T_INLINE_HTML, 0);
         if ($next !== false) {
             // This rule only applies to PHP-only files.
-            return $phpcsFile->numTokens;
+            return $phpcs_file->num_tokens;
         }
-
-        $tokens = $phpcsFile->getTokens();
-        $next   = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $tokens = $phpcs_file->get_tokens();
+        $next = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
         if ($next === false) {
             // Empty file.
             return;
         }
-
-        if ($tokens[$next]['line'] === $tokens[$stackPtr]['line']) {
+        if ($tokens[$next]['line'] === $tokens[$stack_ptr]['line']) {
             $error = 'Opening PHP tag must be on a line by itself';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NotAlone');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NotAlone');
             if ($fix === true) {
-                $phpcsFile->fixer->addNewline($stackPtr);
+                $phpcs_file->fixer->add_newline($stack_ptr);
             }
         }
-
-        return $phpcsFile->numTokens;
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens;
+    }
+    //end process()
+}
+//end class

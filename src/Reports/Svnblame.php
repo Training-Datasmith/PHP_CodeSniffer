@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * SVN blame report for PHP_CodeSniffer.
  *
@@ -8,20 +8,17 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Exceptions\DeepExitException;
-
-class Svnblame extends VersionControl
+use Php_code_Sniffer\Exceptions\Deep_Exit_Exception;
+class Svnblame extends Version_Control
 {
     /**
      * The name of the report we want in the output
      *
      * @var string
      */
-    protected $reportName = 'SVN';
-
+    protected $report_name = 'SVN';
     /**
      * Extract the author from a blame line.
      *
@@ -29,19 +26,16 @@ class Svnblame extends VersionControl
      *
      * @return mixed string or false if impossible to recover.
      */
-    protected function getAuthor($line)
+    protected function get_author($line)
     {
-        $blameParts = [];
-        preg_match('|\s*([^\s]+)\s+([^\s]+)|', $line, $blameParts);
-
-        if (isset($blameParts[2]) === false) {
+        $blame_parts = [];
+        preg_match('|\s*([^\s]+)\s+([^\s]+)|', $line, $blame_parts);
+        if (isset($blame_parts[2]) === false) {
             return false;
         }
-
-        return $blameParts[2];
-
-    }//end getAuthor()
-
+        return $blame_parts[2];
+    }
+    //end getAuthor()
     /**
      * Gets the blame output.
      *
@@ -50,20 +44,18 @@ class Svnblame extends VersionControl
      * @return array
      * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
      */
-    protected function getBlameContent($filename)
+    protected function get_blame_content($filename)
     {
-        $command = 'svn blame "'.$filename.'" 2>&1';
-        $handle  = popen($command, 'r');
+        $command = 'svn blame "' . $filename . '" 2>&1';
+        $handle = popen($command, 'r');
         if ($handle === false) {
-            $error = 'ERROR: Could not execute "'.$command.'"'.PHP_EOL.PHP_EOL;
-            throw new DeepExitException($error, 3);
+            $error = 'ERROR: Could not execute "' . $command . '"' . PHP_EOL . PHP_EOL;
+            throw new Deep_Exit_Exception($error, 3);
         }
-
-        $rawContent = stream_get_contents($handle);
+        $raw_content = stream_get_contents($handle);
         pclose($handle);
-
-        return explode("\n", $rawContent);
-
-    }//end getBlameContent()
-
-}//end class
+        return explode("\n", $raw_content);
+    }
+    //end getBlameContent()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures method names are correct.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Naming_Conventions;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\NamingConventions;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Standards\PEAR\Sniffs\NamingConventions\ValidFunctionNameSniff as PEARValidFunctionNameSniff;
-use PHP_CodeSniffer\Util\Common;
-
-class ValidFunctionNameSniff extends PEARValidFunctionNameSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Standards\PEAR\Sniffs\Naming_Conventions\Valid_Function_Name_Sniff as PEARValidFunctionNameSniff;
+use Php_code_Sniffer\Util\Common;
+class Valid_Function_Name_Sniff extends Pear_Valid_Function_Name_Sniff
 {
     /**
      * Processes the tokens outside the scope.
@@ -26,28 +24,24 @@ class ValidFunctionNameSniff extends PEARValidFunctionNameSniff
      *
      * @return void
      */
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    protected function process_token_outside_scope(File $phpcs_file, $stack_ptr)
     {
-        $functionName = $phpcsFile->getDeclarationName($stackPtr);
-        if ($functionName === null) {
+        $function_name = $phpcs_file->get_declaration_name($stack_ptr);
+        if ($function_name === null) {
             return;
         }
-
-        $errorData = [$functionName];
-
+        $error_data = [$function_name];
         // Does this function claim to be magical?
-        if (preg_match('|^__[^_]|', $functionName) !== 0) {
+        if (preg_match('|^__[^_]|', $function_name) !== 0) {
             $error = 'Function name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
-            $phpcsFile->addError($error, $stackPtr, 'DoubleUnderscore', $errorData);
-
-            $functionName = ltrim($functionName, '_');
+            $phpcs_file->add_error($error, $stack_ptr, 'DoubleUnderscore', $error_data);
+            $function_name = ltrim($function_name, '_');
         }
-
-        if (Common::isCamelCaps($functionName, false, true, false) === false) {
+        if (Common::is_camel_caps($function_name, false, true, false) === false) {
             $error = 'Function name "%s" is not in camel caps format';
-            $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
+            $phpcs_file->add_error($error, $stack_ptr, 'NotCamelCaps', $error_data);
         }
-
-    }//end processTokenOutsideScope()
-
-}//end class
+    }
+    //end processTokenOutsideScope()
+}
+//end class

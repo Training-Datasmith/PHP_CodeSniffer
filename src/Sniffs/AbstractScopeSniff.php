@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Allows tests that extend this class to listen for tokens within a particular scope.
  *
@@ -25,13 +25,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Sniffs;
 
-namespace PHP_CodeSniffer\Sniffs;
-
-use PHP_CodeSniffer\Exceptions\RuntimeException;
-use PHP_CodeSniffer\Files\File;
-
-abstract class AbstractScopeSniff implements Sniff
+use Php_code_Sniffer\Exceptions\RuntimeException;
+use Php_code_Sniffer\Files\File;
+abstract class Abstract_Scope_Sniff implements Sniff
 {
     /**
      * The token types that this test wishes to listen to within the scope.
@@ -39,21 +37,18 @@ abstract class AbstractScopeSniff implements Sniff
      * @var array
      */
     private $tokens = [];
-
     /**
      * The type of scope opener tokens that this test wishes to listen to.
      *
      * @var string
      */
-    private $scopeTokens = [];
-
+    private $scope_tokens = [];
     /**
      * True if this test should fire on tokens outside of the scope.
      *
      * @var boolean
      */
-    private $listenOutside = false;
-
+    private $listen_outside = false;
     /**
      * Constructs a new AbstractScopeTest.
      *
@@ -68,34 +63,27 @@ abstract class AbstractScopeSniff implements Sniff
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified tokens arrays are empty
      *                                                      or invalid.
      */
-    public function __construct(
-        array $scopeTokens,
-        array $tokens,
-        $listenOutside = false
-    ) {
-        if (empty($scopeTokens) === true) {
+    public function __construct(array $scope_tokens, array $tokens, $listen_outside = false)
+    {
+        if (empty($scope_tokens) === true) {
             $error = 'The scope tokens list cannot be empty';
             throw new RuntimeException($error);
         }
-
         if (empty($tokens) === true) {
             $error = 'The tokens list cannot be empty';
             throw new RuntimeException($error);
         }
-
-        $invalidScopeTokens = array_intersect($scopeTokens, $tokens);
-        if (empty($invalidScopeTokens) === false) {
-            $invalid = implode(', ', $invalidScopeTokens);
-            $error   = "Scope tokens [$invalid] can't be in the tokens array";
+        $invalid_scope_tokens = array_intersect($scope_tokens, $tokens);
+        if (empty($invalid_scope_tokens) === false) {
+            $invalid = implode(', ', $invalid_scope_tokens);
+            $error = "Scope tokens [{$invalid}] can't be in the tokens array";
             throw new RuntimeException($error);
         }
-
-        $this->listenOutside = $listenOutside;
-        $this->scopeTokens   = array_flip($scopeTokens);
-        $this->tokens        = $tokens;
-
-    }//end __construct()
-
+        $this->listen_outside = $listen_outside;
+        $this->scope_tokens = array_flip($scope_tokens);
+        $this->tokens = $tokens;
+    }
+    //end __construct()
     /**
      * The method that is called to register the tokens this test wishes to
      * listen to.
@@ -109,9 +97,8 @@ abstract class AbstractScopeSniff implements Sniff
     final public function register()
     {
         return $this->tokens;
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes the tokens that this test is listening for.
      *
@@ -125,29 +112,25 @@ abstract class AbstractScopeSniff implements Sniff
      *                  the rest of the file.
      * @see    processTokenWithinScope()
      */
-    final public function process(File $phpcsFile, $stackPtr)
+    final public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $foundScope = false;
-        $skipTokens = [];
-        foreach ($tokens[$stackPtr]['conditions'] as $scope => $code) {
-            if (isset($this->scopeTokens[$code]) === true) {
-                $skipTokens[] = $this->processTokenWithinScope($phpcsFile, $stackPtr, $scope);
-                $foundScope   = true;
+        $tokens = $phpcs_file->get_tokens();
+        $found_scope = false;
+        $skip_tokens = [];
+        foreach ($tokens[$stack_ptr]['conditions'] as $scope => $code) {
+            if (isset($this->scope_tokens[$code]) === true) {
+                $skip_tokens[] = $this->process_token_within_scope($phpcs_file, $stack_ptr, $scope);
+                $found_scope = true;
             }
         }
-
-        if ($this->listenOutside === true && $foundScope === false) {
-            $skipTokens[] = $this->processTokenOutsideScope($phpcsFile, $stackPtr);
+        if ($this->listen_outside === true && $found_scope === false) {
+            $skip_tokens[] = $this->process_token_outside_scope($phpcs_file, $stack_ptr);
         }
-
-        if (empty($skipTokens) === false) {
-            return min($skipTokens);
+        if (empty($skip_tokens) === false) {
+            return min($skip_tokens);
         }
-
-    }//end process()
-
+    }
+    //end process()
     /**
      * Processes a token that is found within the scope that this test is
      * listening to.
@@ -164,8 +147,7 @@ abstract class AbstractScopeSniff implements Sniff
      *                  pointer is reached. Return ($phpcsFile->numTokens + 1) to skip
      *                  the rest of the file.
      */
-    abstract protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope);
-
+    abstract protected function process_token_within_scope(File $phpcs_file, $stack_ptr, $curr_scope);
     /**
      * Processes a token that is found outside the scope that this test is
      * listening to.
@@ -179,6 +161,6 @@ abstract class AbstractScopeSniff implements Sniff
      *                  pointer is reached. Return (count($tokens) + 1) to skip
      *                  the rest of the file.
      */
-    abstract protected function processTokenOutsideScope(File $phpcsFile, $stackPtr);
-
-}//end class
+    abstract protected function process_token_outside_scope(File $phpcs_file, $stack_ptr);
+}
+//end class

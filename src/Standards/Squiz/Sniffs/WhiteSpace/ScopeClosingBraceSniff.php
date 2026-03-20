@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that the closing braces of scopes are aligned correctly.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\White_Space;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class ScopeClosingBraceSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Scope_Closing_Brace_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,10 +22,9 @@ class ScopeClosingBraceSniff implements Sniff
      */
     public function register()
     {
-        return Tokens::$scopeOpeners;
-
-    }//end register()
-
+        return Tokens::$scope_openers;
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -37,75 +34,57 @@ class ScopeClosingBraceSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // If this is an inline condition (ie. there is no scope opener), then
         // return, as this is not a new scope.
-        if (isset($tokens[$stackPtr]['scope_closer']) === false) {
+        if (isset($tokens[$stack_ptr]['scope_closer']) === false) {
             return;
         }
-
         // We need to actually find the first piece of content on this line,
         // as if this is a method with tokens before it (public, static etc)
         // or an if with an else before it, then we need to start the scope
         // checking from there, rather than the current token.
-        $lineStart = $phpcsFile->findFirstOnLine([T_WHITESPACE, T_INLINE_HTML], $stackPtr, true);
-        while ($tokens[$lineStart]['code'] === T_CONSTANT_ENCAPSED_STRING
-            && $tokens[($lineStart - 1)]['code'] === T_CONSTANT_ENCAPSED_STRING
-        ) {
-            $lineStart = $phpcsFile->findFirstOnLine([T_WHITESPACE, T_INLINE_HTML], ($lineStart - 1), true);
+        $line_start = $phpcs_file->find_first_on_line([T_WHITESPACE, T_INLINE_HTML], $stack_ptr, true);
+        while ($tokens[$line_start]['code'] === T_CONSTANT_ENCAPSED_STRING && $tokens[$line_start - 1]['code'] === T_CONSTANT_ENCAPSED_STRING) {
+            $line_start = $phpcs_file->find_first_on_line([T_WHITESPACE, T_INLINE_HTML], $line_start - 1, true);
         }
-
-        $startColumn = $tokens[$lineStart]['column'];
-        $scopeStart  = $tokens[$stackPtr]['scope_opener'];
-        $scopeEnd    = $tokens[$stackPtr]['scope_closer'];
-
+        $start_column = $tokens[$line_start]['column'];
+        $scope_start = $tokens[$stack_ptr]['scope_opener'];
+        $scope_end = $tokens[$stack_ptr]['scope_closer'];
         // Check that the closing brace is on it's own line.
-        $lastContent = $phpcsFile->findPrevious([T_INLINE_HTML, T_WHITESPACE, T_OPEN_TAG], ($scopeEnd - 1), $scopeStart, true);
-
-        if ($tokens[$lastContent]['line'] === $tokens[$scopeEnd]['line']
-            || ($tokens[$lineStart]['code'] === T_INLINE_HTML
-            && trim($tokens[$lineStart]['content']) !== '')
-        ) {
+        $last_content = $phpcs_file->find_previous([T_INLINE_HTML, T_WHITESPACE, T_OPEN_TAG], $scope_end - 1, $scope_start, true);
+        if ($tokens[$last_content]['line'] === $tokens[$scope_end]['line'] || $tokens[$line_start]['code'] === T_INLINE_HTML && trim($tokens[$line_start]['content']) !== '') {
             $error = 'Closing brace must be on a line by itself';
-            $fix   = $phpcsFile->addFixableError($error, $scopeEnd, 'ContentBefore');
+            $fix = $phpcs_file->add_fixable_error($error, $scope_end, 'ContentBefore');
             if ($fix === true) {
-                if ($tokens[$lastContent]['line'] === $tokens[$scopeEnd]['line']) {
-                    $phpcsFile->fixer->addNewlineBefore($scopeEnd);
+                if ($tokens[$last_content]['line'] === $tokens[$scope_end]['line']) {
+                    $phpcs_file->fixer->add_newline_before($scope_end);
                 } else {
-                    $phpcsFile->fixer->addNewlineBefore(($lineStart + 1));
+                    $phpcs_file->fixer->add_newline_before($line_start + 1);
                 }
             }
-
             return;
         }
-
         // Check now that the closing brace is lined up correctly.
-        $lineStart   = $phpcsFile->findFirstOnLine([T_WHITESPACE, T_INLINE_HTML], $scopeEnd, true);
-        $braceIndent = $tokens[$lineStart]['column'];
-        if ($tokens[$stackPtr]['code'] !== T_DEFAULT
-            && $tokens[$stackPtr]['code'] !== T_CASE
-            && $braceIndent !== $startColumn
-        ) {
+        $line_start = $phpcs_file->find_first_on_line([T_WHITESPACE, T_INLINE_HTML], $scope_end, true);
+        $brace_indent = $tokens[$line_start]['column'];
+        if ($tokens[$stack_ptr]['code'] !== T_DEFAULT && $tokens[$stack_ptr]['code'] !== T_CASE && $brace_indent !== $start_column) {
             $error = 'Closing brace indented incorrectly; expected %s spaces, found %s';
-            $data  = [
-                ($startColumn - 1),
-                ($braceIndent - 1),
-            ];
-
-            $fix = $phpcsFile->addFixableError($error, $scopeEnd, 'Indent', $data);
+            $data = [$start_column - 1, $brace_indent - 1];
+            $fix = $phpcs_file->add_fixable_error($error, $scope_end, 'Indent', $data);
             if ($fix === true) {
-                $diff = ($startColumn - $braceIndent);
+                $diff = $start_column - $brace_indent;
                 if ($diff > 0) {
-                    $phpcsFile->fixer->addContentBefore($lineStart, str_repeat(' ', $diff));
+                    $phpcs_file->fixer->add_content_before($line_start, str_repeat(' ', $diff));
                 } else {
-                    $phpcsFile->fixer->substrToken(($lineStart - 1), 0, $diff);
+                    $phpcs_file->fixer->substr_token($line_start - 1, 0, $diff);
                 }
             }
-        }//end if
-
-    }//end process()
-
-}//end class
+        }
+        //end if
+    }
+    //end process()
+}
+//end class

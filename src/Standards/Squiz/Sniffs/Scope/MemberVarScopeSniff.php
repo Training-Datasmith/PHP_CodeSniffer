@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that class members have scope modifiers.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Scope;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
-
-class MemberVarScopeSniff extends AbstractVariableSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Abstract_Variable_Sniff;
+class Member_Var_Scope_Sniff extends Abstract_Variable_Sniff
 {
     /**
      * Processes the function tokens within the class.
@@ -24,21 +22,18 @@ class MemberVarScopeSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processMemberVar(File $phpcsFile, $stackPtr)
+    protected function process_member_var(File $phpcs_file, $stack_ptr)
     {
-        $tokens     = $phpcsFile->getTokens();
-        $properties = $phpcsFile->getMemberProperties($stackPtr);
-
+        $tokens = $phpcs_file->get_tokens();
+        $properties = $phpcs_file->get_member_properties($stack_ptr);
         if ($properties === [] || $properties['scope_specified'] !== false) {
             return;
         }
-
         $error = 'Scope modifier not specified for member variable "%s"';
-        $data  = [$tokens[$stackPtr]['content']];
-        $phpcsFile->addError($error, $stackPtr, 'Missing', $data);
-
-    }//end processMemberVar()
-
+        $data = [$tokens[$stack_ptr]['content']];
+        $phpcs_file->add_error($error, $stack_ptr, 'Missing', $data);
+    }
+    //end processMemberVar()
     /**
      * Processes normal variables.
      *
@@ -47,14 +42,13 @@ class MemberVarScopeSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariable(File $phpcsFile, $stackPtr)
+    protected function process_variable(File $phpcs_file, $stack_ptr)
     {
         /*
             We don't care about normal variables.
         */
-
-    }//end processVariable()
-
+    }
+    //end processVariable()
     /**
      * Processes variables in double quoted strings.
      *
@@ -63,12 +57,12 @@ class MemberVarScopeSniff extends AbstractVariableSniff
      *
      * @return void
      */
-    protected function processVariableInString(File $phpcsFile, $stackPtr)
+    protected function process_variable_in_string(File $phpcs_file, $stack_ptr)
     {
         /*
             We don't care about normal variables.
         */
-
-    }//end processVariableInString()
-
-}//end class
+    }
+    //end processVariableInString()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Detects for-loops that use a function call in the test expression.
  *
@@ -25,14 +25,12 @@ declare(strict_types=1);
  * @copyright 2007-2014 Manuel Pichler. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Code_Analysis;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class ForLoopWithTestFunctionCallSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class For_Loop_With_Test_Function_Call_Sniff implements Sniff
 {
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -42,9 +40,8 @@ class ForLoopWithTestFunctionCallSniff implements Sniff
     public function register()
     {
         return [T_FOR];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -54,27 +51,22 @@ class ForLoopWithTestFunctionCallSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-
+        $tokens = $phpcs_file->get_tokens();
+        $token = $tokens[$stack_ptr];
         // Skip invalid statement.
         if (isset($token['parenthesis_opener']) === false) {
             return;
         }
-
         $next = ++$token['parenthesis_opener'];
-        $end  = --$token['parenthesis_closer'];
-
+        $end = --$token['parenthesis_closer'];
         $position = 0;
-
         for (; $next <= $end; ++$next) {
             $code = $tokens[$next]['code'];
             if ($code === T_SEMICOLON) {
                 ++$position;
             }
-
             if ($position < 1) {
                 continue;
             }
@@ -83,18 +75,17 @@ class ForLoopWithTestFunctionCallSniff implements Sniff
             } elseif ($code !== T_VARIABLE && $code !== T_STRING) {
                 continue;
             }
-
             // Find next non empty token, if it is a open curly brace we have a
             // function call.
-            $index = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), null, true);
-
+            $index = $phpcs_file->find_next(Tokens::$empty_tokens, $next + 1, null, true);
             if ($tokens[$index]['code'] === T_OPEN_PARENTHESIS) {
                 $error = 'Avoid function calls in a FOR loop test part';
-                $phpcsFile->addWarning($error, $stackPtr, 'NotAllowed');
+                $phpcs_file->add_warning($error, $stack_ptr, 'NotAllowed');
                 break;
             }
-        }//end for
-
-    }//end process()
-
-}//end class
+        }
+        //end for
+    }
+    //end process()
+}
+//end class

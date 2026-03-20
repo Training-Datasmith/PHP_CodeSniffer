@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Discourages the use of deprecated PHP functions.
  *
@@ -9,10 +9,9 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
-
-class DeprecatedFunctionsSniff extends ForbiddenFunctionsSniff
+class Deprecated_Functions_Sniff extends Forbidden_Functions_Sniff
 {
     /**
      * A list of forbidden functions with their alternatives.
@@ -22,8 +21,7 @@ class DeprecatedFunctionsSniff extends ForbiddenFunctionsSniff
      *
      * @var array<string, string|null>
      */
-    public $forbiddenFunctions = [];
-
+    public $forbidden_functions = [];
     /**
      * Constructor.
      *
@@ -32,17 +30,14 @@ class DeprecatedFunctionsSniff extends ForbiddenFunctionsSniff
     public function __construct()
     {
         $functions = get_defined_functions();
-
-        foreach ($functions['internal'] as $functionName) {
-            $function = new \ReflectionFunction($functionName);
-
-            if ($function->isDeprecated() === true) {
-                $this->forbiddenFunctions[$functionName] = null;
+        foreach ($functions['internal'] as $function_name) {
+            $function = new \ReflectionFunction($function_name);
+            if ($function->is_deprecated() === true) {
+                $this->forbidden_functions[$function_name] = null;
             }
         }
-
-    }//end __construct()
-
+    }
+    //end __construct()
     /**
      * Generates the error or warning for this sniff.
      *
@@ -54,18 +49,17 @@ class DeprecatedFunctionsSniff extends ForbiddenFunctionsSniff
      *
      * @return void
      */
-    protected function addError($phpcsFile, $stackPtr, $function, $pattern = null)
+    protected function add_error($phpcs_file, $stack_ptr, $function, $pattern = null)
     {
-        $data  = [$function];
+        $data = [$function];
         $error = 'Function %s() has been deprecated';
-        $type  = 'Deprecated';
-
+        $type = 'Deprecated';
         if ($this->error === true) {
-            $phpcsFile->addError($error, $stackPtr, $type, $data);
+            $phpcs_file->add_error($error, $stack_ptr, $type, $data);
         } else {
-            $phpcsFile->addWarning($error, $stackPtr, $type, $data);
+            $phpcs_file->add_warning($error, $stack_ptr, $type, $data);
         }
-
-    }//end addError()
-
-}//end class
+    }
+    //end addError()
+}
+//end class

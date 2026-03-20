@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Tests for functions outside of classes.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Functions;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class GlobalFunctionSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Global_Function_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class GlobalFunctionSniff implements Sniff
     public function register()
     {
         return [T_FUNCTION];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -36,24 +33,22 @@ class GlobalFunctionSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if (empty($tokens[$stackPtr]['conditions']) === true) {
-            $functionName = $phpcsFile->getDeclarationName($stackPtr);
-            if ($functionName === null) {
+        $tokens = $phpcs_file->get_tokens();
+        if (empty($tokens[$stack_ptr]['conditions']) === true) {
+            $function_name = $phpcs_file->get_declaration_name($stack_ptr);
+            if ($function_name === null) {
                 return;
             }
-
             // Special exception for __autoload as it needs to be global.
-            if ($functionName !== '__autoload') {
+            if ($function_name !== '__autoload') {
                 $error = 'Consider putting global function "%s" in a static class';
-                $data  = [$functionName];
-                $phpcsFile->addWarning($error, $stackPtr, 'Found', $data);
+                $data = [$function_name];
+                $phpcs_file->add_warning($error, $stack_ptr, 'Found', $data);
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

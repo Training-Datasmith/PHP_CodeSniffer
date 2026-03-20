@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Stores weightings and groupings of tokens.
  *
@@ -8,8 +8,7 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
-
-namespace PHP_CodeSniffer\Util;
+namespace Php_code_Sniffer\Util;
 
 define('T_NONE', 'PHPCS_T_NONE');
 define('T_OPEN_CURLY_BRACKET', 'PHPCS_T_OPEN_CURLY_BRACKET');
@@ -84,97 +83,75 @@ define('T_MATCH_DEFAULT', 'PHPCS_T_MATCH_DEFAULT');
 define('T_ATTRIBUTE_END', 'PHPCS_T_ATTRIBUTE_END');
 define('T_ENUM_CASE', 'PHPCS_T_ENUM_CASE');
 define('T_TYPE_INTERSECTION', 'PHPCS_T_TYPE_INTERSECTION');
-
 // Some PHP 5.5 tokens, replicated for lower versions.
 if (defined('T_FINALLY') === false) {
     define('T_FINALLY', 'PHPCS_T_FINALLY');
 }
-
 if (defined('T_YIELD') === false) {
     define('T_YIELD', 'PHPCS_T_YIELD');
 }
-
 // Some PHP 5.6 tokens, replicated for lower versions.
 if (defined('T_ELLIPSIS') === false) {
     define('T_ELLIPSIS', 'PHPCS_T_ELLIPSIS');
 }
-
 if (defined('T_POW') === false) {
     define('T_POW', 'PHPCS_T_POW');
 }
-
 if (defined('T_POW_EQUAL') === false) {
     define('T_POW_EQUAL', 'PHPCS_T_POW_EQUAL');
 }
-
 // Some PHP 7 tokens, replicated for lower versions.
 if (defined('T_SPACESHIP') === false) {
     define('T_SPACESHIP', 'PHPCS_T_SPACESHIP');
 }
-
 if (defined('T_COALESCE') === false) {
     define('T_COALESCE', 'PHPCS_T_COALESCE');
 }
-
 if (defined('T_COALESCE_EQUAL') === false) {
     define('T_COALESCE_EQUAL', 'PHPCS_T_COALESCE_EQUAL');
 }
-
 if (defined('T_YIELD_FROM') === false) {
     define('T_YIELD_FROM', 'PHPCS_T_YIELD_FROM');
 }
-
 // Some PHP 7.4 tokens, replicated for lower versions.
 if (defined('T_BAD_CHARACTER') === false) {
     define('T_BAD_CHARACTER', 'PHPCS_T_BAD_CHARACTER');
 }
-
 if (defined('T_FN') === false) {
     define('T_FN', 'PHPCS_T_FN');
 }
-
 // Some PHP 8.0 tokens, replicated for lower versions.
 if (defined('T_NULLSAFE_OBJECT_OPERATOR') === false) {
     define('T_NULLSAFE_OBJECT_OPERATOR', 'PHPCS_T_NULLSAFE_OBJECT_OPERATOR');
 }
-
 if (defined('T_NAME_QUALIFIED') === false) {
     define('T_NAME_QUALIFIED', 'PHPCS_T_NAME_QUALIFIED');
 }
-
 if (defined('T_NAME_FULLY_QUALIFIED') === false) {
     define('T_NAME_FULLY_QUALIFIED', 'PHPCS_T_NAME_FULLY_QUALIFIED');
 }
-
 if (defined('T_NAME_RELATIVE') === false) {
     define('T_NAME_RELATIVE', 'PHPCS_T_NAME_RELATIVE');
 }
-
 if (defined('T_MATCH') === false) {
     define('T_MATCH', 'PHPCS_T_MATCH');
 }
-
 if (defined('T_ATTRIBUTE') === false) {
     define('T_ATTRIBUTE', 'PHPCS_T_ATTRIBUTE');
 }
-
 // Some PHP 8.1 tokens, replicated for lower versions.
 if (defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG') === false) {
     define('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG', 'PHPCS_T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG');
 }
-
 if (defined('T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG') === false) {
     define('T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG', 'PHPCS_T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG');
 }
-
 if (defined('T_READONLY') === false) {
     define('T_READONLY', 'PHPCS_T_READONLY');
 }
-
 if (defined('T_ENUM') === false) {
     define('T_ENUM', 'PHPCS_T_ENUM');
 }
-
 // Tokens used for parsing doc blocks.
 define('T_DOC_COMMENT_STAR', 'PHPCS_T_DOC_COMMENT_STAR');
 define('T_DOC_COMMENT_WHITESPACE', 'PHPCS_T_DOC_COMMENT_WHITESPACE');
@@ -182,14 +159,12 @@ define('T_DOC_COMMENT_TAG', 'PHPCS_T_DOC_COMMENT_TAG');
 define('T_DOC_COMMENT_OPEN_TAG', 'PHPCS_T_DOC_COMMENT_OPEN_TAG');
 define('T_DOC_COMMENT_CLOSE_TAG', 'PHPCS_T_DOC_COMMENT_CLOSE_TAG');
 define('T_DOC_COMMENT_STRING', 'PHPCS_T_DOC_COMMENT_STRING');
-
 // Tokens used for PHPCS instruction comments.
 define('T_PHPCS_ENABLE', 'PHPCS_T_PHPCS_ENABLE');
 define('T_PHPCS_DISABLE', 'PHPCS_T_PHPCS_DISABLE');
 define('T_PHPCS_SET', 'PHPCS_T_PHPCS_SET');
 define('T_PHPCS_IGNORE', 'PHPCS_T_PHPCS_IGNORE');
 define('T_PHPCS_IGNORE_FILE', 'PHPCS_T_PHPCS_IGNORE_FILE');
-
 final class Tokens
 {
     /**
@@ -198,352 +173,161 @@ final class Tokens
      * @var array<int|string, int>
      */
     public static $weightings = [
-        T_CLASS               => 1000,
-        T_INTERFACE           => 1000,
-        T_TRAIT               => 1000,
-        T_ENUM                => 1000,
-        T_NAMESPACE           => 1000,
-        T_FUNCTION            => 100,
-        T_CLOSURE             => 100,
-
+        T_CLASS => 1000,
+        T_INTERFACE => 1000,
+        T_TRAIT => 1000,
+        T_ENUM => 1000,
+        T_NAMESPACE => 1000,
+        T_FUNCTION => 100,
+        T_CLOSURE => 100,
         /*
          * Conditions.
          */
-
-        T_WHILE               => 50,
-        T_FOR                 => 50,
-        T_FOREACH             => 50,
-        T_IF                  => 50,
-        T_ELSE                => 50,
-        T_ELSEIF              => 50,
-        T_DO                  => 50,
-        T_TRY                 => 50,
-        T_CATCH               => 50,
-        T_FINALLY             => 50,
-        T_SWITCH              => 50,
-        T_MATCH               => 50,
-
-        T_SELF                => 25,
-        T_PARENT              => 25,
-
+        T_WHILE => 50,
+        T_FOR => 50,
+        T_FOREACH => 50,
+        T_IF => 50,
+        T_ELSE => 50,
+        T_ELSEIF => 50,
+        T_DO => 50,
+        T_TRY => 50,
+        T_CATCH => 50,
+        T_FINALLY => 50,
+        T_SWITCH => 50,
+        T_MATCH => 50,
+        T_SELF => 25,
+        T_PARENT => 25,
         /*
          * Operators and arithmetic.
          */
-
-        T_BITWISE_AND         => 8,
-        T_BITWISE_OR          => 8,
-        T_BITWISE_XOR         => 8,
-
-        T_MULTIPLY            => 5,
-        T_DIVIDE              => 5,
-        T_PLUS                => 5,
-        T_MINUS               => 5,
-        T_MODULUS             => 5,
-        T_POW                 => 5,
-        T_SPACESHIP           => 5,
-        T_COALESCE            => 5,
-        T_COALESCE_EQUAL      => 5,
-
-        T_SL                  => 5,
-        T_SR                  => 5,
-        T_SL_EQUAL            => 5,
-        T_SR_EQUAL            => 5,
-
-        T_EQUAL               => 5,
-        T_AND_EQUAL           => 5,
-        T_CONCAT_EQUAL        => 5,
-        T_DIV_EQUAL           => 5,
-        T_MINUS_EQUAL         => 5,
-        T_MOD_EQUAL           => 5,
-        T_MUL_EQUAL           => 5,
-        T_OR_EQUAL            => 5,
-        T_PLUS_EQUAL          => 5,
-        T_XOR_EQUAL           => 5,
-
-        T_BOOLEAN_AND         => 5,
-        T_BOOLEAN_OR          => 5,
-
+        T_BITWISE_AND => 8,
+        T_BITWISE_OR => 8,
+        T_BITWISE_XOR => 8,
+        T_MULTIPLY => 5,
+        T_DIVIDE => 5,
+        T_PLUS => 5,
+        T_MINUS => 5,
+        T_MODULUS => 5,
+        T_POW => 5,
+        T_SPACESHIP => 5,
+        T_COALESCE => 5,
+        T_COALESCE_EQUAL => 5,
+        T_SL => 5,
+        T_SR => 5,
+        T_SL_EQUAL => 5,
+        T_SR_EQUAL => 5,
+        T_EQUAL => 5,
+        T_AND_EQUAL => 5,
+        T_CONCAT_EQUAL => 5,
+        T_DIV_EQUAL => 5,
+        T_MINUS_EQUAL => 5,
+        T_MOD_EQUAL => 5,
+        T_MUL_EQUAL => 5,
+        T_OR_EQUAL => 5,
+        T_PLUS_EQUAL => 5,
+        T_XOR_EQUAL => 5,
+        T_BOOLEAN_AND => 5,
+        T_BOOLEAN_OR => 5,
         /*
          * Equality.
          */
-
-        T_IS_EQUAL            => 5,
-        T_IS_NOT_EQUAL        => 5,
-        T_IS_IDENTICAL        => 5,
-        T_IS_NOT_IDENTICAL    => 5,
+        T_IS_EQUAL => 5,
+        T_IS_NOT_EQUAL => 5,
+        T_IS_IDENTICAL => 5,
+        T_IS_NOT_IDENTICAL => 5,
         T_IS_SMALLER_OR_EQUAL => 5,
         T_IS_GREATER_OR_EQUAL => 5,
     ];
-
     /**
      * Tokens that represent assignments.
      *
      * @var array<int|string, int|string>
      */
-    public static $assignmentTokens = [
-        T_EQUAL          => T_EQUAL,
-        T_AND_EQUAL      => T_AND_EQUAL,
-        T_OR_EQUAL       => T_OR_EQUAL,
-        T_CONCAT_EQUAL   => T_CONCAT_EQUAL,
-        T_DIV_EQUAL      => T_DIV_EQUAL,
-        T_MINUS_EQUAL    => T_MINUS_EQUAL,
-        T_POW_EQUAL      => T_POW_EQUAL,
-        T_MOD_EQUAL      => T_MOD_EQUAL,
-        T_MUL_EQUAL      => T_MUL_EQUAL,
-        T_PLUS_EQUAL     => T_PLUS_EQUAL,
-        T_XOR_EQUAL      => T_XOR_EQUAL,
-        T_DOUBLE_ARROW   => T_DOUBLE_ARROW,
-        T_SL_EQUAL       => T_SL_EQUAL,
-        T_SR_EQUAL       => T_SR_EQUAL,
-        T_COALESCE_EQUAL => T_COALESCE_EQUAL,
-        T_ZSR_EQUAL      => T_ZSR_EQUAL,
-    ];
-
+    public static $assignment_tokens = [T_EQUAL => T_EQUAL, T_AND_EQUAL => T_AND_EQUAL, T_OR_EQUAL => T_OR_EQUAL, T_CONCAT_EQUAL => T_CONCAT_EQUAL, T_DIV_EQUAL => T_DIV_EQUAL, T_MINUS_EQUAL => T_MINUS_EQUAL, T_POW_EQUAL => T_POW_EQUAL, T_MOD_EQUAL => T_MOD_EQUAL, T_MUL_EQUAL => T_MUL_EQUAL, T_PLUS_EQUAL => T_PLUS_EQUAL, T_XOR_EQUAL => T_XOR_EQUAL, T_DOUBLE_ARROW => T_DOUBLE_ARROW, T_SL_EQUAL => T_SL_EQUAL, T_SR_EQUAL => T_SR_EQUAL, T_COALESCE_EQUAL => T_COALESCE_EQUAL, T_ZSR_EQUAL => T_ZSR_EQUAL];
     /**
      * Tokens that represent equality comparisons.
      *
      * @var array<int|string, int|string>
      */
-    public static $equalityTokens = [
-        T_IS_EQUAL            => T_IS_EQUAL,
-        T_IS_NOT_EQUAL        => T_IS_NOT_EQUAL,
-        T_IS_IDENTICAL        => T_IS_IDENTICAL,
-        T_IS_NOT_IDENTICAL    => T_IS_NOT_IDENTICAL,
-        T_IS_SMALLER_OR_EQUAL => T_IS_SMALLER_OR_EQUAL,
-        T_IS_GREATER_OR_EQUAL => T_IS_GREATER_OR_EQUAL,
-    ];
-
+    public static $equality_tokens = [T_IS_EQUAL => T_IS_EQUAL, T_IS_NOT_EQUAL => T_IS_NOT_EQUAL, T_IS_IDENTICAL => T_IS_IDENTICAL, T_IS_NOT_IDENTICAL => T_IS_NOT_IDENTICAL, T_IS_SMALLER_OR_EQUAL => T_IS_SMALLER_OR_EQUAL, T_IS_GREATER_OR_EQUAL => T_IS_GREATER_OR_EQUAL];
     /**
      * Tokens that represent comparison operator.
      *
      * @var array<int|string, int|string>
      */
-    public static $comparisonTokens = [
-        T_IS_EQUAL            => T_IS_EQUAL,
-        T_IS_IDENTICAL        => T_IS_IDENTICAL,
-        T_IS_NOT_EQUAL        => T_IS_NOT_EQUAL,
-        T_IS_NOT_IDENTICAL    => T_IS_NOT_IDENTICAL,
-        T_LESS_THAN           => T_LESS_THAN,
-        T_GREATER_THAN        => T_GREATER_THAN,
-        T_IS_SMALLER_OR_EQUAL => T_IS_SMALLER_OR_EQUAL,
-        T_IS_GREATER_OR_EQUAL => T_IS_GREATER_OR_EQUAL,
-        T_SPACESHIP           => T_SPACESHIP,
-        T_COALESCE            => T_COALESCE,
-    ];
-
+    public static $comparison_tokens = [T_IS_EQUAL => T_IS_EQUAL, T_IS_IDENTICAL => T_IS_IDENTICAL, T_IS_NOT_EQUAL => T_IS_NOT_EQUAL, T_IS_NOT_IDENTICAL => T_IS_NOT_IDENTICAL, T_LESS_THAN => T_LESS_THAN, T_GREATER_THAN => T_GREATER_THAN, T_IS_SMALLER_OR_EQUAL => T_IS_SMALLER_OR_EQUAL, T_IS_GREATER_OR_EQUAL => T_IS_GREATER_OR_EQUAL, T_SPACESHIP => T_SPACESHIP, T_COALESCE => T_COALESCE];
     /**
      * Tokens that represent arithmetic operators.
      *
      * @var array<int|string, int|string>
      */
-    public static $arithmeticTokens = [
-        T_PLUS     => T_PLUS,
-        T_MINUS    => T_MINUS,
-        T_MULTIPLY => T_MULTIPLY,
-        T_DIVIDE   => T_DIVIDE,
-        T_MODULUS  => T_MODULUS,
-        T_POW      => T_POW,
-    ];
-
+    public static $arithmetic_tokens = [T_PLUS => T_PLUS, T_MINUS => T_MINUS, T_MULTIPLY => T_MULTIPLY, T_DIVIDE => T_DIVIDE, T_MODULUS => T_MODULUS, T_POW => T_POW];
     /**
      * Tokens that perform operations.
      *
      * @var array<int|string, int|string>
      */
-    public static $operators = [
-        T_MINUS       => T_MINUS,
-        T_PLUS        => T_PLUS,
-        T_MULTIPLY    => T_MULTIPLY,
-        T_DIVIDE      => T_DIVIDE,
-        T_MODULUS     => T_MODULUS,
-        T_POW         => T_POW,
-        T_SPACESHIP   => T_SPACESHIP,
-        T_COALESCE    => T_COALESCE,
-        T_BITWISE_AND => T_BITWISE_AND,
-        T_BITWISE_OR  => T_BITWISE_OR,
-        T_BITWISE_XOR => T_BITWISE_XOR,
-        T_SL          => T_SL,
-        T_SR          => T_SR,
-    ];
-
+    public static $operators = [T_MINUS => T_MINUS, T_PLUS => T_PLUS, T_MULTIPLY => T_MULTIPLY, T_DIVIDE => T_DIVIDE, T_MODULUS => T_MODULUS, T_POW => T_POW, T_SPACESHIP => T_SPACESHIP, T_COALESCE => T_COALESCE, T_BITWISE_AND => T_BITWISE_AND, T_BITWISE_OR => T_BITWISE_OR, T_BITWISE_XOR => T_BITWISE_XOR, T_SL => T_SL, T_SR => T_SR];
     /**
      * Tokens that perform boolean operations.
      *
      * @var array<int|string, int|string>
      */
-    public static $booleanOperators = [
-        T_BOOLEAN_AND => T_BOOLEAN_AND,
-        T_BOOLEAN_OR  => T_BOOLEAN_OR,
-        T_LOGICAL_AND => T_LOGICAL_AND,
-        T_LOGICAL_OR  => T_LOGICAL_OR,
-        T_LOGICAL_XOR => T_LOGICAL_XOR,
-    ];
-
+    public static $boolean_operators = [T_BOOLEAN_AND => T_BOOLEAN_AND, T_BOOLEAN_OR => T_BOOLEAN_OR, T_LOGICAL_AND => T_LOGICAL_AND, T_LOGICAL_OR => T_LOGICAL_OR, T_LOGICAL_XOR => T_LOGICAL_XOR];
     /**
      * Tokens that represent casting.
      *
      * @var array<int|string, int|string>
      */
-    public static $castTokens = [
-        T_INT_CAST    => T_INT_CAST,
-        T_STRING_CAST => T_STRING_CAST,
-        T_DOUBLE_CAST => T_DOUBLE_CAST,
-        T_ARRAY_CAST  => T_ARRAY_CAST,
-        T_BOOL_CAST   => T_BOOL_CAST,
-        T_OBJECT_CAST => T_OBJECT_CAST,
-        T_UNSET_CAST  => T_UNSET_CAST,
-        T_BINARY_CAST => T_BINARY_CAST,
-    ];
-
+    public static $cast_tokens = [T_INT_CAST => T_INT_CAST, T_STRING_CAST => T_STRING_CAST, T_DOUBLE_CAST => T_DOUBLE_CAST, T_ARRAY_CAST => T_ARRAY_CAST, T_BOOL_CAST => T_BOOL_CAST, T_OBJECT_CAST => T_OBJECT_CAST, T_UNSET_CAST => T_UNSET_CAST, T_BINARY_CAST => T_BINARY_CAST];
     /**
      * Token types that open parenthesis.
      *
      * @var array<int|string, int|string>
      */
-    public static $parenthesisOpeners = [
-        T_ARRAY      => T_ARRAY,
-        T_LIST       => T_LIST,
-        T_FUNCTION   => T_FUNCTION,
-        T_CLOSURE    => T_CLOSURE,
-        T_ANON_CLASS => T_ANON_CLASS,
-        T_WHILE      => T_WHILE,
-        T_FOR        => T_FOR,
-        T_FOREACH    => T_FOREACH,
-        T_SWITCH     => T_SWITCH,
-        T_IF         => T_IF,
-        T_ELSEIF     => T_ELSEIF,
-        T_CATCH      => T_CATCH,
-        T_DECLARE    => T_DECLARE,
-        T_MATCH      => T_MATCH,
-    ];
-
+    public static $parenthesis_openers = [T_ARRAY => T_ARRAY, T_LIST => T_LIST, T_FUNCTION => T_FUNCTION, T_CLOSURE => T_CLOSURE, T_ANON_CLASS => T_ANON_CLASS, T_WHILE => T_WHILE, T_FOR => T_FOR, T_FOREACH => T_FOREACH, T_SWITCH => T_SWITCH, T_IF => T_IF, T_ELSEIF => T_ELSEIF, T_CATCH => T_CATCH, T_DECLARE => T_DECLARE, T_MATCH => T_MATCH];
     /**
      * Tokens that are allowed to open scopes.
      *
      * @var array<int|string, int|string>
      */
-    public static $scopeOpeners = [
-        T_CLASS      => T_CLASS,
-        T_ANON_CLASS => T_ANON_CLASS,
-        T_INTERFACE  => T_INTERFACE,
-        T_TRAIT      => T_TRAIT,
-        T_ENUM       => T_ENUM,
-        T_NAMESPACE  => T_NAMESPACE,
-        T_FUNCTION   => T_FUNCTION,
-        T_CLOSURE    => T_CLOSURE,
-        T_IF         => T_IF,
-        T_SWITCH     => T_SWITCH,
-        T_CASE       => T_CASE,
-        T_DECLARE    => T_DECLARE,
-        T_DEFAULT    => T_DEFAULT,
-        T_WHILE      => T_WHILE,
-        T_ELSE       => T_ELSE,
-        T_ELSEIF     => T_ELSEIF,
-        T_FOR        => T_FOR,
-        T_FOREACH    => T_FOREACH,
-        T_DO         => T_DO,
-        T_TRY        => T_TRY,
-        T_CATCH      => T_CATCH,
-        T_FINALLY    => T_FINALLY,
-        T_PROPERTY   => T_PROPERTY,
-        T_OBJECT     => T_OBJECT,
-        T_USE        => T_USE,
-        T_MATCH      => T_MATCH,
-    ];
-
+    public static $scope_openers = [T_CLASS => T_CLASS, T_ANON_CLASS => T_ANON_CLASS, T_INTERFACE => T_INTERFACE, T_TRAIT => T_TRAIT, T_ENUM => T_ENUM, T_NAMESPACE => T_NAMESPACE, T_FUNCTION => T_FUNCTION, T_CLOSURE => T_CLOSURE, T_IF => T_IF, T_SWITCH => T_SWITCH, T_CASE => T_CASE, T_DECLARE => T_DECLARE, T_DEFAULT => T_DEFAULT, T_WHILE => T_WHILE, T_ELSE => T_ELSE, T_ELSEIF => T_ELSEIF, T_FOR => T_FOR, T_FOREACH => T_FOREACH, T_DO => T_DO, T_TRY => T_TRY, T_CATCH => T_CATCH, T_FINALLY => T_FINALLY, T_PROPERTY => T_PROPERTY, T_OBJECT => T_OBJECT, T_USE => T_USE, T_MATCH => T_MATCH];
     /**
      * Tokens that represent scope modifiers.
      *
      * @var array<int|string, int|string>
      */
-    public static $scopeModifiers = [
-        T_PRIVATE   => T_PRIVATE,
-        T_PUBLIC    => T_PUBLIC,
-        T_PROTECTED => T_PROTECTED,
-    ];
-
+    public static $scope_modifiers = [T_PRIVATE => T_PRIVATE, T_PUBLIC => T_PUBLIC, T_PROTECTED => T_PROTECTED];
     /**
      * Tokens that can prefix a method name
      *
      * @var array<int|string, int|string>
      */
-    public static $methodPrefixes = [
-        T_PRIVATE   => T_PRIVATE,
-        T_PUBLIC    => T_PUBLIC,
-        T_PROTECTED => T_PROTECTED,
-        T_ABSTRACT  => T_ABSTRACT,
-        T_STATIC    => T_STATIC,
-        T_FINAL     => T_FINAL,
-    ];
-
+    public static $method_prefixes = [T_PRIVATE => T_PRIVATE, T_PUBLIC => T_PUBLIC, T_PROTECTED => T_PROTECTED, T_ABSTRACT => T_ABSTRACT, T_STATIC => T_STATIC, T_FINAL => T_FINAL];
     /**
      * Tokens that open code blocks.
      *
      * @var array<int|string, int|string>
      */
-    public static $blockOpeners = [
-        T_OPEN_CURLY_BRACKET  => T_OPEN_CURLY_BRACKET,
-        T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET,
-        T_OPEN_PARENTHESIS    => T_OPEN_PARENTHESIS,
-        T_OBJECT              => T_OBJECT,
-    ];
-
+    public static $block_openers = [T_OPEN_CURLY_BRACKET => T_OPEN_CURLY_BRACKET, T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET, T_OPEN_PARENTHESIS => T_OPEN_PARENTHESIS, T_OBJECT => T_OBJECT];
     /**
      * Tokens that don't represent code.
      *
      * @var array<int|string, int|string>
      */
-    public static $emptyTokens = [
-        T_WHITESPACE             => T_WHITESPACE,
-        T_COMMENT                => T_COMMENT,
-        T_DOC_COMMENT            => T_DOC_COMMENT,
-        T_DOC_COMMENT_STAR       => T_DOC_COMMENT_STAR,
-        T_DOC_COMMENT_WHITESPACE => T_DOC_COMMENT_WHITESPACE,
-        T_DOC_COMMENT_TAG        => T_DOC_COMMENT_TAG,
-        T_DOC_COMMENT_OPEN_TAG   => T_DOC_COMMENT_OPEN_TAG,
-        T_DOC_COMMENT_CLOSE_TAG  => T_DOC_COMMENT_CLOSE_TAG,
-        T_DOC_COMMENT_STRING     => T_DOC_COMMENT_STRING,
-        T_PHPCS_ENABLE           => T_PHPCS_ENABLE,
-        T_PHPCS_DISABLE          => T_PHPCS_DISABLE,
-        T_PHPCS_SET              => T_PHPCS_SET,
-        T_PHPCS_IGNORE           => T_PHPCS_IGNORE,
-        T_PHPCS_IGNORE_FILE      => T_PHPCS_IGNORE_FILE,
-    ];
-
+    public static $empty_tokens = [T_WHITESPACE => T_WHITESPACE, T_COMMENT => T_COMMENT, T_DOC_COMMENT => T_DOC_COMMENT, T_DOC_COMMENT_STAR => T_DOC_COMMENT_STAR, T_DOC_COMMENT_WHITESPACE => T_DOC_COMMENT_WHITESPACE, T_DOC_COMMENT_TAG => T_DOC_COMMENT_TAG, T_DOC_COMMENT_OPEN_TAG => T_DOC_COMMENT_OPEN_TAG, T_DOC_COMMENT_CLOSE_TAG => T_DOC_COMMENT_CLOSE_TAG, T_DOC_COMMENT_STRING => T_DOC_COMMENT_STRING, T_PHPCS_ENABLE => T_PHPCS_ENABLE, T_PHPCS_DISABLE => T_PHPCS_DISABLE, T_PHPCS_SET => T_PHPCS_SET, T_PHPCS_IGNORE => T_PHPCS_IGNORE, T_PHPCS_IGNORE_FILE => T_PHPCS_IGNORE_FILE];
     /**
      * Tokens that are comments.
      *
      * @var array<int|string, int|string>
      */
-    public static $commentTokens = [
-        T_COMMENT                => T_COMMENT,
-        T_DOC_COMMENT            => T_DOC_COMMENT,
-        T_DOC_COMMENT_STAR       => T_DOC_COMMENT_STAR,
-        T_DOC_COMMENT_WHITESPACE => T_DOC_COMMENT_WHITESPACE,
-        T_DOC_COMMENT_TAG        => T_DOC_COMMENT_TAG,
-        T_DOC_COMMENT_OPEN_TAG   => T_DOC_COMMENT_OPEN_TAG,
-        T_DOC_COMMENT_CLOSE_TAG  => T_DOC_COMMENT_CLOSE_TAG,
-        T_DOC_COMMENT_STRING     => T_DOC_COMMENT_STRING,
-        T_PHPCS_ENABLE           => T_PHPCS_ENABLE,
-        T_PHPCS_DISABLE          => T_PHPCS_DISABLE,
-        T_PHPCS_SET              => T_PHPCS_SET,
-        T_PHPCS_IGNORE           => T_PHPCS_IGNORE,
-        T_PHPCS_IGNORE_FILE      => T_PHPCS_IGNORE_FILE,
-    ];
-
+    public static $comment_tokens = [T_COMMENT => T_COMMENT, T_DOC_COMMENT => T_DOC_COMMENT, T_DOC_COMMENT_STAR => T_DOC_COMMENT_STAR, T_DOC_COMMENT_WHITESPACE => T_DOC_COMMENT_WHITESPACE, T_DOC_COMMENT_TAG => T_DOC_COMMENT_TAG, T_DOC_COMMENT_OPEN_TAG => T_DOC_COMMENT_OPEN_TAG, T_DOC_COMMENT_CLOSE_TAG => T_DOC_COMMENT_CLOSE_TAG, T_DOC_COMMENT_STRING => T_DOC_COMMENT_STRING, T_PHPCS_ENABLE => T_PHPCS_ENABLE, T_PHPCS_DISABLE => T_PHPCS_DISABLE, T_PHPCS_SET => T_PHPCS_SET, T_PHPCS_IGNORE => T_PHPCS_IGNORE, T_PHPCS_IGNORE_FILE => T_PHPCS_IGNORE_FILE];
     /**
      * Tokens that are comments containing PHPCS instructions.
      *
      * @var array<int|string, int|string>
      */
-    public static $phpcsCommentTokens = [
-        T_PHPCS_ENABLE      => T_PHPCS_ENABLE,
-        T_PHPCS_DISABLE     => T_PHPCS_DISABLE,
-        T_PHPCS_SET         => T_PHPCS_SET,
-        T_PHPCS_IGNORE      => T_PHPCS_IGNORE,
-        T_PHPCS_IGNORE_FILE => T_PHPCS_IGNORE_FILE,
-    ];
-
+    public static $phpcs_comment_tokens = [T_PHPCS_ENABLE => T_PHPCS_ENABLE, T_PHPCS_DISABLE => T_PHPCS_DISABLE, T_PHPCS_SET => T_PHPCS_SET, T_PHPCS_IGNORE => T_PHPCS_IGNORE, T_PHPCS_IGNORE_FILE => T_PHPCS_IGNORE_FILE];
     /**
      * Tokens that represent strings.
      *
@@ -551,64 +335,31 @@ final class Tokens
      *
      * @var array<int|string, int|string>
      */
-    public static $stringTokens = [
-        T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
-        T_DOUBLE_QUOTED_STRING     => T_DOUBLE_QUOTED_STRING,
-    ];
-
+    public static $string_tokens = [T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_QUOTED_STRING => T_DOUBLE_QUOTED_STRING];
     /**
      * Tokens that represent text strings.
      *
      * @var array<int|string, int|string>
      */
-    public static $textStringTokens = [
-        T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
-        T_DOUBLE_QUOTED_STRING     => T_DOUBLE_QUOTED_STRING,
-        T_INLINE_HTML              => T_INLINE_HTML,
-        T_HEREDOC                  => T_HEREDOC,
-        T_NOWDOC                   => T_NOWDOC,
-    ];
-
+    public static $text_string_tokens = [T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_QUOTED_STRING => T_DOUBLE_QUOTED_STRING, T_INLINE_HTML => T_INLINE_HTML, T_HEREDOC => T_HEREDOC, T_NOWDOC => T_NOWDOC];
     /**
      * Tokens that represent brackets and parenthesis.
      *
      * @var array<int|string, int|string>
      */
-    public static $bracketTokens = [
-        T_OPEN_CURLY_BRACKET   => T_OPEN_CURLY_BRACKET,
-        T_CLOSE_CURLY_BRACKET  => T_CLOSE_CURLY_BRACKET,
-        T_OPEN_SQUARE_BRACKET  => T_OPEN_SQUARE_BRACKET,
-        T_CLOSE_SQUARE_BRACKET => T_CLOSE_SQUARE_BRACKET,
-        T_OPEN_PARENTHESIS     => T_OPEN_PARENTHESIS,
-        T_CLOSE_PARENTHESIS    => T_CLOSE_PARENTHESIS,
-    ];
-
+    public static $bracket_tokens = [T_OPEN_CURLY_BRACKET => T_OPEN_CURLY_BRACKET, T_CLOSE_CURLY_BRACKET => T_CLOSE_CURLY_BRACKET, T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET, T_CLOSE_SQUARE_BRACKET => T_CLOSE_SQUARE_BRACKET, T_OPEN_PARENTHESIS => T_OPEN_PARENTHESIS, T_CLOSE_PARENTHESIS => T_CLOSE_PARENTHESIS];
     /**
      * Tokens that include files.
      *
      * @var array<int|string, int|string>
      */
-    public static $includeTokens = [
-        T_REQUIRE_ONCE => T_REQUIRE_ONCE,
-        T_REQUIRE      => T_REQUIRE,
-        T_INCLUDE_ONCE => T_INCLUDE_ONCE,
-        T_INCLUDE      => T_INCLUDE,
-    ];
-
+    public static $include_tokens = [T_REQUIRE_ONCE => T_REQUIRE_ONCE, T_REQUIRE => T_REQUIRE, T_INCLUDE_ONCE => T_INCLUDE_ONCE, T_INCLUDE => T_INCLUDE];
     /**
      * Tokens that make up a heredoc string.
      *
      * @var array<int|string, int|string>
      */
-    public static $heredocTokens = [
-        T_START_HEREDOC => T_START_HEREDOC,
-        T_END_HEREDOC   => T_END_HEREDOC,
-        T_HEREDOC       => T_HEREDOC,
-        T_START_NOWDOC  => T_START_NOWDOC,
-        T_END_NOWDOC    => T_END_NOWDOC,
-        T_NOWDOC        => T_NOWDOC,
-    ];
-
+    public static $heredoc_tokens = [T_START_HEREDOC => T_START_HEREDOC, T_END_HEREDOC => T_END_HEREDOC, T_HEREDOC => T_HEREDOC, T_START_NOWDOC => T_START_NOWDOC, T_END_NOWDOC => T_END_NOWDOC, T_NOWDOC => T_NOWDOC];
     /**
      * Tokens that represent the names of called functions.
      *
@@ -617,35 +368,13 @@ final class Tokens
      *
      * @var array<int|string, int|string>
      */
-    public static $functionNameTokens = [
-        T_STRING       => T_STRING,
-        T_EVAL         => T_EVAL,
-        T_EXIT         => T_EXIT,
-        T_INCLUDE      => T_INCLUDE,
-        T_INCLUDE_ONCE => T_INCLUDE_ONCE,
-        T_REQUIRE      => T_REQUIRE,
-        T_REQUIRE_ONCE => T_REQUIRE_ONCE,
-        T_ISSET        => T_ISSET,
-        T_UNSET        => T_UNSET,
-        T_EMPTY        => T_EMPTY,
-        T_SELF         => T_SELF,
-        T_PARENT       => T_PARENT,
-        T_STATIC       => T_STATIC,
-    ];
-
+    public static $function_name_tokens = [T_STRING => T_STRING, T_EVAL => T_EVAL, T_EXIT => T_EXIT, T_INCLUDE => T_INCLUDE, T_INCLUDE_ONCE => T_INCLUDE_ONCE, T_REQUIRE => T_REQUIRE, T_REQUIRE_ONCE => T_REQUIRE_ONCE, T_ISSET => T_ISSET, T_UNSET => T_UNSET, T_EMPTY => T_EMPTY, T_SELF => T_SELF, T_PARENT => T_PARENT, T_STATIC => T_STATIC];
     /**
      * Tokens that open class and object scopes.
      *
      * @var array<int|string, int|string>
      */
-    public static $ooScopeTokens = [
-        T_CLASS      => T_CLASS,
-        T_ANON_CLASS => T_ANON_CLASS,
-        T_INTERFACE  => T_INTERFACE,
-        T_TRAIT      => T_TRAIT,
-        T_ENUM       => T_ENUM,
-    ];
-
+    public static $oo_scope_tokens = [T_CLASS => T_CLASS, T_ANON_CLASS => T_ANON_CLASS, T_INTERFACE => T_INTERFACE, T_TRAIT => T_TRAIT, T_ENUM => T_ENUM];
     /**
      * Tokens representing PHP magic constants.
      *
@@ -653,17 +382,7 @@ final class Tokens
      *
      * @link https://www.php.net/language.constants.predefined PHP Manual on magic constants
      */
-    public static $magicConstants = [
-        T_CLASS_C  => T_CLASS_C,
-        T_DIR      => T_DIR,
-        T_FILE     => T_FILE,
-        T_FUNC_C   => T_FUNC_C,
-        T_LINE     => T_LINE,
-        T_METHOD_C => T_METHOD_C,
-        T_NS_C     => T_NS_C,
-        T_TRAIT_C  => T_TRAIT_C,
-    ];
-
+    public static $magic_constants = [T_CLASS_C => T_CLASS_C, T_DIR => T_DIR, T_FILE => T_FILE, T_FUNC_C => T_FUNC_C, T_LINE => T_LINE, T_METHOD_C => T_METHOD_C, T_NS_C => T_NS_C, T_TRAIT_C => T_TRAIT_C];
     /**
      * Tokens representing context sensitive keywords in PHP.
      *
@@ -671,79 +390,7 @@ final class Tokens
      *
      * https://wiki.php.net/rfc/context_sensitive_lexer
      */
-    public static $contextSensitiveKeywords = [
-        T_ABSTRACT     => T_ABSTRACT,
-        T_ARRAY        => T_ARRAY,
-        T_AS           => T_AS,
-        T_BREAK        => T_BREAK,
-        T_CALLABLE     => T_CALLABLE,
-        T_CASE         => T_CASE,
-        T_CATCH        => T_CATCH,
-        T_CLASS        => T_CLASS,
-        T_CLONE        => T_CLONE,
-        T_CONST        => T_CONST,
-        T_CONTINUE     => T_CONTINUE,
-        T_DECLARE      => T_DECLARE,
-        T_DEFAULT      => T_DEFAULT,
-        T_DO           => T_DO,
-        T_ECHO         => T_ECHO,
-        T_ELSE         => T_ELSE,
-        T_ELSEIF       => T_ELSEIF,
-        T_EMPTY        => T_EMPTY,
-        T_ENDDECLARE   => T_ENDDECLARE,
-        T_ENDFOR       => T_ENDFOR,
-        T_ENDFOREACH   => T_ENDFOREACH,
-        T_ENDIF        => T_ENDIF,
-        T_ENDSWITCH    => T_ENDSWITCH,
-        T_ENDWHILE     => T_ENDWHILE,
-        T_ENUM         => T_ENUM,
-        T_EVAL         => T_EVAL,
-        T_EXIT         => T_EXIT,
-        T_EXTENDS      => T_EXTENDS,
-        T_FINAL        => T_FINAL,
-        T_FINALLY      => T_FINALLY,
-        T_FN           => T_FN,
-        T_FOR          => T_FOR,
-        T_FOREACH      => T_FOREACH,
-        T_FUNCTION     => T_FUNCTION,
-        T_GLOBAL       => T_GLOBAL,
-        T_GOTO         => T_GOTO,
-        T_IF           => T_IF,
-        T_IMPLEMENTS   => T_IMPLEMENTS,
-        T_INCLUDE      => T_INCLUDE,
-        T_INCLUDE_ONCE => T_INCLUDE_ONCE,
-        T_INSTANCEOF   => T_INSTANCEOF,
-        T_INSTEADOF    => T_INSTEADOF,
-        T_INTERFACE    => T_INTERFACE,
-        T_ISSET        => T_ISSET,
-        T_LIST         => T_LIST,
-        T_LOGICAL_AND  => T_LOGICAL_AND,
-        T_LOGICAL_OR   => T_LOGICAL_OR,
-        T_LOGICAL_XOR  => T_LOGICAL_XOR,
-        T_MATCH        => T_MATCH,
-        T_NAMESPACE    => T_NAMESPACE,
-        T_NEW          => T_NEW,
-        T_PRINT        => T_PRINT,
-        T_PRIVATE      => T_PRIVATE,
-        T_PROTECTED    => T_PROTECTED,
-        T_PUBLIC       => T_PUBLIC,
-        T_READONLY     => T_READONLY,
-        T_REQUIRE      => T_REQUIRE,
-        T_REQUIRE_ONCE => T_REQUIRE_ONCE,
-        T_RETURN       => T_RETURN,
-        T_STATIC       => T_STATIC,
-        T_SWITCH       => T_SWITCH,
-        T_THROW        => T_THROW,
-        T_TRAIT        => T_TRAIT,
-        T_TRY          => T_TRY,
-        T_UNSET        => T_UNSET,
-        T_USE          => T_USE,
-        T_VAR          => T_VAR,
-        T_WHILE        => T_WHILE,
-        T_YIELD        => T_YIELD,
-        T_YIELD_FROM   => T_YIELD_FROM,
-    ];
-
+    public static $context_sensitive_keywords = [T_ABSTRACT => T_ABSTRACT, T_ARRAY => T_ARRAY, T_AS => T_AS, T_BREAK => T_BREAK, T_CALLABLE => T_CALLABLE, T_CASE => T_CASE, T_CATCH => T_CATCH, T_CLASS => T_CLASS, T_CLONE => T_CLONE, T_CONST => T_CONST, T_CONTINUE => T_CONTINUE, T_DECLARE => T_DECLARE, T_DEFAULT => T_DEFAULT, T_DO => T_DO, T_ECHO => T_ECHO, T_ELSE => T_ELSE, T_ELSEIF => T_ELSEIF, T_EMPTY => T_EMPTY, T_ENDDECLARE => T_ENDDECLARE, T_ENDFOR => T_ENDFOR, T_ENDFOREACH => T_ENDFOREACH, T_ENDIF => T_ENDIF, T_ENDSWITCH => T_ENDSWITCH, T_ENDWHILE => T_ENDWHILE, T_ENUM => T_ENUM, T_EVAL => T_EVAL, T_EXIT => T_EXIT, T_EXTENDS => T_EXTENDS, T_FINAL => T_FINAL, T_FINALLY => T_FINALLY, T_FN => T_FN, T_FOR => T_FOR, T_FOREACH => T_FOREACH, T_FUNCTION => T_FUNCTION, T_GLOBAL => T_GLOBAL, T_GOTO => T_GOTO, T_IF => T_IF, T_IMPLEMENTS => T_IMPLEMENTS, T_INCLUDE => T_INCLUDE, T_INCLUDE_ONCE => T_INCLUDE_ONCE, T_INSTANCEOF => T_INSTANCEOF, T_INSTEADOF => T_INSTEADOF, T_INTERFACE => T_INTERFACE, T_ISSET => T_ISSET, T_LIST => T_LIST, T_LOGICAL_AND => T_LOGICAL_AND, T_LOGICAL_OR => T_LOGICAL_OR, T_LOGICAL_XOR => T_LOGICAL_XOR, T_MATCH => T_MATCH, T_NAMESPACE => T_NAMESPACE, T_NEW => T_NEW, T_PRINT => T_PRINT, T_PRIVATE => T_PRIVATE, T_PROTECTED => T_PROTECTED, T_PUBLIC => T_PUBLIC, T_READONLY => T_READONLY, T_REQUIRE => T_REQUIRE, T_REQUIRE_ONCE => T_REQUIRE_ONCE, T_RETURN => T_RETURN, T_STATIC => T_STATIC, T_SWITCH => T_SWITCH, T_THROW => T_THROW, T_TRAIT => T_TRAIT, T_TRY => T_TRY, T_UNSET => T_UNSET, T_USE => T_USE, T_VAR => T_VAR, T_WHILE => T_WHILE, T_YIELD => T_YIELD, T_YIELD_FROM => T_YIELD_FROM];
     /**
      * Given a token, returns the name of the token.
      *
@@ -755,17 +402,15 @@ final class Tokens
      *
      * @return string
      */
-    public static function tokenName($token)
+    public static function token_name($token)
     {
         if (is_string($token) === false) {
             // PHP-supplied token name.
             return token_name($token);
         }
-
         return substr($token, 6);
-
-    }//end tokenName()
-
+    }
+    //end tokenName()
     /**
      * Returns the highest weighted token type.
      *
@@ -781,28 +426,24 @@ final class Tokens
      *
      * @return int|false The highest weighted token.
      */
-    public static function getHighestWeightedToken(array $tokens)
+    public static function get_highest_weighted_token(array $tokens)
     {
-        $highest     = -1;
-        $highestType = false;
-
+        $highest = -1;
+        $highest_type = false;
         $weights = self::$weightings;
-
         foreach ($tokens as $token) {
             if (isset($weights[$token]) === true) {
                 $weight = $weights[$token];
             } else {
                 $weight = 0;
             }
-
             if ($weight > $highest) {
-                $highest     = $weight;
-                $highestType = $token;
+                $highest = $weight;
+                $highest_type = $token;
             }
         }
-
-        return $highestType;
-
-    }//end getHighestWeightedToken()
-
-}//end class
+        return $highest_type;
+    }
+    //end getHighestWeightedToken()
+}
+//end class

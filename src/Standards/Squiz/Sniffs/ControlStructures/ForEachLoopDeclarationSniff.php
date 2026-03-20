@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that there is a space between each condition of foreach loops.
  *
@@ -8,28 +8,24 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Control_Structures;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\ControlStructures;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ForEachLoopDeclarationSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class For_Each_Loop_Declaration_Sniff implements Sniff
 {
     /**
      * How many spaces should follow the opening bracket.
      *
      * @var integer
      */
-    public $requiredSpacesAfterOpen = 0;
-
+    public $required_spaces_after_open = 0;
     /**
      * How many spaces should precede the closing bracket.
      *
      * @var integer
      */
-    public $requiredSpacesBeforeClose = 0;
-
+    public $required_spaces_before_close = 0;
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -38,9 +34,8 @@ class ForEachLoopDeclarationSniff implements Sniff
     public function register()
     {
         return [T_FOREACH];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -50,185 +45,156 @@ class ForEachLoopDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $this->requiredSpacesAfterOpen   = (int) $this->requiredSpacesAfterOpen;
-        $this->requiredSpacesBeforeClose = (int) $this->requiredSpacesBeforeClose;
-        $tokens = $phpcsFile->getTokens();
-
-        $openingBracket = $phpcsFile->findNext(T_OPEN_PARENTHESIS, $stackPtr);
-        if ($openingBracket === false) {
+        $this->required_spaces_after_open = (int) $this->required_spaces_after_open;
+        $this->required_spaces_before_close = (int) $this->required_spaces_before_close;
+        $tokens = $phpcs_file->get_tokens();
+        $opening_bracket = $phpcs_file->find_next(T_OPEN_PARENTHESIS, $stack_ptr);
+        if ($opening_bracket === false) {
             $error = 'Possible parse error: FOREACH has no opening parenthesis';
-            $phpcsFile->addWarning($error, $stackPtr, 'MissingOpenParenthesis');
+            $phpcs_file->add_warning($error, $stack_ptr, 'MissingOpenParenthesis');
             return;
         }
-
-        if (isset($tokens[$openingBracket]['parenthesis_closer']) === false) {
+        if (isset($tokens[$opening_bracket]['parenthesis_closer']) === false) {
             $error = 'Possible parse error: FOREACH has no closing parenthesis';
-            $phpcsFile->addWarning($error, $stackPtr, 'MissingCloseParenthesis');
+            $phpcs_file->add_warning($error, $stack_ptr, 'MissingCloseParenthesis');
             return;
         }
-
-        $closingBracket = $tokens[$openingBracket]['parenthesis_closer'];
-
-        if ($this->requiredSpacesAfterOpen === 0 && $tokens[($openingBracket + 1)]['code'] === T_WHITESPACE) {
+        $closing_bracket = $tokens[$opening_bracket]['parenthesis_closer'];
+        if ($this->required_spaces_after_open === 0 && $tokens[$opening_bracket + 1]['code'] === T_WHITESPACE) {
             $error = 'Space found after opening bracket of FOREACH loop';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceAfterOpen');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpaceAfterOpen');
             if ($fix === true) {
-                $phpcsFile->fixer->replaceToken(($openingBracket + 1), '');
+                $phpcs_file->fixer->replace_token($opening_bracket + 1, '');
             }
-        } elseif ($this->requiredSpacesAfterOpen > 0) {
-            $spaceAfterOpen = 0;
-            if ($tokens[($openingBracket + 1)]['code'] === T_WHITESPACE) {
-                $spaceAfterOpen = $tokens[($openingBracket + 1)]['length'];
+        } elseif ($this->required_spaces_after_open > 0) {
+            $space_after_open = 0;
+            if ($tokens[$opening_bracket + 1]['code'] === T_WHITESPACE) {
+                $space_after_open = $tokens[$opening_bracket + 1]['length'];
             }
-
-            if ($spaceAfterOpen !== $this->requiredSpacesAfterOpen) {
+            if ($space_after_open !== $this->required_spaces_after_open) {
                 $error = 'Expected %s spaces after opening bracket; %s found';
-                $data  = [
-                    $this->requiredSpacesAfterOpen,
-                    $spaceAfterOpen,
-                ];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfterOpen', $data);
+                $data = [$this->required_spaces_after_open, $space_after_open];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingAfterOpen', $data);
                 if ($fix === true) {
-                    $padding = str_repeat(' ', $this->requiredSpacesAfterOpen);
-                    if ($spaceAfterOpen === 0) {
-                        $phpcsFile->fixer->addContent($openingBracket, $padding);
+                    $padding = str_repeat(' ', $this->required_spaces_after_open);
+                    if ($space_after_open === 0) {
+                        $phpcs_file->fixer->add_content($opening_bracket, $padding);
                     } else {
-                        $phpcsFile->fixer->replaceToken(($openingBracket + 1), $padding);
+                        $phpcs_file->fixer->replace_token($opening_bracket + 1, $padding);
                     }
                 }
             }
-        }//end if
-
-        if ($this->requiredSpacesBeforeClose === 0 && $tokens[($closingBracket - 1)]['code'] === T_WHITESPACE) {
+        }
+        //end if
+        if ($this->required_spaces_before_close === 0 && $tokens[$closing_bracket - 1]['code'] === T_WHITESPACE) {
             $error = 'Space found before closing bracket of FOREACH loop';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceBeforeClose');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpaceBeforeClose');
             if ($fix === true) {
-                $phpcsFile->fixer->replaceToken(($closingBracket - 1), '');
+                $phpcs_file->fixer->replace_token($closing_bracket - 1, '');
             }
-        } elseif ($this->requiredSpacesBeforeClose > 0) {
-            $spaceBeforeClose = 0;
-            if ($tokens[($closingBracket - 1)]['code'] === T_WHITESPACE) {
-                $spaceBeforeClose = $tokens[($closingBracket - 1)]['length'];
+        } elseif ($this->required_spaces_before_close > 0) {
+            $space_before_close = 0;
+            if ($tokens[$closing_bracket - 1]['code'] === T_WHITESPACE) {
+                $space_before_close = $tokens[$closing_bracket - 1]['length'];
             }
-
-            if ($spaceBeforeClose !== $this->requiredSpacesBeforeClose) {
+            if ($space_before_close !== $this->required_spaces_before_close) {
                 $error = 'Expected %s spaces before closing bracket; %s found';
-                $data  = [
-                    $this->requiredSpacesBeforeClose,
-                    $spaceBeforeClose,
-                ];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpaceBeforeClose', $data);
+                $data = [$this->required_spaces_before_close, $space_before_close];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpaceBeforeClose', $data);
                 if ($fix === true) {
-                    $padding = str_repeat(' ', $this->requiredSpacesBeforeClose);
-                    if ($spaceBeforeClose === 0) {
-                        $phpcsFile->fixer->addContentBefore($closingBracket, $padding);
+                    $padding = str_repeat(' ', $this->required_spaces_before_close);
+                    if ($space_before_close === 0) {
+                        $phpcs_file->fixer->add_content_before($closing_bracket, $padding);
                     } else {
-                        $phpcsFile->fixer->replaceToken(($closingBracket - 1), $padding);
+                        $phpcs_file->fixer->replace_token($closing_bracket - 1, $padding);
                     }
                 }
             }
-        }//end if
-
-        $asToken = $phpcsFile->findNext(T_AS, $openingBracket);
-        if ($asToken === false) {
+        }
+        //end if
+        $as_token = $phpcs_file->find_next(T_AS, $opening_bracket);
+        if ($as_token === false) {
             $error = 'Possible parse error: FOREACH has no AS statement';
-            $phpcsFile->addWarning($error, $stackPtr, 'MissingAs');
+            $phpcs_file->add_warning($error, $stack_ptr, 'MissingAs');
             return;
         }
-
-        $content = $tokens[$asToken]['content'];
+        $content = $tokens[$as_token]['content'];
         if ($content !== strtolower($content)) {
             $expected = strtolower($content);
-            $error    = 'AS keyword must be lowercase; expected "%s" but found "%s"';
-            $data     = [
-                $expected,
-                $content,
-            ];
-
-            $fix = $phpcsFile->addFixableError($error, $asToken, 'AsNotLower', $data);
+            $error = 'AS keyword must be lowercase; expected "%s" but found "%s"';
+            $data = [$expected, $content];
+            $fix = $phpcs_file->add_fixable_error($error, $as_token, 'AsNotLower', $data);
             if ($fix === true) {
-                $phpcsFile->fixer->replaceToken($asToken, $expected);
+                $phpcs_file->fixer->replace_token($as_token, $expected);
             }
         }
-
-        $doubleArrow = $phpcsFile->findNext(T_DOUBLE_ARROW, $asToken, $closingBracket);
-
-        if ($doubleArrow !== false) {
-            if ($tokens[($doubleArrow - 1)]['code'] !== T_WHITESPACE) {
+        $double_arrow = $phpcs_file->find_next(T_DOUBLE_ARROW, $as_token, $closing_bracket);
+        if ($double_arrow !== false) {
+            if ($tokens[$double_arrow - 1]['code'] !== T_WHITESPACE) {
                 $error = 'Expected 1 space before "=>"; 0 found';
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBeforeArrow');
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceBeforeArrow');
                 if ($fix === true) {
-                    $phpcsFile->fixer->addContentBefore($doubleArrow, ' ');
+                    $phpcs_file->fixer->add_content_before($double_arrow, ' ');
                 }
-            } else {
-                if ($tokens[($doubleArrow - 1)]['length'] !== 1) {
-                    $spaces = $tokens[($doubleArrow - 1)]['length'];
-                    $error  = 'Expected 1 space before "=>"; %s found';
-                    $data   = [$spaces];
-                    $fix    = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingBeforeArrow', $data);
-                    if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken(($doubleArrow - 1), ' ');
-                    }
+            } else if ($tokens[$double_arrow - 1]['length'] !== 1) {
+                $spaces = $tokens[$double_arrow - 1]['length'];
+                $error = 'Expected 1 space before "=>"; %s found';
+                $data = [$spaces];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingBeforeArrow', $data);
+                if ($fix === true) {
+                    $phpcs_file->fixer->replace_token($double_arrow - 1, ' ');
                 }
             }
-
-            if ($tokens[($doubleArrow + 1)]['code'] !== T_WHITESPACE) {
+            if ($tokens[$double_arrow + 1]['code'] !== T_WHITESPACE) {
                 $error = 'Expected 1 space after "=>"; 0 found';
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfterArrow');
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceAfterArrow');
                 if ($fix === true) {
-                    $phpcsFile->fixer->addContent($doubleArrow, ' ');
+                    $phpcs_file->fixer->add_content($double_arrow, ' ');
                 }
-            } else {
-                if ($tokens[($doubleArrow + 1)]['length'] !== 1) {
-                    $spaces = $tokens[($doubleArrow + 1)]['length'];
-                    $error  = 'Expected 1 space after "=>"; %s found';
-                    $data   = [$spaces];
-                    $fix    = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfterArrow', $data);
-                    if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken(($doubleArrow + 1), ' ');
-                    }
+            } else if ($tokens[$double_arrow + 1]['length'] !== 1) {
+                $spaces = $tokens[$double_arrow + 1]['length'];
+                $error = 'Expected 1 space after "=>"; %s found';
+                $data = [$spaces];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingAfterArrow', $data);
+                if ($fix === true) {
+                    $phpcs_file->fixer->replace_token($double_arrow + 1, ' ');
                 }
             }
-        }//end if
-
-        if ($tokens[($asToken - 1)]['code'] !== T_WHITESPACE) {
+        }
+        //end if
+        if ($tokens[$as_token - 1]['code'] !== T_WHITESPACE) {
             $error = 'Expected 1 space before "as"; 0 found';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBeforeAs');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceBeforeAs');
             if ($fix === true) {
-                $phpcsFile->fixer->addContentBefore($asToken, ' ');
+                $phpcs_file->fixer->add_content_before($as_token, ' ');
             }
-        } else {
-            if ($tokens[($asToken - 1)]['length'] !== 1) {
-                $spaces = $tokens[($asToken - 1)]['length'];
-                $error  = 'Expected 1 space before "as"; %s found';
-                $data   = [$spaces];
-                $fix    = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingBeforeAs', $data);
-                if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken(($asToken - 1), ' ');
-                }
+        } else if ($tokens[$as_token - 1]['length'] !== 1) {
+            $spaces = $tokens[$as_token - 1]['length'];
+            $error = 'Expected 1 space before "as"; %s found';
+            $data = [$spaces];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingBeforeAs', $data);
+            if ($fix === true) {
+                $phpcs_file->fixer->replace_token($as_token - 1, ' ');
             }
         }
-
-        if ($tokens[($asToken + 1)]['code'] !== T_WHITESPACE) {
+        if ($tokens[$as_token + 1]['code'] !== T_WHITESPACE) {
             $error = 'Expected 1 space after "as"; 0 found';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfterAs');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceAfterAs');
             if ($fix === true) {
-                $phpcsFile->fixer->addContent($asToken, ' ');
+                $phpcs_file->fixer->add_content($as_token, ' ');
             }
-        } else {
-            if ($tokens[($asToken + 1)]['length'] !== 1) {
-                $spaces = $tokens[($asToken + 1)]['length'];
-                $error  = 'Expected 1 space after "as"; %s found';
-                $data   = [$spaces];
-                $fix    = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfterAs', $data);
-                if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken(($asToken + 1), ' ');
-                }
+        } else if ($tokens[$as_token + 1]['length'] !== 1) {
+            $spaces = $tokens[$as_token + 1]['length'];
+            $error = 'Expected 1 space after "as"; %s found';
+            $data = [$spaces];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingAfterAs', $data);
+            if ($fix === true) {
+                $phpcs_file->fixer->replace_token($as_token + 1, ' ');
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

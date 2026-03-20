@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensure that browser-specific styles are not used.
  *
@@ -8,21 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\My_Source\Sniffs\CSS;
 
-namespace PHP_CodeSniffer\Standards\MySource\Sniffs\CSS;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class BrowserSpecificStylesSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Browser_Specific_Styles_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = ['CSS'];
-
+    public $supported_tokenizers = ['CSS'];
     /**
      * A list of specific stylesheet suffixes we allow.
      *
@@ -32,14 +29,7 @@ class BrowserSpecificStylesSniff implements Sniff
      *
      * @var array
      */
-    protected $specificStylesheets = [
-        'moz'    => true,
-        'ie'     => true,
-        'ie7'    => true,
-        'ie8'    => true,
-        'webkit' => true,
-    ];
-
+    protected $specific_stylesheets = ['moz' => true, 'ie' => true, 'ie7' => true, 'ie8' => true, 'webkit' => true];
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -48,9 +38,8 @@ class BrowserSpecificStylesSniff implements Sniff
     public function register()
     {
         return [T_STYLE];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes the tokens that this sniff is interested in.
      *
@@ -60,26 +49,24 @@ class BrowserSpecificStylesSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
         // Ignore files with browser-specific suffixes.
-        $filename  = $phpcsFile->getFilename();
-        $breakChar = strrpos($filename, '_');
-        if ($breakChar !== false && substr($filename, -4) === '.css') {
-            $specific = substr($filename, ($breakChar + 1), -4);
-            if (isset($this->specificStylesheets[$specific]) === true) {
+        $filename = $phpcs_file->get_filename();
+        $break_char = strrpos($filename, '_');
+        if ($break_char !== false && substr($filename, -4) === '.css') {
+            $specific = substr($filename, $break_char + 1, -4);
+            if (isset($this->specific_stylesheets[$specific]) === true) {
                 return;
             }
         }
-
-        $tokens  = $phpcsFile->getTokens();
-        $content = $tokens[$stackPtr]['content'];
-
+        $tokens = $phpcs_file->get_tokens();
+        $content = $tokens[$stack_ptr]['content'];
         if ($content[0] === '-') {
             $error = 'Browser-specific styles are not allowed';
-            $phpcsFile->addError($error, $stackPtr, 'ForbiddenStyle');
+            $phpcs_file->add_error($error, $stack_ptr, 'ForbiddenStyle');
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

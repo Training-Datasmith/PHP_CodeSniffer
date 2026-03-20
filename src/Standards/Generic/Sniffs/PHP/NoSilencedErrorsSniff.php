@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Throws an error or warning when any code prefixed with an asperand is encountered.
  *
@@ -15,13 +15,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class NoSilencedErrorsSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class No_Silenced_Errors_Sniff implements Sniff
 {
     /**
      * If true, an error will be thrown; otherwise a warning.
@@ -29,7 +27,6 @@ class NoSilencedErrorsSniff implements Sniff
      * @var boolean
      */
     public $error = false;
-
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -38,9 +35,8 @@ class NoSilencedErrorsSniff implements Sniff
     public function register()
     {
         return [T_ASPERAND];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -50,26 +46,24 @@ class NoSilencedErrorsSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
         // Prepare the "Found" string to display.
-        $contextLength  = 4;
-        $endOfStatement = $phpcsFile->findEndOfStatement($stackPtr, [T_COMMA, T_COLON]);
-        if (($endOfStatement - $stackPtr) < $contextLength) {
-            $contextLength = ($endOfStatement - $stackPtr);
+        $context_length = 4;
+        $end_of_statement = $phpcs_file->find_end_of_statement($stack_ptr, [T_COMMA, T_COLON]);
+        if ($end_of_statement - $stack_ptr < $context_length) {
+            $context_length = $end_of_statement - $stack_ptr;
         }
-
-        $found = $phpcsFile->getTokensAsString($stackPtr, $contextLength);
-        $found = str_replace(["\t", "\n", "\r"], ' ', $found).'...';
-
+        $found = $phpcs_file->get_tokens_as_string($stack_ptr, $context_length);
+        $found = str_replace(["\t", "\n", "\r"], ' ', $found) . '...';
         if ($this->error === true) {
             $error = 'Silencing errors is forbidden; found: %s';
-            $phpcsFile->addError($error, $stackPtr, 'Forbidden', [$found]);
+            $phpcs_file->add_error($error, $stack_ptr, 'Forbidden', [$found]);
         } else {
             $error = 'Silencing errors is discouraged; found: %s';
-            $phpcsFile->addWarning($error, $stackPtr, 'Discouraged', [$found]);
+            $phpcs_file->add_warning($error, $stack_ptr, 'Discouraged', [$found]);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

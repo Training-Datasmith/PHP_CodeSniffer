@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Tests that the file name and the name of the class contained within the file match.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Classes;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Classes;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ClassFileNameSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Class_File_Name_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -23,15 +21,9 @@ class ClassFileNameSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-            T_ENUM,
-        ];
-
-    }//end register()
-
+        return [T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -41,28 +33,22 @@ class ClassFileNameSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $fullPath = basename($phpcsFile->getFilename());
-        $fileName = substr($fullPath, 0, strrpos($fullPath, '.'));
-        if ($fileName === '') {
+        $full_path = basename($phpcs_file->get_filename());
+        $file_name = substr($full_path, 0, strrpos($full_path, '.'));
+        if ($file_name === '') {
             // No filename probably means STDIN, so we can't do this check.
             return;
         }
-
-        $tokens  = $phpcsFile->getTokens();
-        $decName = $phpcsFile->findNext(T_STRING, $stackPtr);
-
-        if ($tokens[$decName]['content'] !== $fileName) {
+        $tokens = $phpcs_file->get_tokens();
+        $dec_name = $phpcs_file->find_next(T_STRING, $stack_ptr);
+        if ($tokens[$dec_name]['content'] !== $file_name) {
             $error = '%s name doesn\'t match filename; expected "%s %s"';
-            $data  = [
-                ucfirst($tokens[$stackPtr]['content']),
-                $tokens[$stackPtr]['content'],
-                $fileName,
-            ];
-            $phpcsFile->addError($error, $stackPtr, 'NoMatch', $data);
+            $data = [ucfirst($tokens[$stack_ptr]['content']), $tokens[$stack_ptr]['content'], $file_name];
+            $phpcs_file->add_error($error, $stack_ptr, 'NoMatch', $data);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

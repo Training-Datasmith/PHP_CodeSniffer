@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Parses and verifies the class doc comment.
  *
@@ -16,13 +16,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Commenting;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ClassCommentSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Class_Comment_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -32,9 +30,8 @@ class ClassCommentSniff implements Sniff
     public function register()
     {
         return [T_CLASS];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -44,64 +41,46 @@ class ClassCommentSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $find   = [
-            T_ABSTRACT   => T_ABSTRACT,
-            T_FINAL      => T_FINAL,
-            T_READONLY   => T_READONLY,
-            T_WHITESPACE => T_WHITESPACE,
-        ];
-
-        $previousContent = null;
-        for ($commentEnd = ($stackPtr - 1); $commentEnd >= 0; $commentEnd--) {
-            if (isset($find[$tokens[$commentEnd]['code']]) === true) {
+        $tokens = $phpcs_file->get_tokens();
+        $find = [T_ABSTRACT => T_ABSTRACT, T_FINAL => T_FINAL, T_READONLY => T_READONLY, T_WHITESPACE => T_WHITESPACE];
+        $previous_content = null;
+        for ($comment_end = $stack_ptr - 1; $comment_end >= 0; $comment_end--) {
+            if (isset($find[$tokens[$comment_end]['code']]) === true) {
                 continue;
             }
-
-            if ($previousContent === null) {
-                $previousContent = $commentEnd;
+            if ($previous_content === null) {
+                $previous_content = $comment_end;
             }
-
-            if ($tokens[$commentEnd]['code'] === T_ATTRIBUTE_END
-                && isset($tokens[$commentEnd]['attribute_opener']) === true
-            ) {
-                $commentEnd = $tokens[$commentEnd]['attribute_opener'];
+            if ($tokens[$comment_end]['code'] === T_ATTRIBUTE_END && isset($tokens[$comment_end]['attribute_opener']) === true) {
+                $comment_end = $tokens[$comment_end]['attribute_opener'];
                 continue;
             }
-
             break;
         }
-
-        if ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT_CLOSE_TAG
-            && $tokens[$commentEnd]['code'] !== T_COMMENT
-        ) {
-            $class = $phpcsFile->getDeclarationName($stackPtr);
-            $phpcsFile->addError('Missing doc comment for class %s', $stackPtr, 'Missing', [$class]);
-            $phpcsFile->recordMetric($stackPtr, 'Class has doc comment', 'no');
+        if ($tokens[$comment_end]['code'] !== T_DOC_COMMENT_CLOSE_TAG && $tokens[$comment_end]['code'] !== T_COMMENT) {
+            $class = $phpcs_file->get_declaration_name($stack_ptr);
+            $phpcs_file->add_error('Missing doc comment for class %s', $stack_ptr, 'Missing', [$class]);
+            $phpcs_file->record_metric($stack_ptr, 'Class has doc comment', 'no');
             return;
         }
-
-        $phpcsFile->recordMetric($stackPtr, 'Class has doc comment', 'yes');
-
-        if ($tokens[$commentEnd]['code'] === T_COMMENT) {
-            $phpcsFile->addError('You must use "/**" style comments for a class comment', $stackPtr, 'WrongStyle');
+        $phpcs_file->record_metric($stack_ptr, 'Class has doc comment', 'yes');
+        if ($tokens[$comment_end]['code'] === T_COMMENT) {
+            $phpcs_file->add_error('You must use "/**" style comments for a class comment', $stack_ptr, 'WrongStyle');
             return;
         }
-
-        if ($tokens[$previousContent]['line'] !== ($tokens[$stackPtr]['line'] - 1)) {
+        if ($tokens[$previous_content]['line'] !== $tokens[$stack_ptr]['line'] - 1) {
             $error = 'There must be no blank lines after the class comment';
-            $phpcsFile->addError($error, $commentEnd, 'SpacingAfter');
+            $phpcs_file->add_error($error, $comment_end, 'SpacingAfter');
         }
-
-        $commentStart = $tokens[$commentEnd]['comment_opener'];
-        foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
+        $comment_start = $tokens[$comment_end]['comment_opener'];
+        foreach ($tokens[$comment_start]['comment_tags'] as $tag) {
             $error = '%s tag is not allowed in class comment';
-            $data  = [$tokens[$tag]['content']];
-            $phpcsFile->addWarning($error, $tag, 'TagNotAllowed', $data);
+            $data = [$tokens[$tag]['content']];
+            $phpcs_file->add_warning($error, $tag, 'TagNotAllowed', $data);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

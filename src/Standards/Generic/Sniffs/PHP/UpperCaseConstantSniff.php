@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that all uses of TRUE, FALSE and NULL are uppercase.
  *
@@ -8,12 +8,10 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
-
-use PHP_CodeSniffer\Files\File;
-
-class UpperCaseConstantSniff extends LowerCaseConstantSniff
+use Php_code_Sniffer\Files\File;
+class Upper_Case_Constant_Sniff extends Lower_Case_Constant_Sniff
 {
     /**
      * Processes a non-type declaration constant.
@@ -24,33 +22,27 @@ class UpperCaseConstantSniff extends LowerCaseConstantSniff
      *
      * @return void
      */
-    protected function processConstant(File $phpcsFile, $stackPtr)
+    protected function process_constant(File $phpcs_file, $stack_ptr)
     {
-        $tokens   = $phpcsFile->getTokens();
-        $keyword  = $tokens[$stackPtr]['content'];
+        $tokens = $phpcs_file->get_tokens();
+        $keyword = $tokens[$stack_ptr]['content'];
         $expected = strtoupper($keyword);
-
         if ($keyword !== $expected) {
             if ($keyword === strtolower($keyword)) {
-                $phpcsFile->recordMetric($stackPtr, 'PHP constant case', 'lower');
+                $phpcs_file->record_metric($stack_ptr, 'PHP constant case', 'lower');
             } else {
-                $phpcsFile->recordMetric($stackPtr, 'PHP constant case', 'mixed');
+                $phpcs_file->record_metric($stack_ptr, 'PHP constant case', 'mixed');
             }
-
             $error = 'TRUE, FALSE and NULL must be uppercase; expected "%s" but found "%s"';
-            $data  = [
-                $expected,
-                $keyword,
-            ];
-
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Found', $data);
+            $data = [$expected, $keyword];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'Found', $data);
             if ($fix === true) {
-                $phpcsFile->fixer->replaceToken($stackPtr, $expected);
+                $phpcs_file->fixer->replace_token($stack_ptr, $expected);
             }
         } else {
-            $phpcsFile->recordMetric($stackPtr, 'PHP constant case', 'upper');
+            $phpcs_file->record_metric($stack_ptr, 'PHP constant case', 'upper');
         }
-
-    }//end processConstant()
-
-}//end class
+    }
+    //end processConstant()
+}
+//end class

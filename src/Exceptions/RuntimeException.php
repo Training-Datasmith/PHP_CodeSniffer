@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * An exception thrown by PHP_CodeSniffer when it encounters an unrecoverable error.
  *
@@ -8,9 +8,9 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
-
-namespace PHP_CodeSniffer\Exceptions;
+namespace Php_code_Sniffer\Exceptions;
 
 class RuntimeException extends \RuntimeException
 {
-}//end class
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * XML report for PHP_CodeSniffer.
  *
@@ -8,12 +8,10 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
 class Xml implements Report
 {
     /**
@@ -30,63 +28,55 @@ class Xml implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {
-        $out = new \XMLWriter();
-        $out->openMemory();
-        $out->setIndent(true);
-        $out->setIndentString('    ');
-        $out->startDocument('1.0', 'UTF-8');
-
+        $out = new \Xml_Writer();
+        $out->open_memory();
+        $out->set_indent(true);
+        $out->set_indent_string('    ');
+        $out->start_document('1.0', 'UTF-8');
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
             // Nothing to print.
             return false;
         }
-
-        $out->startElement('file');
-        $out->writeAttribute('name', $report['filename']);
-        $out->writeAttribute('errors', $report['errors']);
-        $out->writeAttribute('warnings', $report['warnings']);
-        $out->writeAttribute('fixable', $report['fixable']);
-
-        foreach ($report['messages'] as $line => $lineErrors) {
-            foreach ($lineErrors as $column => $colErrors) {
-                foreach ($colErrors as $error) {
+        $out->start_element('file');
+        $out->write_attribute('name', $report['filename']);
+        $out->write_attribute('errors', $report['errors']);
+        $out->write_attribute('warnings', $report['warnings']);
+        $out->write_attribute('fixable', $report['fixable']);
+        foreach ($report['messages'] as $line => $line_errors) {
+            foreach ($line_errors as $column => $col_errors) {
+                foreach ($col_errors as $error) {
                     $error['type'] = strtolower($error['type']);
-                    if ($phpcsFile->config->encoding !== 'utf-8') {
-                        $error['message'] = iconv($phpcsFile->config->encoding, 'utf-8', $error['message']);
+                    if ($phpcs_file->config->encoding !== 'utf-8') {
+                        $error['message'] = iconv($phpcs_file->config->encoding, 'utf-8', $error['message']);
                     }
-
-                    $out->startElement($error['type']);
-                    $out->writeAttribute('line', $line);
-                    $out->writeAttribute('column', $column);
-                    $out->writeAttribute('source', $error['source']);
-                    $out->writeAttribute('severity', $error['severity']);
-                    $out->writeAttribute('fixable', (int) $error['fixable']);
+                    $out->start_element($error['type']);
+                    $out->write_attribute('line', $line);
+                    $out->write_attribute('column', $column);
+                    $out->write_attribute('source', $error['source']);
+                    $out->write_attribute('severity', $error['severity']);
+                    $out->write_attribute('fixable', (int) $error['fixable']);
                     $out->text($error['message']);
-                    $out->endElement();
+                    $out->end_element();
                 }
             }
-        }//end foreach
-
-        $out->endElement();
-
+        }
+        //end foreach
+        $out->end_element();
         // Remove the start of the document because we will
         // add that manually later. We only have it in here to
         // properly set the encoding.
         $content = $out->flush();
         if (strpos($content, PHP_EOL) !== false) {
-            $content = substr($content, (strpos($content, PHP_EOL) + strlen(PHP_EOL)));
+            $content = substr($content, strpos($content, PHP_EOL) + strlen(PHP_EOL));
         } elseif (strpos($content, "\n") !== false) {
-            $content = substr($content, (strpos($content, "\n") + 1));
+            $content = substr($content, strpos($content, "\n") + 1);
         }
-
         echo $content;
-
         return true;
-
-    }//end generateFileReport()
-
+    }
+    //end generateFileReport()
     /**
      * Prints all violations for processed files, in a proprietary XML format.
      *
@@ -103,22 +93,13 @@ class Xml implements Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    ) {
-        echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
-        echo '<phpcs version="'.Config::VERSION.'">'.PHP_EOL;
-        echo $cachedData;
-        echo '</phpcs>'.PHP_EOL;
-
-    }//end generate()
-
-}//end class
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true)
+    {
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+        echo '<phpcs version="' . Config::VERSION . '">' . PHP_EOL;
+        echo $cached_data;
+        echo '</phpcs>' . PHP_EOL;
+    }
+    //end generate()
+}
+//end class

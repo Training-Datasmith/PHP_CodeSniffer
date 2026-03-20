@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that operators have valid spacing surrounding them.
  *
@@ -8,32 +8,25 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\White_Space;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class OperatorSpacingSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Operator_Spacing_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS'];
     /**
      * Allow newlines instead of spaces.
      *
      * @var boolean
      */
-    public $ignoreNewlines = false;
-
+    public $ignore_newlines = false;
     /**
      * Don't check spacing for assignment operators.
      *
@@ -41,15 +34,13 @@ class OperatorSpacingSniff implements Sniff
      *
      * @var boolean
      */
-    public $ignoreSpacingBeforeAssignments = true;
-
+    public $ignore_spacing_before_assignments = true;
     /**
      * A list of tokens that aren't considered as operands.
      *
      * @var string[]
      */
-    private $nonOperandTokens = [];
-
+    private $non_operand_tokens = [];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -62,62 +53,32 @@ class OperatorSpacingSniff implements Sniff
             a T_MINUS or T_PLUS token to indicate that the token is not being
             used as an operator.
         */
-
         // Trying to operate on a negative value; eg. ($var * -1).
-        $this->nonOperandTokens = Tokens::$operators;
-
+        $this->non_operand_tokens = Tokens::$operators;
         // Trying to compare a negative value; eg. ($var === -1).
-        $this->nonOperandTokens += Tokens::$comparisonTokens;
-
+        $this->non_operand_tokens += Tokens::$comparison_tokens;
         // Trying to compare a negative value; eg. ($var || -1 === $b).
-        $this->nonOperandTokens += Tokens::$booleanOperators;
-
+        $this->non_operand_tokens += Tokens::$boolean_operators;
         // Trying to assign a negative value; eg. ($var = -1).
-        $this->nonOperandTokens += Tokens::$assignmentTokens;
-
+        $this->non_operand_tokens += Tokens::$assignment_tokens;
         // Returning/printing a negative value; eg. (return -1).
-        $this->nonOperandTokens += [
-            T_RETURN      => T_RETURN,
-            T_ECHO        => T_ECHO,
-            T_EXIT        => T_EXIT,
-            T_PRINT       => T_PRINT,
-            T_YIELD       => T_YIELD,
-            T_FN_ARROW    => T_FN_ARROW,
-            T_MATCH_ARROW => T_MATCH_ARROW,
-        ];
-
+        $this->non_operand_tokens += [T_RETURN => T_RETURN, T_ECHO => T_ECHO, T_EXIT => T_EXIT, T_PRINT => T_PRINT, T_YIELD => T_YIELD, T_FN_ARROW => T_FN_ARROW, T_MATCH_ARROW => T_MATCH_ARROW];
         // Trying to use a negative value; eg. myFunction($var, -2).
-        $this->nonOperandTokens += [
-            T_CASE                => T_CASE,
-            T_COLON               => T_COLON,
-            T_COMMA               => T_COMMA,
-            T_INLINE_ELSE         => T_INLINE_ELSE,
-            T_INLINE_THEN         => T_INLINE_THEN,
-            T_OPEN_CURLY_BRACKET  => T_OPEN_CURLY_BRACKET,
-            T_OPEN_PARENTHESIS    => T_OPEN_PARENTHESIS,
-            T_OPEN_SHORT_ARRAY    => T_OPEN_SHORT_ARRAY,
-            T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET,
-            T_STRING_CONCAT       => T_STRING_CONCAT,
-        ];
-
+        $this->non_operand_tokens += [T_CASE => T_CASE, T_COLON => T_COLON, T_COMMA => T_COMMA, T_INLINE_ELSE => T_INLINE_ELSE, T_INLINE_THEN => T_INLINE_THEN, T_OPEN_CURLY_BRACKET => T_OPEN_CURLY_BRACKET, T_OPEN_PARENTHESIS => T_OPEN_PARENTHESIS, T_OPEN_SHORT_ARRAY => T_OPEN_SHORT_ARRAY, T_OPEN_SQUARE_BRACKET => T_OPEN_SQUARE_BRACKET, T_STRING_CONCAT => T_STRING_CONCAT];
         // Casting a negative value; eg. (array) -$a.
-        $this->nonOperandTokens += Tokens::$castTokens;
-
+        $this->non_operand_tokens += Tokens::$cast_tokens;
         /*
             These are the tokens the sniff is looking for.
         */
-
-        $targets   = Tokens::$comparisonTokens;
-        $targets  += Tokens::$operators;
-        $targets  += Tokens::$assignmentTokens;
+        $targets = Tokens::$comparison_tokens;
+        $targets += Tokens::$operators;
+        $targets += Tokens::$assignment_tokens;
         $targets[] = T_INLINE_THEN;
         $targets[] = T_INLINE_ELSE;
         $targets[] = T_INSTANCEOF;
-
         return $targets;
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -127,191 +88,151 @@ class OperatorSpacingSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if ($this->isOperator($phpcsFile, $stackPtr) === false) {
+        $tokens = $phpcs_file->get_tokens();
+        if ($this->is_operator($phpcs_file, $stack_ptr) === false) {
             return;
         }
-
-        if ($tokens[$stackPtr]['code'] === T_BITWISE_AND) {
+        if ($tokens[$stack_ptr]['code'] === T_BITWISE_AND) {
             // Check there is one space before the & operator.
-            if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
+            if ($tokens[$stack_ptr - 1]['code'] !== T_WHITESPACE) {
                 $error = 'Expected 1 space before "&" operator; 0 found';
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBeforeAmp');
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceBeforeAmp');
                 if ($fix === true) {
-                    $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
+                    $phpcs_file->fixer->add_content_before($stack_ptr, ' ');
                 }
-
-                $phpcsFile->recordMetric($stackPtr, 'Space before operator', 0);
+                $phpcs_file->record_metric($stack_ptr, 'Space before operator', 0);
             } else {
-                if ($tokens[($stackPtr - 2)]['line'] !== $tokens[$stackPtr]['line']) {
+                if ($tokens[$stack_ptr - 2]['line'] !== $tokens[$stack_ptr]['line']) {
                     $found = 'newline';
                 } else {
-                    $found = $tokens[($stackPtr - 1)]['length'];
+                    $found = $tokens[$stack_ptr - 1]['length'];
                 }
-
-                $phpcsFile->recordMetric($stackPtr, 'Space before operator', $found);
-                if ($found !== 1
-                    && ($found !== 'newline' || $this->ignoreNewlines === false)
-                ) {
+                $phpcs_file->record_metric($stack_ptr, 'Space before operator', $found);
+                if ($found !== 1 && ($found !== 'newline' || $this->ignore_newlines === false)) {
                     $error = 'Expected 1 space before "&" operator; %s found';
-                    $data  = [$found];
-                    $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingBeforeAmp', $data);
+                    $data = [$found];
+                    $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingBeforeAmp', $data);
                     if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken(($stackPtr - 1), ' ');
+                        $phpcs_file->fixer->replace_token($stack_ptr - 1, ' ');
                     }
                 }
-            }//end if
-
-            $hasNext = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-            if ($hasNext === false) {
+            }
+            //end if
+            $has_next = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
+            if ($has_next === false) {
                 // Live coding/parse error at end of file.
                 return;
             }
-
             // Check there is one space after the & operator.
-            if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+            if ($tokens[$stack_ptr + 1]['code'] !== T_WHITESPACE) {
                 $error = 'Expected 1 space after "&" operator; 0 found';
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfterAmp');
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceAfterAmp');
                 if ($fix === true) {
-                    $phpcsFile->fixer->addContent($stackPtr, ' ');
+                    $phpcs_file->fixer->add_content($stack_ptr, ' ');
                 }
-
-                $phpcsFile->recordMetric($stackPtr, 'Space after operator', 0);
+                $phpcs_file->record_metric($stack_ptr, 'Space after operator', 0);
             } else {
-                if ($tokens[($stackPtr + 2)]['line'] !== $tokens[$stackPtr]['line']) {
+                if ($tokens[$stack_ptr + 2]['line'] !== $tokens[$stack_ptr]['line']) {
                     $found = 'newline';
                 } else {
-                    $found = $tokens[($stackPtr + 1)]['length'];
+                    $found = $tokens[$stack_ptr + 1]['length'];
                 }
-
-                $phpcsFile->recordMetric($stackPtr, 'Space after operator', $found);
-                if ($found !== 1
-                    && ($found !== 'newline' || $this->ignoreNewlines === false)
-                ) {
+                $phpcs_file->record_metric($stack_ptr, 'Space after operator', $found);
+                if ($found !== 1 && ($found !== 'newline' || $this->ignore_newlines === false)) {
                     $error = 'Expected 1 space after "&" operator; %s found';
-                    $data  = [$found];
-                    $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfterAmp', $data);
+                    $data = [$found];
+                    $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingAfterAmp', $data);
                     if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
+                        $phpcs_file->fixer->replace_token($stack_ptr + 1, ' ');
                     }
                 }
-            }//end if
-
-            return;
-        }//end if
-
-        $operator = $tokens[$stackPtr]['content'];
-
-        if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE
-            && (($tokens[($stackPtr - 1)]['code'] === T_INLINE_THEN
-            && $tokens[($stackPtr)]['code'] === T_INLINE_ELSE) === false)
-        ) {
-            $error = "Expected 1 space before \"$operator\"; 0 found";
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBefore');
-            if ($fix === true) {
-                $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
             }
-
-            $phpcsFile->recordMetric($stackPtr, 'Space before operator', 0);
-        } elseif (isset(Tokens::$assignmentTokens[$tokens[$stackPtr]['code']]) === false
-            || $this->ignoreSpacingBeforeAssignments === false
-        ) {
+            //end if
+            return;
+        }
+        //end if
+        $operator = $tokens[$stack_ptr]['content'];
+        if ($tokens[$stack_ptr - 1]['code'] !== T_WHITESPACE && ($tokens[$stack_ptr - 1]['code'] === T_INLINE_THEN && $tokens[$stack_ptr]['code'] === T_INLINE_ELSE) === false) {
+            $error = "Expected 1 space before \"{$operator}\"; 0 found";
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceBefore');
+            if ($fix === true) {
+                $phpcs_file->fixer->add_content_before($stack_ptr, ' ');
+            }
+            $phpcs_file->record_metric($stack_ptr, 'Space before operator', 0);
+        } elseif (isset(Tokens::$assignment_tokens[$tokens[$stack_ptr]['code']]) === false || $this->ignore_spacing_before_assignments === false) {
             // Throw an error for assignments only if enabled using the sniff property
             // because other standards allow multiple spaces to align assignments.
-            if ($tokens[($stackPtr - 2)]['line'] !== $tokens[$stackPtr]['line']) {
+            if ($tokens[$stack_ptr - 2]['line'] !== $tokens[$stack_ptr]['line']) {
                 $found = 'newline';
             } else {
-                $found = $tokens[($stackPtr - 1)]['length'];
+                $found = $tokens[$stack_ptr - 1]['length'];
             }
-
-            $phpcsFile->recordMetric($stackPtr, 'Space before operator', $found);
-            if ($found !== 1
-                && ($found !== 'newline' || $this->ignoreNewlines === false)
-            ) {
+            $phpcs_file->record_metric($stack_ptr, 'Space before operator', $found);
+            if ($found !== 1 && ($found !== 'newline' || $this->ignore_newlines === false)) {
                 $error = 'Expected 1 space before "%s"; %s found';
-                $data  = [
-                    $operator,
-                    $found,
-                ];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingBefore', $data);
+                $data = [$operator, $found];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingBefore', $data);
                 if ($fix === true) {
-                    $phpcsFile->fixer->beginChangeset();
+                    $phpcs_file->fixer->begin_changeset();
                     if ($found === 'newline') {
-                        $i = ($stackPtr - 2);
+                        $i = $stack_ptr - 2;
                         while ($tokens[$i]['code'] === T_WHITESPACE) {
-                            $phpcsFile->fixer->replaceToken($i, '');
+                            $phpcs_file->fixer->replace_token($i, '');
                             $i--;
                         }
                     }
-
-                    $phpcsFile->fixer->replaceToken(($stackPtr - 1), ' ');
-                    $phpcsFile->fixer->endChangeset();
+                    $phpcs_file->fixer->replace_token($stack_ptr - 1, ' ');
+                    $phpcs_file->fixer->end_changeset();
                 }
-            }//end if
-        }//end if
-
-        $hasNext = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-        if ($hasNext === false) {
+            }
+            //end if
+        }
+        //end if
+        $has_next = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
+        if ($has_next === false) {
             // Live coding/parse error at end of file.
             return;
         }
-
-        if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+        if ($tokens[$stack_ptr + 1]['code'] !== T_WHITESPACE) {
             // Skip short ternary such as: "$foo = $bar ?: true;".
-            if (($tokens[$stackPtr]['code'] === T_INLINE_THEN
-                && $tokens[($stackPtr + 1)]['code'] === T_INLINE_ELSE)
-            ) {
+            if ($tokens[$stack_ptr]['code'] === T_INLINE_THEN && $tokens[$stack_ptr + 1]['code'] === T_INLINE_ELSE) {
                 return;
             }
-
-            $error = "Expected 1 space after \"$operator\"; 0 found";
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfter');
+            $error = "Expected 1 space after \"{$operator}\"; 0 found";
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoSpaceAfter');
             if ($fix === true) {
-                $phpcsFile->fixer->addContent($stackPtr, ' ');
+                $phpcs_file->fixer->add_content($stack_ptr, ' ');
             }
-
-            $phpcsFile->recordMetric($stackPtr, 'Space after operator', 0);
+            $phpcs_file->record_metric($stack_ptr, 'Space after operator', 0);
         } else {
-            if (isset($tokens[($stackPtr + 2)]) === true
-                && $tokens[($stackPtr + 2)]['line'] !== $tokens[$stackPtr]['line']
-            ) {
+            if (isset($tokens[$stack_ptr + 2]) === true && $tokens[$stack_ptr + 2]['line'] !== $tokens[$stack_ptr]['line']) {
                 $found = 'newline';
             } else {
-                $found = $tokens[($stackPtr + 1)]['length'];
+                $found = $tokens[$stack_ptr + 1]['length'];
             }
-
-            $phpcsFile->recordMetric($stackPtr, 'Space after operator', $found);
-            if ($found !== 1
-                && ($found !== 'newline' || $this->ignoreNewlines === false)
-            ) {
+            $phpcs_file->record_metric($stack_ptr, 'Space after operator', $found);
+            if ($found !== 1 && ($found !== 'newline' || $this->ignore_newlines === false)) {
                 $error = 'Expected 1 space after "%s"; %s found';
-                $data  = [
-                    $operator,
-                    $found,
-                ];
-
-                $nextNonWhitespace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-                if ($nextNonWhitespace !== false
-                    && isset(Tokens::$commentTokens[$tokens[$nextNonWhitespace]['code']]) === true
-                    && $found === 'newline'
-                ) {
+                $data = [$operator, $found];
+                $next_non_whitespace = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
+                if ($next_non_whitespace !== false && isset(Tokens::$comment_tokens[$tokens[$next_non_whitespace]['code']]) === true && $found === 'newline') {
                     // Don't auto-fix when it's a comment or PHPCS annotation on a new line as
                     // it causes fixer conflicts and can cause the meaning of annotations to change.
-                    $phpcsFile->addError($error, $stackPtr, 'SpacingAfter', $data);
+                    $phpcs_file->add_error($error, $stack_ptr, 'SpacingAfter', $data);
                 } else {
-                    $fix = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfter', $data);
+                    $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingAfter', $data);
                     if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
+                        $phpcs_file->fixer->replace_token($stack_ptr + 1, ' ');
                     }
                 }
-            }//end if
-        }//end if
-
-    }//end process()
-
+            }
+            //end if
+        }
+        //end if
+    }
+    //end process()
     /**
      * Checks if an operator is actually a different type of token in the current context.
      *
@@ -321,59 +242,47 @@ class OperatorSpacingSniff implements Sniff
      *
      * @return boolean
      */
-    protected function isOperator(File $phpcsFile, $stackPtr)
+    protected function is_operator(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Skip default values in function declarations.
         // Skip declare statements.
-        if ($tokens[$stackPtr]['code'] === T_EQUAL
-            || $tokens[$stackPtr]['code'] === T_MINUS
-        ) {
-            if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
-                $parenthesis = array_keys($tokens[$stackPtr]['nested_parenthesis']);
-                $bracket     = array_pop($parenthesis);
+        if ($tokens[$stack_ptr]['code'] === T_EQUAL || $tokens[$stack_ptr]['code'] === T_MINUS) {
+            if (isset($tokens[$stack_ptr]['nested_parenthesis']) === true) {
+                $parenthesis = array_keys($tokens[$stack_ptr]['nested_parenthesis']);
+                $bracket = array_pop($parenthesis);
                 if (isset($tokens[$bracket]['parenthesis_owner']) === true) {
                     $function = $tokens[$bracket]['parenthesis_owner'];
-                    if ($tokens[$function]['code'] === T_FUNCTION
-                        || $tokens[$function]['code'] === T_CLOSURE
-                        || $tokens[$function]['code'] === T_FN
-                        || $tokens[$function]['code'] === T_DECLARE
-                    ) {
+                    if ($tokens[$function]['code'] === T_FUNCTION || $tokens[$function]['code'] === T_CLOSURE || $tokens[$function]['code'] === T_FN || $tokens[$function]['code'] === T_DECLARE) {
                         return false;
                     }
                 }
             }
         }
-
-        if ($tokens[$stackPtr]['code'] === T_EQUAL) {
+        if ($tokens[$stack_ptr]['code'] === T_EQUAL) {
             // Skip for '=&' case.
-            if (isset($tokens[($stackPtr + 1)]) === true
-                && $tokens[($stackPtr + 1)]['code'] === T_BITWISE_AND
-            ) {
+            if (isset($tokens[$stack_ptr + 1]) === true && $tokens[$stack_ptr + 1]['code'] === T_BITWISE_AND) {
                 return false;
             }
         }
-
-        if ($tokens[$stackPtr]['code'] === T_BITWISE_AND) {
+        if ($tokens[$stack_ptr]['code'] === T_BITWISE_AND) {
             // If it's not a reference, then we expect one space either side of the
             // bitwise operator.
-            if ($phpcsFile->isReference($stackPtr) === true) {
+            if ($phpcs_file->is_reference($stack_ptr) === true) {
                 return false;
             }
         }
-
-        if ($tokens[$stackPtr]['code'] === T_MINUS || $tokens[$stackPtr]['code'] === T_PLUS) {
+        if ($tokens[$stack_ptr]['code'] === T_MINUS || $tokens[$stack_ptr]['code'] === T_PLUS) {
             // Check minus spacing, but make sure we aren't just assigning
             // a minus value or returning one.
-            $prev = $phpcsFile->findPrevious(Tokens::$emptyTokens, ($stackPtr - 1), null, true);
-            if (isset($this->nonOperandTokens[$tokens[$prev]['code']]) === true) {
+            $prev = $phpcs_file->find_previous(Tokens::$empty_tokens, $stack_ptr - 1, null, true);
+            if (isset($this->non_operand_tokens[$tokens[$prev]['code']]) === true) {
                 return false;
             }
-        }//end if
-
+        }
+        //end if
         return true;
-
-    }//end isOperator()
-
-}//end class
+    }
+    //end isOperator()
+}
+//end class

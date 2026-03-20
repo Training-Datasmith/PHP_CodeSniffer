@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Detects unnecessary final modifiers inside of final classes.
  *
@@ -21,13 +21,11 @@ declare(strict_types=1);
  * @copyright 2007-2014 Manuel Pichler. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Code_Analysis;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class UnnecessaryFinalModifierSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Unnecessary_Final_Modifier_Sniff implements Sniff
 {
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -37,9 +35,8 @@ class UnnecessaryFinalModifierSniff implements Sniff
     public function register()
     {
         return [T_CLASS];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -49,38 +46,31 @@ class UnnecessaryFinalModifierSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-
+        $tokens = $phpcs_file->get_tokens();
+        $token = $tokens[$stack_ptr];
         // Skip for statements without body.
         if (isset($token['scope_opener']) === false) {
             return;
         }
-
-        if ($phpcsFile->getClassProperties($stackPtr)['is_final'] === false) {
+        if ($phpcs_file->get_class_properties($stack_ptr)['is_final'] === false) {
             // This class is not final so we don't need to check it.
             return;
         }
-
         $next = ++$token['scope_opener'];
-        $end  = --$token['scope_closer'];
-
+        $end = --$token['scope_closer'];
         for (; $next <= $end; ++$next) {
             if ($tokens[$next]['code'] === T_FINAL) {
                 $error = 'Unnecessary FINAL modifier in FINAL class';
-                $phpcsFile->addWarning($error, $next, 'Found');
+                $phpcs_file->add_warning($error, $next, 'Found');
             }
-
             // Skip over the contents of functions as those can't contain the `final` keyword anyway.
-            if ($tokens[$next]['code'] === T_FUNCTION
-                && isset($tokens[$next]['scope_closer']) === true
-            ) {
+            if ($tokens[$next]['code'] === T_FUNCTION && isset($tokens[$next]['scope_closer']) === true) {
                 $next = $tokens[$next]['scope_closer'];
             }
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

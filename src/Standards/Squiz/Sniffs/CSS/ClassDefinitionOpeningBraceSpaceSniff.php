@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensure a single space before, and a newline after, the class opening brace
  *
@@ -8,22 +8,19 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\CSS;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\CSS;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Class_Definition_Opening_Brace_Space_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = ['CSS'];
-
+    public $supported_tokenizers = ['CSS'];
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -32,9 +29,8 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
     public function register()
     {
         return [T_OPEN_CURLY_BRACKET];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes the tokens that this sniff is interested in.
      *
@@ -44,131 +40,115 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens            = $phpcsFile->getTokens();
-        $prevNonWhitespace = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-
-        if ($prevNonWhitespace !== false) {
+        $tokens = $phpcs_file->get_tokens();
+        $prev_non_whitespace = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
+        if ($prev_non_whitespace !== false) {
             $length = 0;
-            if ($tokens[$stackPtr]['line'] !== $tokens[$prevNonWhitespace]['line']) {
+            if ($tokens[$stack_ptr]['line'] !== $tokens[$prev_non_whitespace]['line']) {
                 $length = 'newline';
-            } elseif ($tokens[($stackPtr - 1)]['code'] === T_WHITESPACE) {
-                if (strpos($tokens[($stackPtr - 1)]['content'], "\t") !== false) {
+            } elseif ($tokens[$stack_ptr - 1]['code'] === T_WHITESPACE) {
+                if (strpos($tokens[$stack_ptr - 1]['content'], "\t") !== false) {
                     $length = 'tab';
                 } else {
-                    $length = $tokens[($stackPtr - 1)]['length'];
+                    $length = $tokens[$stack_ptr - 1]['length'];
                 }
             }
-
             if ($length === 0) {
                 $error = 'Expected 1 space before opening brace of class definition; 0 found';
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoneBefore');
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'NoneBefore');
                 if ($fix === true) {
-                    $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
+                    $phpcs_file->fixer->add_content_before($stack_ptr, ' ');
                 }
             } elseif ($length !== 1) {
                 $error = 'Expected 1 space before opening brace of class definition; %s found';
-                $data  = [$length];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'Before', $data);
+                $data = [$length];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'Before', $data);
                 if ($fix === true) {
-                    $phpcsFile->fixer->beginChangeset();
-
-                    for ($i = ($stackPtr - 1); $i > $prevNonWhitespace; $i--) {
-                        $phpcsFile->fixer->replaceToken($i, '');
+                    $phpcs_file->fixer->begin_changeset();
+                    for ($i = $stack_ptr - 1; $i > $prev_non_whitespace; $i--) {
+                        $phpcs_file->fixer->replace_token($i, '');
                     }
-
-                    $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
-                    $phpcsFile->fixer->endChangeset();
+                    $phpcs_file->fixer->add_content_before($stack_ptr, ' ');
+                    $phpcs_file->fixer->end_changeset();
                 }
-            }//end if
-        }//end if
-
-        $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-        if ($nextNonEmpty === false) {
+            }
+            //end if
+        }
+        //end if
+        $next_non_empty = $phpcs_file->find_next(Tokens::$empty_tokens, $stack_ptr + 1, null, true);
+        if ($next_non_empty === false) {
             return;
         }
-
-        if ($tokens[$nextNonEmpty]['line'] === $tokens[$stackPtr]['line']) {
+        if ($tokens[$next_non_empty]['line'] === $tokens[$stack_ptr]['line']) {
             $error = 'Opening brace should be the last content on the line';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'ContentBefore');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'ContentBefore');
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                $phpcsFile->fixer->addNewline($stackPtr);
-
+                $phpcs_file->fixer->begin_changeset();
+                $phpcs_file->fixer->add_newline($stack_ptr);
                 // Remove potentially left over trailing whitespace.
-                if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
-                    $phpcsFile->fixer->replaceToken(($stackPtr + 1), '');
+                if ($tokens[$stack_ptr + 1]['code'] === T_WHITESPACE) {
+                    $phpcs_file->fixer->replace_token($stack_ptr + 1, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
         } else {
-            if (isset($tokens[$stackPtr]['bracket_closer']) === false) {
+            if (isset($tokens[$stack_ptr]['bracket_closer']) === false) {
                 // Syntax error or live coding, bow out.
                 return;
             }
-
             // Check for nested class definitions.
-            $found = $phpcsFile->findNext(
-                T_OPEN_CURLY_BRACKET,
-                ($stackPtr + 1),
-                $tokens[$stackPtr]['bracket_closer']
-            );
-
+            $found = $phpcs_file->find_next(T_OPEN_CURLY_BRACKET, $stack_ptr + 1, $tokens[$stack_ptr]['bracket_closer']);
             if ($found === false) {
                 // Not nested.
                 return;
             }
-
-            $lastOnLine = $stackPtr;
-            for ($lastOnLine; $lastOnLine < $tokens[$stackPtr]['bracket_closer']; $lastOnLine++) {
-                if ($tokens[$lastOnLine]['line'] !== $tokens[($lastOnLine + 1)]['line']) {
+            $last_on_line = $stack_ptr;
+            for ($last_on_line; $last_on_line < $tokens[$stack_ptr]['bracket_closer']; $last_on_line++) {
+                if ($tokens[$last_on_line]['line'] !== $tokens[$last_on_line + 1]['line']) {
                     break;
                 }
             }
-
-            $nextNonWhiteSpace = $phpcsFile->findNext(T_WHITESPACE, ($lastOnLine + 1), null, true);
-            if ($nextNonWhiteSpace === false) {
+            $next_non_white_space = $phpcs_file->find_next(T_WHITESPACE, $last_on_line + 1, null, true);
+            if ($next_non_white_space === false) {
                 return;
             }
-
-            $foundLines = ($tokens[$nextNonWhiteSpace]['line'] - $tokens[$stackPtr]['line'] - 1);
-            if ($foundLines !== 1) {
+            $found_lines = $tokens[$next_non_white_space]['line'] - $tokens[$stack_ptr]['line'] - 1;
+            if ($found_lines !== 1) {
                 $error = 'Expected 1 blank line after opening brace of nesting class definition; %s found';
-                $data  = [max(0, $foundLines)];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'AfterNesting', $data);
-
+                $data = [max(0, $found_lines)];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'AfterNesting', $data);
                 if ($fix === true) {
-                    $firstOnNextLine = $nextNonWhiteSpace;
-                    while ($tokens[$firstOnNextLine]['column'] !== 1) {
-                        --$firstOnNextLine;
+                    $first_on_next_line = $next_non_white_space;
+                    while ($tokens[$first_on_next_line]['column'] !== 1) {
+                        --$first_on_next_line;
                     }
-
                     if ($found < 0) {
                         // First statement on same line as the opening brace.
-                        $phpcsFile->fixer->addContentBefore($nextNonWhiteSpace, $phpcsFile->eolChar.$phpcsFile->eolChar);
+                        $phpcs_file->fixer->add_content_before($next_non_white_space, $phpcs_file->eol_char . $phpcs_file->eol_char);
                     } elseif ($found === 0) {
                         // Next statement on next line, no blank line.
-                        $phpcsFile->fixer->addNewlineBefore($firstOnNextLine);
+                        $phpcs_file->fixer->add_newline_before($first_on_next_line);
                     } else {
                         // Too many blank lines.
-                        $phpcsFile->fixer->beginChangeset();
-                        for ($i = ($firstOnNextLine - 1); $i > $stackPtr; $i--) {
+                        $phpcs_file->fixer->begin_changeset();
+                        for ($i = $first_on_next_line - 1; $i > $stack_ptr; $i--) {
                             if ($tokens[$i]['code'] !== T_WHITESPACE) {
                                 break;
                             }
-
-                            $phpcsFile->fixer->replaceToken($i, '');
+                            $phpcs_file->fixer->replace_token($i, '');
                         }
-
-                        $phpcsFile->fixer->addContentBefore($firstOnNextLine, $phpcsFile->eolChar.$phpcsFile->eolChar);
-                        $phpcsFile->fixer->endChangeset();
+                        $phpcs_file->fixer->add_content_before($first_on_next_line, $phpcs_file->eol_char . $phpcs_file->eol_char);
+                        $phpcs_file->fixer->end_changeset();
                     }
-                }//end if
-            }//end if
-        }//end if
-
-    }//end process()
-
-}//end class
+                }
+                //end if
+            }
+            //end if
+        }
+        //end if
+    }
+    //end process()
+}
+//end class

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures doc blocks follow basic formatting.
  *
@@ -8,24 +8,18 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Commenting;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class DocCommentSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Doc_Comment_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -34,9 +28,8 @@ class DocCommentSniff implements Sniff
     public function register()
     {
         return [T_DOC_COMMENT_OPEN_TAG];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -46,308 +39,253 @@ class DocCommentSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if (isset($tokens[$stackPtr]['comment_closer']) === false
-            || ($tokens[$tokens[$stackPtr]['comment_closer']]['content'] === ''
-            && $tokens[$stackPtr]['comment_closer'] === ($phpcsFile->numTokens - 1))
-        ) {
+        $tokens = $phpcs_file->get_tokens();
+        if (isset($tokens[$stack_ptr]['comment_closer']) === false || $tokens[$tokens[$stack_ptr]['comment_closer']]['content'] === '' && $tokens[$stack_ptr]['comment_closer'] === $phpcs_file->num_tokens - 1) {
             // Don't process an unfinished comment during live coding.
             return;
         }
-
-        $commentStart = $stackPtr;
-        $commentEnd   = $tokens[$stackPtr]['comment_closer'];
-
-        $empty = [
-            T_DOC_COMMENT_WHITESPACE,
-            T_DOC_COMMENT_STAR,
-        ];
-
-        $short = $phpcsFile->findNext($empty, ($stackPtr + 1), $commentEnd, true);
+        $comment_start = $stack_ptr;
+        $comment_end = $tokens[$stack_ptr]['comment_closer'];
+        $empty = [T_DOC_COMMENT_WHITESPACE, T_DOC_COMMENT_STAR];
+        $short = $phpcs_file->find_next($empty, $stack_ptr + 1, $comment_end, true);
         if ($short === false) {
             // No content at all.
             $error = 'Doc comment is empty';
-            $phpcsFile->addError($error, $stackPtr, 'Empty');
+            $phpcs_file->add_error($error, $stack_ptr, 'Empty');
             return;
         }
-
         // The first line of the comment should just be the /** code.
-        if ($tokens[$short]['line'] === $tokens[$stackPtr]['line']) {
+        if ($tokens[$short]['line'] === $tokens[$stack_ptr]['line']) {
             $error = 'The open comment tag must be the only content on the line';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'ContentAfterOpen');
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'ContentAfterOpen');
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                $phpcsFile->fixer->addNewline($stackPtr);
-                $phpcsFile->fixer->addContentBefore($short, '* ');
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->begin_changeset();
+                $phpcs_file->fixer->add_newline($stack_ptr);
+                $phpcs_file->fixer->add_content_before($short, '* ');
+                $phpcs_file->fixer->end_changeset();
             }
         }
-
         // The last line of the comment should just be the */ code.
-        $prev = $phpcsFile->findPrevious($empty, ($commentEnd - 1), $stackPtr, true);
-        if ($tokens[$prev]['line'] === $tokens[$commentEnd]['line']) {
+        $prev = $phpcs_file->find_previous($empty, $comment_end - 1, $stack_ptr, true);
+        if ($tokens[$prev]['line'] === $tokens[$comment_end]['line']) {
             $error = 'The close comment tag must be the only content on the line';
-            $fix   = $phpcsFile->addFixableError($error, $commentEnd, 'ContentBeforeClose');
+            $fix = $phpcs_file->add_fixable_error($error, $comment_end, 'ContentBeforeClose');
             if ($fix === true) {
-                $phpcsFile->fixer->addNewlineBefore($commentEnd);
+                $phpcs_file->fixer->add_newline_before($comment_end);
             }
         }
-
         // Check for additional blank lines at the end of the comment.
-        if ($tokens[$prev]['line'] < ($tokens[$commentEnd]['line'] - 1)) {
+        if ($tokens[$prev]['line'] < $tokens[$comment_end]['line'] - 1) {
             $error = 'Additional blank lines found at end of doc comment';
-            $fix   = $phpcsFile->addFixableError($error, $commentEnd, 'SpacingAfter');
+            $fix = $phpcs_file->add_fixable_error($error, $comment_end, 'SpacingAfter');
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                for ($i = ($prev + 1); $i < $commentEnd; $i++) {
-                    if ($tokens[($i + 1)]['line'] === $tokens[$commentEnd]['line']) {
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $prev + 1; $i < $comment_end; $i++) {
+                    if ($tokens[$i + 1]['line'] === $tokens[$comment_end]['line']) {
                         break;
                     }
-
-                    $phpcsFile->fixer->replaceToken($i, '');
+                    $phpcs_file->fixer->replace_token($i, '');
                 }
-
-                $phpcsFile->fixer->endChangeset();
+                $phpcs_file->fixer->end_changeset();
             }
         }
-
         // Check for a comment description.
         if ($tokens[$short]['code'] !== T_DOC_COMMENT_STRING) {
             $error = 'Missing short description in doc comment';
-            $phpcsFile->addError($error, $stackPtr, 'MissingShort');
+            $phpcs_file->add_error($error, $stack_ptr, 'MissingShort');
         } else {
             // No extra newline before short description.
-            if ($tokens[$short]['line'] !== ($tokens[$stackPtr]['line'] + 1)) {
+            if ($tokens[$short]['line'] !== $tokens[$stack_ptr]['line'] + 1) {
                 $error = 'Doc comment short description must be on the first line';
-                $fix   = $phpcsFile->addFixableError($error, $short, 'SpacingBeforeShort');
+                $fix = $phpcs_file->add_fixable_error($error, $short, 'SpacingBeforeShort');
                 if ($fix === true) {
-                    $phpcsFile->fixer->beginChangeset();
-                    for ($i = $stackPtr; $i < $short; $i++) {
-                        if ($tokens[$i]['line'] === $tokens[$stackPtr]['line']) {
+                    $phpcs_file->fixer->begin_changeset();
+                    for ($i = $stack_ptr; $i < $short; $i++) {
+                        if ($tokens[$i]['line'] === $tokens[$stack_ptr]['line']) {
                             continue;
                         }
                         if ($tokens[$i]['line'] === $tokens[$short]['line']) {
                             break;
                         }
-
-                        $phpcsFile->fixer->replaceToken($i, '');
+                        $phpcs_file->fixer->replace_token($i, '');
                     }
-
-                    $phpcsFile->fixer->endChangeset();
+                    $phpcs_file->fixer->end_changeset();
                 }
             }
-
             // Account for the fact that a short description might cover
             // multiple lines.
-            $shortContent = $tokens[$short]['content'];
-            $shortEnd     = $short;
-            for ($i = ($short + 1); $i < $commentEnd; $i++) {
+            $short_content = $tokens[$short]['content'];
+            $short_end = $short;
+            for ($i = $short + 1; $i < $comment_end; $i++) {
                 if ($tokens[$i]['code'] === T_DOC_COMMENT_STRING) {
-                    if ($tokens[$i]['line'] === ($tokens[$shortEnd]['line'] + 1)) {
-                        $shortContent .= $tokens[$i]['content'];
-                        $shortEnd      = $i;
+                    if ($tokens[$i]['line'] === $tokens[$short_end]['line'] + 1) {
+                        $short_content .= $tokens[$i]['content'];
+                        $short_end = $i;
                     } else {
                         break;
                     }
                 }
             }
-
-            if (preg_match('/^\p{Ll}/u', $shortContent) === 1) {
+            if (preg_match('/^\p{Ll}/u', $short_content) === 1) {
                 $error = 'Doc comment short description must start with a capital letter';
-                $phpcsFile->addError($error, $short, 'ShortNotCapital');
+                $phpcs_file->add_error($error, $short, 'ShortNotCapital');
             }
-
-            $long = $phpcsFile->findNext($empty, ($shortEnd + 1), ($commentEnd - 1), true);
+            $long = $phpcs_file->find_next($empty, $short_end + 1, $comment_end - 1, true);
             if ($long !== false && $tokens[$long]['code'] === T_DOC_COMMENT_STRING) {
-                if ($tokens[$long]['line'] !== ($tokens[$shortEnd]['line'] + 2)) {
+                if ($tokens[$long]['line'] !== $tokens[$short_end]['line'] + 2) {
                     $error = 'There must be exactly one blank line between descriptions in a doc comment';
-                    $fix   = $phpcsFile->addFixableError($error, $long, 'SpacingBetween');
+                    $fix = $phpcs_file->add_fixable_error($error, $long, 'SpacingBetween');
                     if ($fix === true) {
-                        $phpcsFile->fixer->beginChangeset();
-                        for ($i = ($shortEnd + 1); $i < $long; $i++) {
-                            if ($tokens[$i]['line'] === $tokens[$shortEnd]['line']) {
+                        $phpcs_file->fixer->begin_changeset();
+                        for ($i = $short_end + 1; $i < $long; $i++) {
+                            if ($tokens[$i]['line'] === $tokens[$short_end]['line']) {
                                 continue;
                             }
-                            if ($tokens[$i]['line'] === ($tokens[$long]['line'] - 1)) {
+                            if ($tokens[$i]['line'] === $tokens[$long]['line'] - 1) {
                                 break;
                             }
-
-                            $phpcsFile->fixer->replaceToken($i, '');
+                            $phpcs_file->fixer->replace_token($i, '');
                         }
-
-                        $phpcsFile->fixer->endChangeset();
+                        $phpcs_file->fixer->end_changeset();
                     }
                 }
-
                 if (preg_match('/^\p{Ll}/u', $tokens[$long]['content']) === 1) {
                     $error = 'Doc comment long description must start with a capital letter';
-                    $phpcsFile->addError($error, $long, 'LongNotCapital');
+                    $phpcs_file->add_error($error, $long, 'LongNotCapital');
                 }
-            }//end if
-        }//end if
-
-        if (empty($tokens[$commentStart]['comment_tags']) === true) {
+            }
+            //end if
+        }
+        //end if
+        if (empty($tokens[$comment_start]['comment_tags']) === true) {
             // No tags in the comment.
             return;
         }
-
-        $firstTag = $tokens[$commentStart]['comment_tags'][0];
-        $prev     = $phpcsFile->findPrevious($empty, ($firstTag - 1), $stackPtr, true);
-        if ($tokens[$firstTag]['line'] !== ($tokens[$prev]['line'] + 2)
-            && $tokens[$prev]['code'] !== T_DOC_COMMENT_OPEN_TAG
-        ) {
+        $first_tag = $tokens[$comment_start]['comment_tags'][0];
+        $prev = $phpcs_file->find_previous($empty, $first_tag - 1, $stack_ptr, true);
+        if ($tokens[$first_tag]['line'] !== $tokens[$prev]['line'] + 2 && $tokens[$prev]['code'] !== T_DOC_COMMENT_OPEN_TAG) {
             $error = 'There must be exactly one blank line before the tags in a doc comment';
-            $fix   = $phpcsFile->addFixableError($error, $firstTag, 'SpacingBeforeTags');
+            $fix = $phpcs_file->add_fixable_error($error, $first_tag, 'SpacingBeforeTags');
             if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
-                for ($i = ($prev + 1); $i < $firstTag; $i++) {
-                    if ($tokens[$i]['line'] === $tokens[$firstTag]['line']) {
+                $phpcs_file->fixer->begin_changeset();
+                for ($i = $prev + 1; $i < $first_tag; $i++) {
+                    if ($tokens[$i]['line'] === $tokens[$first_tag]['line']) {
                         break;
                     }
-
-                    $phpcsFile->fixer->replaceToken($i, '');
+                    $phpcs_file->fixer->replace_token($i, '');
                 }
-
-                $indent = str_repeat(' ', $tokens[$stackPtr]['column']);
-                $phpcsFile->fixer->addContent($prev, $phpcsFile->eolChar.$indent.'*'.$phpcsFile->eolChar);
-                $phpcsFile->fixer->endChangeset();
+                $indent = str_repeat(' ', $tokens[$stack_ptr]['column']);
+                $phpcs_file->fixer->add_content($prev, $phpcs_file->eol_char . $indent . '*' . $phpcs_file->eol_char);
+                $phpcs_file->fixer->end_changeset();
             }
         }
-
         // Break out the tags into groups and check alignment within each.
         // A tag group is one where there are no blank lines between tags.
         // The param tag group is special as it requires all @param tags to be inside.
-        $tagGroups    = [];
-        $groupid      = 0;
-        $paramGroupid = null;
-        foreach ($tokens[$commentStart]['comment_tags'] as $pos => $tag) {
+        $tag_groups = [];
+        $groupid = 0;
+        $param_groupid = null;
+        foreach ($tokens[$comment_start]['comment_tags'] as $pos => $tag) {
             if ($pos > 0) {
-                $prev = $phpcsFile->findPrevious(
-                    T_DOC_COMMENT_STRING,
-                    ($tag - 1),
-                    $tokens[$commentStart]['comment_tags'][($pos - 1)]
-                );
-
+                $prev = $phpcs_file->find_previous(T_DOC_COMMENT_STRING, $tag - 1, $tokens[$comment_start]['comment_tags'][$pos - 1]);
                 if ($prev === false) {
-                    $prev = $tokens[$commentStart]['comment_tags'][($pos - 1)];
+                    $prev = $tokens[$comment_start]['comment_tags'][$pos - 1];
                 }
-
-                if ($tokens[$prev]['line'] !== ($tokens[$tag]['line'] - 1)) {
+                if ($tokens[$prev]['line'] !== $tokens[$tag]['line'] - 1) {
                     $groupid++;
                 }
             }
-
             if ($tokens[$tag]['content'] === '@param') {
-                if ($paramGroupid !== null
-                    && $paramGroupid !== $groupid
-                ) {
+                if ($param_groupid !== null && $param_groupid !== $groupid) {
                     $error = 'Parameter tags must be grouped together in a doc comment';
-                    $phpcsFile->addError($error, $tag, 'ParamGroup');
+                    $phpcs_file->add_error($error, $tag, 'ParamGroup');
                 }
-
-                if ($paramGroupid === null) {
-                    $paramGroupid = $groupid;
-                }
-            }//end if
-
-            $tagGroups[$groupid][] = $tag;
-        }//end foreach
-
-        foreach ($tagGroups as $groupid => $group) {
-            $maxLength = 0;
-            $paddings  = [];
-            foreach ($group as $pos => $tag) {
-                if ($paramGroupid === $groupid
-                    && $tokens[$tag]['content'] !== '@param'
-                ) {
-                    $error = 'Tag %s cannot be grouped with parameter tags in a doc comment';
-                    $data  = [$tokens[$tag]['content']];
-                    $phpcsFile->addError($error, $tag, 'NonParamGroup', $data);
-                }
-
-                $tagLength = $tokens[$tag]['length'];
-                if ($tagLength > $maxLength) {
-                    $maxLength = $tagLength;
-                }
-
-                // Check for a value. No value means no padding needed.
-                $string = $phpcsFile->findNext(T_DOC_COMMENT_STRING, $tag, $commentEnd);
-                if ($string !== false && $tokens[$string]['line'] === $tokens[$tag]['line']) {
-                    $paddings[$tag] = $tokens[($tag + 1)]['length'];
+                if ($param_groupid === null) {
+                    $param_groupid = $groupid;
                 }
             }
-
+            //end if
+            $tag_groups[$groupid][] = $tag;
+        }
+        //end foreach
+        foreach ($tag_groups as $groupid => $group) {
+            $max_length = 0;
+            $paddings = [];
+            foreach ($group as $pos => $tag) {
+                if ($param_groupid === $groupid && $tokens[$tag]['content'] !== '@param') {
+                    $error = 'Tag %s cannot be grouped with parameter tags in a doc comment';
+                    $data = [$tokens[$tag]['content']];
+                    $phpcs_file->add_error($error, $tag, 'NonParamGroup', $data);
+                }
+                $tag_length = $tokens[$tag]['length'];
+                if ($tag_length > $max_length) {
+                    $max_length = $tag_length;
+                }
+                // Check for a value. No value means no padding needed.
+                $string = $phpcs_file->find_next(T_DOC_COMMENT_STRING, $tag, $comment_end);
+                if ($string !== false && $tokens[$string]['line'] === $tokens[$tag]['line']) {
+                    $paddings[$tag] = $tokens[$tag + 1]['length'];
+                }
+            }
             // Check that there was single blank line after the tag block
             // but account for a multi-line tag comments.
-            $lastTag = $group[$pos];
-            $next    = $phpcsFile->findNext(T_DOC_COMMENT_TAG, ($lastTag + 3), $commentEnd);
+            $last_tag = $group[$pos];
+            $next = $phpcs_file->find_next(T_DOC_COMMENT_TAG, $last_tag + 3, $comment_end);
             if ($next !== false) {
-                $prev = $phpcsFile->findPrevious([T_DOC_COMMENT_TAG, T_DOC_COMMENT_STRING], ($next - 1), $commentStart);
-                if ($tokens[$next]['line'] !== ($tokens[$prev]['line'] + 2)) {
+                $prev = $phpcs_file->find_previous([T_DOC_COMMENT_TAG, T_DOC_COMMENT_STRING], $next - 1, $comment_start);
+                if ($tokens[$next]['line'] !== $tokens[$prev]['line'] + 2) {
                     $error = 'There must be a single blank line after a tag group';
-                    $fix   = $phpcsFile->addFixableError($error, $lastTag, 'SpacingAfterTagGroup');
+                    $fix = $phpcs_file->add_fixable_error($error, $last_tag, 'SpacingAfterTagGroup');
                     if ($fix === true) {
-                        $phpcsFile->fixer->beginChangeset();
-                        for ($i = ($prev + 1); $i < $next; $i++) {
+                        $phpcs_file->fixer->begin_changeset();
+                        for ($i = $prev + 1; $i < $next; $i++) {
                             if ($tokens[$i]['line'] === $tokens[$next]['line']) {
                                 break;
                             }
-
-                            $phpcsFile->fixer->replaceToken($i, '');
+                            $phpcs_file->fixer->replace_token($i, '');
                         }
-
-                        $indent = str_repeat(' ', $tokens[$stackPtr]['column']);
-                        $phpcsFile->fixer->addContent($prev, $phpcsFile->eolChar.$indent.'*'.$phpcsFile->eolChar);
-                        $phpcsFile->fixer->endChangeset();
+                        $indent = str_repeat(' ', $tokens[$stack_ptr]['column']);
+                        $phpcs_file->fixer->add_content($prev, $phpcs_file->eol_char . $indent . '*' . $phpcs_file->eol_char);
+                        $phpcs_file->fixer->end_changeset();
                     }
                 }
-            }//end if
-
+            }
+            //end if
             // Now check paddings.
             foreach ($paddings as $tag => $padding) {
-                $required = ($maxLength - $tokens[$tag]['length'] + 1);
-
+                $required = $max_length - $tokens[$tag]['length'] + 1;
                 if ($padding !== $required) {
                     $error = 'Tag value for %s tag indented incorrectly; expected %s spaces but found %s';
-                    $data  = [
-                        $tokens[$tag]['content'],
-                        $required,
-                        $padding,
-                    ];
-
-                    $fix = $phpcsFile->addFixableError($error, ($tag + 1), 'TagValueIndent', $data);
+                    $data = [$tokens[$tag]['content'], $required, $padding];
+                    $fix = $phpcs_file->add_fixable_error($error, $tag + 1, 'TagValueIndent', $data);
                     if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken(($tag + 1), str_repeat(' ', $required));
+                        $phpcs_file->fixer->replace_token($tag + 1, str_repeat(' ', $required));
                     }
                 }
             }
-        }//end foreach
-
-        // If there is a param group, it needs to be first.
-        if ($paramGroupid !== null && $paramGroupid !== 0) {
-            $error = 'Parameter tags must be defined first in a doc comment';
-            $phpcsFile->addError($error, $tagGroups[$paramGroupid][0], 'ParamNotFirst');
         }
-
-        $foundTags = [];
-        foreach ($tokens[$stackPtr]['comment_tags'] as $pos => $tag) {
-            $tagName = $tokens[$tag]['content'];
-            if (isset($foundTags[$tagName]) === true) {
-                $lastTag = $tokens[$stackPtr]['comment_tags'][($pos - 1)];
-                if ($tokens[$lastTag]['content'] !== $tagName) {
+        //end foreach
+        // If there is a param group, it needs to be first.
+        if ($param_groupid !== null && $param_groupid !== 0) {
+            $error = 'Parameter tags must be defined first in a doc comment';
+            $phpcs_file->add_error($error, $tag_groups[$param_groupid][0], 'ParamNotFirst');
+        }
+        $found_tags = [];
+        foreach ($tokens[$stack_ptr]['comment_tags'] as $pos => $tag) {
+            $tag_name = $tokens[$tag]['content'];
+            if (isset($found_tags[$tag_name]) === true) {
+                $last_tag = $tokens[$stack_ptr]['comment_tags'][$pos - 1];
+                if ($tokens[$last_tag]['content'] !== $tag_name) {
                     $error = 'Tags must be grouped together in a doc comment';
-                    $phpcsFile->addError($error, $tag, 'TagsNotGrouped');
+                    $phpcs_file->add_error($error, $tag, 'TagsNotGrouped');
                 }
-
                 continue;
             }
-
-            $foundTags[$tagName] = true;
+            $found_tags[$tag_name] = true;
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

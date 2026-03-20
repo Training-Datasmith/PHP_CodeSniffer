@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checks that the strict_types has been declared.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2019 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\PHP;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\PHP;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class RequireStrictTypesSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Require_Strict_Types_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class RequireStrictTypesSniff implements Sniff
     public function register()
     {
         return [T_OPEN_TAG];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -36,32 +33,28 @@ class RequireStrictTypesSniff implements Sniff
      *
      * @return int
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens  = $phpcsFile->getTokens();
-        $declare = $phpcsFile->findNext(T_DECLARE, $stackPtr);
-        $found   = false;
-
+        $tokens = $phpcs_file->get_tokens();
+        $declare = $phpcs_file->find_next(T_DECLARE, $stack_ptr);
+        $found = false;
         if ($declare !== false) {
-            $nextString = $phpcsFile->findNext(T_STRING, $declare);
-
-            if ($nextString !== false) {
-                if (strtolower($tokens[$nextString]['content']) === 'strict_types') {
+            $next_string = $phpcs_file->find_next(T_STRING, $declare);
+            if ($next_string !== false) {
+                if (strtolower($tokens[$next_string]['content']) === 'strict_types') {
                     // There is a strict types declaration.
                     $found = true;
                 }
             }
         }
-
         if ($found === false) {
             $error = 'Missing required strict_types declaration';
-            $phpcsFile->addError($error, $stackPtr, 'MissingDeclaration');
+            $phpcs_file->add_error($error, $stack_ptr, 'MissingDeclaration');
         }
-
         // Skip the rest of the file so we don't pick up additional
         // open tags, typically embedded in HTML.
-        return $phpcsFile->numTokens;
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens;
+    }
+    //end process()
+}
+//end class

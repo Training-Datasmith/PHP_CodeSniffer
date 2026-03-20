@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Processes pattern strings and checks that the code conforms to the pattern.
  *
@@ -8,37 +8,32 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Sniffs;
 
-namespace PHP_CodeSniffer\Sniffs;
-
-use PHP_CodeSniffer\Exceptions\RuntimeException;
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Tokenizers\PHP;
-use PHP_CodeSniffer\Util\Tokens;
-
-abstract class AbstractPatternSniff implements Sniff
+use Php_code_Sniffer\Exceptions\RuntimeException;
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Tokenizers\PHP;
+use Php_code_Sniffer\Util\Tokens;
+abstract class Abstract_Pattern_Sniff implements Sniff
 {
     /**
      * If true, comments will be ignored if they are found in the code.
      *
      * @var boolean
      */
-    public $ignoreComments = false;
-
+    public $ignore_comments = false;
     /**
      * The current file being checked.
      *
      * @var string
      */
-    protected $currFile = '';
-
+    protected $curr_file = '';
     /**
      * The parsed patterns array.
      *
      * @var array
      */
-    private $parsedPatterns = [];
-
+    private $parsed_patterns = [];
     /**
      * Tokens that this sniff wishes to process outside of the patterns.
      *
@@ -46,31 +41,27 @@ abstract class AbstractPatternSniff implements Sniff
      * @see registerSupplementary()
      * @see processSupplementary()
      */
-    private $supplementaryTokens = [];
-
+    private $supplementary_tokens = [];
     /**
      * Positions in the stack where errors have occurred.
      *
      * @var array<int, bool>
      */
-    private $errorPos = [];
-
+    private $error_pos = [];
     /**
      * Constructs a AbstractPatternSniff.
      *
      * @param boolean $ignoreComments If true, comments will be ignored.
      */
-    public function __construct($ignoreComments = null)
+    public function __construct($ignore_comments = null)
     {
         // This is here for backwards compatibility.
-        if ($ignoreComments !== null) {
-            $this->ignoreComments = $ignoreComments;
+        if ($ignore_comments !== null) {
+            $this->ignore_comments = $ignore_comments;
         }
-
-        $this->supplementaryTokens = $this->registerSupplementary();
-
-    }//end __construct()
-
+        $this->supplementary_tokens = $this->register_supplementary();
+    }
+    //end __construct()
     /**
      * Registers the tokens to listen to.
      *
@@ -82,35 +73,25 @@ abstract class AbstractPatternSniff implements Sniff
      */
     final public function register()
     {
-        $listenTypes = [];
-        $patterns    = $this->getPatterns();
-
+        $listen_types = [];
+        $patterns = $this->get_patterns();
         foreach ($patterns as $pattern) {
-            $parsedPattern = $this->parse($pattern);
-
+            $parsed_pattern = $this->parse($pattern);
             // Find a token position in the pattern that we can use
             // for a listener token.
-            $pos           = $this->getListenerTokenPos($parsedPattern);
-            $tokenType     = $parsedPattern[$pos]['token'];
-            $listenTypes[] = $tokenType;
-
-            $patternArray = [
-                'listen_pos'   => $pos,
-                'pattern'      => $parsedPattern,
-                'pattern_code' => $pattern,
-            ];
-
-            if (isset($this->parsedPatterns[$tokenType]) === false) {
-                $this->parsedPatterns[$tokenType] = [];
+            $pos = $this->get_listener_token_pos($parsed_pattern);
+            $token_type = $parsed_pattern[$pos]['token'];
+            $listen_types[] = $token_type;
+            $pattern_array = ['listen_pos' => $pos, 'pattern' => $parsed_pattern, 'pattern_code' => $pattern];
+            if (isset($this->parsed_patterns[$token_type]) === false) {
+                $this->parsed_patterns[$token_type] = [];
             }
-
-            $this->parsedPatterns[$tokenType][] = $patternArray;
-        }//end foreach
-
-        return array_unique(array_merge($listenTypes, $this->supplementaryTokens));
-
-    }//end register()
-
+            $this->parsed_patterns[$token_type][] = $pattern_array;
+        }
+        //end foreach
+        return array_unique(array_merge($listen_types, $this->supplementary_tokens));
+    }
+    //end register()
     /**
      * Returns the token types that the specified pattern is checking for.
      *
@@ -127,23 +108,21 @@ abstract class AbstractPatternSniff implements Sniff
      *
      * @return array<int, int>
      */
-    private function getPatternTokenTypes($pattern)
+    private function get_pattern_token_types($pattern)
     {
-        $tokenTypes = [];
-        foreach ($pattern as $pos => $patternInfo) {
-            if ($patternInfo['type'] !== 'token') {
+        $token_types = [];
+        foreach ($pattern as $pos => $pattern_info) {
+            if ($pattern_info['type'] !== 'token') {
                 continue;
             }
-            if (isset($tokenTypes[$patternInfo['token']]) !== false) {
+            if (isset($token_types[$pattern_info['token']]) !== false) {
                 continue;
             }
-            $tokenTypes[$patternInfo['token']] = $pos;
+            $token_types[$pattern_info['token']] = $pos;
         }
-
-        return $tokenTypes;
-
-    }//end getPatternTokenTypes()
-
+        return $token_types;
+    }
+    //end getPatternTokenTypes()
     /**
      * Returns the position in the pattern that this test should register as
      * a listener for the pattern.
@@ -154,22 +133,19 @@ abstract class AbstractPatternSniff implements Sniff
      *             as the listener.
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If we could not determine a token to listen for.
      */
-    private function getListenerTokenPos($pattern)
+    private function get_listener_token_pos($pattern)
     {
-        $tokenTypes = $this->getPatternTokenTypes($pattern);
-        $tokenCodes = array_keys($tokenTypes);
-        $token      = Tokens::getHighestWeightedToken($tokenCodes);
-
+        $token_types = $this->get_pattern_token_types($pattern);
+        $token_codes = array_keys($token_types);
+        $token = Tokens::get_highest_weighted_token($token_codes);
         // If we could not get a token.
         if ($token === false) {
             $error = 'Could not determine a token to listen for';
             throw new RuntimeException($error);
         }
-
-        return $tokenTypes[$token];
-
-    }//end getListenerTokenPos()
-
+        return $token_types[$token];
+    }
+    //end getListenerTokenPos()
     /**
      * Processes the test.
      *
@@ -182,37 +158,31 @@ abstract class AbstractPatternSniff implements Sniff
      * @return void
      * @see    register()
      */
-    final public function process(File $phpcsFile, $stackPtr)
+    final public function process(File $phpcs_file, $stack_ptr)
     {
-        $file = $phpcsFile->getFilename();
-        if ($this->currFile !== $file) {
+        $file = $phpcs_file->get_filename();
+        if ($this->curr_file !== $file) {
             // We have changed files, so clean up.
-            $this->errorPos = [];
-            $this->currFile = $file;
+            $this->error_pos = [];
+            $this->curr_file = $file;
         }
-
-        $tokens = $phpcsFile->getTokens();
-
-        if (in_array($tokens[$stackPtr]['code'], $this->supplementaryTokens, true) === true) {
-            $this->processSupplementary($phpcsFile, $stackPtr);
+        $tokens = $phpcs_file->get_tokens();
+        if (in_array($tokens[$stack_ptr]['code'], $this->supplementary_tokens, true) === true) {
+            $this->process_supplementary($phpcs_file, $stack_ptr);
         }
-
-        $type = $tokens[$stackPtr]['code'];
-
+        $type = $tokens[$stack_ptr]['code'];
         // If the type is not set, then it must have been a token registered
         // with registerSupplementary().
-        if (isset($this->parsedPatterns[$type]) === false) {
+        if (isset($this->parsed_patterns[$type]) === false) {
             return;
         }
-
-        $allErrors = [];
-
+        $all_errors = [];
         // Loop over each pattern that is listening to the current token type
         // that we are processing.
-        foreach ($this->parsedPatterns[$type] as $patternInfo) {
+        foreach ($this->parsed_patterns[$type] as $pattern_info) {
             // If processPattern returns false, then the pattern that we are
             // checking the code with must not be designed to check that code.
-            $errors = $this->processPattern($patternInfo, $phpcsFile, $stackPtr);
+            $errors = $this->process_pattern($pattern_info, $phpcs_file, $stack_ptr);
             if ($errors === false) {
                 // The pattern didn't match.
                 continue;
@@ -221,21 +191,18 @@ abstract class AbstractPatternSniff implements Sniff
                 // The pattern matched, but there were no errors.
                 break;
             }
-
-            foreach ($errors as $stackPtr => $error) {
-                if (isset($this->errorPos[$stackPtr]) === false) {
-                    $this->errorPos[$stackPtr] = true;
-                    $allErrors[$stackPtr]      = $error;
+            foreach ($errors as $stack_ptr => $error) {
+                if (isset($this->error_pos[$stack_ptr]) === false) {
+                    $this->error_pos[$stack_ptr] = true;
+                    $all_errors[$stack_ptr] = $error;
                 }
             }
         }
-
-        foreach ($allErrors as $stackPtr => $error) {
-            $phpcsFile->addError($error, $stackPtr, 'Found');
+        foreach ($all_errors as $stack_ptr => $error) {
+            $phpcs_file->add_error($error, $stack_ptr, 'Found');
         }
-
-    }//end process()
-
+    }
+    //end process()
     /**
      * Processes the pattern and verifies the code at $stackPtr.
      *
@@ -250,74 +217,54 @@ abstract class AbstractPatternSniff implements Sniff
      *
      * @return array
      */
-    protected function processPattern(array $patternInfo, File $phpcsFile, $stackPtr)
+    protected function process_pattern(array $pattern_info, File $phpcs_file, $stack_ptr)
     {
-        $tokens      = $phpcsFile->getTokens();
-        $pattern     = $patternInfo['pattern'];
-        $patternCode = $patternInfo['pattern_code'];
-        $errors      = [];
-        $found       = '';
-
-        $ignoreTokens = [T_WHITESPACE => T_WHITESPACE];
-        if ($this->ignoreComments === true) {
-            $ignoreTokens += Tokens::$commentTokens;
+        $tokens = $phpcs_file->get_tokens();
+        $pattern = $pattern_info['pattern'];
+        $pattern_code = $pattern_info['pattern_code'];
+        $errors = [];
+        $found = '';
+        $ignore_tokens = [T_WHITESPACE => T_WHITESPACE];
+        if ($this->ignore_comments === true) {
+            $ignore_tokens += Tokens::$comment_tokens;
         }
-
-        $origStackPtr = $stackPtr;
-        $hasError     = false;
-
-        if ($patternInfo['listen_pos'] > 0) {
-            $stackPtr--;
-
-            for ($i = ($patternInfo['listen_pos'] - 1); $i >= 0; $i--) {
+        $orig_stack_ptr = $stack_ptr;
+        $has_error = false;
+        if ($pattern_info['listen_pos'] > 0) {
+            $stack_ptr--;
+            for ($i = $pattern_info['listen_pos'] - 1; $i >= 0; $i--) {
                 if ($pattern[$i]['type'] === 'token') {
                     if ($pattern[$i]['token'] === T_WHITESPACE) {
-                        if ($tokens[$stackPtr]['code'] === T_WHITESPACE) {
-                            $found = $tokens[$stackPtr]['content'].$found;
+                        if ($tokens[$stack_ptr]['code'] === T_WHITESPACE) {
+                            $found = $tokens[$stack_ptr]['content'] . $found;
                         }
-
                         // Only check the size of the whitespace if this is not
                         // the first token. We don't care about the size of
                         // leading whitespace, just that there is some.
                         if ($i !== 0) {
-                            if ($tokens[$stackPtr]['content'] !== $pattern[$i]['value']) {
-                                $hasError = true;
+                            if ($tokens[$stack_ptr]['content'] !== $pattern[$i]['value']) {
+                                $has_error = true;
                             }
                         }
                     } else {
                         // Check to see if this important token is the same as the
                         // previous important token in the pattern. If it is not,
                         // then the pattern cannot be for this piece of code.
-                        $prev = $phpcsFile->findPrevious(
-                            $ignoreTokens,
-                            $stackPtr,
-                            null,
-                            true
-                        );
-
-                        if ($prev === false
-                            || $tokens[$prev]['code'] !== $pattern[$i]['token']
-                        ) {
+                        $prev = $phpcs_file->find_previous($ignore_tokens, $stack_ptr, null, true);
+                        if ($prev === false || $tokens[$prev]['code'] !== $pattern[$i]['token']) {
                             return false;
                         }
-
                         // If we skipped past some whitespace tokens, then add them
                         // to the found string.
-                        $tokenContent = $phpcsFile->getTokensAsString(
-                            ($prev + 1),
-                            ($stackPtr - $prev - 1)
-                        );
-
-                        $found = $tokens[$prev]['content'].$tokenContent.$found;
-
-                        if (isset($pattern[($i - 1)]) === true
-                            && $pattern[($i - 1)]['type'] === 'skip'
-                        ) {
-                            $stackPtr = $prev;
+                        $token_content = $phpcs_file->get_tokens_as_string($prev + 1, $stack_ptr - $prev - 1);
+                        $found = $tokens[$prev]['content'] . $token_content . $found;
+                        if (isset($pattern[$i - 1]) === true && $pattern[$i - 1]['type'] === 'skip') {
+                            $stack_ptr = $prev;
                         } else {
-                            $stackPtr = ($prev - 1);
+                            $stack_ptr = $prev - 1;
                         }
-                    }//end if
+                    }
+                    //end if
                 } elseif ($pattern[$i]['type'] === 'skip') {
                     // Skip to next piece of relevant code.
                     if ($pattern[$i]['to'] === 'parenthesis_closer') {
@@ -325,368 +272,267 @@ abstract class AbstractPatternSniff implements Sniff
                     } else {
                         $to = 'scope_opener';
                     }
-
                     // Find the previous opener.
-                    $next = $phpcsFile->findPrevious(
-                        $ignoreTokens,
-                        $stackPtr,
-                        null,
-                        true
-                    );
-
+                    $next = $phpcs_file->find_previous($ignore_tokens, $stack_ptr, null, true);
                     if ($next === false || isset($tokens[$next][$to]) === false) {
                         // If there was not opener, then we must be
                         // using the wrong pattern.
                         return false;
                     }
-
                     if ($to === 'parenthesis_opener') {
-                        $found = '{'.$found;
+                        $found = '{' . $found;
                     } else {
-                        $found = '('.$found;
+                        $found = '(' . $found;
                     }
-
-                    $found = '...'.$found;
-
+                    $found = '...' . $found;
                     // Skip to the opening token.
-                    $stackPtr = ($tokens[$next][$to] - 1);
+                    $stack_ptr = $tokens[$next][$to] - 1;
                 } elseif ($pattern[$i]['type'] === 'string') {
                     $found = 'abc';
                 } elseif ($pattern[$i]['type'] === 'newline') {
-                    if ($this->ignoreComments === true
-                        && isset(Tokens::$commentTokens[$tokens[$stackPtr]['code']]) === true
-                    ) {
-                        $startComment = $phpcsFile->findPrevious(
-                            Tokens::$commentTokens,
-                            ($stackPtr - 1),
-                            null,
-                            true
-                        );
-
-                        if ($tokens[$startComment]['line'] !== $tokens[($startComment + 1)]['line']) {
-                            $startComment++;
+                    if ($this->ignore_comments === true && isset(Tokens::$comment_tokens[$tokens[$stack_ptr]['code']]) === true) {
+                        $start_comment = $phpcs_file->find_previous(Tokens::$comment_tokens, $stack_ptr - 1, null, true);
+                        if ($tokens[$start_comment]['line'] !== $tokens[$start_comment + 1]['line']) {
+                            $start_comment++;
                         }
-
-                        $tokenContent = $phpcsFile->getTokensAsString(
-                            $startComment,
-                            ($stackPtr - $startComment + 1)
-                        );
-
-                        $found    = $tokenContent.$found;
-                        $stackPtr = ($startComment - 1);
+                        $token_content = $phpcs_file->get_tokens_as_string($start_comment, $stack_ptr - $start_comment + 1);
+                        $found = $token_content . $found;
+                        $stack_ptr = $start_comment - 1;
                     }
-
-                    if ($tokens[$stackPtr]['code'] === T_WHITESPACE) {
-                        if ($tokens[$stackPtr]['content'] !== $phpcsFile->eolChar) {
-                            $found = $tokens[$stackPtr]['content'].$found;
-
+                    if ($tokens[$stack_ptr]['code'] === T_WHITESPACE) {
+                        if ($tokens[$stack_ptr]['content'] !== $phpcs_file->eol_char) {
+                            $found = $tokens[$stack_ptr]['content'] . $found;
                             // This may just be an indent that comes after a newline
                             // so check the token before to make sure. If it is a newline, we
                             // can ignore the error here.
-                            if (($tokens[($stackPtr - 1)]['content'] !== $phpcsFile->eolChar)
-                                && ($this->ignoreComments === true
-                                && isset(Tokens::$commentTokens[$tokens[($stackPtr - 1)]['code']]) === false)
-                            ) {
-                                $hasError = true;
+                            if ($tokens[$stack_ptr - 1]['content'] !== $phpcs_file->eol_char && ($this->ignore_comments === true && isset(Tokens::$comment_tokens[$tokens[$stack_ptr - 1]['code']]) === false)) {
+                                $has_error = true;
                             } else {
-                                $stackPtr--;
+                                $stack_ptr--;
                             }
                         } else {
-                            $found = 'EOL'.$found;
+                            $found = 'EOL' . $found;
                         }
                     } else {
-                        $found    = $tokens[$stackPtr]['content'].$found;
-                        $hasError = true;
-                    }//end if
-
-                    if ($hasError === false && $pattern[($i - 1)]['type'] !== 'newline') {
+                        $found = $tokens[$stack_ptr]['content'] . $found;
+                        $has_error = true;
+                    }
+                    //end if
+                    if ($has_error === false && $pattern[$i - 1]['type'] !== 'newline') {
                         // Make sure they only have 1 newline.
-                        $prev = $phpcsFile->findPrevious($ignoreTokens, ($stackPtr - 1), null, true);
-                        if ($prev !== false && $tokens[$prev]['line'] !== $tokens[$stackPtr]['line']) {
-                            $hasError = true;
+                        $prev = $phpcs_file->find_previous($ignore_tokens, $stack_ptr - 1, null, true);
+                        if ($prev !== false && $tokens[$prev]['line'] !== $tokens[$stack_ptr]['line']) {
+                            $has_error = true;
                         }
                     }
-                }//end if
-            }//end for
-        }//end if
-
-        $stackPtr          = $origStackPtr;
-        $lastAddedStackPtr = null;
-        $patternLen        = count($pattern);
-
-        for ($i = $patternInfo['listen_pos']; $i < $patternLen; $i++) {
-            if (isset($tokens[$stackPtr]) === false) {
+                }
+                //end if
+            }
+            //end for
+        }
+        //end if
+        $stack_ptr = $orig_stack_ptr;
+        $last_added_stack_ptr = null;
+        $pattern_len = count($pattern);
+        for ($i = $pattern_info['listen_pos']; $i < $pattern_len; $i++) {
+            if (isset($tokens[$stack_ptr]) === false) {
                 break;
             }
-
             if ($pattern[$i]['type'] === 'token') {
                 if ($pattern[$i]['token'] === T_WHITESPACE) {
-                    if ($this->ignoreComments === true) {
+                    if ($this->ignore_comments === true) {
                         // If we are ignoring comments, check to see if this current
                         // token is a comment. If so skip it.
-                        if (isset(Tokens::$commentTokens[$tokens[$stackPtr]['code']]) === true) {
+                        if (isset(Tokens::$comment_tokens[$tokens[$stack_ptr]['code']]) === true) {
                             continue;
                         }
-
                         // If the next token is a comment, the we need to skip the
                         // current token as we should allow a space before a
                         // comment for readability.
-                        if (isset($tokens[($stackPtr + 1)]) === true
-                            && isset(Tokens::$commentTokens[$tokens[($stackPtr + 1)]['code']]) === true
-                        ) {
+                        if (isset($tokens[$stack_ptr + 1]) === true && isset(Tokens::$comment_tokens[$tokens[$stack_ptr + 1]['code']]) === true) {
                             continue;
                         }
                     }
-
-                    $tokenContent = '';
-                    if ($tokens[$stackPtr]['code'] === T_WHITESPACE) {
-                        if (isset($pattern[($i + 1)]) === false) {
+                    $token_content = '';
+                    if ($tokens[$stack_ptr]['code'] === T_WHITESPACE) {
+                        if (isset($pattern[$i + 1]) === false) {
                             // This is the last token in the pattern, so just compare
                             // the next token of content.
-                            $tokenContent = $tokens[$stackPtr]['content'];
+                            $token_content = $tokens[$stack_ptr]['content'];
                         } else {
                             // Get all the whitespace to the next token.
-                            $next = $phpcsFile->findNext(
-                                Tokens::$emptyTokens,
-                                $stackPtr,
-                                null,
-                                true
-                            );
-
-                            $tokenContent = $phpcsFile->getTokensAsString(
-                                $stackPtr,
-                                ($next - $stackPtr)
-                            );
-
-                            $lastAddedStackPtr = $stackPtr;
-                            $stackPtr          = $next;
-                        }//end if
-
-                        if ($stackPtr !== $lastAddedStackPtr) {
-                            $found .= $tokenContent;
+                            $next = $phpcs_file->find_next(Tokens::$empty_tokens, $stack_ptr, null, true);
+                            $token_content = $phpcs_file->get_tokens_as_string($stack_ptr, $next - $stack_ptr);
+                            $last_added_stack_ptr = $stack_ptr;
+                            $stack_ptr = $next;
                         }
-                    } else {
-                        if ($stackPtr !== $lastAddedStackPtr) {
-                            $found            .= $tokens[$stackPtr]['content'];
-                            $lastAddedStackPtr = $stackPtr;
+                        //end if
+                        if ($stack_ptr !== $last_added_stack_ptr) {
+                            $found .= $token_content;
                         }
-                    }//end if
-
-                    if (isset($pattern[($i + 1)]) === true
-                        && $pattern[($i + 1)]['type'] === 'skip'
-                    ) {
+                    } else if ($stack_ptr !== $last_added_stack_ptr) {
+                        $found .= $tokens[$stack_ptr]['content'];
+                        $last_added_stack_ptr = $stack_ptr;
+                    }
+                    //end if
+                    if (isset($pattern[$i + 1]) === true && $pattern[$i + 1]['type'] === 'skip') {
                         // The next token is a skip token, so we just need to make
                         // sure the whitespace we found has *at least* the
                         // whitespace required.
-                        if (strpos($tokenContent, $pattern[$i]['value']) !== 0) {
-                            $hasError = true;
+                        if (strpos($token_content, $pattern[$i]['value']) !== 0) {
+                            $has_error = true;
                         }
-                    } else {
-                        if ($tokenContent !== $pattern[$i]['value']) {
-                            $hasError = true;
-                        }
+                    } else if ($token_content !== $pattern[$i]['value']) {
+                        $has_error = true;
                     }
                 } else {
                     // Check to see if this important token is the same as the
                     // next important token in the pattern. If it is not, then
                     // the pattern cannot be for this piece of code.
-                    $next = $phpcsFile->findNext(
-                        $ignoreTokens,
-                        $stackPtr,
-                        null,
-                        true
-                    );
-
-                    if ($next === false
-                        || $tokens[$next]['code'] !== $pattern[$i]['token']
-                    ) {
+                    $next = $phpcs_file->find_next($ignore_tokens, $stack_ptr, null, true);
+                    if ($next === false || $tokens[$next]['code'] !== $pattern[$i]['token']) {
                         // The next important token did not match the pattern.
                         return false;
                     }
-
-                    if ($lastAddedStackPtr !== null) {
-                        if (($tokens[$next]['code'] === T_OPEN_CURLY_BRACKET
-                            || $tokens[$next]['code'] === T_CLOSE_CURLY_BRACKET)
-                            && isset($tokens[$next]['scope_condition']) === true
-                            && $tokens[$next]['scope_condition'] > $lastAddedStackPtr
-                        ) {
+                    if ($last_added_stack_ptr !== null) {
+                        if (($tokens[$next]['code'] === T_OPEN_CURLY_BRACKET || $tokens[$next]['code'] === T_CLOSE_CURLY_BRACKET) && isset($tokens[$next]['scope_condition']) === true && $tokens[$next]['scope_condition'] > $last_added_stack_ptr) {
                             // This is a brace, but the owner of it is after the current
                             // token, which means it does not belong to any token in
                             // our pattern. This means the pattern is not for us.
                             return false;
                         }
-
-                        if (($tokens[$next]['code'] === T_OPEN_PARENTHESIS
-                            || $tokens[$next]['code'] === T_CLOSE_PARENTHESIS)
-                            && isset($tokens[$next]['parenthesis_owner']) === true
-                            && $tokens[$next]['parenthesis_owner'] > $lastAddedStackPtr
-                        ) {
+                        if (($tokens[$next]['code'] === T_OPEN_PARENTHESIS || $tokens[$next]['code'] === T_CLOSE_PARENTHESIS) && isset($tokens[$next]['parenthesis_owner']) === true && $tokens[$next]['parenthesis_owner'] > $last_added_stack_ptr) {
                             // This is a bracket, but the owner of it is after the current
                             // token, which means it does not belong to any token in
                             // our pattern. This means the pattern is not for us.
                             return false;
                         }
-                    }//end if
-
+                    }
+                    //end if
                     // If we skipped past some whitespace tokens, then add them
                     // to the found string.
-                    if (($next - $stackPtr) > 0) {
-                        $hasComment = false;
-                        for ($j = $stackPtr; $j < $next; $j++) {
+                    if ($next - $stack_ptr > 0) {
+                        $has_comment = false;
+                        for ($j = $stack_ptr; $j < $next; $j++) {
                             $found .= $tokens[$j]['content'];
-                            if (isset(Tokens::$commentTokens[$tokens[$j]['code']]) === true) {
-                                $hasComment = true;
+                            if (isset(Tokens::$comment_tokens[$tokens[$j]['code']]) === true) {
+                                $has_comment = true;
                             }
                         }
-
                         // If we are not ignoring comments, this additional
                         // whitespace or comment is not allowed. If we are
                         // ignoring comments, there needs to be at least one
                         // comment for this to be allowed.
-                        if ($this->ignoreComments === false
-                            || ($this->ignoreComments === true
-                            && $hasComment === false)
-                        ) {
-                            $hasError = true;
+                        if ($this->ignore_comments === false || $this->ignore_comments === true && $has_comment === false) {
+                            $has_error = true;
                         }
-
                         // Even when ignoring comments, we are not allowed to include
                         // newlines without the pattern specifying them, so
                         // everything should be on the same line.
-                        if ($tokens[$next]['line'] !== $tokens[$stackPtr]['line']) {
-                            $hasError = true;
+                        if ($tokens[$next]['line'] !== $tokens[$stack_ptr]['line']) {
+                            $has_error = true;
                         }
-                    }//end if
-
-                    if ($next !== $lastAddedStackPtr) {
-                        $found            .= $tokens[$next]['content'];
-                        $lastAddedStackPtr = $next;
                     }
-
-                    if (isset($pattern[($i + 1)]) === true
-                        && $pattern[($i + 1)]['type'] === 'skip'
-                    ) {
-                        $stackPtr = $next;
+                    //end if
+                    if ($next !== $last_added_stack_ptr) {
+                        $found .= $tokens[$next]['content'];
+                        $last_added_stack_ptr = $next;
+                    }
+                    if (isset($pattern[$i + 1]) === true && $pattern[$i + 1]['type'] === 'skip') {
+                        $stack_ptr = $next;
                     } else {
-                        $stackPtr = ($next + 1);
+                        $stack_ptr = $next + 1;
                     }
-                }//end if
+                }
+                //end if
             } elseif ($pattern[$i]['type'] === 'skip') {
                 if ($pattern[$i]['to'] === 'unknown') {
-                    $next = $phpcsFile->findNext(
-                        $pattern[($i + 1)]['token'],
-                        $stackPtr
-                    );
-
+                    $next = $phpcs_file->find_next($pattern[$i + 1]['token'], $stack_ptr);
                     if ($next === false) {
                         // Couldn't find the next token, so we must
                         // be using the wrong pattern.
                         return false;
                     }
-
-                    $found   .= '...';
-                    $stackPtr = $next;
+                    $found .= '...';
+                    $stack_ptr = $next;
                 } else {
                     // Find the previous opener.
-                    $next = $phpcsFile->findPrevious(
-                        Tokens::$blockOpeners,
-                        $stackPtr
-                    );
-
-                    if ($next === false
-                        || isset($tokens[$next][$pattern[$i]['to']]) === false
-                    ) {
+                    $next = $phpcs_file->find_previous(Tokens::$block_openers, $stack_ptr);
+                    if ($next === false || isset($tokens[$next][$pattern[$i]['to']]) === false) {
                         // If there was not opener, then we must
                         // be using the wrong pattern.
                         return false;
                     }
-
                     $found .= '...';
                     if ($pattern[$i]['to'] === 'parenthesis_closer') {
                         $found .= ')';
                     } else {
                         $found .= '}';
                     }
-
                     // Skip to the closing token.
-                    $stackPtr = ($tokens[$next][$pattern[$i]['to']] + 1);
-                }//end if
+                    $stack_ptr = $tokens[$next][$pattern[$i]['to']] + 1;
+                }
+                //end if
             } elseif ($pattern[$i]['type'] === 'string') {
-                if ($tokens[$stackPtr]['code'] !== T_STRING) {
-                    $hasError = true;
+                if ($tokens[$stack_ptr]['code'] !== T_STRING) {
+                    $has_error = true;
                 }
-
-                if ($stackPtr !== $lastAddedStackPtr) {
-                    $found            .= 'abc';
-                    $lastAddedStackPtr = $stackPtr;
+                if ($stack_ptr !== $last_added_stack_ptr) {
+                    $found .= 'abc';
+                    $last_added_stack_ptr = $stack_ptr;
                 }
-
-                $stackPtr++;
+                $stack_ptr++;
             } elseif ($pattern[$i]['type'] === 'newline') {
                 // Find the next token that contains a newline character.
                 $newline = 0;
-                for ($j = $stackPtr; $j < $phpcsFile->numTokens; $j++) {
-                    if (strpos($tokens[$j]['content'], $phpcsFile->eolChar) !== false) {
+                for ($j = $stack_ptr; $j < $phpcs_file->num_tokens; $j++) {
+                    if (strpos($tokens[$j]['content'], $phpcs_file->eol_char) !== false) {
                         $newline = $j;
                         break;
                     }
                 }
-
                 if ($newline === 0) {
                     // We didn't find a newline character in the rest of the file.
-                    $next     = ($phpcsFile->numTokens - 1);
-                    $hasError = true;
+                    $next = $phpcs_file->num_tokens - 1;
+                    $has_error = true;
                 } else {
-                    if ($this->ignoreComments === false) {
+                    if ($this->ignore_comments === false) {
                         // The newline character cannot be part of a comment.
-                        if (isset(Tokens::$commentTokens[$tokens[$newline]['code']]) === true) {
-                            $hasError = true;
+                        if (isset(Tokens::$comment_tokens[$tokens[$newline]['code']]) === true) {
+                            $has_error = true;
                         }
                     }
-
-                    if ($newline === $stackPtr) {
-                        $next = ($stackPtr + 1);
+                    if ($newline === $stack_ptr) {
+                        $next = $stack_ptr + 1;
                     } else {
                         // Check that there were no significant tokens that we
                         // skipped over to find our newline character.
-                        $next = $phpcsFile->findNext(
-                            $ignoreTokens,
-                            $stackPtr,
-                            null,
-                            true
-                        );
-
+                        $next = $phpcs_file->find_next($ignore_tokens, $stack_ptr, null, true);
                         if ($next < $newline) {
                             // We skipped a non-ignored token.
-                            $hasError = true;
+                            $has_error = true;
                         } else {
-                            $next = ($newline + 1);
+                            $next = $newline + 1;
                         }
                     }
-                }//end if
-
-                if ($stackPtr !== $lastAddedStackPtr) {
-                    $found .= $phpcsFile->getTokensAsString(
-                        $stackPtr,
-                        ($next - $stackPtr)
-                    );
-
-                    $lastAddedStackPtr = ($next - 1);
                 }
-
-                $stackPtr = $next;
-            }//end if
-        }//end for
-
-        if ($hasError === true) {
-            $error = $this->prepareError($found, $patternCode);
-            $errors[$origStackPtr] = $error;
+                //end if
+                if ($stack_ptr !== $last_added_stack_ptr) {
+                    $found .= $phpcs_file->get_tokens_as_string($stack_ptr, $next - $stack_ptr);
+                    $last_added_stack_ptr = $next - 1;
+                }
+                $stack_ptr = $next;
+            }
+            //end if
         }
-
+        //end for
+        if ($has_error === true) {
+            $error = $this->prepare_error($found, $pattern_code);
+            $errors[$orig_stack_ptr] = $error;
+        }
         return $errors;
-
-    }//end processPattern()
-
+    }
+    //end processPattern()
     /**
      * Prepares an error for the specified patternCode.
      *
@@ -695,26 +541,23 @@ abstract class AbstractPatternSniff implements Sniff
      *
      * @return string The error message.
      */
-    protected function prepareError($found, $patternCode)
+    protected function prepare_error($found, $pattern_code)
     {
-        $found    = str_replace("\r\n", '\n', $found);
-        $found    = str_replace("\n", '\n', $found);
-        $found    = str_replace("\r", '\n', $found);
-        $found    = str_replace("\t", '\t', $found);
-        $found    = str_replace('EOL', '\n', $found);
-        $expected = str_replace('EOL', '\n', $patternCode);
-
-        return "Expected \"$expected\"; found \"$found\"";
-
-    }//end prepareError()
-
+        $found = str_replace("\r\n", '\n', $found);
+        $found = str_replace("\n", '\n', $found);
+        $found = str_replace("\r", '\n', $found);
+        $found = str_replace("\t", '\t', $found);
+        $found = str_replace('EOL', '\n', $found);
+        $expected = str_replace('EOL', '\n', $pattern_code);
+        return "Expected \"{$expected}\"; found \"{$found}\"";
+    }
+    //end prepareError()
     /**
      * Returns the patterns that should be checked.
      *
      * @return string[]
      */
-    abstract protected function getPatterns();
-
+    abstract protected function get_patterns();
     /**
      * Registers any supplementary tokens that this test might wish to process.
      *
@@ -725,12 +568,11 @@ abstract class AbstractPatternSniff implements Sniff
      * @return int[]
      * @see    processSupplementary()
      */
-    protected function registerSupplementary()
+    protected function register_supplementary()
     {
         return [];
-
-    }//end registerSupplementary()
-
+    }
+    //end registerSupplementary()
     /**
      * Processes any tokens registered with registerSupplementary().
      *
@@ -742,11 +584,10 @@ abstract class AbstractPatternSniff implements Sniff
      * @return void
      * @see    registerSupplementary()
      */
-    protected function processSupplementary(File $phpcsFile, $stackPtr)
+    protected function process_supplementary(File $phpcs_file, $stack_ptr)
     {
-
-    }//end processSupplementary()
-
+    }
+    //end processSupplementary()
     /**
      * Parses a pattern string into an array of pattern steps.
      *
@@ -758,84 +599,74 @@ abstract class AbstractPatternSniff implements Sniff
      */
     private function parse($pattern)
     {
-        $patterns   = [];
-        $length     = strlen($pattern);
-        $lastToken  = 0;
-        $firstToken = 0;
-
+        $patterns = [];
+        $length = strlen($pattern);
+        $last_token = 0;
+        $first_token = 0;
         for ($i = 0; $i < $length; $i++) {
-            $specialPattern = false;
-            $isLastChar     = ($i === ($length - 1));
-            $oldFirstToken  = $firstToken;
-
+            $special_pattern = false;
+            $is_last_char = $i === $length - 1;
+            $old_first_token = $first_token;
             if (substr($pattern, $i, 3) === '...') {
                 // It's a skip pattern. The skip pattern requires the
                 // content of the token in the "from" position and the token
                 // to skip to.
-                $specialPattern = $this->createSkipPattern($pattern, ($i - 1));
-                $lastToken      = ($i - $firstToken);
-                $firstToken     = ($i + 3);
+                $special_pattern = $this->create_skip_pattern($pattern, $i - 1);
+                $last_token = $i - $first_token;
+                $first_token = $i + 3;
                 $i += 2;
-
-                if ($specialPattern['to'] !== 'unknown') {
-                    $firstToken++;
+                if ($special_pattern['to'] !== 'unknown') {
+                    $first_token++;
                 }
             } elseif (substr($pattern, $i, 3) === 'abc') {
-                $specialPattern = ['type' => 'string'];
-                $lastToken      = ($i - $firstToken);
-                $firstToken     = ($i + 3);
+                $special_pattern = ['type' => 'string'];
+                $last_token = $i - $first_token;
+                $first_token = $i + 3;
                 $i += 2;
             } elseif (substr($pattern, $i, 3) === 'EOL') {
-                $specialPattern = ['type' => 'newline'];
-                $lastToken      = ($i - $firstToken);
-                $firstToken     = ($i + 3);
+                $special_pattern = ['type' => 'newline'];
+                $last_token = $i - $first_token;
+                $first_token = $i + 3;
                 $i += 2;
-            }//end if
-
-            if ($specialPattern !== false || $isLastChar === true) {
+            }
+            //end if
+            if ($special_pattern !== false || $is_last_char === true) {
                 // If we are at the end of the string, don't worry about a limit.
-                if ($isLastChar === true) {
+                if ($is_last_char === true) {
                     // Get the string from the end of the last skip pattern, if any,
                     // to the end of the pattern string.
-                    $str = substr($pattern, $oldFirstToken);
+                    $str = substr($pattern, $old_first_token);
+                } else if ($last_token === 0) {
+                    // Note that if the last special token was zero characters ago,
+                    // there will be nothing to process so we can skip this bit.
+                    // This happens if you have something like: EOL... in your pattern.
+                    $str = '';
                 } else {
-                    // Get the string from the end of the last special pattern,
-                    // if any, to the start of this special pattern.
-                    if ($lastToken === 0) {
-                        // Note that if the last special token was zero characters ago,
-                        // there will be nothing to process so we can skip this bit.
-                        // This happens if you have something like: EOL... in your pattern.
-                        $str = '';
-                    } else {
-                        $str = substr($pattern, $oldFirstToken, $lastToken);
-                    }
+                    $str = substr($pattern, $old_first_token, $last_token);
                 }
-
                 if ($str !== '') {
-                    $tokenPatterns = $this->createTokenPattern($str);
-                    foreach ($tokenPatterns as $tokenPattern) {
-                        $patterns[] = $tokenPattern;
+                    $token_patterns = $this->create_token_pattern($str);
+                    foreach ($token_patterns as $token_pattern) {
+                        $patterns[] = $token_pattern;
                     }
                 }
-
                 // Make sure we don't skip the last token.
-                if ($isLastChar === false && $i === ($length - 1)) {
+                if ($is_last_char === false && $i === $length - 1) {
                     $i--;
                 }
-            }//end if
-
+            }
+            //end if
             // Add the skip pattern *after* we have processed
             // all the tokens from the end of the last skip pattern
             // to the start of this skip pattern.
-            if ($specialPattern !== false) {
-                $patterns[] = $specialPattern;
+            if ($special_pattern !== false) {
+                $patterns[] = $special_pattern;
             }
-        }//end for
-
+        }
+        //end for
         return $patterns;
-
-    }//end parse()
-
+    }
+    //end parse()
     /**
      * Creates a skip pattern.
      *
@@ -846,49 +677,44 @@ abstract class AbstractPatternSniff implements Sniff
      * @see    createTokenPattern()
      * @see    parse()
      */
-    private function createSkipPattern($pattern, $from)
+    private function create_skip_pattern($pattern, $from)
     {
         $skip = ['type' => 'skip'];
-
-        $nestedParenthesis = 0;
-        $nestedBraces      = 0;
+        $nested_parenthesis = 0;
+        $nested_braces = 0;
         for ($start = $from; $start >= 0; $start--) {
             switch ($pattern[$start]) {
                 case '(':
-                    if ($nestedParenthesis === 0) {
+                    if ($nested_parenthesis === 0) {
                         $skip['to'] = 'parenthesis_closer';
                     }
-
-                    $nestedParenthesis--;
+                    $nested_parenthesis--;
                     break;
                 case '{':
-                    if ($nestedBraces === 0) {
+                    if ($nested_braces === 0) {
                         $skip['to'] = 'scope_closer';
                     }
-
-                    $nestedBraces--;
+                    $nested_braces--;
                     break;
                 case '}':
-                    $nestedBraces++;
+                    $nested_braces++;
                     break;
                 case ')':
-                    $nestedParenthesis++;
+                    $nested_parenthesis++;
                     break;
-            }//end switch
-
+            }
+            //end switch
             if (isset($skip['to']) === true) {
                 break;
             }
-        }//end for
-
+        }
+        //end for
         if (isset($skip['to']) === false) {
             $skip['to'] = 'unknown';
         }
-
         return $skip;
-
-    }//end createSkipPattern()
-
+    }
+    //end createSkipPattern()
     /**
      * Creates a token pattern.
      *
@@ -898,27 +724,20 @@ abstract class AbstractPatternSniff implements Sniff
      * @see    createSkipPattern()
      * @see    parse()
      */
-    private function createTokenPattern($str)
+    private function create_token_pattern($str)
     {
         // Don't add a space after the closing php tag as it will add a new
         // whitespace token.
-        $tokenizer = new PHP('<?php '.$str.'?>', null);
-
+        $tokenizer = new PHP('<?php ' . $str . '?>', null);
         // Remove the <?php tag from the front and the end php tag from the back.
-        $tokens = $tokenizer->getTokens();
-        $tokens = array_slice($tokens, 1, (count($tokens) - 2));
-
+        $tokens = $tokenizer->get_tokens();
+        $tokens = array_slice($tokens, 1, count($tokens) - 2);
         $patterns = [];
-        foreach ($tokens as $patternInfo) {
-            $patterns[] = [
-                'type'  => 'token',
-                'token' => $patternInfo['code'],
-                'value' => $patternInfo['content'],
-            ];
+        foreach ($tokens as $pattern_info) {
+            $patterns[] = ['type' => 'token', 'token' => $pattern_info['code'], 'value' => $pattern_info['content']];
         }
-
         return $patterns;
-
-    }//end createTokenPattern()
-
-}//end class
+    }
+    //end createTokenPattern()
+}
+//end class

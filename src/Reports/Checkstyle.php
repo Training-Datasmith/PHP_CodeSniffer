@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Checkstyle report for PHP_CodeSniffer.
  *
@@ -8,12 +8,10 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
 class Checkstyle implements Report
 {
     /**
@@ -30,46 +28,40 @@ class Checkstyle implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {
-        $out = new \XMLWriter();
-        $out->openMemory();
-        $out->setIndent(true);
-
+        $out = new \Xml_Writer();
+        $out->open_memory();
+        $out->set_indent(true);
         if ($report['errors'] === 0 && $report['warnings'] === 0) {
             // Nothing to print.
             return false;
         }
-
-        $out->startElement('file');
-        $out->writeAttribute('name', $report['filename']);
-
-        foreach ($report['messages'] as $line => $lineErrors) {
-            foreach ($lineErrors as $column => $colErrors) {
-                foreach ($colErrors as $error) {
+        $out->start_element('file');
+        $out->write_attribute('name', $report['filename']);
+        foreach ($report['messages'] as $line => $line_errors) {
+            foreach ($line_errors as $column => $col_errors) {
+                foreach ($col_errors as $error) {
                     $error['type'] = strtolower($error['type']);
-                    if ($phpcsFile->config->encoding !== 'utf-8') {
-                        $error['message'] = iconv($phpcsFile->config->encoding, 'utf-8', $error['message']);
+                    if ($phpcs_file->config->encoding !== 'utf-8') {
+                        $error['message'] = iconv($phpcs_file->config->encoding, 'utf-8', $error['message']);
                     }
-
-                    $out->startElement('error');
-                    $out->writeAttribute('line', $line);
-                    $out->writeAttribute('column', $column);
-                    $out->writeAttribute('severity', $error['type']);
-                    $out->writeAttribute('message', $error['message']);
-                    $out->writeAttribute('source', $error['source']);
-                    $out->endElement();
+                    $out->start_element('error');
+                    $out->write_attribute('line', $line);
+                    $out->write_attribute('column', $column);
+                    $out->write_attribute('severity', $error['type']);
+                    $out->write_attribute('message', $error['message']);
+                    $out->write_attribute('source', $error['source']);
+                    $out->end_element();
                 }
             }
-        }//end foreach
-
-        $out->endElement();
+        }
+        //end foreach
+        $out->end_element();
         echo $out->flush();
-
         return true;
-
-    }//end generateFileReport()
-
+    }
+    //end generateFileReport()
     /**
      * Prints all violations for processed files, in a Checkstyle format.
      *
@@ -86,22 +78,13 @@ class Checkstyle implements Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    ) {
-        echo '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
-        echo '<checkstyle version="'.Config::VERSION.'">'.PHP_EOL;
-        echo $cachedData;
-        echo '</checkstyle>'.PHP_EOL;
-
-    }//end generate()
-
-}//end class
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true)
+    {
+        echo '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+        echo '<checkstyle version="' . Config::VERSION . '">' . PHP_EOL;
+        echo $cached_data;
+        echo '</checkstyle>' . PHP_EOL;
+    }
+    //end generate()
+}
+//end class

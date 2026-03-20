@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Tests the spacing of shorthand IF statements.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Control_Structures;
 
-namespace PHP_CodeSniffer\Standards\Squiz\Sniffs\ControlStructures;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class InlineIfDeclarationSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Inline_If_Declaration_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -24,9 +22,8 @@ class InlineIfDeclarationSniff implements Sniff
     public function register()
     {
         return [T_INLINE_THEN];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -36,118 +33,111 @@ class InlineIfDeclarationSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $openBracket  = null;
-        $closeBracket = null;
-        if (isset($tokens[$stackPtr]['nested_parenthesis']) === true) {
-            $parens       = $tokens[$stackPtr]['nested_parenthesis'];
-            $openBracket  = array_pop($parens);
-            $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
+        $tokens = $phpcs_file->get_tokens();
+        $open_bracket = null;
+        $close_bracket = null;
+        if (isset($tokens[$stack_ptr]['nested_parenthesis']) === true) {
+            $parens = $tokens[$stack_ptr]['nested_parenthesis'];
+            $open_bracket = array_pop($parens);
+            $close_bracket = $tokens[$open_bracket]['parenthesis_closer'];
         }
-
         // Find the beginning of the statement. If we don't find a
         // semicolon (end of statement) or comma (end of array value)
         // then assume the content before the closing parenthesis is the end.
-        $else         = $phpcsFile->findNext(T_INLINE_ELSE, ($stackPtr + 1));
-        $statementEnd = $phpcsFile->findNext([T_SEMICOLON, T_COMMA], ($else + 1), $closeBracket);
-        if ($statementEnd === false) {
-            $statementEnd = $phpcsFile->findPrevious(T_WHITESPACE, ($closeBracket - 1), null, true);
+        $else = $phpcs_file->find_next(T_INLINE_ELSE, $stack_ptr + 1);
+        $statement_end = $phpcs_file->find_next([T_SEMICOLON, T_COMMA], $else + 1, $close_bracket);
+        if ($statement_end === false) {
+            $statement_end = $phpcs_file->find_previous(T_WHITESPACE, $close_bracket - 1, null, true);
         }
-
         // Make sure it's all on the same line.
-        if ($tokens[$statementEnd]['line'] !== $tokens[$stackPtr]['line']) {
+        if ($tokens[$statement_end]['line'] !== $tokens[$stack_ptr]['line']) {
             $error = 'Inline shorthand IF statement must be declared on a single line';
-            $phpcsFile->addError($error, $stackPtr, 'NotSingleLine');
+            $phpcs_file->add_error($error, $stack_ptr, 'NotSingleLine');
             return;
         }
-
         // Make sure there are spaces around the question mark.
-        $contentBefore = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-        $contentAfter  = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-        if ($tokens[$contentBefore]['code'] !== T_CLOSE_PARENTHESIS) {
+        $content_before = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
+        $content_after = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
+        if ($tokens[$content_before]['code'] !== T_CLOSE_PARENTHESIS) {
             $error = 'Inline shorthand IF statement requires brackets around comparison';
-            $phpcsFile->addError($error, $stackPtr, 'NoBrackets');
+            $phpcs_file->add_error($error, $stack_ptr, 'NoBrackets');
         }
-
-        $spaceBefore = ($tokens[$stackPtr]['column'] - ($tokens[$contentBefore]['column'] + $tokens[$contentBefore]['length']));
-        if ($spaceBefore !== 1) {
+        $space_before = $tokens[$stack_ptr]['column'] - ($tokens[$content_before]['column'] + $tokens[$content_before]['length']);
+        if ($space_before !== 1) {
             $error = 'Inline shorthand IF statement requires 1 space before THEN; %s found';
-            $data  = [$spaceBefore];
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingBeforeThen', $data);
+            $data = [$space_before];
+            $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingBeforeThen', $data);
             if ($fix === true) {
-                if ($spaceBefore === 0) {
-                    $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
+                if ($space_before === 0) {
+                    $phpcs_file->fixer->add_content_before($stack_ptr, ' ');
                 } else {
-                    $phpcsFile->fixer->replaceToken(($stackPtr - 1), ' ');
+                    $phpcs_file->fixer->replace_token($stack_ptr - 1, ' ');
                 }
             }
         }
-
         // If there is no content between the ? and the : operators, then they are
         // trying to replicate an elvis operator, even though PHP doesn't have one.
         // In this case, we want no spaces between the two operators so ?: looks like
         // an operator itself.
-        $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $next = $phpcs_file->find_next(T_WHITESPACE, $stack_ptr + 1, null, true);
         if ($tokens[$next]['code'] === T_INLINE_ELSE) {
-            $inlineElse = $next;
-            if ($inlineElse !== ($stackPtr + 1)) {
+            $inline_else = $next;
+            if ($inline_else !== $stack_ptr + 1) {
                 $error = 'Inline shorthand IF statement without THEN statement requires 0 spaces between THEN and ELSE';
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'ElvisSpacing');
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'ElvisSpacing');
                 if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken(($stackPtr + 1), '');
+                    $phpcs_file->fixer->replace_token($stack_ptr + 1, '');
                 }
             }
         } else {
-            $spaceAfter = (($tokens[$contentAfter]['column']) - ($tokens[$stackPtr]['column'] + 1));
-            if ($spaceAfter !== 1) {
+            $space_after = $tokens[$content_after]['column'] - ($tokens[$stack_ptr]['column'] + 1);
+            if ($space_after !== 1) {
                 $error = 'Inline shorthand IF statement requires 1 space after THEN; %s found';
-                $data  = [$spaceAfter];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'SpacingAfterThen', $data);
+                $data = [$space_after];
+                $fix = $phpcs_file->add_fixable_error($error, $stack_ptr, 'SpacingAfterThen', $data);
                 if ($fix === true) {
-                    if ($spaceAfter === 0) {
-                        $phpcsFile->fixer->addContent($stackPtr, ' ');
+                    if ($space_after === 0) {
+                        $phpcs_file->fixer->add_content($stack_ptr, ' ');
                     } else {
-                        $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
+                        $phpcs_file->fixer->replace_token($stack_ptr + 1, ' ');
                     }
                 }
             }
-
             // Make sure the ELSE has the correct spacing.
-            $inlineElse    = $phpcsFile->findNext(T_INLINE_ELSE, ($stackPtr + 1), $statementEnd, false);
-            $contentBefore = $phpcsFile->findPrevious(T_WHITESPACE, ($inlineElse - 1), null, true);
-            $spaceBefore   = ($tokens[$inlineElse]['column'] - ($tokens[$contentBefore]['column'] + $tokens[$contentBefore]['length']));
-            if ($spaceBefore !== 1) {
+            $inline_else = $phpcs_file->find_next(T_INLINE_ELSE, $stack_ptr + 1, $statement_end, false);
+            $content_before = $phpcs_file->find_previous(T_WHITESPACE, $inline_else - 1, null, true);
+            $space_before = $tokens[$inline_else]['column'] - ($tokens[$content_before]['column'] + $tokens[$content_before]['length']);
+            if ($space_before !== 1) {
                 $error = 'Inline shorthand IF statement requires 1 space before ELSE; %s found';
-                $data  = [$spaceBefore];
-                $fix   = $phpcsFile->addFixableError($error, $inlineElse, 'SpacingBeforeElse', $data);
+                $data = [$space_before];
+                $fix = $phpcs_file->add_fixable_error($error, $inline_else, 'SpacingBeforeElse', $data);
                 if ($fix === true) {
-                    if ($spaceBefore === 0) {
-                        $phpcsFile->fixer->addContentBefore($inlineElse, ' ');
+                    if ($space_before === 0) {
+                        $phpcs_file->fixer->add_content_before($inline_else, ' ');
                     } else {
-                        $phpcsFile->fixer->replaceToken(($inlineElse - 1), ' ');
+                        $phpcs_file->fixer->replace_token($inline_else - 1, ' ');
                     }
-                }
-            }
-        }//end if
-
-        $contentAfter = $phpcsFile->findNext(T_WHITESPACE, ($inlineElse + 1), null, true);
-        $spaceAfter   = (($tokens[$contentAfter]['column']) - ($tokens[$inlineElse]['column'] + 1));
-        if ($spaceAfter !== 1) {
-            $error = 'Inline shorthand IF statement requires 1 space after ELSE; %s found';
-            $data  = [$spaceAfter];
-            $fix   = $phpcsFile->addFixableError($error, $inlineElse, 'SpacingAfterElse', $data);
-            if ($fix === true) {
-                if ($spaceAfter === 0) {
-                    $phpcsFile->fixer->addContent($inlineElse, ' ');
-                } else {
-                    $phpcsFile->fixer->replaceToken(($inlineElse + 1), ' ');
                 }
             }
         }
-
-    }//end process()
-
-}//end class
+        //end if
+        $content_after = $phpcs_file->find_next(T_WHITESPACE, $inline_else + 1, null, true);
+        $space_after = $tokens[$content_after]['column'] - ($tokens[$inline_else]['column'] + 1);
+        if ($space_after !== 1) {
+            $error = 'Inline shorthand IF statement requires 1 space after ELSE; %s found';
+            $data = [$space_after];
+            $fix = $phpcs_file->add_fixable_error($error, $inline_else, 'SpacingAfterElse', $data);
+            if ($fix === true) {
+                if ($space_after === 0) {
+                    $phpcs_file->fixer->add_content($inline_else, ' ');
+                } else {
+                    $phpcs_file->fixer->replace_token($inline_else + 1, ' ');
+                }
+            }
+        }
+    }
+    //end process()
+}
+//end class

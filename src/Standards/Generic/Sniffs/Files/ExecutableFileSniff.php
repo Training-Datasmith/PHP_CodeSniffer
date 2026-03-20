@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Tests that files are not executable.
  *
@@ -8,13 +8,11 @@ declare(strict_types=1);
  * @copyright 2019 Matthew Peveler
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Files;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Files;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-
-class ExecutableFileSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+class Executable_File_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -23,13 +21,9 @@ class ExecutableFileSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_OPEN_TAG,
-            T_OPEN_TAG_WITH_ECHO,
-        ];
-
-    }//end register()
-
+        return [T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -39,22 +33,20 @@ class ExecutableFileSniff implements Sniff
      *
      * @return int
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $filename = $phpcsFile->getFilename();
-
+        $filename = $phpcs_file->get_filename();
         if ($filename !== 'STDIN') {
-            $perms = fileperms($phpcsFile->getFilename());
-            if (($perms & 0x0040) !== 0 || ($perms & 0x0008) !== 0 || ($perms & 0x0001) !== 0) {
+            $perms = fileperms($phpcs_file->get_filename());
+            if (($perms & 0x40) !== 0 || ($perms & 0x8) !== 0 || ($perms & 0x1) !== 0) {
                 $error = 'A PHP file should not be executable; found file permissions set to %s';
-                $data  = [substr(sprintf('%o', $perms), -4)];
-                $phpcsFile->addError($error, 0, 'Executable', $data);
+                $data = [substr(sprintf('%o', $perms), -4)];
+                $phpcs_file->add_error($error, 0, 'Executable', $data);
             }
         }
-
         // Ignore the rest of the file.
-        return ($phpcsFile->numTokens + 1);
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens + 1;
+    }
+    //end process()
+}
+//end class

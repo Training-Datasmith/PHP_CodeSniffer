@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Info report for PHP_CodeSniffer.
  *
@@ -8,12 +8,10 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Reports;
 
-namespace PHP_CodeSniffer\Reports;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Util\Timing;
-
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Util\Timing;
 class Info implements Report
 {
     /**
@@ -30,19 +28,17 @@ class Info implements Report
      *
      * @return bool
      */
-    public function generateFileReport($report, File $phpcsFile, $showSources = false, $width = 80)
+    public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {
-        $metrics = $phpcsFile->getMetrics();
+        $metrics = $phpcs_file->get_metrics();
         foreach ($metrics as $metric => $data) {
             foreach ($data['values'] as $value => $count) {
-                echo "$metric>>$value>>$count".PHP_EOL;
+                echo "{$metric}>>{$value}>>{$count}" . PHP_EOL;
             }
         }
-
         return true;
-
-    }//end generateFileReport()
-
+    }
+    //end generateFileReport()
     /**
      * Prints the source of all errors and warnings.
      *
@@ -59,112 +55,78 @@ class Info implements Report
      *
      * @return void
      */
-    public function generate(
-        $cachedData,
-        $totalFiles,
-        $totalErrors,
-        $totalWarnings,
-        $totalFixable,
-        $showSources = false,
-        $width = 80,
-        $interactive = false,
-        $toScreen = true
-    ) {
-        $lines = explode(PHP_EOL, $cachedData);
+    public function generate($cached_data, $total_files, $total_errors, $total_warnings, $total_fixable, $show_sources = false, $width = 80, $interactive = false, $to_screen = true)
+    {
+        $lines = explode(PHP_EOL, $cached_data);
         array_pop($lines);
-
         if (empty($lines) === true) {
             return;
         }
-
         $metrics = [];
         foreach ($lines as $line) {
-            $parts  = explode('>>', $line);
+            $parts = explode('>>', $line);
             $metric = $parts[0];
-            $value  = $parts[1];
-            $count  = $parts[2];
+            $value = $parts[1];
+            $count = $parts[2];
             if (isset($metrics[$metric]) === false) {
                 $metrics[$metric] = [];
             }
-
             if (isset($metrics[$metric][$value]) === false) {
                 $metrics[$metric][$value] = $count;
             } else {
                 $metrics[$metric][$value] += $count;
             }
         }
-
         ksort($metrics);
-
-        echo PHP_EOL."\033[1m".'PHP CODE SNIFFER INFORMATION REPORT'."\033[0m".PHP_EOL;
-        echo str_repeat('-', 70).PHP_EOL;
-
+        echo PHP_EOL . "\x1b[1m" . 'PHP CODE SNIFFER INFORMATION REPORT' . "\x1b[0m" . PHP_EOL;
+        echo str_repeat('-', 70) . PHP_EOL;
         foreach ($metrics as $metric => $values) {
             if (count($values) === 1) {
                 $count = reset($values);
                 $value = key($values);
-
-                echo "$metric: \033[4m$value\033[0m [$count/$count, 100%]".PHP_EOL;
+                echo "{$metric}: \x1b[4m{$value}\x1b[0m [{$count}/{$count}, 100%]" . PHP_EOL;
             } else {
-                $totalCount = 0;
-                $valueWidth = 0;
+                $total_count = 0;
+                $value_width = 0;
                 foreach ($values as $value => $count) {
-                    $totalCount += $count;
-                    $valueWidth  = max($valueWidth, strlen($value));
+                    $total_count += $count;
+                    $value_width = max($value_width, strlen($value));
                 }
-
                 // Length of the total string, plus however many
                 // thousands separators there are.
-                $countWidth = strlen($totalCount);
-                $thousandSeparatorCount = floor($countWidth / 3);
-                $countWidth            += $thousandSeparatorCount;
-
+                $count_width = strlen($total_count);
+                $thousand_separator_count = floor($count_width / 3);
+                $count_width += $thousand_separator_count;
                 // Account for 'total' line.
-                $valueWidth = max(5, $valueWidth);
-
-                echo "$metric:".PHP_EOL;
-
+                $value_width = max(5, $value_width);
+                echo "{$metric}:" . PHP_EOL;
                 ksort($values, SORT_NATURAL);
                 arsort($values);
-
-                $percentPrefixWidth = 0;
-                $percentWidth       = 6;
+                $percent_prefix_width = 0;
+                $percent_width = 6;
                 foreach ($values as $value => $count) {
-                    $percent       = round(($count / $totalCount * 100), 2);
-                    $percentPrefix = '';
-                    if ($percent === 0.00) {
-                        $percent            = 0.01;
-                        $percentPrefix      = '<';
-                        $percentPrefixWidth = 2;
-                        $percentWidth       = 4;
+                    $percent = round($count / $total_count * 100, 2);
+                    $percent_prefix = '';
+                    if ($percent === 0.0) {
+                        $percent = 0.01;
+                        $percent_prefix = '<';
+                        $percent_prefix_width = 2;
+                        $percent_width = 4;
                     }
-
-                    printf(
-                        "\t%-{$valueWidth}s => %{$countWidth}s (%{$percentPrefixWidth}s%{$percentWidth}.2f%%)".PHP_EOL,
-                        $value,
-                        number_format($count),
-                        $percentPrefix,
-                        $percent
-                    );
+                    printf("\t%-{$value_width}s => %{$count_width}s (%{$percent_prefix_width}s%{$percent_width}.2f%%)" . PHP_EOL, $value, number_format($count), $percent_prefix, $percent);
                 }
-
-                echo "\t".str_repeat('-', ($valueWidth + $countWidth + 15)).PHP_EOL;
-                printf(
-                    "\t%-{$valueWidth}s => %{$countWidth}s (100.00%%)".PHP_EOL,
-                    'total',
-                    number_format($totalCount)
-                );
-            }//end if
-
+                echo "\t" . str_repeat('-', $value_width + $count_width + 15) . PHP_EOL;
+                printf("\t%-{$value_width}s => %{$count_width}s (100.00%%)" . PHP_EOL, 'total', number_format($total_count));
+            }
+            //end if
             echo PHP_EOL;
-        }//end foreach
-
-        echo str_repeat('-', 70).PHP_EOL;
-
-        if ($toScreen === true && $interactive === false) {
-            Timing::printRunTime();
         }
-
-    }//end generate()
-
-}//end class
+        //end foreach
+        echo str_repeat('-', 70) . PHP_EOL;
+        if ($to_screen === true && $interactive === false) {
+            Timing::print_run_time();
+        }
+    }
+    //end generate()
+}
+//end class

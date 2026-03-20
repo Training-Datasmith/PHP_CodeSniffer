@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Verifies that all class constants have their visibility set.
  *
@@ -8,14 +8,12 @@ declare(strict_types=1);
  * @copyright 2006-2019 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Properties;
 
-namespace PHP_CodeSniffer\Standards\PSR12\Sniffs\Properties;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class ConstantVisibilitySniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Constant_Visibility_Sniff implements Sniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -25,9 +23,8 @@ class ConstantVisibilitySniff implements Sniff
     public function register()
     {
         return [T_CONST];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -37,26 +34,22 @@ class ConstantVisibilitySniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Make sure this is a class constant.
-        if ($phpcsFile->hasCondition($stackPtr, Tokens::$ooScopeTokens) === false) {
+        if ($phpcs_file->has_condition($stack_ptr, Tokens::$oo_scope_tokens) === false) {
             return;
         }
-
-        $ignore   = Tokens::$emptyTokens;
+        $ignore = Tokens::$empty_tokens;
         $ignore[] = T_FINAL;
-
-        $prev = $phpcsFile->findPrevious($ignore, ($stackPtr - 1), null, true);
-        if (isset(Tokens::$scopeModifiers[$tokens[$prev]['code']]) === true) {
+        $prev = $phpcs_file->find_previous($ignore, $stack_ptr - 1, null, true);
+        if (isset(Tokens::$scope_modifiers[$tokens[$prev]['code']]) === true) {
             return;
         }
-
         $error = 'Visibility must be declared on all constants if your project supports PHP 7.1 or later';
-        $phpcsFile->addWarning($error, $stackPtr, 'NotFound');
-
-    }//end process()
-
-}//end class
+        $phpcs_file->add_warning($error, $stack_ptr, 'NotFound');
+    }
+    //end process()
+}
+//end class

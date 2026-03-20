@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Runs gjslint on the file.
  *
@@ -8,15 +8,13 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Debug;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Debug;
-
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Common;
-
-class ClosureLinterSniff implements Sniff
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Common;
+class Closure_Linter_Sniff implements Sniff
 {
     /**
      * A list of error codes that should show errors.
@@ -25,22 +23,19 @@ class ClosureLinterSniff implements Sniff
      *
      * @var integer
      */
-    public $errorCodes = [];
-
+    public $error_codes = [];
     /**
      * A list of error codes to ignore.
      *
      * @var integer
      */
-    public $ignoreCodes = [];
-
+    public $ignore_codes = [];
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = ['JS'];
-
+    public $supported_tokenizers = ['JS'];
     /**
      * Returns the token types that this sniff is interested in.
      *
@@ -49,9 +44,8 @@ class ClosureLinterSniff implements Sniff
     public function register()
     {
         return [T_OPEN_TAG];
-
-    }//end register()
-
+    }
+    //end register()
     /**
      * Processes the tokens that this sniff is interested in.
      *
@@ -62,54 +56,44 @@ class ClosureLinterSniff implements Sniff
      * @return void
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If jslint.js could not be run
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $lintPath = Config::getExecutablePath('gjslint');
-        if ($lintPath === null) {
+        $lint_path = Config::get_executable_path('gjslint');
+        if ($lint_path === null) {
             return;
         }
-
-        $fileName = $phpcsFile->getFilename();
-
-        $lintPath = Common::escapeshellcmd($lintPath);
-        $cmd      = $lintPath.' --nosummary --notime --unix_mode '.escapeshellarg($fileName);
+        $file_name = $phpcs_file->get_filename();
+        $lint_path = Common::escapeshellcmd($lint_path);
+        $cmd = $lint_path . ' --nosummary --notime --unix_mode ' . escapeshellarg($file_name);
         exec($cmd, $output, $retval);
-
         if (is_array($output) === false) {
             return;
         }
-
         foreach ($output as $finding) {
-            $matches    = [];
-            $numMatches = preg_match('/^(.*):([0-9]+):\(.*?([0-9]+)\)(.*)$/', $finding, $matches);
-            if ($numMatches === 0) {
+            $matches = [];
+            $num_matches = preg_match('/^(.*):([0-9]+):\(.*?([0-9]+)\)(.*)$/', $finding, $matches);
+            if ($num_matches === 0) {
                 continue;
             }
-
             // Skip error codes we are ignoring.
             $code = $matches[3];
-            if (in_array($code, $this->ignoreCodes) === true) {
+            if (in_array($code, $this->ignore_codes) === true) {
                 continue;
             }
-
-            $line  = (int) $matches[2];
+            $line = (int) $matches[2];
             $error = trim($matches[4]);
-
             $message = 'gjslint says: (%s) %s';
-            $data    = [
-                $code,
-                $error,
-            ];
-            if (in_array($code, $this->errorCodes) === true) {
-                $phpcsFile->addErrorOnLine($message, $line, 'ExternalToolError', $data);
+            $data = [$code, $error];
+            if (in_array($code, $this->error_codes) === true) {
+                $phpcs_file->add_error_on_line($message, $line, 'ExternalToolError', $data);
             } else {
-                $phpcsFile->addWarningOnLine($message, $line, 'ExternalTool', $data);
+                $phpcs_file->add_warning_on_line($message, $line, 'ExternalTool', $data);
             }
-        }//end foreach
-
+        }
+        //end foreach
         // Ignore the rest of the file.
-        return ($phpcsFile->numTokens + 1);
-
-    }//end process()
-
-}//end class
+        return $phpcs_file->num_tokens + 1;
+    }
+    //end process()
+}
+//end class

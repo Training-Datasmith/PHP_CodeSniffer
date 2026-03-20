@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Ensures that systems, asset types and libs are included before they are used.
  *
@@ -8,48 +8,27 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\My_Source\Sniffs\Channels;
 
-namespace PHP_CodeSniffer\Standards\MySource\Sniffs\Channels;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractScopeSniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class IncludeSystemSniff extends AbstractScopeSniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Abstract_Scope_Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Include_System_Sniff extends Abstract_Scope_Sniff
 {
     /**
      * A list of classes that don't need to be included.
      *
      * @var string[]
      */
-    private $ignore = [
-        'self'                      => true,
-        'static'                    => true,
-        'parent'                    => true,
-        'channels'                  => true,
-        'basesystem'                => true,
-        'dal'                       => true,
-        'init'                      => true,
-        'pdo'                       => true,
-        'util'                      => true,
-        'ziparchive'                => true,
-        'phpunit_framework_assert'  => true,
-        'abstractmysourceunittest'  => true,
-        'abstractdatacleanunittest' => true,
-        'exception'                 => true,
-        'abstractwidgetwidgettype'  => true,
-        'domdocument'               => true,
-    ];
-
+    private $ignore = ['self' => true, 'static' => true, 'parent' => true, 'channels' => true, 'basesystem' => true, 'dal' => true, 'init' => true, 'pdo' => true, 'util' => true, 'ziparchive' => true, 'phpunit_framework_assert' => true, 'abstractmysourceunittest' => true, 'abstractdatacleanunittest' => true, 'exception' => true, 'abstractwidgetwidgettype' => true, 'domdocument' => true];
     /**
      * Constructs an AbstractScopeSniff.
      */
     public function __construct()
     {
         parent::__construct([T_FUNCTION], [T_DOUBLE_COLON, T_EXTENDS], true);
-
-    }//end __construct()
-
+    }
+    //end __construct()
     /**
      * Processes the function tokens within the class.
      *
@@ -59,137 +38,120 @@ class IncludeSystemSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope)
+    protected function process_token_within_scope(File $phpcs_file, $stack_ptr, $curr_scope)
     {
-        $tokens = $phpcsFile->getTokens();
-
+        $tokens = $phpcs_file->get_tokens();
         // Determine the name of the class that the static function
         // is being called on.
-        $classNameToken = $phpcsFile->findPrevious(
-            T_WHITESPACE,
-            ($stackPtr - 1),
-            null,
-            true
-        );
-
+        $class_name_token = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
         // Don't process class names represented by variables as this can be
         // an inexact science.
-        if ($tokens[$classNameToken]['code'] === T_VARIABLE) {
+        if ($tokens[$class_name_token]['code'] === T_VARIABLE) {
             return;
         }
-
-        $className = $tokens[$classNameToken]['content'];
-        if (isset($this->ignore[strtolower($className)]) === true) {
+        $class_name = $tokens[$class_name_token]['content'];
+        if (isset($this->ignore[strtolower($class_name)]) === true) {
             return;
         }
-
-        $includedClasses = [];
-
-        $fileName = strtolower($phpcsFile->getFilename());
-        $matches  = [];
-        if (preg_match('|/systems/(.*)/([^/]+)?actions.inc$|', $fileName, $matches) !== 0) {
+        $included_classes = [];
+        $file_name = strtolower($phpcs_file->get_filename());
+        $matches = [];
+        if (preg_match('|/systems/(.*)/([^/]+)?actions.inc$|', $file_name, $matches) !== 0) {
             // This is an actions file, which means we don't
             // have to include the system in which it exists.
-            $includedClasses[$matches[2]] = true;
-
+            $included_classes[$matches[2]] = true;
             // Or a system it implements.
-            $class      = $phpcsFile->getCondition($stackPtr, T_CLASS);
-            $implements = $phpcsFile->findNext(T_IMPLEMENTS, $class, ($class + 10));
+            $class = $phpcs_file->get_condition($stack_ptr, T_CLASS);
+            $implements = $phpcs_file->find_next(T_IMPLEMENTS, $class, $class + 10);
             if ($implements !== false) {
-                $implementsClass     = $phpcsFile->findNext(T_STRING, $implements);
-                $implementsClassName = strtolower($tokens[$implementsClass]['content']);
-                if (substr($implementsClassName, -7) === 'actions') {
-                    $includedClasses[substr($implementsClassName, 0, -7)] = true;
+                $implements_class = $phpcs_file->find_next(T_STRING, $implements);
+                $implements_class_name = strtolower($tokens[$implements_class]['content']);
+                if (substr($implements_class_name, -7) === 'actions') {
+                    $included_classes[substr($implements_class_name, 0, -7)] = true;
                 }
             }
         }
-
         // Go searching for includeSystem and includeAsset calls within this
         // function, or the inclusion of .inc files, which
         // would be library files.
-        for ($i = ($currScope + 1); $i < $stackPtr; $i++) {
-            $name = $this->getIncludedClassFromToken($phpcsFile, $tokens, $i);
+        for ($i = $curr_scope + 1; $i < $stack_ptr; $i++) {
+            $name = $this->get_included_class_from_token($phpcs_file, $tokens, $i);
             if ($name !== false) {
-                $includedClasses[$name] = true;
+                $included_classes[$name] = true;
                 // Special case for Widgets cause they are, well, special.
             } elseif (strtolower($tokens[$i]['content']) === 'includewidget') {
-                $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($i + 1));
-                $typeName = trim($tokens[$typeName]['content'], " '");
-                $includedClasses[strtolower($typeName).'widgettype'] = true;
+                $type_name = $phpcs_file->find_next(T_CONSTANT_ENCAPSED_STRING, $i + 1);
+                $type_name = trim($tokens[$type_name]['content'], " '");
+                $included_classes[strtolower($type_name) . 'widgettype'] = true;
             }
         }
-
         // Now go searching for includeSystem, includeAsset or require/include
         // calls outside our scope. If we are in a class, look outside the
         // class. If we are not, look outside the function.
-        $condPtr = $currScope;
-        if ($phpcsFile->hasCondition($stackPtr, T_CLASS) === true) {
-            foreach ($tokens[$stackPtr]['conditions'] as $condType) {
-                if ($condType === T_CLASS) {
+        $cond_ptr = $curr_scope;
+        if ($phpcs_file->has_condition($stack_ptr, T_CLASS) === true) {
+            foreach ($tokens[$stack_ptr]['conditions'] as $cond_type) {
+                if ($cond_type === T_CLASS) {
                     break;
                 }
             }
         }
-
-        for ($i = 0; $i < $condPtr; $i++) {
+        for ($i = 0; $i < $cond_ptr; $i++) {
             // Skip other scopes.
             if (isset($tokens[$i]['scope_closer']) === true) {
                 $i = $tokens[$i]['scope_closer'];
                 continue;
             }
-
-            $name = $this->getIncludedClassFromToken($phpcsFile, $tokens, $i);
+            $name = $this->get_included_class_from_token($phpcs_file, $tokens, $i);
             if ($name !== false) {
-                $includedClasses[$name] = true;
+                $included_classes[$name] = true;
             }
         }
-
         // If we are in a testing class, we might have also included
         // some systems and classes in our setUp() method.
-        $setupFunction = null;
-        if ($phpcsFile->hasCondition($stackPtr, T_CLASS) === true) {
-            foreach ($tokens[$stackPtr]['conditions'] as $condPtr => $condType) {
-                if ($condType === T_CLASS) {
+        $setup_function = null;
+        if ($phpcs_file->has_condition($stack_ptr, T_CLASS) === true) {
+            foreach ($tokens[$stack_ptr]['conditions'] as $cond_ptr => $cond_type) {
+                if ($cond_type === T_CLASS) {
                     // Is this is a testing class?
-                    $name = $phpcsFile->findNext(T_STRING, $condPtr);
+                    $name = $phpcs_file->find_next(T_STRING, $cond_ptr);
                     $name = $tokens[$name]['content'];
                     if (substr($name, -8) === 'UnitTest') {
                         // Look for a method called setUp().
-                        $end      = $tokens[$condPtr]['scope_closer'];
-                        $function = $phpcsFile->findNext(T_FUNCTION, ($condPtr + 1), $end);
+                        $end = $tokens[$cond_ptr]['scope_closer'];
+                        $function = $phpcs_file->find_next(T_FUNCTION, $cond_ptr + 1, $end);
                         while ($function !== false) {
-                            $name = $phpcsFile->findNext(T_STRING, $function);
+                            $name = $phpcs_file->find_next(T_STRING, $function);
                             if ($tokens[$name]['content'] === 'setUp') {
-                                $setupFunction = $function;
+                                $setup_function = $function;
                                 break;
                             }
-
-                            $function = $phpcsFile->findNext(T_FUNCTION, ($function + 1), $end);
+                            $function = $phpcs_file->find_next(T_FUNCTION, $function + 1, $end);
                         }
                     }
                 }
-            }//end foreach
-        }//end if
-
-        if ($setupFunction !== null) {
-            $start = ($tokens[$setupFunction]['scope_opener'] + 1);
-            $end   = $tokens[$setupFunction]['scope_closer'];
+            }
+            //end foreach
+        }
+        //end if
+        if ($setup_function !== null) {
+            $start = $tokens[$setup_function]['scope_opener'] + 1;
+            $end = $tokens[$setup_function]['scope_closer'];
             for ($i = $start; $i < $end; $i++) {
-                $name = $this->getIncludedClassFromToken($phpcsFile, $tokens, $i);
+                $name = $this->get_included_class_from_token($phpcs_file, $tokens, $i);
                 if ($name !== false) {
-                    $includedClasses[$name] = true;
+                    $included_classes[$name] = true;
                 }
             }
-        }//end if
-
-        if (isset($includedClasses[strtolower($className)]) === false) {
-            $error = 'Static method called on non-included class or system "%s"; include system with Channels::includeSystem() or include class with require_once';
-            $data  = [$className];
-            $phpcsFile->addError($error, $stackPtr, 'NotIncludedCall', $data);
         }
-
-    }//end processTokenWithinScope()
-
+        //end if
+        if (isset($included_classes[strtolower($class_name)]) === false) {
+            $error = 'Static method called on non-included class or system "%s"; include system with Channels::includeSystem() or include class with require_once';
+            $data = [$class_name];
+            $phpcs_file->add_error($error, $stack_ptr, 'NotIncludedCall', $data);
+        }
+    }
+    //end processTokenWithinScope()
     /**
      * Processes a token within the scope that this test is listening to.
      *
@@ -199,82 +161,70 @@ class IncludeSystemSniff extends AbstractScopeSniff
      *
      * @return void
      */
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr)
+    protected function process_token_outside_scope(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        if ($tokens[$stackPtr]['code'] === T_EXTENDS) {
+        $tokens = $phpcs_file->get_tokens();
+        if ($tokens[$stack_ptr]['code'] === T_EXTENDS) {
             // Find the class name.
-            $classNameToken = $phpcsFile->findNext(T_STRING, ($stackPtr + 1));
-            $className      = $tokens[$classNameToken]['content'];
+            $class_name_token = $phpcs_file->find_next(T_STRING, $stack_ptr + 1);
+            $class_name = $tokens[$class_name_token]['content'];
         } else {
             // Determine the name of the class that the static function
             // is being called on. But don't process class names represented by
             // variables as this can be an inexact science.
-            $classNameToken = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-            if ($tokens[$classNameToken]['code'] === T_VARIABLE) {
+            $class_name_token = $phpcs_file->find_previous(T_WHITESPACE, $stack_ptr - 1, null, true);
+            if ($tokens[$class_name_token]['code'] === T_VARIABLE) {
                 return;
             }
-
-            $className = $tokens[$classNameToken]['content'];
+            $class_name = $tokens[$class_name_token]['content'];
         }
-
         // Some systems are always available.
-        if (isset($this->ignore[strtolower($className)]) === true) {
+        if (isset($this->ignore[strtolower($class_name)]) === true) {
             return;
         }
-
-        $includedClasses = [];
-
-        $fileName = strtolower($phpcsFile->getFilename());
-        $matches  = [];
-        if (preg_match('|/systems/([^/]+)/([^/]+)?actions.inc$|', $fileName, $matches) !== 0) {
+        $included_classes = [];
+        $file_name = strtolower($phpcs_file->get_filename());
+        $matches = [];
+        if (preg_match('|/systems/([^/]+)/([^/]+)?actions.inc$|', $file_name, $matches) !== 0) {
             // This is an actions file, which means we don't
             // have to include the system in which it exists
             // We know the system from the path.
-            $includedClasses[$matches[1]] = true;
+            $included_classes[$matches[1]] = true;
         }
-
         // Go searching for includeSystem, includeAsset or require/include
         // calls outside our scope.
-        for ($i = 0; $i < $stackPtr; $i++) {
+        for ($i = 0; $i < $stack_ptr; $i++) {
             // Skip classes and functions as will we never get
             // into their scopes when including this file, although
             // we have a chance of getting into IF, WHILE etc.
-            if (($tokens[$i]['code'] === T_CLASS
-                || $tokens[$i]['code'] === T_INTERFACE
-                || $tokens[$i]['code'] === T_FUNCTION)
-                && isset($tokens[$i]['scope_closer']) === true
-            ) {
+            if (($tokens[$i]['code'] === T_CLASS || $tokens[$i]['code'] === T_INTERFACE || $tokens[$i]['code'] === T_FUNCTION) && isset($tokens[$i]['scope_closer']) === true) {
                 $i = $tokens[$i]['scope_closer'];
                 continue;
             }
-
-            $name = $this->getIncludedClassFromToken($phpcsFile, $tokens, $i);
+            $name = $this->get_included_class_from_token($phpcs_file, $tokens, $i);
             if ($name !== false) {
-                $includedClasses[$name] = true;
+                $included_classes[$name] = true;
                 // Special case for Widgets cause they are, well, special.
             } elseif (strtolower($tokens[$i]['content']) === 'includewidget') {
-                $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($i + 1));
-                $typeName = trim($tokens[$typeName]['content'], " '");
-                $includedClasses[strtolower($typeName).'widgettype'] = true;
-            }
-        }//end for
-
-        if (isset($includedClasses[strtolower($className)]) === false) {
-            if ($tokens[$stackPtr]['code'] === T_EXTENDS) {
-                $error = 'Class extends non-included class or system "%s"; include system with Channels::includeSystem() or include class with require_once';
-                $data  = [$className];
-                $phpcsFile->addError($error, $stackPtr, 'NotIncludedExtends', $data);
-            } else {
-                $error = 'Static method called on non-included class or system "%s"; include system with Channels::includeSystem() or include class with require_once';
-                $data  = [$className];
-                $phpcsFile->addError($error, $stackPtr, 'NotIncludedCall', $data);
+                $type_name = $phpcs_file->find_next(T_CONSTANT_ENCAPSED_STRING, $i + 1);
+                $type_name = trim($tokens[$type_name]['content'], " '");
+                $included_classes[strtolower($type_name) . 'widgettype'] = true;
             }
         }
-
-    }//end processTokenOutsideScope()
-
+        //end for
+        if (isset($included_classes[strtolower($class_name)]) === false) {
+            if ($tokens[$stack_ptr]['code'] === T_EXTENDS) {
+                $error = 'Class extends non-included class or system "%s"; include system with Channels::includeSystem() or include class with require_once';
+                $data = [$class_name];
+                $phpcs_file->add_error($error, $stack_ptr, 'NotIncludedExtends', $data);
+            } else {
+                $error = 'Static method called on non-included class or system "%s"; include system with Channels::includeSystem() or include class with require_once';
+                $data = [$class_name];
+                $phpcs_file->add_error($error, $stack_ptr, 'NotIncludedCall', $data);
+            }
+        }
+    }
+    //end processTokenOutsideScope()
     /**
      * Determines the included class name from given token.
      *
@@ -285,28 +235,27 @@ class IncludeSystemSniff extends AbstractScopeSniff
      *
      * @return string
      */
-    protected function getIncludedClassFromToken(File $phpcsFile, array $tokens, $stackPtr)
+    protected function get_included_class_from_token(File $phpcs_file, array $tokens, $stack_ptr)
     {
-        if (strtolower($tokens[$stackPtr]['content']) === 'includesystem') {
-            $systemName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1));
-            $systemName = trim($tokens[$systemName]['content'], " '");
-            return strtolower($systemName);
+        if (strtolower($tokens[$stack_ptr]['content']) === 'includesystem') {
+            $system_name = $phpcs_file->find_next(T_CONSTANT_ENCAPSED_STRING, $stack_ptr + 1);
+            $system_name = trim($tokens[$system_name]['content'], " '");
+            return strtolower($system_name);
         }
-        if (strtolower($tokens[$stackPtr]['content']) === 'includeasset') {
-            $typeName = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1));
-            $typeName = trim($tokens[$typeName]['content'], " '");
-            return strtolower($typeName).'assettype';
+        if (strtolower($tokens[$stack_ptr]['content']) === 'includeasset') {
+            $type_name = $phpcs_file->find_next(T_CONSTANT_ENCAPSED_STRING, $stack_ptr + 1);
+            $type_name = trim($tokens[$type_name]['content'], " '");
+            return strtolower($type_name) . 'assettype';
         }
-        if (isset(Tokens::$includeTokens[$tokens[$stackPtr]['code']]) === true) {
-            $filePath = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, ($stackPtr + 1));
-            $filePath = $tokens[$filePath]['content'];
-            $filePath = trim($filePath, " '");
-            $filePath = basename($filePath, '.inc');
-            return strtolower($filePath);
+        if (isset(Tokens::$include_tokens[$tokens[$stack_ptr]['code']]) === true) {
+            $file_path = $phpcs_file->find_next(T_CONSTANT_ENCAPSED_STRING, $stack_ptr + 1);
+            $file_path = $tokens[$file_path]['content'];
+            $file_path = trim($file_path, " '");
+            $file_path = basename($file_path, '.inc');
+            return strtolower($file_path);
         }
-
         return false;
-
-    }//end getIncludedClassFromToken()
-
-}//end class
+    }
+    //end getIncludedClassFromToken()
+}
+//end class

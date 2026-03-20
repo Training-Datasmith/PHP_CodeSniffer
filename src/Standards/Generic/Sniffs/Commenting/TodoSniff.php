@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * Warns about TODO comments.
  *
@@ -8,25 +8,19 @@ declare(strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Commenting;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class TodoSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Todo_Sniff implements Sniff
 {
     /**
      * A list of tokenizers this sniff supports.
      *
      * @var array
      */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
+    public $supported_tokenizers = ['PHP', 'JS'];
     /**
      * Returns an array of tokens this test wants to listen for.
      *
@@ -34,10 +28,9 @@ class TodoSniff implements Sniff
      */
     public function register()
     {
-        return array_diff(Tokens::$commentTokens, Tokens::$phpcsCommentTokens);
-
-    }//end register()
-
+        return array_diff(Tokens::$comment_tokens, Tokens::$phpcs_comment_tokens);
+    }
+    //end register()
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
@@ -47,29 +40,27 @@ class TodoSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-
-        $content = $tokens[$stackPtr]['content'];
+        $tokens = $phpcs_file->get_tokens();
+        $content = $tokens[$stack_ptr]['content'];
         $matches = [];
         preg_match('/(?:\A|[^\p{L}]+)todo([^\p{L}]+(.*)|\Z)/ui', $content, $matches);
         if (empty($matches) === false) {
             // Clear whitespace and some common characters not required at
             // the end of a to-do message to make the warning more informative.
-            $type        = 'CommentFound';
-            $todoMessage = trim($matches[1]);
-            $todoMessage = trim($todoMessage, '-:[](). ');
-            $error       = 'Comment refers to a TODO task';
-            $data        = [$todoMessage];
-            if ($todoMessage !== '') {
-                $type   = 'TaskFound';
+            $type = 'CommentFound';
+            $todo_message = trim($matches[1]);
+            $todo_message = trim($todo_message, '-:[](). ');
+            $error = 'Comment refers to a TODO task';
+            $data = [$todo_message];
+            if ($todo_message !== '') {
+                $type = 'TaskFound';
                 $error .= ' "%s"';
             }
-
-            $phpcsFile->addWarning($error, $stackPtr, $type, $data);
+            $phpcs_file->add_warning($error, $stack_ptr, $type, $data);
         }
-
-    }//end process()
-
-}//end class
+    }
+    //end process()
+}
+//end class

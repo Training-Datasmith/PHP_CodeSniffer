@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types=1);
 /**
  * This sniff class detected empty statement.
  *
@@ -22,14 +22,12 @@ declare(strict_types=1);
  * @copyright 2007-2014 Manuel Pichler. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\Code_Analysis;
 
-namespace PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis;
-
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
-use PHP_CodeSniffer\Util\Tokens;
-
-class EmptyStatementSniff implements Sniff
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Util\Tokens;
+class Empty_Statement_Sniff implements Sniff
 {
     /**
      * Registers the tokens that this sniff wants to listen for.
@@ -38,23 +36,9 @@ class EmptyStatementSniff implements Sniff
      */
     public function register()
     {
-        return [
-            T_TRY,
-            T_CATCH,
-            T_FINALLY,
-            T_DO,
-            T_ELSE,
-            T_ELSEIF,
-            T_FOR,
-            T_FOREACH,
-            T_IF,
-            T_SWITCH,
-            T_WHILE,
-            T_MATCH,
-        ];
-
-    }//end register()
-
+        return [T_TRY, T_CATCH, T_FINALLY, T_DO, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_IF, T_SWITCH, T_WHILE, T_MATCH];
+    }
+    //end register()
     /**
      * Processes this test, when one of its tokens is encountered.
      *
@@ -64,32 +48,23 @@ class EmptyStatementSniff implements Sniff
      *
      * @return void
      */
-    public function process(File $phpcsFile, $stackPtr)
+    public function process(File $phpcs_file, $stack_ptr)
     {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-
+        $tokens = $phpcs_file->get_tokens();
+        $token = $tokens[$stack_ptr];
         // Skip statements without a body.
         if (isset($token['scope_opener']) === false) {
             return;
         }
-
-        $next = $phpcsFile->findNext(
-            Tokens::$emptyTokens,
-            ($token['scope_opener'] + 1),
-            ($token['scope_closer'] - 1),
-            true
-        );
-
+        $next = $phpcs_file->find_next(Tokens::$empty_tokens, $token['scope_opener'] + 1, $token['scope_closer'] - 1, true);
         if ($next !== false) {
             return;
         }
-
         // Get token identifier.
-        $name  = strtoupper($token['content']);
+        $name = strtoupper($token['content']);
         $error = 'Empty %s statement detected';
-        $phpcsFile->addError($error, $stackPtr, 'Detected'.ucfirst(strtolower($name)), [$name]);
-
-    }//end process()
-
-}//end class
+        $phpcs_file->add_error($error, $stack_ptr, 'Detected' . ucfirst(strtolower($name)), [$name]);
+    }
+    //end process()
+}
+//end class
