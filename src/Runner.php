@@ -42,11 +42,21 @@ class Runner
      */
     public $reporter;
     /**
-     * Run the PHPCS script.
+     * Runs the PHPCS (linter) script against the configured file set.
      *
-     * @return array
+     * Reads configuration from CLI arguments and registered config values,
+     * applies the configured ruleset, reports violations, and returns a
+     * shell-friendly exit code:
+     *
+     *   0 — no errors found
+     *   1 — errors found, none auto-fixable by PHPCBF
+     *   2 — errors found, at least one is auto-fixable
+     *
+     * @return int Shell exit code (0, 1, or 2)
+     *
+     * @throws \Php_code_Sniffer\Exceptions\Deep_Exit_Exception Propagated via catch, returned as exit code
      */
-    public function run_phpcs()
+    public function run_phpcs(): int
     {
         $this->register_out_of_memory_shutdown_message('phpcs');
         try {
@@ -126,11 +136,20 @@ class Runner
     }
     //end runPHPCS()
     /**
-     * Run the PHPCBF script.
+     * Runs the PHPCBF (auto-fixer) script against the configured file set.
      *
-     * @return array
+     * Applies all auto-fixable sniff violations in-place and returns a
+     * shell-friendly exit code:
+     *
+     *   0 — nothing found that could be fixed (or everything was already clean)
+     *   1 — all fixable issues were successfully fixed
+     *   2 — some fixable issues could not be auto-fixed
+     *
+     * @return int Shell exit code (0, 1, or 2)
+     *
+     * @throws \Php_code_Sniffer\Exceptions\Deep_Exit_Exception Propagated via catch, returned as exit code
      */
-    public function run_phpcbf()
+    public function run_phpcbf(): int
     {
         $this->register_out_of_memory_shutdown_message('phpcbf');
         if (defined('PHP_CODESNIFFER_CBF') === false) {
