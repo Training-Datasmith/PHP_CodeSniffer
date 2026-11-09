@@ -430,11 +430,19 @@ class Common
      */
     public static function get_sniff_code($sniff_class)
     {
+        if ($sniff_class === '') {
+            return '';
+        }
+
         $parts = explode('\\', $sniff_class);
         $sniff = array_pop($parts);
-        if (substr($sniff, -5) === 'Sniff') {
+        if (substr($sniff, -6) === '_Sniff') {
+            $sniff = substr($sniff, 0, -6);
+        } elseif (substr($sniff, -5) === 'Sniff') {
             // Sniff class name.
             $sniff = substr($sniff, 0, -5);
+        } elseif (substr($sniff, -10) === '_Unit_Test') {
+            $sniff = substr($sniff, 0, -10);
         } else {
             // Unit test class name.
             $sniff = substr($sniff, 0, -8);
@@ -442,9 +450,34 @@ class Common
         $category = array_pop($parts);
         array_pop($parts);
         $standard = array_pop($parts);
-        return $standard . '.' . $category . '.' . $sniff;
-    }
-    //end getSniffCode()
+        $sniff     = self::sniff_basename_to_code($sniff);
+        $category  = self::sniff_basename_to_code($category);
+        $standard  = self::sniff_basename_to_code($standard);
+
+        return $standard.'.'.$category.'.'.$sniff;
+
+    }//end get_sniff_code()
+
+    /**
+     * Map Studly_Snake sniff basenames to legacy sniff codes used in rulesets and tests.
+     *
+     * @param string $basename Sniff or unit-test basename without suffix.
+     *
+     * @return string
+     */
+    public static function sniff_basename_to_code($basename)
+    {
+        if ($basename === '') {
+            return $basename;
+        }
+
+        if (strpos($basename, '_') === false) {
+            return $basename;
+        }
+
+        return str_replace('_', '', ucwords(strtolower($basename), '_'));
+
+    }//end sniff_basename_to_code()
     /**
      * Removes project-specific information from a sniff class name.
      *

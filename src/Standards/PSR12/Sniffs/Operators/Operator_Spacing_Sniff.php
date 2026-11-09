@@ -13,7 +13,7 @@ namespace Php_code_Sniffer\Standards\PSR12\Sniffs\Operators;
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Standards\Squiz\Sniffs\White_Space\Operator_Spacing_Sniff as SquizOperatorSpacingSniff;
 use Php_code_Sniffer\Util\Tokens;
-class Operator_Spacing_Sniff extends Squiz_Operator_Spacing_Sniff
+class Operator_Spacing_Sniff extends SquizOperatorSpacingSniff
 {
     /**
      * Returns an array of tokens this test wants to listen for.

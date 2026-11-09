@@ -35,7 +35,7 @@ class StableCommentWhitespaceTest extends AbstractMethodUnitTest
      */
     public function testCommentTokenization($testMarker, $expectedTokens)
     {
-        $tokens  = self::$phpcsFile->getTokens();
+        $tokens  = self::$phpcsFile->get_tokens();
         $comment = $this->getTargetToken($testMarker, Tokens::$commentTokens);
 
         foreach ($expectedTokens as $key => $tokenInfo) {

@@ -119,8 +119,8 @@ class Runner
                 Util\Timing::print_run_time();
             }
         } catch (Deep_Exit_Exception $e) {
-            echo $e->get_message();
-            return $e->get_code();
+            echo $e->getMessage();
+            return $e->getCode();
         }
         //end try
         if ($num_errors === 0) {
@@ -193,8 +193,8 @@ class Runner
             echo PHP_EOL;
             Util\Timing::print_run_time();
         } catch (Deep_Exit_Exception $e) {
-            echo $e->get_message();
-            return $e->get_code();
+            echo $e->getMessage();
+            return $e->getCode();
         }
         //end try
         if ($this->reporter->total_fixed === 0) {
@@ -286,14 +286,14 @@ class Runner
         // Allow autoloading of custom files inside installed standards.
         $installed_standards = Standards::get_installed_standard_details();
         foreach ($installed_standards as $details) {
-            Autoload::add_search_path($details['path'], $details['namespace']);
+            Autoload::addSearchPath($details['path'], $details['namespace']);
         }
         // The ruleset contains all the information about how the files
         // should be checked and/or fixed.
         try {
             $this->ruleset = new Ruleset($this->config);
         } catch (RuntimeException $e) {
-            $error = 'ERROR: ' . $e->get_message() . PHP_EOL . PHP_EOL;
+            $error = 'ERROR: ' . $e->getMessage() . PHP_EOL . PHP_EOL;
             $error .= $this->config->print_short_usage(true);
             throw new Deep_Exit_Exception($error, 3);
         }
@@ -555,7 +555,7 @@ class Runner
                 }
             }
         } catch (\Exception $e) {
-            $error = 'An error occurred during processing; checking has been aborted. The error message was: ' . $e->get_message();
+            $error = 'An error occurred during processing; checking has been aborted. The error message was: ' . $e->getMessage();
             // Determine which sniff caused the error.
             $sniff_stack = null;
             $next_stack = null;

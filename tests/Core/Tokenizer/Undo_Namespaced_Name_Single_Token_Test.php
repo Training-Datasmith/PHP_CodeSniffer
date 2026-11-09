@@ -38,7 +38,7 @@ class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
      */
     public function testIdentifierTokenization($testMarker, $expectedTokens)
     {
-        $tokens     = self::$phpcsFile->getTokens();
+        $tokens     = self::$phpcsFile->get_tokens();
         $identifier = $this->getTargetToken($testMarker, constant($expectedTokens[0]['type']));
 
         foreach ($expectedTokens as $key => $tokenInfo) {

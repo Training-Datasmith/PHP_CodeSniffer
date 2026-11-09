@@ -104,7 +104,7 @@ class Config
      *
      * @var array<string, mixed>
      */
-    private $settings = ['files' => null, 'standards' => null, 'verbosity' => null, 'interactive' => null, 'parallel' => null, 'cache' => null, 'cacheFile' => null, 'colors' => null, 'explain' => null, 'local' => null, 'showSources' => null, 'showProgress' => null, 'quiet' => null, 'annotations' => null, 'tabWidth' => null, 'encoding' => null, 'extensions' => null, 'sniffs' => null, 'exclude' => null, 'ignored' => null, 'reportFile' => null, 'generator' => null, 'filter' => null, 'bootstrap' => null, 'reports' => null, 'basepath' => null, 'reportWidth' => null, 'errorSeverity' => null, 'warningSeverity' => null, 'recordErrors' => null, 'suffix' => null, 'stdin' => null, 'stdinContent' => null, 'stdinPath' => null, 'unknown' => null];
+    private $settings = ['files' => null, 'standards' => null, 'verbosity' => null, 'interactive' => null, 'parallel' => null, 'cache' => null, 'cache_file' => null, 'colors' => null, 'explain' => null, 'local' => null, 'show_sources' => null, 'show_progress' => null, 'quiet' => null, 'annotations' => null, 'tab_width' => null, 'encoding' => null, 'extensions' => null, 'sniffs' => null, 'exclude' => null, 'ignored' => null, 'report_file' => null, 'generator' => null, 'filter' => null, 'bootstrap' => null, 'reports' => null, 'basepath' => null, 'report_width' => null, 'error_severity' => null, 'warning_severity' => null, 'record_errors' => null, 'suffix' => null, 'stdin' => null, 'stdin_content' => null, 'stdin_path' => null, 'unknown' => null];
     /**
      * Whether or not to kill the process when an unknown command line arg is found.
      *
@@ -176,7 +176,7 @@ class Config
             throw new RuntimeException("Can't __set() {$name}; setting doesn't exist");
         }
         switch ($name) {
-            case 'reportWidth':
+            case 'report_width':
                 // Support auto terminal width.
                 if ($value === 'auto' && function_exists('shell_exec') === true) {
                     $dimensions = shell_exec('stty size 2>&1');
@@ -322,7 +322,7 @@ class Config
                 $this->stdin = true;
                 $this->stdin_content = $file_contents;
                 self::$overridden_defaults['stdin'] = true;
-                self::$overridden_defaults['stdinContent'] = true;
+                self::$overridden_defaults['stdin_content'] = true;
             }
         }
         //end if
@@ -520,7 +520,7 @@ class Config
                 break;
             case 's':
                 $this->show_sources = true;
-                self::$overridden_defaults['showSources'] = true;
+                self::$overridden_defaults['show_sources'] = true;
                 break;
             case 'a':
                 $this->interactive = true;
@@ -536,7 +536,7 @@ class Config
                     break;
                 }
                 $this->show_progress = true;
-                self::$overridden_defaults['showProgress'] = true;
+                self::$overridden_defaults['show_progress'] = true;
                 break;
             case 'q':
                 // Quiet mode disables a few other settings as well.
@@ -547,7 +547,7 @@ class Config
                 break;
             case 'm':
                 $this->record_errors = false;
-                self::$overridden_defaults['recordErrors'] = true;
+                self::$overridden_defaults['record_errors'] = true;
                 break;
             case 'd':
                 $ini = explode('=', $this->cli_args[$pos + 1]);
@@ -559,15 +559,15 @@ class Config
                 }
                 break;
             case 'n':
-                if (isset(self::$overridden_defaults['warningSeverity']) === false) {
+                if (isset(self::$overridden_defaults['warning_severity']) === false) {
                     $this->warning_severity = 0;
-                    self::$overridden_defaults['warningSeverity'] = true;
+                    self::$overridden_defaults['warning_severity'] = true;
                 }
                 break;
             case 'w':
-                if (isset(self::$overridden_defaults['warningSeverity']) === false) {
+                if (isset(self::$overridden_defaults['warning_severity']) === false) {
                     $this->warning_severity = $this->error_severity;
-                    self::$overridden_defaults['warningSeverity'] = true;
+                    self::$overridden_defaults['warning_severity'] = true;
                 }
                 break;
             default:
@@ -653,7 +653,7 @@ class Config
                 try {
                     $this->set_config_data($key, $value);
                 } catch (\Exception $e) {
-                    throw new Deep_Exit_Exception($e->get_message() . PHP_EOL, 3);
+                    throw new Deep_Exit_Exception($e->getMessage() . PHP_EOL, 3);
                 }
                 $output = 'Using config file: ' . self::$config_data_file . PHP_EOL . PHP_EOL;
                 if ($current === null) {
@@ -677,7 +677,7 @@ class Config
                     try {
                         $this->set_config_data($key, null);
                     } catch (\Exception $e) {
-                        throw new Deep_Exit_Exception($e->get_message() . PHP_EOL, 3);
+                        throw new Deep_Exit_Exception($e->getMessage() . PHP_EOL, 3);
                     }
                     $output .= "Config value \"{$key}\" removed successfully; old value was \"{$current}\"" . PHP_EOL;
                 }
@@ -736,7 +736,7 @@ class Config
                     $this->exclude = $sniffs;
                     self::$overridden_defaults['exclude'] = true;
                 } elseif (defined('PHP_CODESNIFFER_IN_TESTS') === false && substr($arg, 0, 6) === 'cache=') {
-                    if (isset(self::$overridden_defaults['cache']) === true && $this->cache === false || isset(self::$overridden_defaults['cacheFile']) === true) {
+                    if (isset(self::$overridden_defaults['cache']) === true && $this->cache === false || isset(self::$overridden_defaults['cache_file']) === true) {
                         break;
                     }
                     // Turn caching on.
@@ -769,7 +769,7 @@ class Config
                         }
                     }
                     //end if
-                    self::$overridden_defaults['cacheFile'] = true;
+                    self::$overridden_defaults['cache_file'] = true;
                     if (is_dir($this->cache_file) === true) {
                         $error = 'ERROR: The specified cache file path "' . $this->cache_file . '" is a directory' . PHP_EOL . PHP_EOL;
                         $error .= $this->print_short_usage(true);
@@ -807,7 +807,7 @@ class Config
                         $this->process_file_path($input_file);
                     }
                 } elseif (substr($arg, 0, 11) === 'stdin-path=') {
-                    if (isset(self::$overridden_defaults['stdinPath']) === true) {
+                    if (isset(self::$overridden_defaults['stdin_path']) === true) {
                         break;
                     }
                     $this->stdin_path = Util\Common::realpath(substr($arg, 11));
@@ -815,9 +815,9 @@ class Config
                     if ($this->stdin_path === false) {
                         $this->stdin_path = trim(substr($arg, 11));
                     }
-                    self::$overridden_defaults['stdinPath'] = true;
+                    self::$overridden_defaults['stdin_path'] = true;
                 } elseif (PHP_CODESNIFFER_CBF === false && substr($arg, 0, 12) === 'report-file=') {
-                    if (isset(self::$overridden_defaults['reportFile']) === true) {
+                    if (isset(self::$overridden_defaults['report_file']) === true) {
                         break;
                     }
                     $this->report_file = Util\Common::realpath(substr($arg, 12));
@@ -833,18 +833,18 @@ class Config
                         $this->report_file = $dir . '/' . basename($this->report_file);
                     }
                     //end if
-                    self::$overridden_defaults['reportFile'] = true;
+                    self::$overridden_defaults['report_file'] = true;
                     if (is_dir($this->report_file) === true) {
                         $error = 'ERROR: The specified report file path "' . $this->report_file . '" is a directory' . PHP_EOL . PHP_EOL;
                         $error .= $this->print_short_usage(true);
                         throw new Deep_Exit_Exception($error, 3);
                     }
                 } elseif (substr($arg, 0, 13) === 'report-width=') {
-                    if (isset(self::$overridden_defaults['reportWidth']) === true) {
+                    if (isset(self::$overridden_defaults['report_width']) === true) {
                         break;
                     }
                     $this->report_width = substr($arg, 13);
-                    self::$overridden_defaults['reportWidth'] = true;
+                    self::$overridden_defaults['report_width'] = true;
                 } elseif (substr($arg, 0, 9) === 'basepath=') {
                     if (isset(self::$overridden_defaults['basepath']) === true) {
                         break;
@@ -962,24 +962,24 @@ class Config
                 } elseif (substr($arg, 0, 9) === 'severity=') {
                     $this->error_severity = (int) substr($arg, 9);
                     $this->warning_severity = $this->error_severity;
-                    if (isset(self::$overridden_defaults['errorSeverity']) === false) {
-                        self::$overridden_defaults['errorSeverity'] = true;
+                    if (isset(self::$overridden_defaults['error_severity']) === false) {
+                        self::$overridden_defaults['error_severity'] = true;
                     }
-                    if (isset(self::$overridden_defaults['warningSeverity']) === false) {
-                        self::$overridden_defaults['warningSeverity'] = true;
+                    if (isset(self::$overridden_defaults['warning_severity']) === false) {
+                        self::$overridden_defaults['warning_severity'] = true;
                     }
                 } elseif (substr($arg, 0, 15) === 'error-severity=') {
-                    if (isset(self::$overridden_defaults['errorSeverity']) === true) {
+                    if (isset(self::$overridden_defaults['error_severity']) === true) {
                         break;
                     }
                     $this->error_severity = (int) substr($arg, 15);
-                    self::$overridden_defaults['errorSeverity'] = true;
+                    self::$overridden_defaults['error_severity'] = true;
                 } elseif (substr($arg, 0, 17) === 'warning-severity=') {
-                    if (isset(self::$overridden_defaults['warningSeverity']) === true) {
+                    if (isset(self::$overridden_defaults['warning_severity']) === true) {
                         break;
                     }
                     $this->warning_severity = (int) substr($arg, 17);
-                    self::$overridden_defaults['warningSeverity'] = true;
+                    self::$overridden_defaults['warning_severity'] = true;
                 } elseif (substr($arg, 0, 7) === 'ignore=') {
                     if (isset(self::$overridden_defaults['ignored']) === true) {
                         break;
@@ -1010,11 +1010,11 @@ class Config
                     $this->encoding = strtolower(substr($arg, 9));
                     self::$overridden_defaults['encoding'] = true;
                 } elseif (substr($arg, 0, 10) === 'tab-width=') {
-                    if (isset(self::$overridden_defaults['tabWidth']) === true) {
+                    if (isset(self::$overridden_defaults['tab_width']) === true) {
                         break;
                     }
                     $this->tab_width = (int) substr($arg, 10);
-                    self::$overridden_defaults['tabWidth'] = true;
+                    self::$overridden_defaults['tab_width'] = true;
                 } else if ($this->die_on_unknown_arg === false) {
                     $eq_pos = strpos($arg, '=');
                     try {
@@ -1077,7 +1077,7 @@ class Config
             return;
         }
         $file = Util\Common::realpath($path);
-        if (file_exists($file) === false) {
+        if ($file === false || file_exists($file) === false) {
             if ($this->die_on_unknown_arg === false) {
                 return;
             }
@@ -1377,7 +1377,7 @@ class Config
         if ($key === 'installed_paths') {
             $installed_standards = Util\Standards::get_installed_standard_details();
             foreach ($installed_standards as $details) {
-                Autoload::add_search_path($details['path'], $details['namespace']);
+                Autoload::addSearchPath($details['path'], $details['namespace']);
             }
         }
         return true;

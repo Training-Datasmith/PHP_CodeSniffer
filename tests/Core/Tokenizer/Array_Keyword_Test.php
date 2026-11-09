@@ -29,7 +29,7 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      */
     public function testArrayKeyword($testMarker, $testContent = 'array')
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token      = $this->getTargetToken($testMarker, [T_ARRAY, T_STRING], $testContent);
         $tokenArray = $tokens[$token];
@@ -79,7 +79,7 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      */
     public function testArrayType($testMarker, $testContent = 'array')
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token      = $this->getTargetToken($testMarker, [T_ARRAY, T_STRING], $testContent);
         $tokenArray = $tokens[$token];
@@ -128,7 +128,7 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      */
     public function testNotArrayKeyword($testMarker, $testContent = 'array')
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token      = $this->getTargetToken($testMarker, [T_ARRAY, T_STRING], $testContent);
         $tokenArray = $tokens[$token];

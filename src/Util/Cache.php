@@ -45,7 +45,7 @@ class Cache
             echo PHP_EOL . "\tGenerating loaded file list for code hash" . PHP_EOL;
         }
         $code_hash_files = [];
-        $classes = array_keys(Autoload::get_loaded_classes());
+        $classes = array_keys(Autoload::getLoadedClasses());
         sort($classes);
         $install_dir = dirname(__DIR__);
         $install_dir_len = strlen($install_dir);
@@ -83,11 +83,11 @@ class Cache
         // hash. This ensures that core PHPCS changes will also invalidate the cache.
         // Note that we ignore sniffs here, and any files that don't affect
         // the outcome of the run.
-        $di = new \Recursive_Directory_Iterator($install_dir, \Filesystem_Iterator::KEY_AS_PATHNAME | \Filesystem_Iterator::CURRENT_AS_FILEINFO | \Filesystem_Iterator::SKIP_DOTS);
-        $filter = new \Recursive_Callback_Filter_Iterator($di, function ($file, $key, $iterator) {
+        $di = new \RecursiveDirectoryIterator($install_dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
+        $filter = new \RecursiveCallbackFilterIterator($di, function ($file, $key, $iterator) {
             // Skip non-php files.
-            $filename = $file->get_filename();
-            if ($file->is_file() === true && substr($filename, -4) !== '.php') {
+            $filename = $file->getFilename();
+            if ($file->isFile() === true && substr($filename, -4) !== '.php') {
                 return false;
             }
             $file_path = Common::realpath($key);
@@ -99,12 +99,12 @@ class Cache
             }
             return true;
         });
-        $iterator = new \Recursive_Iterator_Iterator($filter);
+        $iterator = new \RecursiveIteratorIterator($filter);
         foreach ($iterator as $file) {
             if (PHP_CODESNIFFER_VERBOSITY > 1) {
                 echo "\t\t=> core file: {$file}" . PHP_EOL;
             }
-            $code_hash_files[] = $file->get_pathname();
+            $code_hash_files[] = $file->getPathname();
         }
         $code_hash = '';
         sort($code_hash_files);

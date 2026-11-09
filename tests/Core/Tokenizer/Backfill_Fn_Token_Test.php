@@ -101,7 +101,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     public function testNestedInner()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token = $this->getTargetToken('/* testNestedInner */', T_FN);
         $this->backfillHelper($token, true);
@@ -131,7 +131,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     public function testNestedSharedCloser()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token = $this->getTargetToken('/* testNestedSharedCloserOuter */', T_FN);
         $this->backfillHelper($token);
@@ -360,7 +360,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     public function testKeywordReturnTypes()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $testMarkers = [
             'Self',
@@ -430,7 +430,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     public function testTernary()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token = $this->getTargetToken('/* testTernary */', T_FN);
         $this->backfillHelper($token);
@@ -481,7 +481,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     public function testTernaryWithTypes()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token = $this->getTargetToken('/* testTernaryWithTypes */', T_FN);
         $this->backfillHelper($token);
@@ -536,7 +536,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     public function testInMatchValue($testMarker, $openerOffset, $closerOffset, $expectedCloserType, $expectedCloserFriendlyName)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token = $this->getTargetToken($testMarker, T_FN);
         $this->backfillHelper($token);
@@ -617,7 +617,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     public function testNotAnArrowFunction($testMarker, $testContent = 'fn')
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token      = $this->getTargetToken($testMarker, [T_STRING, T_FN], $testContent);
         $tokenArray = $tokens[$token];
@@ -697,7 +697,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     private function backfillHelper($token, $skipScopeCloserCheck = false)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $this->assertTrue(array_key_exists('scope_condition', $tokens[$token]), 'Scope condition is not set');
         $this->assertTrue(array_key_exists('scope_opener', $tokens[$token]), 'Scope opener is not set');
@@ -748,7 +748,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      */
     private function scopePositionTestHelper($token, $openerOffset, $closerOffset, $expectedCloserType = 'semicolon')
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
         $expectedScopeOpener = ($token + $openerOffset);
         $expectedScopeCloser = ($token + $closerOffset);
 

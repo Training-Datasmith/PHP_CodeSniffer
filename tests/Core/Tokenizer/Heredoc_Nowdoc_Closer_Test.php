@@ -31,11 +31,11 @@ class HeredocNowdocCloserTest extends AbstractMethodUnitTest
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        $config            = new Config();
+        $config            = new Config([]);
         $config->standards = ['PSR1'];
-        $config->tabWidth  = 4;
+        $config->tab_width  = 4;
 
         $ruleset = new Ruleset($config);
 
@@ -66,7 +66,7 @@ class HeredocNowdocCloserTest extends AbstractMethodUnitTest
      */
     public function testHeredocNowdocCloserTabReplacement($testMarker, $expected)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $closer = $this->getTargetToken($testMarker, [T_END_HEREDOC, T_END_NOWDOC]);
 

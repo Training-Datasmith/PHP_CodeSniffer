@@ -29,7 +29,7 @@ class DoubleQuotedStringTest extends AbstractMethodUnitTest
      */
     public function testDoubleQuotedString($testMarker, $expectedContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, T_DOUBLE_QUOTED_STRING);
         $this->assertSame($expectedContent, $tokens[$target]['content']);

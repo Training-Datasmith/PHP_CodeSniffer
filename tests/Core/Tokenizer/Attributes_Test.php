@@ -31,7 +31,7 @@ class AttributesTest extends AbstractMethodUnitTest
      */
     public function testAttribute($testMarker, $length, $tokenCodes)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $attribute = $this->getTargetToken($testMarker, T_ATTRIBUTE);
         $this->assertArrayHasKey('attribute_closer', $tokens[$attribute]);
@@ -249,7 +249,7 @@ class AttributesTest extends AbstractMethodUnitTest
      */
     public function testTwoAttributesOnTheSameLine()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $attribute = $this->getTargetToken('/* testTwoAttributeOnTheSameLine */', T_ATTRIBUTE);
         $this->assertArrayHasKey('attribute_closer', $tokens[$attribute]);
@@ -272,7 +272,7 @@ class AttributesTest extends AbstractMethodUnitTest
      */
     public function testAttributeAndLineComment()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $attribute = $this->getTargetToken('/* testAttributeAndCommentOnTheSameLine */', T_ATTRIBUTE);
         $this->assertArrayHasKey('attribute_closer', $tokens[$attribute]);
@@ -301,7 +301,7 @@ class AttributesTest extends AbstractMethodUnitTest
      */
     public function testAttributeOnParameters($testMarker, $position, $length, array $tokenCodes)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $function  = $this->getTargetToken($testMarker, T_FUNCTION);
         $attribute = ($function + $position);
@@ -404,7 +404,7 @@ class AttributesTest extends AbstractMethodUnitTest
      */
     public function testAttributeContainingTextLookingLikeCloseTag($testMarker, $length, array $expectedTokensAttribute, array $expectedTokensAfter)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $attribute = $this->getTargetToken($testMarker, T_ATTRIBUTE);
 
@@ -548,7 +548,7 @@ class AttributesTest extends AbstractMethodUnitTest
      */
     public function testInvalidAttribute()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $attribute = $this->getTargetToken('/* testInvalidAttribute */', T_ATTRIBUTE);
 
@@ -568,7 +568,7 @@ class AttributesTest extends AbstractMethodUnitTest
      */
     public function testNestedAttributes()
     {
-        $tokens     = self::$phpcsFile->getTokens();
+        $tokens     = self::$phpcsFile->get_tokens();
         $tokenCodes = [
             T_STRING,
             T_NS_SEPARATOR,

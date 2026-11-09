@@ -22,12 +22,13 @@ use PHPUnit\Framework\TestCase;
  */
 class SetSniffPropertyTest extends TestCase
 {
+    use SniffClassResolveTrait;
     /**
      * Initialize the test.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // PEAR installs test and sniff files into different locations
@@ -65,11 +66,11 @@ class SetSniffPropertyTest extends TestCase
         $ruleset  = new Ruleset($config);
 
         // Verify that the sniff has been registered.
-        $this->assertGreaterThan(0, count($ruleset->sniffCodes), 'No sniff codes registered');
+        $this->assertGreaterThan(0, count($ruleset->sniff_codes), 'No sniff codes registered');
 
         // Verify that our target sniff has been registered.
-        $this->assertArrayHasKey($sniffCode, $ruleset->sniffCodes, 'Target sniff not registered');
-        $this->assertSame($sniffClass, $ruleset->sniffCodes[$sniffCode], 'Target sniff not registered with the correct class');
+        $this->assertArrayHasKey($sniffCode, $ruleset->sniff_codes, 'Target sniff not registered');
+        $this->assertSame($sniffClass, $ruleset->sniff_codes[$sniffCode], 'Target sniff not registered with the correct class');
 
         // Test that the property as declared in the ruleset has been set on the sniff.
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
@@ -119,21 +120,18 @@ class SetSniffPropertyTest extends TestCase
         $ruleset  = new Ruleset($config);
 
         // Test that the two sniffs which support the property have received the value.
-        $sniffClass = 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionCallSignatureSniff';
-        $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class '.$sniffClass.' not listed in registered sniffs');
+        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionCallSignatureSniff');
         $sniffObject = $ruleset->sniffs[$sniffClass];
         $this->assertSame($expectedValue, $sniffObject->$propertyName, 'Property value not set to expected value for '.$sniffClass);
 
-        $sniffClass = 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionDeclarationSniff';
-        $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class '.$sniffClass.' not listed in registered sniffs');
+        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionDeclarationSniff');
         $sniffObject = $ruleset->sniffs[$sniffClass];
         $this->assertSame($expectedValue, $sniffObject->$propertyName, 'Property value not set to expected value for '.$sniffClass);
 
         // Test that the property doesn't get set for the one sniff which doesn't support the property.
-        $sniffClass = 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\ValidDefaultValueSniff';
-        $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class '.$sniffClass.' not listed in registered sniffs');
+        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\ValidDefaultValueSniff');
         $sniffObject = $ruleset->sniffs[$sniffClass];
-        $this->assertObjectNotHasAttribute($propertyName, $sniffObject, 'Property registered for sniff '.$sniffClass.' which does not support it');
+        $this->assertFalse(property_exists($sniffObject, $propertyName));
 
     }//end testSetPropertyAppliesPropertyToMultipleSniffsInCategory()
 
@@ -242,7 +240,7 @@ class SetSniffPropertyTest extends TestCase
         $propertyName  = 'arbitrarystring';
         $propertyValue = 'new value';
 
-        $ruleset->setSniffProperty(
+        $ruleset->set_sniff_property(
             $sniffClass,
             $propertyName,
             [
@@ -252,11 +250,11 @@ class SetSniffPropertyTest extends TestCase
         );
 
         // Verify that the sniff has been registered.
-        $this->assertGreaterThan(0, count($ruleset->sniffCodes), 'No sniff codes registered');
+        $this->assertGreaterThan(0, count($ruleset->sniff_codes), 'No sniff codes registered');
 
         // Verify that our target sniff has been registered.
-        $this->assertArrayHasKey($sniffCode, $ruleset->sniffCodes, 'Target sniff not registered');
-        $this->assertSame($sniffClass, $ruleset->sniffCodes[$sniffCode], 'Target sniff not registered with the correct class');
+        $this->assertArrayHasKey($sniffCode, $ruleset->sniff_codes, 'Target sniff not registered');
+        $this->assertSame($sniffClass, $ruleset->sniff_codes[$sniffCode], 'Target sniff not registered with the correct class');
 
         // Test that the property as declared in the ruleset has been set on the sniff.
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
@@ -291,18 +289,18 @@ class SetSniffPropertyTest extends TestCase
 
         $propertyName = 'arbitrarystring';
 
-        @$ruleset->setSniffProperty(
+        @$ruleset->set_sniff_property(
             $sniffClass,
             $propertyName,
             $propertyValue
         );
 
         // Verify that the sniff has been registered.
-        $this->assertGreaterThan(0, count($ruleset->sniffCodes), 'No sniff codes registered');
+        $this->assertGreaterThan(0, count($ruleset->sniff_codes), 'No sniff codes registered');
 
         // Verify that our target sniff has been registered.
-        $this->assertArrayHasKey($sniffCode, $ruleset->sniffCodes, 'Target sniff not registered');
-        $this->assertSame($sniffClass, $ruleset->sniffCodes[$sniffCode], 'Target sniff not registered with the correct class');
+        $this->assertArrayHasKey($sniffCode, $ruleset->sniff_codes, 'Target sniff not registered');
+        $this->assertSame($sniffClass, $ruleset->sniff_codes[$sniffCode], 'Target sniff not registered with the correct class');
 
         // Test that the property as declared in the ruleset has been set on the sniff.
         $this->assertArrayHasKey($sniffClass, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
@@ -364,19 +362,18 @@ class SetSniffPropertyTest extends TestCase
      */
     public function testDirectCallWithOldArrayFormatThrowsDeprecationNotice()
     {
-        $exceptionClass = 'PHPUnit\Framework\Error\Deprecated';
-        if (class_exists($exceptionClass) === false) {
-            $exceptionClass = 'PHPUnit_Framework_Error_Deprecated';
-        }
-
         $exceptionMsg = 'the format of the $settings parameter has changed from (mixed) $value to array(\'scope\' => \'sniff|standard\', \'value\' => $value). Please update your integration code. See PR #3629 for more information.';
 
-        if (method_exists($this, 'expectException') === true) {
+        if (method_exists($this, 'expectDeprecation') === true) {
+            $this->expectDeprecation();
+            $this->expectDeprecationMessage($exceptionMsg);
+        } else {
+            $exceptionClass = 'PHPUnit\Framework\Error\Deprecated';
+            if (class_exists($exceptionClass) === false) {
+                $exceptionClass = 'PHPUnit_Framework_Error_Deprecated';
+            }
             $this->expectException($exceptionClass);
             $this->expectExceptionMessage($exceptionMsg);
-        } else {
-            // PHPUnit < 5.2.0.
-            $this->setExpectedException($exceptionClass, $exceptionMsg);
         }
 
         $name       = 'SetPropertyAllowedAsDeclared';
@@ -390,7 +387,7 @@ class SetSniffPropertyTest extends TestCase
 
         $propertyName = 'arbitrarystring';
 
-        $ruleset->setSniffProperty(
+        $ruleset->set_sniff_property(
             $sniffClass,
             'arbitrarystring',
             ['key' => 'value']

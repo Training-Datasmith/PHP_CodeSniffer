@@ -240,7 +240,7 @@ class File
         try {
             $this->eol_char = Util\Common::detect_line_endings($content);
         } catch (RuntimeException $e) {
-            $this->add_warning_on_line($e->get_message(), 1, 'Internal.DetectLineEndings');
+            $this->add_warning_on_line($e->getMessage(), 1, 'Internal.DetectLineEndings');
             return;
         }
     }
@@ -492,7 +492,7 @@ class File
             $this->tokens = $this->tokenizer->get_tokens();
         } catch (Tokenizer_Exception $e) {
             $this->ignored = true;
-            $this->add_warning($e->get_message(), null, 'Internal.Tokenizer.Exception');
+            $this->add_warning($e->getMessage(), null, 'Internal.Tokenizer.Exception');
             if (PHP_CODESNIFFER_VERBOSITY > 0) {
                 echo "[{$this->tokenizer_type} => tokenizer error]... ";
                 if (PHP_CODESNIFFER_VERBOSITY > 1) {
@@ -1484,8 +1484,9 @@ class File
                 // parentheses, we can be pretty sure it is a method argument.
                 if (isset($this->tokens[$stack_ptr]['nested_parenthesis']) === false || empty($this->tokens[$stack_ptr]['nested_parenthesis']) === true) {
                     $error = 'Possible parse error: %ss may not include member vars';
-                    $code = sprintf('Internal.ParseError.%sHasMemberVar', ucfirst($this->tokens[$ptr]['content']));
-                    $data = [strtolower($this->tokens[$ptr]['content'])];
+                    $keyword = (string) ($this->tokens[$ptr]['content'] ?? '');
+                    $code = sprintf('Internal.ParseError.%sHasMemberVar', ucfirst($keyword));
+                    $data = [strtolower($keyword)];
                     $this->add_warning($error, $stack_ptr, $code, $data);
                     return [];
                 }

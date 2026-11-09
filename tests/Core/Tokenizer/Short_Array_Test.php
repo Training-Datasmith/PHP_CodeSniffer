@@ -27,7 +27,7 @@ class ShortArrayTest extends AbstractMethodUnitTest
      */
     public function testSquareBrackets($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $opener = $this->getTargetToken($testMarker, [T_OPEN_SQUARE_BRACKET, T_OPEN_SHORT_ARRAY]);
         $this->assertSame(T_OPEN_SQUARE_BRACKET, $tokens[$opener]['code']);
@@ -90,7 +90,7 @@ class ShortArrayTest extends AbstractMethodUnitTest
      */
     public function testShortArrays($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $opener = $this->getTargetToken($testMarker, [T_OPEN_SQUARE_BRACKET, T_OPEN_SHORT_ARRAY]);
         $this->assertSame(T_OPEN_SHORT_ARRAY, $tokens[$opener]['code']);

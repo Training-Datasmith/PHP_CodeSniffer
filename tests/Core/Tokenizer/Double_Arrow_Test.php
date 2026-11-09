@@ -29,7 +29,7 @@ class DoubleArrowTest extends AbstractMethodUnitTest
      */
     public function testDoubleArrow($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token      = $this->getTargetToken($testMarker, [T_DOUBLE_ARROW, T_MATCH_ARROW, T_FN_ARROW]);
         $tokenArray = $tokens[$token];
@@ -112,7 +112,7 @@ class DoubleArrowTest extends AbstractMethodUnitTest
      */
     public function testMatchArrow($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token      = $this->getTargetToken($testMarker, [T_DOUBLE_ARROW, T_MATCH_ARROW, T_FN_ARROW]);
         $tokenArray = $tokens[$token];
@@ -197,7 +197,7 @@ class DoubleArrowTest extends AbstractMethodUnitTest
      */
     public function testFnArrow($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token      = $this->getTargetToken($testMarker, [T_DOUBLE_ARROW, T_MATCH_ARROW, T_FN_ARROW]);
         $tokenArray = $tokens[$token];

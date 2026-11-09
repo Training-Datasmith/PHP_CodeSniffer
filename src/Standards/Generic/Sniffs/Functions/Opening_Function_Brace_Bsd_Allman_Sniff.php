@@ -123,7 +123,7 @@ class Opening_Function_Brace_Bsd_Allman_Sniff implements Sniff
                     for ($i = $opening_brace; $i > $prev; $i--) {
                         if ($tokens[$i]['line'] === $tokens[$opening_brace]['line']) {
                             if ($tokens[$i]['column'] === 1) {
-                                $phpcs_file->fixer->add_new_line_before($i);
+                                $phpcs_file->fixer->add_newline_before($i);
                             }
                             continue;
                         }

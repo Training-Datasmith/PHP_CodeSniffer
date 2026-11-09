@@ -23,7 +23,7 @@ class ClosureLinterUnitTest extends AbstractSniffUnitTest
      */
     protected function shouldSkipTest()
     {
-        $lintPath = Config::getExecutablePath('gjslint');
+        $lintPath = Config::get_executable_path('gjslint');
         if ($lintPath === null) {
             return true;
         }

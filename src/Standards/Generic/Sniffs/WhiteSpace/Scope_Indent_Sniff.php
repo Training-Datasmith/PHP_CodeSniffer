@@ -1214,13 +1214,13 @@ class Scope_Indent_Sniff implements Sniff
         $padding = '';
         if ($length > 0) {
             if ($this->tab_indent === true) {
-                $num_tabs = floor($length / $this->tab_width);
+                $num_tabs = (int) floor($length / $this->tab_width);
                 if ($num_tabs > 0) {
-                    $num_spaces = $length - $num_tabs * $this->tab_width;
-                    $padding = str_repeat("\t", $num_tabs) . str_repeat(' ', $num_spaces);
+                    $num_spaces = (int) ($length - $num_tabs * $this->tab_width);
+                    $padding = str_repeat("\t", $num_tabs).str_repeat(' ', $num_spaces);
                 }
             } else {
-                $padding = str_repeat(' ', $length);
+                $padding = str_repeat(' ', (int) $length);
             }
         }
         if ($tokens[$stack_ptr]['column'] === 1) {
@@ -1247,11 +1247,11 @@ class Scope_Indent_Sniff implements Sniff
                 $padding = $length + $change;
                 if ($padding > 0) {
                     if ($this->tab_indent === true) {
-                        $num_tabs = floor($padding / $this->tab_width);
-                        $num_spaces = $padding - $num_tabs * $this->tab_width;
-                        $padding = str_repeat("\t", $num_tabs) . str_repeat(' ', $num_spaces);
+                        $num_tabs = (int) floor($padding / $this->tab_width);
+                        $num_spaces = (int) ($padding - $num_tabs * $this->tab_width);
+                        $padding = str_repeat("\t", $num_tabs).str_repeat(' ', $num_spaces);
                     } else {
-                        $padding = str_repeat(' ', $padding);
+                        $padding = str_repeat(' ', (int) $padding);
                     }
                 } else {
                     $padding = '';

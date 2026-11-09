@@ -25,7 +25,7 @@ class LineEndingsUnitTest extends AbstractSniffUnitTest
      */
     public function setCliValues($testFile, $config)
     {
-        $config->tabWidth = 4;
+        $config->tab_width = 4;
 
     }//end setCliValues()
 

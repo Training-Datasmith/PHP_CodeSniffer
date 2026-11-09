@@ -40,7 +40,7 @@ abstract class Generator
     {
         $this->ruleset = $ruleset;
         foreach ($ruleset->sniffs as $class_name => $sniff_class) {
-            $file = Autoload::get_loaded_file_name($class_name);
+            $file = Autoload::getLoadedFileName($class_name);
             $doc_file = str_replace(DIRECTORY_SEPARATOR . 'Sniffs' . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR . 'Docs' . DIRECTORY_SEPARATOR, $file);
             $doc_file = str_replace('Sniff.php', 'Standard.xml', $doc_file);
             if (is_file($doc_file) === true) {
@@ -60,7 +60,7 @@ abstract class Generator
      */
     protected function get_title(\Dom_Node $doc)
     {
-        return $doc->get_attribute('title');
+        return $doc->getAttribute('title');
     }
     //end getTitle()
     /**
@@ -78,7 +78,7 @@ abstract class Generator
         foreach ($this->doc_files as $file) {
             $doc = new \Dom_Document();
             $doc->load($file);
-            $documentation = $doc->get_elements_by_tag_name('documentation')->item(0);
+            $documentation = $doc->getElementsByTagName('documentation')->item(0);
             $this->process_sniff($documentation);
         }
     }

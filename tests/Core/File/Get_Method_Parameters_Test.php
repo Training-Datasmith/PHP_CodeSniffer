@@ -1132,7 +1132,7 @@ class GetMethodParametersTest extends AbstractMethodUnitTest
     private function getMethodParametersTestHelper($commentString, $expected)
     {
         $function = $this->getTargetToken($commentString, [T_FUNCTION, T_CLOSURE, T_FN]);
-        $found    = self::$phpcsFile->getMethodParameters($function);
+        $found    = self::$phpcsFile->get_method_parameters($function);
 
         $this->assertArraySubset($expected, $found, true);
 

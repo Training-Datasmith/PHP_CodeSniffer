@@ -12,7 +12,7 @@ declare (strict_types=1);
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
-namespace Php_code_Sniffer\Standards\Generic\Sniffs\Naming_Conventions;
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\NamingConventions;
 
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Sniffs\Abstract_Scope_Sniff;
@@ -81,10 +81,11 @@ class Constructor_Name_Sniff extends Abstract_Scope_Sniff
         if (isset($tokens[$stack_ptr]['scope_closer']) === false) {
             return;
         }
-        $parent_class_name = strtolower($phpcs_file->find_extended_class_name($curr_scope));
-        if ($parent_class_name === false) {
+        $parent_class_name = $phpcs_file->find_extended_class_name($curr_scope);
+        if ($parent_class_name === false || $parent_class_name === '') {
             return;
         }
+        $parent_class_name = strtolower($parent_class_name);
         $end_function_index = $tokens[$stack_ptr]['scope_closer'];
         $start_index = $stack_ptr;
         while (($double_colon_index = $phpcs_file->find_next(T_DOUBLE_COLON, $start_index, $end_function_index)) !== false) {

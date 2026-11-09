@@ -445,5 +445,27 @@ final class Tokens
         return $highest_type;
     }
     //end getHighestWeightedToken()
+
+    /**
+     * @var array<string, string|int>
+     * @deprecated Use $empty_tokens. Kept for test/back-compat accessors on PHP_CodeSniffer\Util\Tokens.
+     */
+    public static $emptyTokens;
+
+    /**
+     * @var array<string, string|int>
+     * @deprecated Use $comment_tokens.
+     */
+    public static $commentTokens;
+
+    /**
+     * @var array<string, string|int>
+     * @deprecated Use $context_sensitive_keywords.
+     */
+    public static $contextSensitiveKeywords;
 }
 //end class
+
+Tokens::$emptyTokens = Tokens::$empty_tokens;
+Tokens::$commentTokens = Tokens::$comment_tokens;
+Tokens::$contextSensitiveKeywords = Tokens::$context_sensitive_keywords;

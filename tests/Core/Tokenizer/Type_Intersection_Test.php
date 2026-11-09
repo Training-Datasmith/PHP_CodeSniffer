@@ -28,7 +28,7 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
      */
     public function testBitwiseAnd($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $opener = $this->getTargetToken($testMarker, [T_BITWISE_AND, T_TYPE_INTERSECTION]);
         $this->assertSame(T_BITWISE_AND, $tokens[$opener]['code']);
@@ -79,7 +79,7 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
      */
     public function testTypeIntersection($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $opener = $this->getTargetToken($testMarker, [T_BITWISE_AND, T_TYPE_INTERSECTION]);
         $this->assertSame(T_TYPE_INTERSECTION, $tokens[$opener]['code']);

@@ -27,7 +27,7 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
      */
     public function testBackfill($testData)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
         $number = $this->getTargetToken($testData['marker'], [T_LNUMBER, T_DNUMBER]);
 
         $this->assertSame(constant($testData['type']), $tokens[$number]['code']);
@@ -170,7 +170,7 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
      */
     public function testNoBackfill($testMarker, $expectedTokens)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
         $number = $this->getTargetToken($testMarker, [T_LNUMBER, T_DNUMBER]);
 
         foreach ($expectedTokens as $key => $expectedToken) {

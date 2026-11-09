@@ -27,7 +27,7 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
      */
     public function testAnonClassNoParentheses($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $anonClass = $this->getTargetToken($testMarker, T_ANON_CLASS);
         $this->assertFalse(array_key_exists('parenthesis_owner', $tokens[$anonClass]));
@@ -49,7 +49,7 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
      */
     public function testAnonClassNoParenthesesNextOpenClose($testMarker)
     {
-        $tokens   = self::$phpcsFile->getTokens();
+        $tokens   = self::$phpcsFile->get_tokens();
         $function = $this->getTargetToken($testMarker, T_FUNCTION);
 
         $opener = $this->getTargetToken($testMarker, T_OPEN_PARENTHESIS);
@@ -92,7 +92,7 @@ class AnonClassParenthesisOwnerTest extends AbstractMethodUnitTest
      */
     public function testAnonClassWithParentheses($testMarker)
     {
-        $tokens    = self::$phpcsFile->getTokens();
+        $tokens    = self::$phpcsFile->get_tokens();
         $anonClass = $this->getTargetToken($testMarker, T_ANON_CLASS);
         $opener    = $this->getTargetToken($testMarker, T_OPEN_PARENTHESIS);
         $closer    = $this->getTargetToken($testMarker, T_CLOSE_PARENTHESIS);

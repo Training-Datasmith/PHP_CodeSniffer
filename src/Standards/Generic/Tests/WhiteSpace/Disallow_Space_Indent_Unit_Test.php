@@ -29,7 +29,7 @@ class DisallowSpaceIndentUnitTest extends AbstractSniffUnitTest
             return;
         }
 
-        $config->tabWidth = 4;
+        $config->tab_width = 4;
 
     }//end setCliValues()
 

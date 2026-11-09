@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace PHP_CodeSniffer\Tests\Standards;
 
+use PHP_CodeSniffer\Autoload;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Files\LocalFile;
@@ -52,7 +53,7 @@ abstract class AbstractSniffUnitTest extends TestCase
      *
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $class = get_class($this);
         $this->standardsDir = $GLOBALS['PHP_CODESNIFFER_STANDARD_DIRS'][$class];
@@ -117,7 +118,7 @@ abstract class AbstractSniffUnitTest extends TestCase
             $this->markTestSkipped();
         }
 
-        $sniffCode = Common::getSniffCode(get_class($this));
+        $sniffCode = Common::get_sniff_code(get_class($this));
         list($standardName, $categoryName, $sniffName) = explode('.', $sniffCode);
 
         $testFileBase = $this->testsDir.$categoryName.DIRECTORY_SEPARATOR.$sniffName.'UnitTest.';
@@ -129,7 +130,7 @@ abstract class AbstractSniffUnitTest extends TestCase
         if (isset($GLOBALS['PHP_CODESNIFFER_CONFIG']) === true) {
             $config = $GLOBALS['PHP_CODESNIFFER_CONFIG'];
         } else {
-            $config        = new Config();
+            $config        = new Config([]);
             $config->cache = false;
             $GLOBALS['PHP_CODESNIFFER_CONFIG'] = $config;
         }
@@ -149,20 +150,43 @@ abstract class AbstractSniffUnitTest extends TestCase
 
         $ruleset = $GLOBALS['PHP_CODESNIFFER_RULESETS'][$standardName];
 
-        $sniffFile = $this->standardsDir.DIRECTORY_SEPARATOR.'Sniffs'.DIRECTORY_SEPARATOR.$categoryName.DIRECTORY_SEPARATOR.$sniffName.'Sniff.php';
+        $reflection = new \ReflectionClass($this);
+        $testPath   = $reflection->getFileName();
+        if ($testPath === false) {
+            $this->fail('Cannot determine test class file path.');
+        }
 
-        $sniffClassName = substr(get_class($this), 0, -8).'Sniff';
-        $sniffClassName = str_replace('\Tests\\', '\Sniffs\\', $sniffClassName);
-        $sniffClassName = Common::cleanSniffClass($sniffClassName);
+        $sniffFile = str_replace(
+            [
+                DIRECTORY_SEPARATOR.'Tests'.DIRECTORY_SEPARATOR,
+                '_Unit_Test.php',
+            ],
+            [
+                DIRECTORY_SEPARATOR.'Sniffs'.DIRECTORY_SEPARATOR,
+                '_Sniff.php',
+            ],
+            $testPath
+        );
+
+        if (is_file($sniffFile) === false) {
+            $this->fail('Cannot find sniff file for test: '.$sniffFile);
+        }
+
+        $sniffFqcn = Autoload::loadFile($sniffFile);
+        if (is_string($sniffFqcn) === false || $sniffFqcn === '') {
+            $this->fail('Cannot determine sniff class for file: '.$sniffFile);
+        }
+
+        $sniffClassName = Common::clean_sniff_class($sniffFqcn);
 
         $restrictions = [strtolower($sniffClassName) => true];
-        $ruleset->registerSniffs([$sniffFile], $restrictions, []);
-        $ruleset->populateTokenListeners();
+        $ruleset->register_sniffs([$sniffFile], $restrictions, []);
+        $ruleset->populate_token_listeners();
 
         $failureMessages = [];
         foreach ($testFiles as $testFile) {
             $filename  = basename($testFile);
-            $oldConfig = $config->getSettings();
+            $oldConfig = $config->get_settings();
 
             try {
                 $this->setCliValues($filename, $config);
@@ -175,10 +199,10 @@ abstract class AbstractSniffUnitTest extends TestCase
             $failures        = $this->generateFailureMessages($phpcsFile);
             $failureMessages = array_merge($failureMessages, $failures);
 
-            if ($phpcsFile->getFixableCount() > 0) {
+            if ($phpcsFile->get_fixable_count() > 0) {
                 // Attempt to fix the errors.
-                $phpcsFile->fixer->fixFile();
-                $fixable = $phpcsFile->getFixableCount();
+                $phpcsFile->fixer->fix_file();
+                $fixable = $phpcsFile->get_fixable_count();
                 if ($fixable > 0) {
                     $failureMessages[] = "Failed to fix $fixable fixable violations in $filename";
                 }
@@ -186,7 +210,7 @@ abstract class AbstractSniffUnitTest extends TestCase
                 // Check for a .fixed file to check for accuracy of fixes.
                 $fixedFile = $testFile.'.fixed';
                 if (file_exists($fixedFile) === true) {
-                    $diff = $phpcsFile->fixer->generateDiff($fixedFile);
+                    $diff = $phpcsFile->fixer->generate_diff($fixedFile);
                     if (trim($diff) !== '') {
                         $filename          = basename($testFile);
                         $fixedFilename     = basename($fixedFile);
@@ -196,7 +220,7 @@ abstract class AbstractSniffUnitTest extends TestCase
             }
 
             // Restore the config.
-            $config->setSettings($oldConfig);
+            $config->set_settings($oldConfig);
         }//end foreach
 
         if (empty($failureMessages) === false) {
@@ -215,10 +239,10 @@ abstract class AbstractSniffUnitTest extends TestCase
      */
     public function generateFailureMessages(LocalFile $file)
     {
-        $testFile = $file->getFilename();
+        $testFile = $file->get_filename();
 
-        $foundErrors      = $file->getErrors();
-        $foundWarnings    = $file->getWarnings();
+        $foundErrors      = $file->get_errors();
+        $foundWarnings    = $file->get_warnings();
         $expectedErrors   = $this->getErrorList(basename($testFile));
         $expectedWarnings = $this->getWarningList(basename($testFile));
 

@@ -27,7 +27,7 @@ class BitwiseOrTest extends AbstractMethodUnitTest
      */
     public function testBitwiseOr($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $opener = $this->getTargetToken($testMarker, [T_BITWISE_OR, T_TYPE_UNION]);
         $this->assertSame(T_BITWISE_OR, $tokens[$opener]['code']);
@@ -76,7 +76,7 @@ class BitwiseOrTest extends AbstractMethodUnitTest
      */
     public function testTypeUnion($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $opener = $this->getTargetToken($testMarker, [T_BITWISE_OR, T_TYPE_UNION]);
         $this->assertSame(T_TYPE_UNION, $tokens[$opener]['code']);

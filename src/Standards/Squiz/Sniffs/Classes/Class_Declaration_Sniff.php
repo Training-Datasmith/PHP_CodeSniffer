@@ -13,7 +13,7 @@ namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Classes;
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Standards\PSR2\Sniffs\Classes\Class_Declaration_Sniff as PSR2ClassDeclarationSniff;
 use Php_code_Sniffer\Util\Tokens;
-class Class_Declaration_Sniff extends Psr2class_Declaration_Sniff
+class Class_Declaration_Sniff extends PSR2ClassDeclarationSniff
 {
     /**
      * Processes this test, when one of its tokens is encountered.
@@ -53,8 +53,13 @@ class Class_Declaration_Sniff extends Psr2class_Declaration_Sniff
         if ($tokens[$stack_ptr - 1]['code'] === T_WHITESPACE) {
             $prev_content = $tokens[$stack_ptr - 1]['content'];
             if ($prev_content !== $phpcs_file->eol_char) {
-                $blank_space = substr($prev_content, strpos($prev_content, $phpcs_file->eol_char));
-                $spaces = strlen($blank_space);
+                $eol_pos = strpos($prev_content, $phpcs_file->eol_char);
+                if ($eol_pos !== false) {
+                    $blank_space = substr($prev_content, $eol_pos);
+                    $spaces = strlen($blank_space);
+                } else {
+                    $spaces = 0;
+                }
                 if ($tokens[$stack_ptr - 2]['code'] !== T_ABSTRACT && $tokens[$stack_ptr - 2]['code'] !== T_FINAL && $tokens[$stack_ptr - 2]['code'] !== T_READONLY) {
                     if ($spaces !== 0) {
                         $type = strtolower($tokens[$stack_ptr]['content']);
@@ -120,8 +125,13 @@ class Class_Declaration_Sniff extends Psr2class_Declaration_Sniff
         } elseif ($tokens[$close_brace - 1]['code'] === T_WHITESPACE) {
             $prev_content = $tokens[$close_brace - 1]['content'];
             if ($prev_content !== $phpcs_file->eol_char) {
-                $blank_space = substr($prev_content, strpos($prev_content, $phpcs_file->eol_char));
-                $spaces = strlen($blank_space);
+                $eol_pos = strpos($prev_content, $phpcs_file->eol_char);
+                if ($eol_pos !== false) {
+                    $blank_space = substr($prev_content, $eol_pos);
+                    $spaces = strlen($blank_space);
+                } else {
+                    $spaces = 0;
+                }
                 if ($spaces !== 0) {
                     if ($tokens[$close_brace - 1]['line'] !== $tokens[$close_brace]['line']) {
                         $error = 'Expected 0 spaces before closing brace; newline found';

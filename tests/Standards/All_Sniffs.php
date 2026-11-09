@@ -88,9 +88,14 @@ class AllSniffs
                 }
 
                 // Tests must have the extension 'php'.
-                $parts = explode('.', $file);
+                $parts = explode('.', $file->getFilename());
                 $ext   = array_pop($parts);
                 if ($ext !== 'php') {
+                    continue;
+                }
+
+                $basename = implode('.', $parts);
+                if (substr($basename, -10) !== '_Unit_Test') {
                     continue;
                 }
 
@@ -109,11 +114,11 @@ class AllSniffs
      * Get the details of all coding standards installed.
      *
      * @return array
-     * @see    Standards::getInstalledStandardDetails()
+     * @see    Standards::get_installed_standard_details()
      */
     protected static function getInstalledStandardDetails()
     {
-        return Standards::getInstalledStandardDetails(true);
+        return Standards::get_installed_standard_details(true);
 
     }//end getInstalledStandardDetails()
 

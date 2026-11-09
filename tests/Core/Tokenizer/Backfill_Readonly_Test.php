@@ -28,7 +28,7 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
      */
     public function testReadonly($testMarker, $testContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, [T_READONLY, T_STRING], $testContent);
         $this->assertSame(T_READONLY, $tokens[$target]['code']);
@@ -171,7 +171,7 @@ class BackfillReadonlyTest extends AbstractMethodUnitTest
      */
     public function testNotReadonly($testMarker, $testContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, [T_READONLY, T_STRING], $testContent);
         $this->assertSame(T_STRING, $tokens[$target]['code']);

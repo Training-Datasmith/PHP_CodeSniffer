@@ -862,7 +862,7 @@ class GetMethodPropertiesTest extends AbstractMethodUnitTest
     private function getMethodPropertiesTestHelper($commentString, $expected)
     {
         $function = $this->getTargetToken($commentString, [T_FUNCTION, T_CLOSURE, T_FN]);
-        $found    = self::$phpcsFile->getMethodProperties($function);
+        $found    = self::$phpcsFile->get_method_properties($function);
 
         $this->assertArraySubset($expected, $found, true);
 

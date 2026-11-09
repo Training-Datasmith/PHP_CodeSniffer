@@ -35,11 +35,11 @@ class AbstractArraySniffTestable extends AbstractArraySniff
      *
      * @return void
      */
-    public function processSingleLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices)
+    protected function process_single_line_array($phpcs_file, $stack_ptr, $array_start, $array_end, $indices)
     {
         $this->indicies = $indices;
 
-    }//end processSingleLineArray()
+    }//end process_single_line_array()
 
     /**
      * Processes a multi-line array definition.
@@ -54,10 +54,10 @@ class AbstractArraySniffTestable extends AbstractArraySniff
      *
      * @return void
      */
-    public function processMultiLineArray($phpcsFile, $stackPtr, $arrayStart, $arrayEnd, $indices)
+    protected function process_multi_line_array($phpcs_file, $stack_ptr, $array_start, $array_end, $indices)
     {
         $this->indicies = $indices;
 
-    }//end processMultiLineArray()
+    }//end process_multi_line_array()
 
 }//end class

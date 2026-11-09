@@ -14,10 +14,12 @@ namespace PHP_CodeSniffer\Tests\Core;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\DummyFile;
 use PHP_CodeSniffer\Ruleset;
+use PHP_CodeSniffer\Tests\AssertArraySubsetTrait;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractMethodUnitTest extends TestCase
 {
+    use AssertArraySubsetTrait;
     /**
      * The file extension of the test case file (without leading dot).
      *
@@ -43,9 +45,9 @@ abstract class AbstractMethodUnitTest extends TestCase
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
-        $config            = new Config();
+        $config            = new Config([]);
         $config->standards = ['PSR1'];
 
         $ruleset = new Ruleset($config);
@@ -69,7 +71,7 @@ abstract class AbstractMethodUnitTest extends TestCase
      *
      * @return void
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::$phpcsFile = null;
 
@@ -89,8 +91,8 @@ abstract class AbstractMethodUnitTest extends TestCase
      */
     public function getTargetToken($commentString, $tokenType, $tokenContent = null)
     {
-        $start   = (self::$phpcsFile->numTokens - 1);
-        $comment = self::$phpcsFile->findPrevious(
+        $start   = (self::$phpcsFile->num_tokens - 1);
+        $comment = self::$phpcsFile->find_previous(
             T_COMMENT,
             $start,
             null,
@@ -98,7 +100,7 @@ abstract class AbstractMethodUnitTest extends TestCase
             $commentString
         );
 
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
         $end    = ($start + 1);
 
         // Limit the token finding to between this and the next delimiter comment.
@@ -113,7 +115,7 @@ abstract class AbstractMethodUnitTest extends TestCase
             }
         }
 
-        $target = self::$phpcsFile->findNext(
+        $target = self::$phpcsFile->find_next(
             $tokenType,
             ($comment + 1),
             $end,

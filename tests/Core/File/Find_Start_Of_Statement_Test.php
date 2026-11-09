@@ -23,7 +23,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testSimpleAssignment()
     {
         $start = $this->getTargetToken('/* testSimpleAssignment */', T_SEMICOLON);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 5), $found);
 
@@ -37,7 +37,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testFunctionCall()
     {
         $start = $this->getTargetToken('/* testFunctionCall */', T_CLOSE_PARENTHESIS);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 6), $found);
 
@@ -51,7 +51,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testFunctionCallArgument()
     {
         $start = $this->getTargetToken('/* testFunctionCallArgument */', T_VARIABLE, '$b');
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame($start, $found);
 
@@ -65,7 +65,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testControlStructure()
     {
         $start = $this->getTargetToken('/* testControlStructure */', T_CLOSE_CURLY_BRACKET);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 6), $found);
 
@@ -79,7 +79,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testClosureAssignment()
     {
         $start = $this->getTargetToken('/* testClosureAssignment */', T_CLOSE_CURLY_BRACKET);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 12), $found);
 
@@ -94,19 +94,19 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         // Find the start of the function.
         $start = $this->getTargetToken('/* testHeredocFunctionArg */', T_SEMICOLON);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 10), $found);
 
         // Find the start of the heredoc.
         $start -= 4;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 4), $found);
 
         // Find the start of the last arg.
         $start += 2;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame($start, $found);
 
@@ -121,31 +121,31 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         // Find the start of the switch.
         $start = $this->getTargetToken('/* testSwitch */', T_CLOSE_CURLY_BRACKET);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 47), $found);
 
         // Find the start of default case.
         $start -= 5;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 6), $found);
 
         // Find the start of the second case.
         $start -= 12;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 5), $found);
 
         // Find the start of the first case.
         $start -= 13;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 8), $found);
 
         // Test inside the first case.
         $start--;
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 1), $found);
 
@@ -160,25 +160,25 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         // Test short array syntax.
         $start = $this->getTargetToken('/* testStatementAsArrayValue */', T_STRING, 'Datetime');
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 2), $found);
 
         // Test long array syntax.
         $start += 12;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 2), $found);
 
         // Test same statement outside of array.
         $start++;
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 9), $found);
 
         // Test with an array index.
         $start += 17;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 5), $found);
 
@@ -192,7 +192,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testUseGroup()
     {
         $start = $this->getTargetToken('/* testUseGroup */', T_SEMICOLON);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 23), $found);
 
@@ -206,7 +206,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testArrowFunctionArrayValue()
     {
         $start = $this->getTargetToken('/* testArrowFunctionArrayValue */', T_COMMA);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 9), $found);
 
@@ -220,7 +220,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testStaticArrowFunction()
     {
         $start = $this->getTargetToken('/* testStaticArrowFunction */', T_SEMICOLON);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 11), $found);
 
@@ -234,7 +234,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testArrowFunctionReturnValue()
     {
         $start = $this->getTargetToken('/* testArrowFunctionReturnValue */', T_SEMICOLON);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 18), $found);
 
@@ -249,7 +249,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         $start  = $this->getTargetToken('/* testArrowFunctionAsArgument */', T_FN);
         $start += 8;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 8), $found);
 
@@ -264,7 +264,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         $start  = $this->getTargetToken('/* testArrowFunctionWithArrayAsArgument */', T_FN);
         $start += 17;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 17), $found);
 
@@ -278,7 +278,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testMatchCase()
     {
         $start = $this->getTargetToken('/* testMatchCase */', T_COMMA);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 1), $found);
 
@@ -292,7 +292,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testMatchDefault()
     {
         $start = $this->getTargetToken('/* testMatchDefault */', T_CONSTANT_ENCAPSED_STRING, "'bar'");
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame($start, $found);
 
@@ -306,12 +306,12 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testMatchMultipleCase()
     {
         $start = $this->getTargetToken('/* testMatchMultipleCase */', T_MATCH_ARROW);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 6), $found);
 
         $start += 6;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 4), $found);
 
@@ -325,12 +325,12 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testMatchDefaultComma()
     {
         $start = $this->getTargetToken('/* testMatchDefaultComma */', T_MATCH_ARROW);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 3), $found);
 
         $start += 2;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame($start, $found);
 
@@ -344,7 +344,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     public function testMatchFunctionCall()
     {
         $start = $this->getTargetToken('/* testMatchFunctionCall */', T_CLOSE_PARENTHESIS);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 6), $found);
 
@@ -359,13 +359,13 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         // Check the first case.
         $start = $this->getTargetToken('/* testMatchFunctionCallArm */', T_MATCH_ARROW);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 18), $found);
 
         // Check the second case.
         $start += 24;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 18), $found);
 
@@ -380,12 +380,12 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         $start  = $this->getTargetToken('/* testMatchClosure */', T_LNUMBER);
         $start += 14;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 10), $found);
 
         $start += 17;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 10), $found);
 
@@ -400,22 +400,22 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         // Start of first case statement.
         $start = $this->getTargetToken('/* testMatchArray */', T_LNUMBER);
-        $found = self::$phpcsFile->findStartOfStatement($start);
+        $found = self::$phpcsFile->find_start_of_statement($start);
         $this->assertSame($start, $found);
 
         // Comma after first statement.
         $start += 11;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
         $this->assertSame(($start - 7), $found);
 
         // Start of second case statement.
         $start += 3;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
         $this->assertSame($start, $found);
 
         // Comma after first statement.
         $start += 30;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
         $this->assertSame(($start - 26), $found);
 
     }//end testMatchArray()
@@ -429,17 +429,17 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         $start  = $this->getTargetToken('/* testNestedMatch */', T_LNUMBER);
         $start += 30;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 26), $found);
 
         $start -= 4;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 1), $found);
 
         $start -= 3;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 2), $found);
 
@@ -454,7 +454,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         $start  = $this->getTargetToken('/* testOpenTag */', T_OPEN_TAG);
         $start += 2;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 1), $found);
 
@@ -469,7 +469,7 @@ class FindStartOfStatementTest extends AbstractMethodUnitTest
     {
         $start  = $this->getTargetToken('/* testOpenTagWithEcho */', T_OPEN_TAG_WITH_ECHO);
         $start += 3;
-        $found  = self::$phpcsFile->findStartOfStatement($start);
+        $found  = self::$phpcsFile->find_start_of_statement($start);
 
         $this->assertSame(($start - 1), $found);
 

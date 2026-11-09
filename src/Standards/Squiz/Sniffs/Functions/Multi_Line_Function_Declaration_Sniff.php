@@ -12,7 +12,7 @@ namespace Php_code_Sniffer\Standards\Squiz\Sniffs\Functions;
 
 use Php_code_Sniffer\Standards\PEAR\Sniffs\Functions\Function_Declaration_Sniff as PEARFunctionDeclarationSniff;
 use Php_code_Sniffer\Util\Tokens;
-class Multi_Line_Function_Declaration_Sniff extends Pear_Function_Declaration_Sniff
+class Multi_Line_Function_Declaration_Sniff extends PEARFunctionDeclarationSniff
 {
     /**
      * A list of tokenizers this sniff supports.

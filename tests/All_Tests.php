@@ -12,12 +12,12 @@ declare(strict_types=1);
 namespace PHP_CodeSniffer\Tests;
 
 if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === false) {
-    include_once 'Core/AllTests.php';
-    include_once 'Standards/AllSniffs.php';
+    include_once 'Core/All_Tests.php';
+    include_once 'Standards/All_Sniffs.php';
 } else {
-    include_once 'CodeSniffer/Core/AllTests.php';
-    include_once 'CodeSniffer/Standards/AllSniffs.php';
-    include_once 'FileList.php';
+    include_once 'CodeSniffer/Core/All_Tests.php';
+    include_once 'CodeSniffer/Standards/All_Sniffs.php';
+    include_once 'File_List.php';
 }
 
 // PHPUnit 7 made the TestSuite run() method incompatible with
@@ -26,15 +26,15 @@ if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === false) {
 $phpunit7 = false;
 if (class_exists('\PHPUnit\Runner\Version') === true) {
     $version = \PHPUnit\Runner\Version::id();
-    if ($version[0] === '7') {
+    if (version_compare($version, '7.0.0', '>=')) {
         $phpunit7 = true;
     }
 }
 
 if ($phpunit7 === true) {
-    include_once 'TestSuite7.php';
+    include_once 'Test_Suite7.php';
 } else {
-    include_once 'TestSuite.php';
+    include_once 'Test_Suite.php';
 }
 
 class PHP_CodeSniffer_AllTests
@@ -59,5 +59,20 @@ class PHP_CodeSniffer_AllTests
         return $suite;
 
     }//end suite()
+
+}//end class
+
+/**
+ * PHPUnit 8+ derives the expected suite class name from the test file name.
+ */
+class All_Tests
+{
+    /**
+     * @return \PHPUnit\Framework\TestSuite
+     */
+    public static function suite()
+    {
+        return PHP_CodeSniffer_AllTests::suite();
+    }
 
 }//end class

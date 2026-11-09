@@ -29,7 +29,7 @@ class FindExtendedClassNameTest extends AbstractMethodUnitTest
     public function testFindExtendedClassName($identifier, $expected)
     {
         $OOToken = $this->getTargetToken($identifier, [T_CLASS, T_ANON_CLASS, T_INTERFACE]);
-        $result  = self::$phpcsFile->findExtendedClassName($OOToken);
+        $result  = self::$phpcsFile->find_extended_class_name($OOToken);
         $this->assertSame($expected, $result);
 
     }//end testFindExtendedClassName()

@@ -23,8 +23,8 @@ class JSHintUnitTest extends AbstractSniffUnitTest
      */
     protected function shouldSkipTest()
     {
-        $rhinoPath  = Config::getExecutablePath('rhino');
-        $jshintPath = Config::getExecutablePath('jshint');
+        $rhinoPath  = Config::get_executable_path('rhino');
+        $jshintPath = Config::get_executable_path('jshint');
         if ($jshintPath === null) {
             return true;
         }

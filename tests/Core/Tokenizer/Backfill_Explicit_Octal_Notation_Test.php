@@ -30,7 +30,7 @@ class BackfillExplicitOctalNotationTest extends AbstractMethodUnitTest
      */
     public function testExplicitOctalNotation($marker, $value, $nextToken, $nextContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $number = $this->getTargetToken($marker, [T_LNUMBER]);
 

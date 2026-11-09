@@ -38,7 +38,7 @@ class AcceptTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // PEAR installs test and sniff files into different locations
@@ -54,7 +54,7 @@ class AcceptTest extends TestCase
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // This test will be skipped.

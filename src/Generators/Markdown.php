@@ -26,7 +26,7 @@ class Markdown extends Generator
         foreach ($this->doc_files as $file) {
             $doc = new \Dom_Document();
             $doc->load($file);
-            $documentation = $doc->get_elements_by_tag_name('documentation')->item(0);
+            $documentation = $doc->getElementsByTagName('documentation')->item(0);
             $this->process_sniff($documentation);
         }
         $this->print_footer();
@@ -107,13 +107,13 @@ class Markdown extends Generator
      */
     protected function print_code_comparison_block(\Dom_Node $node)
     {
-        $code_blocks = $node->get_elements_by_tag_name('code');
-        $first_title = $code_blocks->item(0)->get_attribute('title');
+        $code_blocks = $node->getElementsByTagName('code');
+        $first_title = $code_blocks->item(0)->getAttribute('title');
         $first = trim($code_blocks->item(0)->node_value);
         $first = str_replace("\n", "\n    ", $first);
         $first = str_replace('<em>', '', $first);
         $first = str_replace('</em>', '', $first);
-        $second_title = $code_blocks->item(1)->get_attribute('title');
+        $second_title = $code_blocks->item(1)->getAttribute('title');
         $second = trim($code_blocks->item(1)->node_value);
         $second = str_replace("\n", "\n    ", $second);
         $second = str_replace('<em>', '', $second);

@@ -11,7 +11,7 @@ declare (strict_types=1);
 namespace Php_code_Sniffer\Standards\Squiz\Sniffs\PHP;
 
 use Php_code_Sniffer\Standards\Generic\Sniffs\PHP\Forbidden_Functions_Sniff as GenericForbiddenFunctionsSniff;
-class Discouraged_Functions_Sniff extends Generic_Forbidden_Functions_Sniff
+class Discouraged_Functions_Sniff extends GenericForbiddenFunctionsSniff
 {
     /**
      * A list of forbidden functions with their alternatives.

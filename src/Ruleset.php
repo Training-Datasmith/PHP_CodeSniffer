@@ -17,6 +17,112 @@ use stdClass;
 class Ruleset
 {
     /**
+     * Convert a legacy sniff code segment to a Studly_Snake sniff filename.
+     *
+     * @param string $code Sniff code segment, e.g. LowerCaseConstant.
+     *
+     * @return string
+     */
+    private static function legacy_sniff_code_to_studly_snake($code)
+    {
+        $name = preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $code);
+        $name = preg_replace('/(?<=[A-Z])([A-Z][a-z])/', '_$1', $name);
+
+        return $name;
+
+    }//end legacy_sniff_code_to_studly_snake()
+
+    private static function legacy_sniff_code_to_filename($code)
+    {
+        return self::legacy_sniff_code_to_studly_snake($code).'_Sniff.php';
+
+    }//end legacy_sniff_code_to_filename()
+
+    /**
+     * Resolve a sniff file reference that may use a legacy StudlyCaps basename.
+     *
+     * @param string $ref File path reference.
+     *
+     * @return string
+     */
+    private static function resolve_sniff_file_reference($ref)
+    {
+        if (is_file($ref) === true) {
+            return $ref;
+        }
+
+        if (substr($ref, -9) !== 'Sniff.php') {
+            return $ref;
+        }
+
+        $dir = dirname($ref);
+        $base = basename($ref, '.php');
+        if (substr($base, -5) !== 'Sniff') {
+            return $ref;
+        }
+
+        $code = substr($base, 0, -5);
+        $alt = $dir.DIRECTORY_SEPARATOR.self::legacy_sniff_code_to_filename($code);
+        $resolved = Util\Common::realpath($alt);
+        if ($resolved !== false) {
+            return $resolved;
+        }
+
+        return $ref;
+
+    }//end resolve_sniff_file_reference()
+
+    /**
+     * Map a ruleset XML property name to a declared sniff property name.
+     *
+     * @param string $name Property name from ruleset XML.
+     *
+     * @return string
+     */
+    private static function ruleset_property_name_to_sniff_property($name)
+    {
+        if (strpos($name, '_') !== false || preg_match('/[A-Z]/', $name) === 0) {
+            return $name;
+        }
+
+        return strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $name));
+
+    }//end ruleset_property_name_to_sniff_property()
+
+    /**
+     * @param string $path File path.
+     *
+     * @return bool
+     */
+    private static function is_sniff_file_path($path)
+    {
+        return substr($path, -10) === '_Sniff.php' || substr($path, -9) === 'Sniff.php';
+
+    }//end is_sniff_file_path()
+
+    /**
+     * Build a compare key for sniff restrictions from a ruleset sniff code.
+     *
+     * @param string $sniff_code Sniff code, e.g. Generic.PHP.LowerCaseConstant.
+     *
+     * @return string
+     */
+    private static function sniff_code_to_compare_name($sniff_code)
+    {
+        $parts = explode('.', $sniff_code);
+        if (count($parts) !== 3) {
+            return strtolower(str_replace('.', '\\', $sniff_code));
+        }
+
+        $standard = strtolower(self::legacy_sniff_code_to_studly_snake($parts[0]));
+        $category = strtolower(self::legacy_sniff_code_to_studly_snake($parts[1]));
+        $sniff_file = self::legacy_sniff_code_to_studly_snake($parts[2]);
+
+        return $standard.'\sniffs\\'.$category.'\\'.strtolower($sniff_file).'_sniff';
+
+    }//end sniff_code_to_compare_name()
+
+    /**
      * The name of the coding standard being used.
      *
      * If a top-level standard includes other standards, or sniffs
@@ -122,6 +228,9 @@ class Ruleset
             $installed = Util\Standards::get_installed_standard_path($standard);
             if ($installed === null) {
                 $standard = Util\Common::realpath($standard);
+                if ($standard === false) {
+                    throw new RuntimeException("Ruleset path could not be resolved");
+                }
                 if (is_dir($standard) === true && is_file(Util\Common::realpath($standard . DIRECTORY_SEPARATOR . 'ruleset.xml')) === true) {
                     $standard = Util\Common::realpath($standard . DIRECTORY_SEPARATOR . 'ruleset.xml');
                 }
@@ -144,7 +253,7 @@ class Ruleset
                 } else {
                     $namespace = basename(dirname($standard));
                 }
-                Autoload::add_search_path(dirname($standard), $namespace);
+                Autoload::addSearchPath(dirname($standard), $namespace);
             }
             if (defined('PHP_CODESNIFFER_IN_TESTS') === true && empty($restrictions) === false) {
                 // In unit tests, only register the sniffs that the test wants and not the entire standard.
@@ -176,15 +285,11 @@ class Ruleset
         }
         $sniff_restrictions = [];
         foreach ($restrictions as $sniff_code) {
-            $parts = explode('.', strtolower($sniff_code));
-            $sniff_name = $parts[0] . '\sniffs\\' . $parts[1] . '\\' . $parts[2] . 'sniff';
-            $sniff_restrictions[$sniff_name] = true;
+            $sniff_restrictions[self::sniff_code_to_compare_name($sniff_code)] = true;
         }
         $sniff_exclusions = [];
         foreach ($exclusions as $sniff_code) {
-            $parts = explode('.', strtolower($sniff_code));
-            $sniff_name = $parts[0] . '\sniffs\\' . $parts[1] . '\\' . $parts[2] . 'sniff';
-            $sniff_exclusions[$sniff_name] = true;
+            $sniff_exclusions[self::sniff_code_to_compare_name($sniff_code)] = true;
         }
         $this->register_sniffs($sniffs, $sniff_restrictions, $sniff_exclusions);
         $this->populate_token_listeners();
@@ -307,7 +412,7 @@ class Ruleset
             }
             $autoload_path = (string) $autoload;
             // Try relative autoload paths first.
-            $relative_path = Util\Common::real_path(dirname($ruleset_path) . DIRECTORY_SEPARATOR . $autoload_path);
+            $relative_path = Util\Common::realpath(dirname($ruleset_path) . DIRECTORY_SEPARATOR . $autoload_path);
             if ($relative_path !== false && is_file($relative_path) === true) {
                 $autoload_path = $relative_path;
             } elseif (is_file($autoload_path) === false) {
@@ -345,7 +450,7 @@ class Ruleset
             $expanded_sniffs = $this->expand_ruleset_reference((string) $rule['ref'], $ruleset_dir, $depth);
             $new_sniffs = array_diff($expanded_sniffs, $included_sniffs);
             $included_sniffs = array_merge($included_sniffs, $expanded_sniffs);
-            $parts = explode('.', $rule['ref']);
+            $parts = explode('.', (string) $rule['ref']);
             if (count($parts) === 4 && $parts[0] !== '' && $parts[1] !== '' && $parts[2] !== '') {
                 $sniff_code = $parts[0] . '.' . $parts[1] . '.' . $parts[2];
                 if (isset($this->ruleset[$sniff_code]['severity']) === true && $this->ruleset[$sniff_code]['severity'] === 0) {
@@ -527,11 +632,11 @@ class Ruleset
     private function expand_sniff_directory($directory, $depth = 0)
     {
         $sniffs = [];
-        $rdi = new \Recursive_Directory_Iterator($directory, \Recursive_Directory_Iterator::FOLLOW_SYMLINKS);
-        $di = new \Recursive_Iterator_Iterator($rdi, 0, \Recursive_Iterator_Iterator::CATCH_GET_CHILD);
+        $rdi = new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::FOLLOW_SYMLINKS);
+        $di = new \RecursiveIteratorIterator($rdi, 0, \RecursiveIteratorIterator::CATCH_GET_CHILD);
         $dir_len = strlen($directory);
         foreach ($di as $file) {
-            $filename = $file->get_filename();
+            $filename = $file->getFilename();
             // Skip hidden files.
             if (substr($filename, 0, 1) === '.') {
                 continue;
@@ -545,7 +650,7 @@ class Ruleset
             if (substr($basename, -5) !== 'Sniff') {
                 continue;
             }
-            $path = $file->get_pathname();
+            $path = $file->getPathname();
             // Skip files in hidden directories within the Sniffs directory of this
             // standard. We use the offset with strpos() to allow hidden directories
             // before, valid example:
@@ -613,7 +718,7 @@ class Ruleset
             }
         }
         if (is_file($ref) === true) {
-            if (substr($ref, -9) === 'Sniff.php') {
+            if (substr($ref, -9) === 'Sniff.php' || substr($ref, -10) === '_Sniff.php') {
                 // A single external sniff.
                 $this->ruleset_dirs[] = dirname(dirname(dirname($ref)));
                 return [$ref];
@@ -652,7 +757,7 @@ class Ruleset
                         $path = DIRECTORY_SEPARATOR . 'Sniffs' . DIRECTORY_SEPARATOR . $parts[1];
                     } else {
                         // A single sniff?
-                        $path = DIRECTORY_SEPARATOR . 'Sniffs' . DIRECTORY_SEPARATOR . $parts[1] . DIRECTORY_SEPARATOR . $parts[2] . 'Sniff.php';
+                        $path = DIRECTORY_SEPARATOR.'Sniffs'.DIRECTORY_SEPARATOR.$parts[1].DIRECTORY_SEPARATOR.self::legacy_sniff_code_to_filename($parts[2]);
                     }
                 }
                 $new_ref = false;
@@ -710,11 +815,12 @@ class Ruleset
             }
             return $this->expand_sniff_directory($ref, $depth + 1);
         }
+        $ref = self::resolve_sniff_file_reference($ref);
         if (is_file($ref) === false) {
             $error = "Referenced sniff \"{$ref}\" does not exist";
             throw new RuntimeException($error);
         }
-        if (substr($ref, -9) === 'Sniff.php') {
+        if (substr($ref, -9) === 'Sniff.php' || substr($ref, -10) === '_Sniff.php') {
             // A single sniff.
             return [$ref];
         }
@@ -738,7 +844,7 @@ class Ruleset
      * @return void
      * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If rule settings are invalid.
      */
-    private function process_rule(array $rule, array $new_sniffs, $depth = 0)
+    private function process_rule(\SimpleXMLElement $rule, array $new_sniffs, $depth = 0)
     {
         $ref = (string) $rule['ref'];
         $todo = [$ref];
@@ -756,7 +862,13 @@ class Ruleset
                 $sniff_category = array_pop($parts);
                 array_pop($parts);
                 $sniff_standard = array_pop($parts);
-                $todo[] = $sniff_standard . '.' . $sniff_category . '.' . substr($sniff_name, 0, -9);
+                $basename = $sniff_name;
+                if (substr($basename, -10) === '_Sniff.php') {
+                    $basename = substr($basename, 0, -10);
+                } elseif (substr($basename, -9) === 'Sniff.php') {
+                    $basename = substr($basename, 0, -5);
+                }
+                $todo[] = Util\Common::sniff_basename_to_code($sniff_standard).'.'.Util\Common::sniff_basename_to_code($sniff_category).'.'.Util\Common::sniff_basename_to_code($basename);
             }
         }
         foreach ($todo as $code) {
@@ -813,7 +925,7 @@ class Ruleset
             // Custom properties.
             if (isset($rule->properties) === true && $this->should_process_element($rule->properties) === true) {
                 $property_scope = 'standard';
-                if ($code === $ref || substr($ref, -9) === 'Sniff.php') {
+                if ($code === $ref || substr($ref, -9) === 'Sniff.php' || substr($ref, -10) === '_Sniff.php') {
                     $property_scope = 'sniff';
                 }
                 foreach ($rule->properties->property as $prop) {
@@ -981,7 +1093,7 @@ class Ruleset
             if ($slash_pos === false) {
                 continue;
             }
-            $class_name = Autoload::load_file($file);
+            $class_name = Autoload::loadFile($file);
             $compare_name = Util\Common::clean_sniff_class($class_name);
             // If they have specified a list of sniffs to restrict to, check
             // to see if this sniff is allowed.
@@ -995,7 +1107,7 @@ class Ruleset
             }
             // Skip abstract classes.
             $reflection = new \ReflectionClass($class_name);
-            if ($reflection->is_abstract() === true) {
+            if ($reflection->isAbstract() === true) {
                 continue;
             }
             $listeners[$class_name] = $class_name;
@@ -1030,8 +1142,8 @@ class Ruleset
             }
             $tokenizers = [];
             $vars = get_class_vars($sniff_class);
-            if (isset($vars['supportedTokenizers']) === true) {
-                foreach ($vars['supportedTokenizers'] as $tokenizer) {
+            if (isset($vars['supported_tokenizers']) === true) {
+                foreach ($vars['supported_tokenizers'] as $tokenizer) {
                     $tokenizers[$tokenizer] = $tokenizer;
                 }
             } else {
@@ -1086,7 +1198,7 @@ class Ruleset
             return;
         }
         $name = trim($name);
-        $property_name = $name;
+        $property_name = self::ruleset_property_name_to_sniff_property($name);
         if (substr($property_name, -2) === '[]') {
             $property_name = substr($property_name, 0, -2);
         }
@@ -1147,7 +1259,7 @@ class Ruleset
             }
             $value = $values;
         }
-        $sniff_object->{$name} = $value;
+        $sniff_object->{$property_name} = $value;
     }
     //end setSniffProperty()
     /**

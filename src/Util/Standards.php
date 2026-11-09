@@ -31,7 +31,7 @@ class Standards
         $resolved_installed_paths = [];
         foreach ($installed_paths as $installed_path) {
             if (substr($installed_path, 0, 1) === '.') {
-                $installed_path = Common::real_path(__DIR__ . $ds . '..' . $ds . '..' . $ds . $installed_path);
+                $installed_path = Common::realpath(__DIR__ . $ds . '..' . $ds . '..' . $ds . $installed_path);
                 if ($installed_path === false) {
                     continue;
                 }
@@ -85,16 +85,16 @@ class Standards
             if (is_dir($standards_dir) === false) {
                 continue;
             }
-            $di = new \Directory_Iterator($standards_dir);
+            $di = new \DirectoryIterator($standards_dir);
             foreach ($di as $file) {
-                if ($file->is_dir() === true && $file->is_dot() === false) {
-                    $filename = $file->get_filename();
+                if ($file->isDir() === true && $file->isDot() === false) {
+                    $filename = $file->getFilename();
                     // Ignore the special "Generic" standard.
                     if ($include_generic === false && $filename === 'Generic') {
                         continue;
                     }
                     // Valid coding standard dirs include a ruleset.
-                    $cs_file = $file->get_pathname() . '/ruleset.xml';
+                    $cs_file = $file->getPathname().'/ruleset.xml';
                     if (is_file($cs_file) === true) {
                         $rulesets[] = $cs_file;
                     }
@@ -158,17 +158,17 @@ class Standards
                 // Doesn't exist.
                 continue;
             }
-            $di = new \Directory_Iterator($standards_dir);
+            $di = new \DirectoryIterator($standards_dir);
             $standards_in_dir = [];
             foreach ($di as $file) {
-                if ($file->is_dir() === true && $file->is_dot() === false) {
-                    $filename = $file->get_filename();
+                if ($file->isDir() === true && $file->isDot() === false) {
+                    $filename = $file->getFilename();
                     // Ignore the special "Generic" standard.
                     if ($include_generic === false && $filename === 'Generic') {
                         continue;
                     }
                     // Valid coding standard dirs include a ruleset.
-                    $cs_file = $file->get_pathname() . '/ruleset.xml';
+                    $cs_file = $file->getPathname().'/ruleset.xml';
                     if (is_file($cs_file) === true) {
                         $standards_in_dir[$filename] = $filename;
                     }
@@ -201,7 +201,7 @@ class Standards
         }
         // This could be a custom standard, installed outside our
         // standards directory.
-        $standard = Common::real_path($standard);
+        $standard = Common::realpath($standard);
         if ($standard === false) {
             return false;
         }

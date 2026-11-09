@@ -11,9 +11,9 @@ declare (strict_types=1);
 namespace Php_code_Sniffer\Standards\PSR1\Sniffs\Methods;
 
 use Php_code_Sniffer\Files\File;
-use Php_code_Sniffer\Standards\Generic\Sniffs\Naming_Conventions\Camel_Caps_Function_Name_Sniff as GenericCamelCapsFunctionNameSniff;
+use Php_code_Sniffer\Standards\Generic\Sniffs\NamingConventions\Camel_Caps_Function_Name_Sniff as GenericCamelCapsFunctionNameSniff;
 use Php_code_Sniffer\Util\Common;
-class Camel_Caps_Method_Name_Sniff extends Generic_Camel_Caps_Function_Name_Sniff
+class Camel_Caps_Method_Name_Sniff extends GenericCamelCapsFunctionNameSniff
 {
     /**
      * Processes the tokens within the scope.

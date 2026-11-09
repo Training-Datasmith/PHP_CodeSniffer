@@ -125,7 +125,7 @@ class Switch_Declaration_Sniff implements Sniff
                         $error = 'Terminating statement must be on a line by itself';
                         $fix = $phpcs_file->add_fixable_error($error, $next_closer, 'BreakNotNewLine');
                         if ($fix === true) {
-                            $phpcs_file->fixer->add_new_line($prev);
+                            $phpcs_file->fixer->add_newline($prev);
                             $phpcs_file->fixer->replace_token($next_closer, trim($tokens[$next_closer]['content']));
                         }
                     } else {

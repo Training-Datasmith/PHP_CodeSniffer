@@ -7,7 +7,7 @@ declare (strict_types=1);
  * @author  Anna Borzenko <annnechko@gmail.com>
  * @license https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
-namespace Php_code_Sniffer\Standards\Generic\Sniffs\Naming_Conventions;
+namespace Php_code_Sniffer\Standards\Generic\Sniffs\NamingConventions;
 
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Sniffs\Sniff;

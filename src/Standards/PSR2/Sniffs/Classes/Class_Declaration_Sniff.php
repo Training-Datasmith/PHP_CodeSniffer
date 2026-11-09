@@ -13,7 +13,7 @@ namespace Php_code_Sniffer\Standards\PSR2\Sniffs\Classes;
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Standards\PEAR\Sniffs\Classes\Class_Declaration_Sniff as PEARClassDeclarationSniff;
 use Php_code_Sniffer\Util\Tokens;
-class Class_Declaration_Sniff extends Pear_Class_Declaration_Sniff
+class Class_Declaration_Sniff extends PEARClassDeclarationSniff
 {
     /**
      * The number of spaces code should be indented.
@@ -60,7 +60,11 @@ class Class_Declaration_Sniff extends Pear_Class_Declaration_Sniff
         if ($tokens[$stack_ptr - 1]['code'] === T_WHITESPACE) {
             $prev_content = $tokens[$stack_ptr - 1]['content'];
             if ($prev_content !== $phpcs_file->eol_char) {
-                $blank_space = substr($prev_content, strpos($prev_content, $phpcs_file->eol_char));
+                $eol_pos = strpos($prev_content, $phpcs_file->eol_char);
+                if ($eol_pos === false) {
+                    return;
+                }
+                $blank_space = substr($prev_content, $eol_pos);
                 $spaces = strlen($blank_space);
                 if (in_array($tokens[$stack_ptr - 2]['code'], [T_ABSTRACT, T_FINAL, T_READONLY], true) === true && $spaces !== 1) {
                     $prev_content = strtolower($tokens[$stack_ptr - 2]['content']);

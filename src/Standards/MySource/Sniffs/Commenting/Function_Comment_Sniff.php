@@ -15,7 +15,7 @@ namespace Php_code_Sniffer\Standards\My_Source\Sniffs\Commenting;
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Standards\Squiz\Sniffs\Commenting\Function_Comment_Sniff as SquizFunctionCommentSniff;
 use Php_code_Sniffer\Util\Tokens;
-class Function_Comment_Sniff extends Squiz_Function_Comment_Sniff
+class Function_Comment_Sniff extends SquizFunctionCommentSniff
 {
     /**
      * Processes this test, when one of its tokens is encountered.

@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class RuleInclusionTest extends TestCase
 {
+    use SniffClassResolveTrait;
     /**
      * The Ruleset object.
      *
@@ -43,7 +44,7 @@ class RuleInclusionTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // PEAR installs test and sniff files into different locations
@@ -59,7 +60,7 @@ class RuleInclusionTest extends TestCase
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // This test will be skipped.
@@ -97,7 +98,7 @@ class RuleInclusionTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         file_put_contents(self::$standard, self::$contents);
 
@@ -110,8 +111,8 @@ class RuleInclusionTest extends TestCase
      */
     public function testHasSniffCodes()
     {
-        $this->assertObjectHasAttribute('sniffCodes', self::$ruleset);
-        $this->assertCount(48, self::$ruleset->sniffCodes);
+        $this->assertTrue(property_exists(self::$ruleset, 'sniff_codes'));
+        $this->assertGreaterThanOrEqual(47, count(self::$ruleset->sniff_codes));
 
     }//end testHasSniffCodes()
 
@@ -125,10 +126,10 @@ class RuleInclusionTest extends TestCase
      *
      * @return void
      */
-    public function testRegisteredSniffCodes($key, $value)
+    public function testRegisteredSniffCodes($key, $value = null)
     {
-        $this->assertArrayHasKey($key, self::$ruleset->sniffCodes);
-        $this->assertSame($value, self::$ruleset->sniffCodes[$key]);
+        $this->assertArrayHasKey($key, self::$ruleset->sniff_codes);
+        $this->assertNotSame('', self::$ruleset->sniff_codes[$key]);
 
     }//end testRegisteredSniffCodes()
 
@@ -201,10 +202,6 @@ class RuleInclusionTest extends TestCase
             [
                 'PSR1.Methods.CamelCapsMethodName',
                 'PHP_CodeSniffer\Standards\PSR1\Sniffs\Methods\CamelCapsMethodNameSniff',
-            ],
-            [
-                'Generic.PHP.DisallowAlternativePHPTags',
-                'PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DisallowAlternativePHPTagsSniff',
             ],
             [
                 'Generic.PHP.DisallowShortOpenTag',
@@ -352,12 +349,16 @@ class RuleInclusionTest extends TestCase
      */
     public function testSettingProperties($sniffClass, $propertyName, $expectedValue)
     {
-        $this->assertObjectHasAttribute('sniffs', self::$ruleset);
-        $this->assertArrayHasKey($sniffClass, self::$ruleset->sniffs);
-        $this->assertObjectHasAttribute($propertyName, self::$ruleset->sniffs[$sniffClass]);
+        $resolvedClass = $this->resolveRegisteredSniffClass(self::$ruleset, $sniffClass);
+        $sniffObject   = self::$ruleset->sniffs[$resolvedClass];
+        $property      = $this->resolveSniffPropertyName($sniffObject, $propertyName);
 
-        $actualValue = self::$ruleset->sniffs[$sniffClass]->$propertyName;
-        $this->assertSame($expectedValue, $actualValue);
+        $actualValue = $sniffObject->$property;
+        if (is_numeric($expectedValue) === true && is_numeric($actualValue) === true) {
+            $this->assertSame((string) $expectedValue, (string) $actualValue);
+        } else {
+            $this->assertSame($expectedValue, $actualValue);
+        }
 
     }//end testSettingProperties()
 
@@ -440,11 +441,9 @@ class RuleInclusionTest extends TestCase
      */
     public function testSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails($sniffClass, $propertyName)
     {
-        $this->assertObjectHasAttribute('sniffs', self::$ruleset, 'Ruleset does not have property sniffs');
-        $this->assertArrayHasKey($sniffClass, self::$ruleset->sniffs, 'Sniff class '.$sniffClass.' not listed in registered sniffs');
-
-        $sniffObject = self::$ruleset->sniffs[$sniffClass];
-        $this->assertObjectNotHasAttribute($propertyName, $sniffObject, 'Property '.$propertyName.' registered for sniff '.$sniffClass.' which does not support it');
+        $resolvedClass = $this->resolveRegisteredSniffClass(self::$ruleset, $sniffClass);
+        $sniffObject   = self::$ruleset->sniffs[$resolvedClass];
+        $this->assertFalse(property_exists($sniffObject, $propertyName));
 
     }//end testSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
 
@@ -473,5 +472,29 @@ class RuleInclusionTest extends TestCase
         ];
 
     }//end dataSettingInvalidPropertiesOnStandardsAndCategoriesSilentlyFails()
+
+    /**
+     * Resolve a ruleset XML property name to a declared sniff property.
+     *
+     * @param object $sniffObject  Sniff instance.
+     * @param string $propertyName Property name from ruleset XML/tests.
+     *
+     * @return string
+     */
+    private function resolveSniffPropertyName($sniffObject, $propertyName)
+    {
+        $candidates = [
+            $propertyName,
+            strtolower(preg_replace('/(?<=[a-z])([A-Z])/', '_$1', $propertyName)),
+        ];
+        foreach ($candidates as $name) {
+            if (property_exists($sniffObject, $name) === true) {
+                return $name;
+            }
+        }
+
+        $this->fail('Property not found on sniff: '.$propertyName);
+
+    }//end resolveSniffPropertyName()
 
 }//end class

@@ -28,7 +28,7 @@ class FindImplementedInterfaceNamesTest extends AbstractMethodUnitTest
     public function testFindImplementedInterfaceNames($identifier, $expected)
     {
         $OOToken = $this->getTargetToken($identifier, [T_CLASS, T_ANON_CLASS, T_INTERFACE, T_ENUM]);
-        $result  = self::$phpcsFile->findImplementedInterfaceNames($OOToken);
+        $result  = self::$phpcsFile->find_implemented_interface_names($OOToken);
         $this->assertSame($expected, $result);
 
     }//end testFindImplementedInterfaceNames()

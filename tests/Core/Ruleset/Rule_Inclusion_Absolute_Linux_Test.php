@@ -43,7 +43,7 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === true) {
             // PEAR installs test and sniff files into different locations
@@ -81,7 +81,7 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         file_put_contents($this->standard, $this->contents);
 
@@ -97,11 +97,11 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
     {
         // Test that the sniff is correctly registered.
         $this->assertObjectHasAttribute('sniffCodes', $this->ruleset);
-        $this->assertCount(1, $this->ruleset->sniffCodes);
-        $this->assertArrayHasKey('Generic.Formatting.SpaceAfterNot', $this->ruleset->sniffCodes);
+        $this->assertCount(1, $this->ruleset->sniff_codes);
+        $this->assertArrayHasKey('Generic.Formatting.SpaceAfterNot', $this->ruleset->sniff_codes);
         $this->assertSame(
             'PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff',
-            $this->ruleset->sniffCodes['Generic.Formatting.SpaceAfterNot']
+            $this->ruleset->sniff_codes['Generic.Formatting.SpaceAfterNot']
         );
 
         // Test that the sniff properties are correctly set.

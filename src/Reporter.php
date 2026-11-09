@@ -98,7 +98,7 @@ class Reporter
                     $error = "ERROR: Custom report \"{$type}\" not found" . PHP_EOL;
                     throw new Deep_Exit_Exception($error, 3);
                 }
-                $report_class_name = Autoload::load_file($filename);
+                $report_class_name = Autoload::loadFile($filename);
             } elseif (class_exists('PHP_CodeSniffer\Reports\\' . ucfirst($type)) === true) {
                 // PHPCS native report.
                 $report_class_name = 'PHP_CodeSniffer\Reports\\' . ucfirst($type);
@@ -107,7 +107,7 @@ class Reporter
                 $report_class_name = $type;
             } else {
                 // OK, so not a FQN, try and find the report using the registered namespaces.
-                $registered_namespaces = Autoload::get_search_paths();
+                $registered_namespaces = Autoload::getSearchPaths();
                 $trimmed_type = ltrim($type, '\\');
                 foreach ($registered_namespaces as $ns_prefix) {
                     if ($ns_prefix === '') {

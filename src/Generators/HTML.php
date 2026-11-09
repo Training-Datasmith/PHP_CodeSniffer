@@ -31,7 +31,7 @@ class HTML extends Generator
         foreach ($this->doc_files as $file) {
             $doc = new \Dom_Document();
             $doc->load($file);
-            $documentation = $doc->get_elements_by_tag_name('documentation')->item(0);
+            $documentation = $doc->getElementsByTagName('documentation')->item(0);
             $this->process_sniff($documentation);
         }
         $this->print_footer();
@@ -136,7 +136,7 @@ class HTML extends Generator
         foreach ($this->doc_files as $file) {
             $doc = new \Dom_Document();
             $doc->load($file);
-            $documentation = $doc->get_elements_by_tag_name('documentation')->item(0);
+            $documentation = $doc->getElementsByTagName('documentation')->item(0);
             $title = $this->get_title($documentation);
             echo '   <li><a href="#' . str_replace(' ', '-', $title) . "\">{$title}</a></li>" . PHP_EOL;
         }
@@ -211,15 +211,15 @@ class HTML extends Generator
      */
     protected function print_code_comparison_block(\Dom_Node $node)
     {
-        $code_blocks = $node->get_elements_by_tag_name('code');
-        $first_title = $code_blocks->item(0)->get_attribute('title');
+        $code_blocks = $node->getElementsByTagName('code');
+        $first_title = $code_blocks->item(0)->getAttribute('title');
         $first = trim($code_blocks->item(0)->node_value);
         $first = str_replace('<?php', '&lt;?php', $first);
         $first = str_replace("\n", '</br>', $first);
         $first = str_replace(' ', '&nbsp;', $first);
         $first = str_replace('<em>', '<span class="code-comparison-highlight">', $first);
         $first = str_replace('</em>', '</span>', $first);
-        $second_title = $code_blocks->item(1)->get_attribute('title');
+        $second_title = $code_blocks->item(1)->getAttribute('title');
         $second = trim($code_blocks->item(1)->node_value);
         $second = str_replace('<?php', '&lt;?php', $second);
         $second = str_replace("\n", '</br>', $second);

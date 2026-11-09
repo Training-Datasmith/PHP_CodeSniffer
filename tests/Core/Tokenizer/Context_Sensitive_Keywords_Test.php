@@ -28,7 +28,7 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
      */
     public function testStrings($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token = $this->getTargetToken($testMarker, (Tokens::$contextSensitiveKeywords + [T_STRING, T_NULL, T_FALSE, T_TRUE, T_PARENT, T_SELF]));
 
@@ -165,7 +165,7 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
      */
     public function testKeywords($testMarker, $expectedTokenType)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $token = $this->getTargetToken(
             $testMarker,

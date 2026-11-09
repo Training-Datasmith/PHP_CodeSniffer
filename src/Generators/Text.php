@@ -111,9 +111,9 @@ class Text extends Generator
      */
     protected function print_code_comparison_block(\Dom_Node $node)
     {
-        $code_blocks = $node->get_elements_by_tag_name('code');
+        $code_blocks = $node->getElementsByTagName('code');
         $first = trim($code_blocks->item(0)->node_value);
-        $first_title = $code_blocks->item(0)->get_attribute('title');
+        $first_title = $code_blocks->item(0)->getAttribute('title');
         $first_title_lines = [];
         $temp_title = '';
         $words = explode(' ', $first_title);
@@ -144,7 +144,7 @@ class Text extends Generator
         $first = str_replace('</em>', '', $first);
         $first_lines = explode("\n", $first);
         $second = trim($code_blocks->item(1)->node_value);
-        $second_title = $code_blocks->item(1)->get_attribute('title');
+        $second_title = $code_blocks->item(1)->getAttribute('title');
         $second_title_lines = [];
         $temp_title = '';
         $words = explode(' ', $second_title);

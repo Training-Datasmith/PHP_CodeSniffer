@@ -1,0 +1,10 @@
+# External-tool sniffs (Config::getExecutablePath unavailable in the system-test image).
+PHP_CodeSniffer\Standards\Generic\Tests\Debug\CSSLintUnitTest::testSniff
+PHP_CodeSniffer\Standards\Generic\Tests\Debug\ClosureLinterUnitTest::testSniff
+PHP_CodeSniffer\Standards\Generic\Tests\Debug\ESLintUnitTest::testSniff
+PHP_CodeSniffer\Standards\Generic\Tests\Debug\JSHintUnitTest::testSniff
+PHP_CodeSniffer\Standards\Squiz\Tests\Debug\JSLintUnitTest::testSniff
+PHP_CodeSniffer\Standards\Squiz\Tests\Debug\JavaScriptLintUnitTest::testSniff
+PHP_CodeSniffer\Standards\Zend\Tests\Debug\CodeAnalyzerUnitTest::testSniff
+# Subversion sniff (no SVN metadata in CI).
+PHP_CodeSniffer\Standards\Generic\Tests\VersionControl\SubversionPropertiesUnitTest::testSniff

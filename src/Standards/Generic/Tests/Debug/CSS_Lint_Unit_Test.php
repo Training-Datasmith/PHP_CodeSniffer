@@ -23,7 +23,7 @@ class CSSLintUnitTest extends AbstractSniffUnitTest
      */
     protected function shouldSkipTest()
     {
-        $csslintPath = Config::getExecutablePath('csslint');
+        $csslintPath = Config::get_executable_path('csslint');
         if ($csslintPath === null) {
             return true;
         }

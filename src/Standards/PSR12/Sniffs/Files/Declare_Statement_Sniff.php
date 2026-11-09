@@ -213,7 +213,7 @@ class Declare_Statement_Sniff implements Sniff
                     for ($i = $prev_token + 1; $i < $token; $i++) {
                         $phpcs_file->fixer->replace_token($i, '');
                     }
-                    $phpcs_file->fixer->add_new_line_before($token);
+                    $phpcs_file->fixer->add_newline_before($token);
                     $phpcs_file->fixer->end_changeset();
                 }
             }

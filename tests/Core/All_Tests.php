@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace PHP_CodeSniffer\Tests\Core;
 
+use PHP_CodeSniffer\Autoload;
 use PHP_CodeSniffer\Tests\FileList;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\TestRunner;
@@ -38,18 +39,19 @@ class AllTests
     {
         $suite = new TestSuite('PHP CodeSniffer Core');
 
-        $testFileIterator = new FileList(__DIR__, '', '`Test\.php$`Di');
+        $testFileIterator = new FileList(__DIR__, '', '`_Test\.php$`Di');
         foreach ($testFileIterator->fileIterator as $file) {
-            if (strpos($file, 'AbstractMethodUnitTest.php') !== false) {
+            $filePath = $file->getPathname();
+            if (stripos($filePath, 'Abstract_Method_Unit_Test.php') !== false
+                || stripos($filePath, 'AbstractMethodUnitTest.php') !== false
+            ) {
                 continue;
             }
 
-            include_once $file;
-
-            $class = str_replace(__DIR__, '', $file);
-            $class = str_replace('.php', '', $class);
-            $class = str_replace('/', '\\', $class);
-            $class = 'PHP_CodeSniffer\Tests\Core'.$class;
+            $class = Autoload::loadFile($filePath);
+            if (is_string($class) === false || $class === '') {
+                throw new \RuntimeException('Could not determine test class for '.$file);
+            }
 
             $suite->addTestSuite($class);
         }

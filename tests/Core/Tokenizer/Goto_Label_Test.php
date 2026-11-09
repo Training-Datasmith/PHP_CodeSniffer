@@ -28,11 +28,11 @@ class GotoLabelTest extends AbstractMethodUnitTest
      */
     public function testGotoStatement($testMarker, $testContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $label = $this->getTargetToken($testMarker, T_STRING);
 
-        $this->assertInternalType('int', $label);
+        $this->assertIsInt($label);
         $this->assertSame($testContent, $tokens[$label]['content']);
 
     }//end testGotoStatement()
@@ -72,11 +72,11 @@ class GotoLabelTest extends AbstractMethodUnitTest
      */
     public function testGotoDeclaration($testMarker, $testContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $label = $this->getTargetToken($testMarker, T_GOTO_LABEL);
 
-        $this->assertInternalType('int', $label);
+        $this->assertIsInt($label);
         $this->assertSame($testContent, $tokens[$label]['content']);
 
     }//end testGotoDeclaration()
@@ -116,7 +116,7 @@ class GotoLabelTest extends AbstractMethodUnitTest
      */
     public function testNotAGotoDeclaration($testMarker, $testContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
         $target = $this->getTargetToken($testMarker, [T_GOTO_LABEL, T_STRING], $testContent);
 
         $this->assertSame(T_STRING, $tokens[$target]['code']);

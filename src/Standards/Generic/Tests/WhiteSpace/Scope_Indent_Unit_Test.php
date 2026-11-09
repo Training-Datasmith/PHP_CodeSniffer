@@ -27,9 +27,9 @@ class ScopeIndentUnitTest extends AbstractSniffUnitTest
     {
         // Tab width setting is only needed for the tabbed file.
         if ($testFile === 'ScopeIndentUnitTest.2.inc') {
-            $config->tabWidth = 4;
+            $config->tab_width = 4;
         } else {
-            $config->tabWidth = 0;
+            $config->tab_width = 0;
         }
 
     }//end setCliValues()

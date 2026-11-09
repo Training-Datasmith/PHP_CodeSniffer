@@ -11,7 +11,7 @@ declare (strict_types=1);
 namespace Php_code_Sniffer\Standards\PEAR\Sniffs\White_Space;
 
 use Php_code_Sniffer\Standards\Generic\Sniffs\White_Space\Scope_Indent_Sniff as GenericScopeIndentSniff;
-class Scope_Indent_Sniff extends Generic_Scope_Indent_Sniff
+class Scope_Indent_Sniff extends GenericScopeIndentSniff
 {
     /**
      * Any scope openers that should not cause an indent.

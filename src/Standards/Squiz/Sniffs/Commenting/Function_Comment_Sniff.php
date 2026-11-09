@@ -14,7 +14,7 @@ use Php_code_Sniffer\Config;
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Standards\PEAR\Sniffs\Commenting\Function_Comment_Sniff as PEARFunctionCommentSniff;
 use Php_code_Sniffer\Util\Common;
-class Function_Comment_Sniff extends Pear_Function_Comment_Sniff
+class Function_Comment_Sniff extends PEARFunctionCommentSniff
 {
     /**
      * Whether to skip inheritdoc comments.

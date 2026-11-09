@@ -27,6 +27,22 @@ if (is_file(__DIR__.'/../autoload.php') === true) {
     include_once 'PHP/CodeSniffer/autoload.php';
 }
 
+$exceptionMap = [
+    ['Php_code_Sniffer\\Exceptions\\RuntimeException', 'PHP_CodeSniffer\\Exceptions\\RuntimeException', 'Runtime_Exception.php'],
+    ['Php_code_Sniffer\\Exceptions\\Tokenizer_Exception', 'PHP_CodeSniffer\\Exceptions\\TokenizerException', 'Tokenizer_Exception.php'],
+    ['Php_code_Sniffer\\Exceptions\\Deep_Exit_Exception', 'PHP_CodeSniffer\\Exceptions\\DeepExitException', 'Deep_Exit_Exception.php'],
+    ['Php_code_Sniffer\\Exceptions\\Deep_Exit_Exception', 'PHP_CodeSniffer\\Exceptions\\Deep_Exit_Exception', 'Deep_Exit_Exception.php'],
+    ['Php_code_Sniffer\\Exceptions\\Tokenizer_Exception', 'PHP_CodeSniffer\\Exceptions\\Tokenizer_Exception', 'Tokenizer_Exception.php'],
+];
+foreach ($exceptionMap as [$modern, $legacy, $fileName]) {
+    if (class_exists($modern, false) === false && is_file(__DIR__.'/../src/Exceptions/'.$fileName) === true) {
+        include_once __DIR__.'/../src/Exceptions/'.$fileName;
+    }
+    if (class_exists($modern, false) === true && class_exists($legacy, false) === false) {
+        class_alias($modern, $legacy);
+    }
+}
+
 $tokens = new \PHP_CodeSniffer\Util\Tokens();
 
 // Compatibility for PHPUnit < 6 and PHPUnit 6+.

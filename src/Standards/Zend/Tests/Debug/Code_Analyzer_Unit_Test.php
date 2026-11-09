@@ -23,7 +23,7 @@ class CodeAnalyzerUnitTest extends AbstractSniffUnitTest
      */
     protected function shouldSkipTest()
     {
-        $analyzerPath = Config::getExecutablePath('zend_ca');
+        $analyzerPath = Config::get_executable_path('zend_ca');
         if ($analyzerPath === null) {
             return true;
         }

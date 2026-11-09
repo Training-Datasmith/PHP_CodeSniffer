@@ -13,6 +13,7 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use stdClass;
 
+#[\AllowDynamicProperties]
 class SetPropertyAllowedViaStdClassSniff extends stdClass implements Sniff
 {
     public function register()

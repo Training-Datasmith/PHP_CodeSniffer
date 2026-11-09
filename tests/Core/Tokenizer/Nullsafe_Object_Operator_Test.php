@@ -36,7 +36,7 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
      */
     public function testObjectOperator()
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $operator = $this->getTargetToken('/* testObjectOperator */', $this->find);
         $this->assertSame(T_OBJECT_OPERATOR, $tokens[$operator]['code'], 'Failed asserting code is object operator');
@@ -56,7 +56,7 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
      */
     public function testNullsafeObjectOperator($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $operator = $this->getTargetToken($testMarker, $this->find);
         $this->assertSame(T_NULLSAFE_OBJECT_OPERATOR, $tokens[$operator]['code'], 'Failed asserting code is nullsafe object operator');
@@ -94,14 +94,14 @@ class NullsafeObjectOperatorTest extends AbstractMethodUnitTest
      */
     public function testTernaryThen($testMarker, $testObjectOperator = false)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $operator = $this->getTargetToken($testMarker, $this->find);
         $this->assertSame(T_INLINE_THEN, $tokens[$operator]['code'], 'Failed asserting code is inline then');
         $this->assertSame('T_INLINE_THEN', $tokens[$operator]['type'], 'Failed asserting type is inline then');
 
         if ($testObjectOperator === true) {
-            $next = self::$phpcsFile->findNext(Tokens::$emptyTokens, ($operator + 1), null, true);
+            $next = self::$phpcsFile->find_next(Tokens::$emptyTokens, ($operator + 1), null, true);
             $this->assertSame(T_OBJECT_OPERATOR, $tokens[$next]['code'], 'Failed asserting code is object operator');
             $this->assertSame('T_OBJECT_OPERATOR', $tokens[$next]['type'], 'Failed asserting type is object operator');
         }

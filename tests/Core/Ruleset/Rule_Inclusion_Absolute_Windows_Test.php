@@ -43,7 +43,7 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         if (DIRECTORY_SEPARATOR === '/') {
             $this->markTestSkipped('Windows specific test');
@@ -80,7 +80,7 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         if (DIRECTORY_SEPARATOR !== '/') {
             file_put_contents($this->standard, $this->contents);
@@ -98,11 +98,11 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
     {
         // Test that the sniff is correctly registered.
         $this->assertObjectHasAttribute('sniffCodes', $this->ruleset);
-        $this->assertCount(1, $this->ruleset->sniffCodes);
-        $this->assertArrayHasKey('Generic.Formatting.SpaceAfterCast', $this->ruleset->sniffCodes);
+        $this->assertCount(1, $this->ruleset->sniff_codes);
+        $this->assertArrayHasKey('Generic.Formatting.SpaceAfterCast', $this->ruleset->sniff_codes);
         $this->assertSame(
             'PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterCastSniff',
-            $this->ruleset->sniffCodes['Generic.Formatting.SpaceAfterCast']
+            $this->ruleset->sniff_codes['Generic.Formatting.SpaceAfterCast']
         );
 
         // Test that the sniff property is correctly set.

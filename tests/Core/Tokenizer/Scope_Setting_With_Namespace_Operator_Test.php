@@ -30,7 +30,7 @@ class ScopeSettingWithNamespaceOperatorTest extends AbstractMethodUnitTest
      */
     public function testScopeSetting($testMarker, $tokenTypes, $open = T_OPEN_CURLY_BRACKET, $close = T_CLOSE_CURLY_BRACKET)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, $tokenTypes);
         $opener = $this->getTargetToken($testMarker, $open);

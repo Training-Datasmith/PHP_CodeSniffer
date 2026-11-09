@@ -36,7 +36,7 @@ class ErrorSuppressionTest extends TestCase
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = ['Generic.PHP.LowerCaseConstant'];
 
@@ -47,8 +47,8 @@ class ErrorSuppressionTest extends TestCase
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
     }//end testSuppressError()
 
@@ -167,7 +167,7 @@ class ErrorSuppressionTest extends TestCase
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = ['Generic.PHP.LowerCaseConstant'];
 
@@ -184,8 +184,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
     }//end testSuppressSomeErrors()
 
@@ -258,7 +258,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = ['Generic.Commenting.Todo'];
 
@@ -274,8 +274,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedWarnings, $file->getWarningCount());
-        $this->assertCount($expectedWarnings, $file->getWarnings());
+        $this->assertSame($expectedWarnings, $file->get_warning_count());
+        $this->assertCount($expectedWarnings, $file->get_warnings());
 
     }//end testSuppressWarning()
 
@@ -341,7 +341,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = ['Generic.PHP.LowerCaseConstant'];
 
@@ -357,8 +357,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
     }//end testSuppressLine()
 
@@ -423,7 +423,7 @@ EOD;
      */
     public function testSuppressLineMidLine()
     {
-        $config            = new Config();
+        $config            = new Config([]);
         $config->standards = ['Generic'];
         $config->sniffs    = ['Generic.PHP.LowerCaseConstant'];
 
@@ -433,8 +433,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame(0, $file->getErrorCount());
-        $this->assertCount(0, $file->getErrors());
+        $this->assertSame(0, $file->get_error_count());
+        $this->assertCount(0, $file->get_errors());
 
     }//end testSuppressLineMidLine()
 
@@ -447,7 +447,7 @@ EOD;
      */
     public function testSuppressLineWithinDocblock()
     {
-        $config            = new Config();
+        $config            = new Config([]);
         $config->standards = ['Generic'];
         $config->sniffs    = ['Generic.Files.LineLength'];
 
@@ -466,8 +466,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame(0, $file->getErrorCount());
-        $this->assertCount(0, $file->getErrors());
+        $this->assertSame(0, $file->get_error_count());
+        $this->assertCount(0, $file->get_errors());
 
     }//end testSuppressLineWithinDocblock()
 
@@ -487,7 +487,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = ['Generic.PHP.LowerCaseConstant'];
 
@@ -504,8 +504,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame(0, $file->getErrorCount());
-        $this->assertCount(0, $file->getErrors());
+        $this->assertSame(0, $file->get_error_count());
+        $this->assertCount(0, $file->get_errors());
 
     }//end testNestedSuppressLine()
 
@@ -576,7 +576,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['PEAR'];
             $config->sniffs    = ['PEAR.Functions.FunctionDeclaration'];
 
@@ -597,8 +597,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
     }//end testSuppressScope()
 
@@ -672,7 +672,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = ['Generic.Commenting.Todo'];
 
@@ -690,8 +690,8 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedWarnings, $file->getWarningCount());
-        $this->assertCount($expectedWarnings, $file->getWarnings());
+        $this->assertSame($expectedWarnings, $file->get_warning_count());
+        $this->assertCount($expectedWarnings, $file->get_warnings());
 
     }//end testSuppressFile()
 
@@ -765,7 +765,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = [
                 'Generic.PHP.LowerCaseConstant',
@@ -784,11 +784,11 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
-        $this->assertSame($expectedWarnings, $file->getWarningCount());
-        $this->assertCount($expectedWarnings, $file->getWarnings());
+        $this->assertSame($expectedWarnings, $file->get_warning_count());
+        $this->assertCount($expectedWarnings, $file->get_warnings());
 
     }//end testDisableSelected()
 
@@ -875,7 +875,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = [
                 'Generic.PHP.LowerCaseConstant',
@@ -889,11 +889,11 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
-        $this->assertSame($expectedWarnings, $file->getWarningCount());
-        $this->assertCount($expectedWarnings, $file->getWarnings());
+        $this->assertSame($expectedWarnings, $file->get_warning_count());
+        $this->assertCount($expectedWarnings, $file->get_warnings());
 
     }//end testEnableSelected()
 
@@ -1048,7 +1048,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = [
                 'Generic.PHP.LowerCaseConstant',
@@ -1067,11 +1067,11 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
-        $this->assertSame($expectedWarnings, $file->getWarningCount());
-        $this->assertCount($expectedWarnings, $file->getWarnings());
+        $this->assertSame($expectedWarnings, $file->get_warning_count());
+        $this->assertCount($expectedWarnings, $file->get_warnings());
 
     }//end testIgnoreSelected()
 
@@ -1138,7 +1138,7 @@ EOD;
         static $config, $ruleset;
 
         if (isset($config, $ruleset) === false) {
-            $config            = new Config();
+            $config            = new Config([]);
             $config->standards = ['Generic'];
             $config->sniffs    = [
                 'Generic.PHP.LowerCaseConstant',
@@ -1152,11 +1152,11 @@ EOD;
         $file    = new DummyFile($content, $ruleset, $config);
         $file->process();
 
-        $this->assertSame($expectedErrors, $file->getErrorCount());
-        $this->assertCount($expectedErrors, $file->getErrors());
+        $this->assertSame($expectedErrors, $file->get_error_count());
+        $this->assertCount($expectedErrors, $file->get_errors());
 
-        $this->assertSame($expectedWarnings, $file->getWarningCount());
-        $this->assertCount($expectedWarnings, $file->getWarnings());
+        $this->assertSame($expectedWarnings, $file->get_warning_count());
+        $this->assertCount($expectedWarnings, $file->get_warnings());
 
     }//end testCommenting()
 

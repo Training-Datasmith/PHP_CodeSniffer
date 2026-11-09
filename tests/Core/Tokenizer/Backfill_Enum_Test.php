@@ -30,7 +30,7 @@ class BackfillEnumTest extends AbstractMethodUnitTest
      */
     public function testEnums($testMarker, $testContent, $openerOffset, $closerOffset)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $enum = $this->getTargetToken($testMarker, [T_ENUM, T_STRING], $testContent);
 
@@ -136,7 +136,7 @@ class BackfillEnumTest extends AbstractMethodUnitTest
      */
     public function testNotEnums($testMarker, $testContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, [T_ENUM, T_STRING], $testContent);
         $this->assertSame(T_STRING, $tokens[$target]['code']);

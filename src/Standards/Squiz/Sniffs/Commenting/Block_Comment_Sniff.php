@@ -43,11 +43,12 @@ class Block_Comment_Sniff implements Sniff
     public function process(File $phpcs_file, $stack_ptr)
     {
         if ($this->tab_width === null) {
-            if (isset($phpcs_file->config->tab_width) === false || $phpcs_file->config->tab_width === 0) {
+            $config_tab_width = $phpcs_file->config->tab_width;
+            if ($config_tab_width === null || $config_tab_width === 0) {
                 // We have no idea how wide tabs are, so assume 4 spaces for fixing.
                 $this->tab_width = 4;
             } else {
-                $this->tab_width = $phpcs_file->config->tab_width;
+                $this->tab_width = (int) $config_tab_width;
             }
         }
         $tokens = $phpcs_file->get_tokens();
@@ -193,8 +194,8 @@ class Block_Comment_Sniff implements Sniff
                 if ($fix === true) {
                     if (isset($tokens[$comment_lines[1]]['orig_content']) === true && $tokens[$comment_lines[1]]['orig_content'][0] === "\t") {
                         // Line is indented using tabs.
-                        $padding = str_repeat("\t", floor($expected / $this->tab_width));
-                        $padding .= str_repeat(' ', $expected % $this->tab_width);
+                        $padding = str_repeat("\t", (int) floor($expected / $this->tab_width));
+                        $padding .= str_repeat(' ', (int) ($expected % $this->tab_width));
                     } else {
                         $padding = str_repeat(' ', $expected);
                     }
@@ -243,8 +244,8 @@ class Block_Comment_Sniff implements Sniff
                 if ($fix === true) {
                     if (isset($tokens[$line]['orig_content']) === true && $tokens[$line]['orig_content'][0] === "\t") {
                         // Line is indented using tabs.
-                        $padding = str_repeat("\t", floor($expected / $this->tab_width));
-                        $padding .= str_repeat(' ', $expected % $this->tab_width);
+                        $padding = str_repeat("\t", (int) floor($expected / $this->tab_width));
+                        $padding .= str_repeat(' ', (int) ($expected % $this->tab_width));
                     } else {
                         $padding = str_repeat(' ', $expected);
                     }
@@ -278,8 +279,8 @@ class Block_Comment_Sniff implements Sniff
                 if ($fix === true) {
                     if (isset($tokens[$line]['orig_content']) === true && $tokens[$line]['orig_content'][0] === "\t") {
                         // Line is indented using tabs.
-                        $padding = str_repeat("\t", floor($expected / $this->tab_width));
-                        $padding .= str_repeat(' ', $expected % $this->tab_width);
+                        $padding = str_repeat("\t", (int) floor($expected / $this->tab_width));
+                        $padding .= str_repeat(' ', (int) ($expected % $this->tab_width));
                     } else {
                         $padding = str_repeat(' ', $expected);
                     }

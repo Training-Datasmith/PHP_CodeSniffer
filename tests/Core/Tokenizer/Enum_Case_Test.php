@@ -28,7 +28,7 @@ class EnumCaseTest extends AbstractMethodUnitTest
      */
     public function testEnumCases($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $enumCase = $this->getTargetToken($testMarker, [T_ENUM_CASE, T_CASE]);
 
@@ -75,7 +75,7 @@ class EnumCaseTest extends AbstractMethodUnitTest
      */
     public function testNotEnumCases($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $case = $this->getTargetToken($testMarker, [T_ENUM_CASE, T_CASE]);
 
@@ -121,7 +121,7 @@ class EnumCaseTest extends AbstractMethodUnitTest
      */
     public function testKeywordAsEnumCaseNameShouldBeString($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $enumCaseName = $this->getTargetToken($testMarker, [T_STRING, T_INTERFACE, T_TRAIT, T_ENUM, T_FUNCTION, T_FALSE, T_DEFAULT, T_ARRAY]);
 

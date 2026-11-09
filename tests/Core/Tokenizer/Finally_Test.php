@@ -27,7 +27,7 @@ class FinallyTest extends AbstractMethodUnitTest
      */
     public function testFinallyKeyword($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, [T_FINALLY, T_STRING]);
         $this->assertSame(T_FINALLY, $tokens[$target]['code']);
@@ -64,7 +64,7 @@ class FinallyTest extends AbstractMethodUnitTest
      */
     public function testFinallyNonKeyword($testMarker)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, [T_FINALLY, T_STRING]);
         $this->assertSame(T_STRING, $tokens[$target]['code']);

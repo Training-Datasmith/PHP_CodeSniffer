@@ -29,7 +29,7 @@ class HeredocStringTest extends AbstractMethodUnitTest
      */
     public function testHeredocString($testMarker, $expectedContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $target = $this->getTargetToken($testMarker, T_HEREDOC);
         $this->assertSame($expectedContent."\n", $tokens[$target]['content']);
@@ -49,7 +49,7 @@ class HeredocStringTest extends AbstractMethodUnitTest
      */
     public function testHeredocStringWrapped($testMarker, $expectedContent)
     {
-        $tokens = self::$phpcsFile->getTokens();
+        $tokens = self::$phpcsFile->get_tokens();
 
         $testMarker = substr($testMarker, 0, -3).'Wrapped */';
         $target     = $this->getTargetToken($testMarker, T_HEREDOC);

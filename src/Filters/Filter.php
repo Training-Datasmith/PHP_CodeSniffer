@@ -13,8 +13,8 @@ namespace Php_code_Sniffer\Filters;
 use Php_code_Sniffer\Config;
 use Php_code_Sniffer\Ruleset;
 use Php_code_Sniffer\Util;
-use Return_Type_Will_Change;
-class Filter extends \Recursive_Filter_Iterator
+use ReturnTypeWillChange;
+class Filter extends \RecursiveFilterIterator
 {
     /**
      * The top-level path we are filtering.
@@ -62,7 +62,7 @@ class Filter extends \Recursive_Filter_Iterator
      * @param \PHP_CodeSniffer\Config  $config   The config data for the run.
      * @param \PHP_CodeSniffer\Ruleset $ruleset  The ruleset used for the run.
      */
-    public function __construct(\Recursive_Iterator $iterator, $basedir, Config $config, Ruleset $ruleset)
+    public function __construct(\RecursiveIterator $iterator, $basedir, Config $config, Ruleset $ruleset)
     {
         parent::__construct($iterator);
         $this->basedir = $basedir;
@@ -78,7 +78,7 @@ class Filter extends \Recursive_Filter_Iterator
      *
      * @return bool
      */
-    #[Return_Type_Will_Change]
+    #[\ReturnTypeWillChange]
     public function accept()
     {
         $file_path = $this->current();
@@ -114,11 +114,11 @@ class Filter extends \Recursive_Filter_Iterator
      *
      * @return \RecursiveIterator
      */
-    #[Return_Type_Will_Change]
+    #[\ReturnTypeWillChange]
     public function get_children()
     {
         $filter_class = get_called_class();
-        $children = new $filter_class(new \Recursive_Directory_Iterator($this->current(), \Recursive_Directory_Iterator::SKIP_DOTS | \Filesystem_Iterator::FOLLOW_SYMLINKS), $this->basedir, $this->config, $this->ruleset);
+        $children = new $filter_class(new \RecursiveDirectoryIterator($this->current(), \RecursiveDirectoryIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS), $this->basedir, $this->config, $this->ruleset);
         // Set the ignore patterns so we don't have to generate them again.
         $children->ignore_dir_patterns = $this->ignore_dir_patterns;
         $children->ignore_file_patterns = $this->ignore_file_patterns;

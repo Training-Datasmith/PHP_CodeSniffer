@@ -13,7 +13,7 @@ namespace Php_code_Sniffer\Standards\PSR2\Sniffs\Methods;
 use Php_code_Sniffer\Files\File;
 use Php_code_Sniffer\Standards\PEAR\Sniffs\Functions\Function_Call_Signature_Sniff as PEARFunctionCallSignatureSniff;
 use Php_code_Sniffer\Util\Tokens;
-class Function_Call_Signature_Sniff extends Pear_Function_Call_Signature_Sniff
+class Function_Call_Signature_Sniff extends PEARFunctionCallSignatureSniff
 {
     /**
      * If TRUE, multiple arguments can be defined per line in a multi-line call.
