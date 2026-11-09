@@ -637,16 +637,33 @@ class PHP extends Tokenizer
             }
             //end if
             /*
-                "readonly" keyword for PHP < 8.1
+                "readonly" keyword for PHP < 8.1, and function-call context on PHP >= 8.1.
             */
-            if (PHP_VERSION_ID < 80100 && $token_is_array === true && strtolower($token[1]) === 'readonly' && isset($this->tstring_contexts[$final_tokens[$last_not_empty_token]['code']]) === false) {
+            if ($token_is_array === true
+                && ($last_not_empty_token === null
+                || isset($final_tokens[$last_not_empty_token]['code']) === false
+                || isset($this->tstring_contexts[$final_tokens[$last_not_empty_token]['code']]) === false)
+                && ((PHP_VERSION_ID < 80100 && strtolower($token[1]) === 'readonly')
+                || (PHP_VERSION_ID >= 80100 && $token[0] === T_READONLY))
+            ) {
                 // Get the next non-whitespace token.
                 for ($i = $stack_ptr + 1; $i < $num_tokens; $i++) {
                     if (is_array($tokens[$i]) === false || $tokens[$i][0] !== T_WHITESPACE) {
                         break;
                     }
                 }
-                if (isset($tokens[$i]) === false || $tokens[$i] !== '(') {
+                $next_is_paren = isset($tokens[$i]) === true && is_array($tokens[$i]) === false && $tokens[$i] === '(';
+                if (PHP_VERSION_ID < 80100) {
+                    if ($next_is_paren === false) {
+                        $final_tokens[$new_stack_ptr] = ['code' => T_READONLY, 'type' => 'T_READONLY', 'content' => $token[1]];
+                        $new_stack_ptr++;
+                        continue;
+                    }
+                } elseif ($next_is_paren === true) {
+                    $final_tokens[$new_stack_ptr] = ['code' => T_STRING, 'type' => 'T_STRING', 'content' => $token[1]];
+                    $new_stack_ptr++;
+                    continue;
+                } elseif (PHP_VERSION_ID >= 80100 && $token[0] === T_READONLY) {
                     $final_tokens[$new_stack_ptr] = ['code' => T_READONLY, 'type' => 'T_READONLY', 'content' => $token[1]];
                     $new_stack_ptr++;
                     continue;

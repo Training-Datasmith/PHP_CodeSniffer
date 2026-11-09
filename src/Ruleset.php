@@ -1140,6 +1140,32 @@ class Ruleset
                     $this->set_sniff_property($sniff_class, $name, $settings);
                 }
             }
+            try {
+                $sniff_file = Autoload::getLoadedFileName($sniff_class);
+            } catch (\Exception $e) {
+                $sniff_file = null;
+            }
+            if ($sniff_file !== null) {
+                foreach ($this->ruleset as $ruleset_code => $ruleset_data) {
+                    if (isset($ruleset_data['properties']) === false) {
+                        continue;
+                    }
+                    if (is_file($ruleset_code) === false && substr($ruleset_code, -4) !== '.php') {
+                        continue;
+                    }
+                    $ruleset_path = Util\Common::realpath($ruleset_code);
+                    if ($ruleset_path === false) {
+                        $ruleset_path = Util\Common::realpath($this->config->basepath.DIRECTORY_SEPARATOR.$ruleset_code);
+                    }
+                    $basename_match = basename($ruleset_code) === basename($sniff_file);
+                    if ($basename_match === false && ($ruleset_path === false || $ruleset_path !== $sniff_file)) {
+                        continue;
+                    }
+                    foreach ($ruleset_data['properties'] as $name => $settings) {
+                        $this->set_sniff_property($sniff_class, $name, $settings);
+                    }
+                }
+            }
             $tokenizers = [];
             $vars = get_class_vars($sniff_class);
             if (isset($vars['supported_tokenizers']) === true) {
@@ -1217,7 +1243,7 @@ class Ruleset
         if (is_array($settings) === false || isset($settings['scope'], $settings['value']) === false) {
             // This will be an "old" format value.
             $settings = ['value' => $settings, 'scope' => 'standard'];
-            trigger_error(__FUNCTION__ . ': the format of the $settings parameter has changed from (mixed) $value to array(\'scope\' => \'sniff|standard\', \'value\' => $value). Please update your integration code. See PR #3629 for more information.', E_USER_DEPRECATED);
+            trigger_error('the format of the $settings parameter has changed from (mixed) $value to array(\'scope\' => \'sniff|standard\', \'value\' => $value). Please update your integration code. See PR #3629 for more information.', E_USER_DEPRECATED);
         }
         $is_settable = false;
         $sniff_object = $this->sniffs[$sniff_class];

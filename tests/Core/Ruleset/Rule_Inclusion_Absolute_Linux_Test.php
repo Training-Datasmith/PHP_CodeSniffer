@@ -96,18 +96,19 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
     public function testLinuxStylePathRuleInclusion()
     {
         // Test that the sniff is correctly registered.
-        $this->assertObjectHasAttribute('sniffCodes', $this->ruleset);
+        $this->assertTrue(property_exists($this->ruleset, 'sniff_codes'));
         $this->assertCount(1, $this->ruleset->sniff_codes);
         $this->assertArrayHasKey('Generic.Formatting.SpaceAfterNot', $this->ruleset->sniff_codes);
+        $registeredClass = $this->ruleset->sniff_codes['Generic.Formatting.SpaceAfterNot'];
         $this->assertSame(
-            'PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff',
-            $this->ruleset->sniff_codes['Generic.Formatting.SpaceAfterNot']
+            'Php_code_Sniffer\Standards\Generic\Sniffs\Formatting\Space_After_Not_Sniff',
+            $registeredClass
         );
 
         // Test that the sniff properties are correctly set.
         $this->assertSame(
             '10',
-            $this->ruleset->sniffs['PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff']->spacing
+            (string) $this->ruleset->sniffs[$registeredClass]->spacing
         );
 
     }//end testLinuxStylePathRuleInclusion()

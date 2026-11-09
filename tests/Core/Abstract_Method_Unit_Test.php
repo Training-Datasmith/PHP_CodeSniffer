@@ -14,12 +14,10 @@ namespace PHP_CodeSniffer\Tests\Core;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Files\DummyFile;
 use PHP_CodeSniffer\Ruleset;
-use PHP_CodeSniffer\Tests\AssertArraySubsetTrait;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractMethodUnitTest extends TestCase
 {
-    use AssertArraySubsetTrait;
     /**
      * The file extension of the test case file (without leading dot).
      *
@@ -135,5 +133,33 @@ abstract class AbstractMethodUnitTest extends TestCase
         return $target;
 
     }//end getTargetToken()
+
+    /**
+     * PHPUnit 8 exposes assertArraySubset(); PHPUnit 9+ removed it.
+     *
+     * @param array       $subset  Subset expected to be contained in $array.
+     * @param array       $array   Array to compare against.
+     * @param bool        $checkForObjectIdentity Passed through on PHPUnit 8.
+     * @param string|null $message Optional assertion message.
+     *
+     * @return void
+     */
+    protected function assert_array_subset(array $subset, array $array, $checkForObjectIdentity = false, $message = '')
+    {
+        if (is_callable([TestCase::class, 'assertArraySubset']) === true) {
+            parent::assertArraySubset($subset, $array, $checkForObjectIdentity, $message);
+
+            return;
+        }
+
+        foreach ($subset as $key => $value) {
+            $this->assertArrayHasKey($key, $array, $message);
+            if (is_array($value) === true && is_array($array[$key]) === true) {
+                $this->assert_array_subset($value, $array[$key], $checkForObjectIdentity, $message);
+            } else {
+                $this->assertSame($value, $array[$key], $message);
+            }
+        }
+    }
 
 }//end class

@@ -129,7 +129,7 @@ class File_Comment_Sniff implements Sniff
     protected function process_tags($phpcs_file, $stack_ptr, $comment_start)
     {
         $tokens = $phpcs_file->get_tokens();
-        if (get_class($this) === 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Commenting\FileCommentSniff') {
+        if (static::class === self::class) {
             $doc_block = 'file';
         } else {
             $doc_block = 'class';
@@ -169,7 +169,7 @@ class File_Comment_Sniff implements Sniff
                 }
                 continue;
             }
-            $method = 'process' . substr($tag, 1);
+            $method = 'process_' . strtolower(substr($tag, 1));
             if (method_exists($this, $method) === true) {
                 // Process each tag if a method is defined.
                 call_user_func([$this, $method], $phpcs_file, $tag_tokens[$tag]);

@@ -364,34 +364,40 @@ class SetSniffPropertyTest extends TestCase
     {
         $exceptionMsg = 'the format of the $settings parameter has changed from (mixed) $value to array(\'scope\' => \'sniff|standard\', \'value\' => $value). Please update your integration code. See PR #3629 for more information.';
 
-        if (method_exists($this, 'expectDeprecation') === true) {
-            $this->expectDeprecation();
-            $this->expectDeprecationMessage($exceptionMsg);
-        } else {
-            $exceptionClass = 'PHPUnit\Framework\Error\Deprecated';
-            if (class_exists($exceptionClass) === false) {
-                $exceptionClass = 'PHPUnit_Framework_Error_Deprecated';
+        $deprecationHandled = false;
+
+        set_error_handler(
+            static function ($errno, $errstr) use ($exceptionMsg, &$deprecationHandled) {
+                if ($errno === E_USER_DEPRECATED && $errstr === $exceptionMsg) {
+                    $deprecationHandled = true;
+
+                    return true;
+                }
+
+                return false;
             }
-            $this->expectException($exceptionClass);
-            $this->expectExceptionMessage($exceptionMsg);
+        );
+
+        try {
+            $name       = 'SetPropertyAllowedAsDeclared';
+            $sniffCode  = "Fixtures.Category.{$name}";
+            $sniffClass = 'Fixtures\Sniffs\Category\\'.$name.'Sniff';
+
+            // Set up the ruleset.
+            $standard = __DIR__."/{$name}Test.xml";
+            $config   = new Config(["--standard=$standard"]);
+            $ruleset  = new Ruleset($config);
+
+            $ruleset->set_sniff_property(
+                $sniffClass,
+                'arbitrarystring',
+                ['key' => 'value']
+            );
+        } finally {
+            restore_error_handler();
         }
 
-        $name       = 'SetPropertyAllowedAsDeclared';
-        $sniffCode  = "Fixtures.Category.{$name}";
-        $sniffClass = 'Fixtures\Sniffs\Category\\'.$name.'Sniff';
-
-        // Set up the ruleset.
-        $standard = __DIR__."/{$name}Test.xml";
-        $config   = new Config(["--standard=$standard"]);
-        $ruleset  = new Ruleset($config);
-
-        $propertyName = 'arbitrarystring';
-
-        $ruleset->set_sniff_property(
-            $sniffClass,
-            'arbitrarystring',
-            ['key' => 'value']
-        );
+        $this->assertTrue($deprecationHandled, 'Expected E_USER_DEPRECATED when using the old $settings array format.');
 
     }//end testDirectCallWithOldArrayFormatThrowsDeprecationNotice()
 

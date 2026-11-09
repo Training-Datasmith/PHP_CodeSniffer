@@ -58,7 +58,7 @@ class Class_Declaration_Sniff extends PSR2ClassDeclarationSniff
                     $blank_space = substr($prev_content, $eol_pos);
                     $spaces = strlen($blank_space);
                 } else {
-                    $spaces = 0;
+                    $spaces = strlen($prev_content);
                 }
                 if ($tokens[$stack_ptr - 2]['code'] !== T_ABSTRACT && $tokens[$stack_ptr - 2]['code'] !== T_FINAL && $tokens[$stack_ptr - 2]['code'] !== T_READONLY) {
                     if ($spaces !== 0) {
@@ -130,7 +130,7 @@ class Class_Declaration_Sniff extends PSR2ClassDeclarationSniff
                     $blank_space = substr($prev_content, $eol_pos);
                     $spaces = strlen($blank_space);
                 } else {
-                    $spaces = 0;
+                    $spaces = strlen($prev_content);
                 }
                 if ($spaces !== 0) {
                     if ($tokens[$close_brace - 1]['line'] !== $tokens[$close_brace]['line']) {

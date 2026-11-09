@@ -62,10 +62,11 @@ class Class_Declaration_Sniff extends PEARClassDeclarationSniff
             if ($prev_content !== $phpcs_file->eol_char) {
                 $eol_pos = strpos($prev_content, $phpcs_file->eol_char);
                 if ($eol_pos === false) {
-                    return;
+                    $spaces = strlen($prev_content);
+                } else {
+                    $blank_space = substr($prev_content, $eol_pos);
+                    $spaces = strlen($blank_space);
                 }
-                $blank_space = substr($prev_content, $eol_pos);
-                $spaces = strlen($blank_space);
                 if (in_array($tokens[$stack_ptr - 2]['code'], [T_ABSTRACT, T_FINAL, T_READONLY], true) === true && $spaces !== 1) {
                     $prev_content = strtolower($tokens[$stack_ptr - 2]['content']);
                     $error = 'Expected 1 space between %s and %s keywords; %s found';

@@ -97,18 +97,19 @@ class RuleInclusionAbsoluteWindowsTest extends TestCase
     public function testWindowsStylePathRuleInclusion()
     {
         // Test that the sniff is correctly registered.
-        $this->assertObjectHasAttribute('sniffCodes', $this->ruleset);
+        $this->assertTrue(property_exists($this->ruleset, 'sniff_codes'));
         $this->assertCount(1, $this->ruleset->sniff_codes);
         $this->assertArrayHasKey('Generic.Formatting.SpaceAfterCast', $this->ruleset->sniff_codes);
+        $registeredClass = $this->ruleset->sniff_codes['Generic.Formatting.SpaceAfterCast'];
         $this->assertSame(
-            'PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterCastSniff',
-            $this->ruleset->sniff_codes['Generic.Formatting.SpaceAfterCast']
+            'Php_code_Sniffer\Standards\Generic\Sniffs\Formatting\Space_After_Cast_Sniff',
+            $registeredClass
         );
 
         // Test that the sniff property is correctly set.
         $this->assertSame(
-            '10',
-            $this->ruleset->sniffs['PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterCastSniff']->spacing
+            10,
+            $this->ruleset->sniffs[$registeredClass]->spacing
         );
 
     }//end testWindowsStylePathRuleInclusion()

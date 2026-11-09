@@ -25,6 +25,14 @@ validate_phpunit_output() {
     printf '%s\n' "PHPUnit summary contains Warnings:"
     return 1
   fi
+  if printf '%s\n' "${stripped}" | grep -Eq '\bFailures:'; then
+    printf '%s\n' "PHPUnit summary contains Failures:"
+    return 1
+  fi
+  if printf '%s\n' "${stripped}" | grep -Eq '\bErrors:'; then
+    printf '%s\n' "PHPUnit summary contains Errors:"
+    return 1
+  fi
   if printf '%s\n' "${stripped}" | grep -Eq '\bRisky:'; then
     printf '%s\n' "PHPUnit summary contains Risky:"
     return 1
@@ -33,19 +41,33 @@ validate_phpunit_output() {
     printf '%s\n' "PHPUnit summary contains Incomplete:"
     return 1
   fi
-  if printf '%s\n' "${stripped}" | grep -Eq '^OK \([0-9]+ tests?, [0-9]+ assertions?\)$'; then
-    printf '%s\n' "${stripped}" | grep -Eo '^OK \([0-9]+ tests?, [0-9]+ assertions?\)$' | tail -n 1
-    return 0
+
+  local summary_line
+  summary_line="$(printf '%s\n' "${stripped}" | grep -E '^Tests: [0-9]+, Assertions: [0-9]+, Skipped: [0-9]+\.$' | tail -n 1)"
+  if [[ -z "${summary_line}" ]]; then
+    printf '%s\n' "PHPUnit output is missing anchored Tests/Assertions/Skipped summary line"
+    return 1
   fi
-  if printf '%s\n' "${stripped}" | grep -Fq 'OK, but incomplete, skipped, or risky tests!'; then
-    if ! printf '%s\n' "${stripped}" | grep -Eq '^Tests: [0-9]+, Assertions: [0-9]+, Skipped: [0-9]+'; then
-      printf '%s\n' "PHPUnit output missing Tests/Assertions/Skipped summary line"
-      return 1
-    fi
-    printf '%s\n' "${stripped}" | grep -E '^Tests: [0-9]+, Assertions: [0-9]+, Skipped: [0-9]+' | tail -n 1
+
+  if printf '%s\n' "${stripped}" | grep -qFx 'OK, but incomplete, skipped, or risky tests!'; then
+    printf '%s\n' "${summary_line}"
     printf '%s\n' "OK, but incomplete, skipped, or risky tests!"
     return 0
   fi
+
+  if printf '%s\n' "${stripped}" | grep -qFx 'OK, but incomplete, skipped, or useless tests!'; then
+    printf '%s\n' "${summary_line}"
+    printf '%s\n' "OK, but incomplete, skipped, or useless tests!"
+    return 0
+  fi
+
+  local ok_line
+  ok_line="$(printf '%s\n' "${stripped}" | grep -E '^OK \([0-9]+ tests?, [0-9]+ assertions?\)$' | tail -n 1)"
+  if [[ -n "${ok_line}" ]]; then
+    printf '%s\n' "${ok_line}"
+    return 0
+  fi
+
   printf '%s\n' 'PHPUnit output is missing strict success summary'
   return 1
 }

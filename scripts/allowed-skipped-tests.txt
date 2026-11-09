@@ -8,3 +8,6 @@ PHP_CodeSniffer\Standards\Squiz\Tests\Debug\JavaScriptLintUnitTest::testSniff
 PHP_CodeSniffer\Standards\Zend\Tests\Debug\CodeAnalyzerUnitTest::testSniff
 # Subversion sniff (no SVN metadata in CI).
 PHP_CodeSniffer\Standards\Generic\Tests\VersionControl\SubversionPropertiesUnitTest::testSniff
+# OS-specific ruleset path / comment tokenization (skipped by design on non-Windows hosts).
+PHP_CodeSniffer\Tests\Core\Ruleset\RuleInclusionAbsoluteWindowsTest::testWindowsStylePathRuleInclusion
+PHP_CodeSniffer\Tests\Core\Tokenizer\StableCommentWhitespaceWinTest::testCommentTokenization

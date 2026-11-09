@@ -67,6 +67,22 @@ class Scope_Closing_Brace_Sniff implements Sniff
             }
             return;
         }
+
+        $inline_before_close = $phpcs_file->find_previous(T_INLINE_HTML, $scope_end - 1, $scope_start);
+        if ($inline_before_close !== false
+            && $tokens[$inline_before_close]['line'] === $tokens[$scope_end]['line']
+            && $tokens[$scope_end]['code'] === T_ENDIF
+            && trim($tokens[$inline_before_close]['content']) !== ''
+        ) {
+            $error = 'Closing brace must be on a line by itself';
+            $fix   = $phpcs_file->add_fixable_error($error, $scope_end, 'ContentBefore');
+            if ($fix === true) {
+                $phpcs_file->fixer->add_content($inline_before_close, $phpcs_file->eol_char);
+            }
+
+            return;
+        }
+
         // Check now that the closing brace is lined up correctly.
         $line_start = $phpcs_file->find_first_on_line([T_WHITESPACE, T_INLINE_HTML], $scope_end, true);
         $brace_indent = $tokens[$line_start]['column'];
@@ -78,7 +94,16 @@ class Scope_Closing_Brace_Sniff implements Sniff
                 $diff = $start_column - $brace_indent;
                 if ($diff > 0) {
                     $phpcs_file->fixer->add_content_before($line_start, str_repeat(' ', $diff));
-                } else {
+                } elseif ($diff < 0 && $line_start > 0 && $tokens[$line_start - 1]['code'] === T_INLINE_HTML
+                    && trim($tokens[$line_start - 1]['content']) === ''
+                ) {
+                    $new_length = strlen($tokens[$line_start - 1]['content']) + $diff;
+                    if ($new_length > 0) {
+                        $phpcs_file->fixer->replace_token($line_start - 1, str_repeat(' ', $new_length));
+                    } else {
+                        $phpcs_file->fixer->replace_token($line_start - 1, '');
+                    }
+                } elseif ($diff < 0 && $line_start > 0 && $tokens[$line_start - 1]['code'] !== T_INLINE_HTML) {
                     $phpcs_file->fixer->substr_token($line_start - 1, 0, $diff);
                 }
             }

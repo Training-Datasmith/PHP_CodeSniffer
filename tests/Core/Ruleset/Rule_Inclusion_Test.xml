@@ -27,13 +27,13 @@
         </properties>
     </rule>
 
-    <rule ref="./src/Standards/Generic/Sniffs/Files/LineLengthSniff.php">
+    <rule ref="../../../src/Standards/Generic/Sniffs/Files/Line_Length_Sniff.php">
         <properties>
             <property name="lineLimit" value="10" />
         </properties>
     </rule>
 
-    <rule ref="./../workspace/src/Standards/Generic/Sniffs/NamingConventions/CamelCapsFunctionNameSniff.php">
+    <rule ref="../../../src/Standards/Generic/Sniffs/NamingConventions/Camel_Caps_Function_Name_Sniff.php">
         <properties>
             <property name="strict" value="false" />
         </properties>

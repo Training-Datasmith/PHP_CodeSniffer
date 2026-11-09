@@ -34,27 +34,14 @@ if (is_readable($allowedFile)) {
 }
 
 $skipped = array();
-if (preg_match_all('/^There were (\d+) skipped tests?:$/m', $output, $countMatches)) {
-    // PHPUnit may print detail blocks below.
+$skipSection = $output;
+if (preg_match('/There were [0-9]+ skipped tests:\s*/', $output, $heading, PREG_OFFSET_CAPTURE)) {
+    $skipSection = substr($output, $heading[0][1] + strlen($heading[0][0]));
 }
 
-if (preg_match_all('/^([^\s].*) skipped$/m', $output, $matches)) {
-    foreach ($matches[1] as $line) {
-        $line = trim($line);
-        if (strpos($line, 'Skipped:') === 0) {
-            continue;
-        }
-        if (strpos($line, 'There were') === 0) {
-            continue;
-        }
-        $skipped[] = $line;
-    }
-}
-
-// PHPUnit 9 text UI lists skips as "- Class::method with message"
-if (preg_match_all('/^\- ([^\s]+)::([^\s]+) .*/m', $output, $dashMatches, PREG_SET_ORDER)) {
-    foreach ($dashMatches as $match) {
-        $skipped[] = $match[1].'::'.$match[2];
+if (preg_match_all('/^\d+\) ([A-Za-z0-9_\\\\]+::[A-Za-z0-9_]+)\b/m', $skipSection, $matches)) {
+    foreach ($matches[1] as $id) {
+        $skipped[] = $id;
     }
 }
 
@@ -68,8 +55,37 @@ foreach ($skipped as $id) {
     }
 }
 
+foreach ($allowed as $id => $_) {
+    if (!in_array($id, $skipped, true)) {
+        fwrite(STDERR, "Allowlisted skip not seen in verbose output: {$id}\n");
+        $failed = true;
+    }
+}
+
+$summarySkipped = null;
+if (preg_match('/^Tests: [0-9]+, Assertions: [0-9]+, Skipped: ([0-9]+)\.$/m', $output, $summaryMatch)) {
+    $summarySkipped = (int) $summaryMatch[1];
+}
+
+if ($summarySkipped !== null && $summarySkipped !== count($skipped)) {
+    fwrite(STDERR, sprintf(
+        "Skipped count mismatch: summary says %d but verbose listing has %d.\n",
+        $summarySkipped,
+        count($skipped)
+    ));
+    $failed = true;
+}
+
 if (preg_match('/\bWarnings:\s+[1-9]/', $output)) {
     fwrite(STDERR, "PHPUnit summary reports Warnings.\n");
+    $failed = true;
+}
+if (preg_match('/\bFailures:\s+[1-9]/', $output)) {
+    fwrite(STDERR, "PHPUnit summary reports Failures.\n");
+    $failed = true;
+}
+if (preg_match('/\bErrors:\s+[1-9]/', $output)) {
+    fwrite(STDERR, "PHPUnit summary reports Errors.\n");
     $failed = true;
 }
 if (preg_match('/\bRisky:\s+[1-9]/', $output)) {
