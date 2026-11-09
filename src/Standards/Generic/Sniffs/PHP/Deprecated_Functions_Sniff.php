@@ -41,7 +41,7 @@ class Deprecated_Functions_Sniff extends Forbidden_Functions_Sniff
     /**
      * Generates the error or warning for this sniff.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the forbidden function
      *                                               in the token array.
      * @param string                      $function  The name of the forbidden function.

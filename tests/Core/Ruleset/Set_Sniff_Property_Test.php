@@ -9,16 +9,16 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Ruleset;
+namespace Php_code_Sniffer\Tests\Core\Ruleset;
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
 
 /**
  * These tests specifically focus on the changes made to work around the PHP 8.2 dynamic properties deprecation.
  *
- * @covers \PHP_CodeSniffer\Ruleset::setSniffProperty
+ * @covers \Php_code_Sniffer\Ruleset::setSniffProperty
  */
 class SetSniffPropertyTest extends TestCase
 {
@@ -120,16 +120,16 @@ class SetSniffPropertyTest extends TestCase
         $ruleset  = new Ruleset($config);
 
         // Test that the two sniffs which support the property have received the value.
-        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionCallSignatureSniff');
+        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'Php_code_Sniffer\Standards\PEAR\Sniffs\Functions\Function__Call__Signature__Sniff');
         $sniffObject = $ruleset->sniffs[$sniffClass];
         $this->assertSame($expectedValue, $sniffObject->$propertyName, 'Property value not set to expected value for '.$sniffClass);
 
-        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\FunctionDeclarationSniff');
+        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'Php_code_Sniffer\Standards\PEAR\Sniffs\Functions\Function__Declaration__Sniff');
         $sniffObject = $ruleset->sniffs[$sniffClass];
         $this->assertSame($expectedValue, $sniffObject->$propertyName, 'Property value not set to expected value for '.$sniffClass);
 
         // Test that the property doesn't get set for the one sniff which doesn't support the property.
-        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'PHP_CodeSniffer\Standards\PEAR\Sniffs\Functions\ValidDefaultValueSniff');
+        $sniffClass = $this->resolveRegisteredSniffClass($ruleset, 'Php_code_Sniffer\Standards\PEAR\Sniffs\Functions\Valid__Default__Value__Sniff');
         $sniffObject = $ruleset->sniffs[$sniffClass];
         $this->assertFalse(property_exists($sniffObject, $propertyName));
 
@@ -143,7 +143,7 @@ class SetSniffPropertyTest extends TestCase
      */
     public function testSetPropertyThrowsErrorOnInvalidProperty()
     {
-        $exceptionClass = 'PHP_CodeSniffer\Exceptions\RuntimeException';
+        $exceptionClass = 'Php_code_Sniffer\Exceptions\RuntimeException';
         $exceptionMsg   = 'Ruleset invalid. Property "indentation" does not exist on sniff Generic.Arrays.ArrayIndent';
         if (method_exists($this, 'expectException') === true) {
             $this->expectException($exceptionClass);
@@ -169,7 +169,7 @@ class SetSniffPropertyTest extends TestCase
      */
     public function testSetPropertyThrowsErrorWhenPropertyOnlyAllowedViaAttribute()
     {
-        $exceptionClass = 'PHP_CodeSniffer\Exceptions\RuntimeException';
+        $exceptionClass = 'Php_code_Sniffer\Exceptions\RuntimeException';
         $exceptionMsg   = 'Ruleset invalid. Property "arbitrarystring" does not exist on sniff Fixtures.Category.SetPropertyNotAllowedViaAttribute';
         if (method_exists($this, 'expectException') === true) {
             $this->expectException($exceptionClass);
@@ -364,40 +364,32 @@ class SetSniffPropertyTest extends TestCase
     {
         $exceptionMsg = 'the format of the $settings parameter has changed from (mixed) $value to array(\'scope\' => \'sniff|standard\', \'value\' => $value). Please update your integration code. See PR #3629 for more information.';
 
-        $deprecationHandled = false;
+        $exceptionClass = 'PHPUnit\Framework\Error\Deprecated';
+        if (class_exists($exceptionClass) === false) {
+            $exceptionClass = 'PHPUnit_Framework_Error_Deprecated';
+        }
 
-        set_error_handler(
-            static function ($errno, $errstr) use ($exceptionMsg, &$deprecationHandled) {
-                if ($errno === E_USER_DEPRECATED && $errstr === $exceptionMsg) {
-                    $deprecationHandled = true;
+        $name       = 'SetPropertyAllowedAsDeclared';
+        $sniffCode  = "Fixtures.Category.{$name}";
+        $sniffClass = 'Fixtures\Sniffs\Category\\'.$name.'Sniff';
 
-                    return true;
-                }
-
-                return false;
-            }
-        );
+        // Set up the ruleset.
+        $standard = __DIR__."/{$name}Test.xml";
+        $config   = new Config(["--standard=$standard"]);
+        $ruleset  = new Ruleset($config);
 
         try {
-            $name       = 'SetPropertyAllowedAsDeclared';
-            $sniffCode  = "Fixtures.Category.{$name}";
-            $sniffClass = 'Fixtures\Sniffs\Category\\'.$name.'Sniff';
-
-            // Set up the ruleset.
-            $standard = __DIR__."/{$name}Test.xml";
-            $config   = new Config(["--standard=$standard"]);
-            $ruleset  = new Ruleset($config);
-
             $ruleset->set_sniff_property(
                 $sniffClass,
                 'arbitrarystring',
                 ['key' => 'value']
             );
-        } finally {
-            restore_error_handler();
+            $this->fail('Expected '.$exceptionClass.' was not thrown');
+        } catch (\PHPUnit\Framework\Error\Deprecated $e) {
+            $this->assertSame($exceptionMsg, $e->getMessage());
+        } catch (\PHPUnit_Framework_Error_Deprecated $e) {
+            $this->assertSame($exceptionMsg, $e->getMessage());
         }
-
-        $this->assertTrue($deprecationHandled, 'Expected E_USER_DEPRECATED when using the old $settings array format.');
 
     }//end testDirectCallWithOldArrayFormatThrowsDeprecationNotice()
 

@@ -16,11 +16,11 @@ declare(strict_types=1);
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Exceptions\RuntimeException;
-use PHP_CodeSniffer\Exceptions\TokenizerException;
-use PHP_CodeSniffer\Tokenizers\PHP;
-use PHP_CodeSniffer\Util\Tokens;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Exceptions\RuntimeException;
+use Php_code_Sniffer\Exceptions\TokenizerException;
+use Php_code_Sniffer\Tokenizers\PHP;
+use Php_code_Sniffer\Util\Tokens;
 
 error_reporting(E_ALL | E_STRICT);
 
@@ -41,11 +41,11 @@ if (defined('PHP_CODESNIFFER_VERBOSITY') === false) {
  * which doesn't handle attributes correctly for cross-version PHP.
  *
  * @param string                  $fullpath Path to file.
- * @param \PHP_CodeSniffer\Config $config   Perfunctory Config.
+ * @param \Php_code_Sniffer\Config $config   Perfunctory Config.
  *
  * @return string
  *
- * @throws \PHP_CodeSniffer\Exceptions\RuntimeException When tokenizer errors are encountered.
+ * @throws \Php_code_Sniffer\Exceptions\RuntimeException When tokenizer errors are encountered.
  */
 function stripWhitespaceAndComments($fullpath, $config)
 {
@@ -157,8 +157,8 @@ foreach ($scripts as $script) {
     $stub .= '<?php'."\n";
     $stub .= 'Phar::mapPhar(\''.$pharName.'\');'."\n";
     $stub .= 'require_once "phar://'.$pharName.'/autoload.php";'."\n";
-    $stub .= '$runner = new PHP_CodeSniffer\Runner();'."\n";
-    $stub .= '$exitCode = $runner->run'.$script.'();'."\n";
+    $stub .= '$runner = new Php_code_Sniffer\Runner();'."\n";
+    $stub .= '$exitCode = $runner->run_'.$script.'();'."\n";
     $stub .= 'exit($exitCode);'."\n";
     $stub .= '__HALT_COMPILER();';
     $phar->setStub($stub);

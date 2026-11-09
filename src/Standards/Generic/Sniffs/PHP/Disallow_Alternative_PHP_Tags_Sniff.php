@@ -51,7 +51,7 @@ class Disallow_Alternative_Php_Tags_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -157,7 +157,7 @@ class Disallow_Alternative_Php_Tags_Sniff implements Sniff
     /**
      * Try and find a matching PHP closing tag.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param array                       $tokens    The token stack.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
@@ -177,7 +177,7 @@ class Disallow_Alternative_Php_Tags_Sniff implements Sniff
     /**
      * Add a changeset to replace the alternative PHP tags.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile       The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile       The file being scanned.
      * @param array                       $tokens          The token stack.
      * @param int                         $openTagPointer  Stack pointer to the PHP open tag.
      * @param int                         $closeTagPointer Stack pointer to the PHP close tag.

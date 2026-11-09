@@ -28,7 +28,7 @@ class Function_Call_Argument_Spacing_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *
@@ -68,7 +68,7 @@ class Function_Call_Argument_Spacing_Sniff implements Sniff
     /**
      * Checks the spacing around commas.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token in the
      *                                                 stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket

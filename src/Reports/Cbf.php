@@ -27,12 +27,12 @@ class Cbf implements Report
      * its data should be counted in the grand totals.
      *
      * @param array                       $report      Prepared report data.
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being reported on.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being reported on.
      * @param bool                        $showSources Show sources?
      * @param int                         $width       Maximum allowed line width.
      *
      * @return bool
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException
      */
     public function generate_file_report($report, File $phpcs_file, $show_sources = false, $width = 80)
     {

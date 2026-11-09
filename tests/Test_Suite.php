@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests;
+namespace Php_code_Sniffer\Tests;
 
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as PHPUnit_TestSuite;

@@ -17,7 +17,7 @@ class Valid_Variable_Name_Sniff extends Abstract_Variable_Sniff
     /**
      * Processes class member variables.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -57,7 +57,7 @@ class Valid_Variable_Name_Sniff extends Abstract_Variable_Sniff
     /**
      * Processes normal variables.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
@@ -72,7 +72,7 @@ class Valid_Variable_Name_Sniff extends Abstract_Variable_Sniff
     /**
      * Processes variables in double quoted strings.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void

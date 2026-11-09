@@ -23,7 +23,7 @@ class Array_Indent_Sniff extends Abstract_Array_Sniff
     /**
      * Processes a single-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.
@@ -40,7 +40,7 @@ class Array_Indent_Sniff extends Abstract_Array_Sniff
     /**
      * Processes a multi-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.

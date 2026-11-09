@@ -27,7 +27,7 @@ class Array_Bracket_Spacing_Sniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being checked.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *

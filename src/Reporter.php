@@ -20,7 +20,7 @@ class Reporter
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var \Php_code_Sniffer\Config
      */
     public $config;
     /**
@@ -78,10 +78,10 @@ class Reporter
      * output file (or a temp file if none is specified) initialised by
      * clearing the current contents.
      *
-     * @param \PHP_CodeSniffer\Config $config The config data for the run.
+     * @param \Php_code_Sniffer\Config $config The config data for the run.
      *
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If a custom report class could not be found.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException  If a report class is incorrectly set up.
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException If a custom report class could not be found.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException  If a report class is incorrectly set up.
      */
     public function __construct(Config $config)
     {
@@ -99,9 +99,9 @@ class Reporter
                     throw new Deep_Exit_Exception($error, 3);
                 }
                 $report_class_name = Autoload::loadFile($filename);
-            } elseif (class_exists('PHP_CodeSniffer\Reports\\' . ucfirst($type)) === true) {
+            } elseif (class_exists('Php_code_Sniffer\Reports\\' . ucfirst($type)) === true) {
                 // PHPCS native report.
-                $report_class_name = 'PHP_CodeSniffer\Reports\\' . ucfirst($type);
+                $report_class_name = 'Php_code_Sniffer\Reports\\' . ucfirst($type);
             } elseif (class_exists($type) === true) {
                 // FQN of a custom report.
                 $report_class_name = $type;
@@ -126,7 +126,7 @@ class Reporter
             }
             $report_class = new $report_class_name();
             if ($report_class instanceof Report === false) {
-                throw new RuntimeException('Class "' . $report_class_name . '" must implement the "PHP_CodeSniffer\Report" interface.');
+                throw new RuntimeException('Class "' . $report_class_name . '" must implement the "Php_code_Sniffer\Report" interface.');
             }
             $this->reports[$type] = ['output' => $output, 'class' => $report_class];
             if ($output === null) {
@@ -216,7 +216,7 @@ class Reporter
      * assigned to each report. This content may be an intermediate report format
      * and not reflect the final report output.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file that has been processed.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file that has been processed.
      *
      * @return void
      */
@@ -272,7 +272,7 @@ class Reporter
     /**
      * Generate summary information to be used during report generation.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file that has been processed.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file that has been processed.
      *
      * @return array
      */

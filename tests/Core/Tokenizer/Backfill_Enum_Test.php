@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillEnumTest extends AbstractMethodUnitTest
 {
@@ -24,7 +24,7 @@ class BackfillEnumTest extends AbstractMethodUnitTest
      * @param int    $closerOffset Offset to find expected scope closer.
      *
      * @dataProvider dataEnums
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -130,7 +130,7 @@ class BackfillEnumTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to look for.
      *
      * @dataProvider dataNotEnums
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

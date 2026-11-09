@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Standards\PSR1\Tests\Files;
+namespace Php_code_Sniffer\Standards\PSR1\Tests\Files;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use Php_code_Sniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class SideEffectsUnitTest extends AbstractSniffUnitTest
 {
@@ -19,7 +19,7 @@ class SideEffectsUnitTest extends AbstractSniffUnitTest
      * Set CLI values before the file is tested.
      *
      * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+     * @param \Php_code_Sniffer\Config $config   The config data for the test run.
      *
      * @return void
      */

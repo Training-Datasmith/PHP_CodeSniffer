@@ -9,10 +9,10 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
-use PHP_CodeSniffer\Util\Tokens;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Util\Tokens;
 
 class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
 {
@@ -22,7 +22,7 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment which prefaces the target token in the test file.
      *
      * @dataProvider dataStrings
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -159,7 +159,7 @@ class ContextSensitiveKeywordsTest extends AbstractMethodUnitTest
      * @param string $expectedTokenType The expected token type.
      *
      * @dataProvider dataKeywords
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

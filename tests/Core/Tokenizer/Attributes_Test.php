@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class AttributesTest extends AbstractMethodUnitTest
 {
@@ -23,9 +23,9 @@ class AttributesTest extends AbstractMethodUnitTest
      * @param array  $tokenCodes The codes of tokens inside the attributes.
      *
      * @dataProvider dataAttribute
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::findCloser
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::parsePhpAttribute
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::findCloser
+     * @covers Php_code_Sniffer\Tokenizers\PHP::parsePhpAttribute
      *
      * @return void
      */
@@ -241,9 +241,9 @@ class AttributesTest extends AbstractMethodUnitTest
     /**
      * Test that multiple attributes on the same line are parsed correctly.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::findCloser
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::parsePhpAttribute
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::findCloser
+     * @covers Php_code_Sniffer\Tokenizers\PHP::parsePhpAttribute
      *
      * @return void
      */
@@ -264,9 +264,9 @@ class AttributesTest extends AbstractMethodUnitTest
     /**
      * Test that attribute followed by a line comment is parsed correctly.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::findCloser
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::parsePhpAttribute
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::findCloser
+     * @covers Php_code_Sniffer\Tokenizers\PHP::parsePhpAttribute
      *
      * @return void
      */
@@ -293,9 +293,9 @@ class AttributesTest extends AbstractMethodUnitTest
      *
      * @dataProvider dataAttributeOnParameters
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::findCloser
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::parsePhpAttribute
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::findCloser
+     * @covers Php_code_Sniffer\Tokenizers\PHP::parsePhpAttribute
      *
      * @return void
      */
@@ -396,7 +396,7 @@ class AttributesTest extends AbstractMethodUnitTest
      * @param array  $expectedTokensAttribute The codes of tokens inside the attributes.
      * @param array  $expectedTokensAfter     The codes of tokens after the attributes.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::parsePhpAttribute
+     * @covers Php_code_Sniffer\Tokenizers\PHP::parsePhpAttribute
      *
      * @dataProvider dataAttributeOnTextLookingLikeCloseTag
      *
@@ -540,9 +540,9 @@ class AttributesTest extends AbstractMethodUnitTest
     /**
      * Test that invalid attribute (or comment starting with #[ and without ]) are parsed correctly.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::findCloser
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::parsePhpAttribute
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::findCloser
+     * @covers Php_code_Sniffer\Tokenizers\PHP::parsePhpAttribute
      *
      * @return void
      */
@@ -560,9 +560,9 @@ class AttributesTest extends AbstractMethodUnitTest
     /**
      * Test that nested attributes are parsed correctly.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::findCloser
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::parsePhpAttribute
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::findCloser
+     * @covers Php_code_Sniffer\Tokenizers\PHP::parsePhpAttribute
      *
      * @return void
      */

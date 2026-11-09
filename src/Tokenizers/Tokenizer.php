@@ -17,7 +17,7 @@ abstract class Tokenizer
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var \Php_code_Sniffer\Config
      */
     protected $config;
     /**
@@ -66,10 +66,10 @@ abstract class Tokenizer
      * Initialise and run the tokenizer.
      *
      * @param string                         $content The content to tokenize,
-     * @param \PHP_CodeSniffer\Config | null $config  The config data for the run.
+     * @param \Php_code_Sniffer\Config | null $config  The config data for the run.
      * @param string                         $eolChar The EOL char used in the content.
      *
-     * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the file appears to be minified.
+     * @throws \Php_code_Sniffer\Exceptions\TokenizerException If the file appears to be minified.
      */
     public function __construct($content, $config, $eol_char = '\n')
     {
@@ -785,7 +785,7 @@ abstract class Tokenizer
      * @param int $ignore   How many curly braces we are ignoring.
      *
      * @return int The position in the stack that closed the scope.
-     * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the nesting level gets too deep.
+     * @throws \Php_code_Sniffer\Exceptions\TokenizerException If the nesting level gets too deep.
      */
     private function recurse_scope_map($stack_ptr, $depth = 1, &$ignore = 0)
     {

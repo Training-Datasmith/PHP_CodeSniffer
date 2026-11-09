@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class TypeIntersectionTest extends AbstractMethodUnitTest
 {
@@ -22,7 +22,7 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment which prefaces the target token in the test file.
      *
      * @dataProvider dataBitwiseAnd
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -73,7 +73,7 @@ class TypeIntersectionTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment which prefaces the target token in the test file.
      *
      * @dataProvider dataTypeIntersection
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */

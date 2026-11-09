@@ -9,16 +9,16 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillFnTokenTest extends AbstractMethodUnitTest
 {
     /**
      * Test simple arrow functions.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test whitespace inside arrow function definitions.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -50,7 +50,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test comments inside arrow function definitions.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -65,7 +65,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test heredocs inside arrow function definitions.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -80,7 +80,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test nested arrow functions.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -95,7 +95,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test nested arrow functions.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test nested arrow functions with a shared closer.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -159,7 +159,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that call functions.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -174,7 +174,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that are included in chained calls.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -189,7 +189,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that are used as function arguments.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -204,7 +204,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that use closures.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -219,7 +219,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions using an array index.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -234,7 +234,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions with a return type.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -249,7 +249,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that return a reference.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -264,7 +264,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that are grouped by parenthesis.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -279,7 +279,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that are used as array values.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -294,7 +294,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that are used as array values with no trailing comma.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -309,7 +309,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that use the yield keyword.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -324,7 +324,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that use nullable namespace types.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -339,7 +339,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that use the namespace operator in the return type.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -354,7 +354,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions that use self/parent/callable/array/static return types.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -394,7 +394,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow function with a union parameter type.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -409,7 +409,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow function with a union return type.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -424,7 +424,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow functions used in ternary operators.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -475,7 +475,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test typed arrow functions used in ternary operators.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -492,7 +492,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow function returning a match control structure.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -507,7 +507,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow function returning a match control structure with something behind it.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -530,7 +530,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      *                                           to be used in the error message for failing tests.
      *
      * @dataProvider dataInMatchValue
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -591,7 +591,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
     /**
      * Test arrow function nested within a method declaration.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -611,7 +611,7 @@ class BackfillFnTokenTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to look for.
      *
      * @dataProvider dataNotAnArrowFunction
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */

@@ -63,7 +63,7 @@ class Function_Call_Signature_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -140,7 +140,7 @@ class Function_Call_Signature_Sniff implements Sniff
     /**
      * Determine if this is a multi-line function call.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token
      *                                                 in the stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket
@@ -162,7 +162,7 @@ class Function_Call_Signature_Sniff implements Sniff
     /**
      * Processes single-line calls.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token
      *                                                 in the stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket
@@ -272,7 +272,7 @@ class Function_Call_Signature_Sniff implements Sniff
     /**
      * Processes multi-line calls.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token
      *                                                 in the stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket

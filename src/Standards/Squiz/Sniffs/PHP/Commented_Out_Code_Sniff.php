@@ -41,7 +41,7 @@ class Commented_Out_Code_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -139,17 +139,17 @@ class Commented_Out_Code_Sniff implements Sniff
         // Because we are not really parsing code, the tokenizer can throw all sorts
         // of errors that don't mean anything, so ignore them.
         $old_errors = ini_get('error_reporting');
-        ini_set('error_reporting', 0);
+        ini_set('error_reporting', '0');
         try {
             $tokenizer_class = get_class($phpcs_file->tokenizer);
             $tokenizer = new $tokenizer_class($content, $phpcs_file->config, $phpcs_file->eol_char);
             $string_tokens = $tokenizer->get_tokens();
         } catch (Tokenizer_Exception $e) {
             // We couldn't check the comment, so ignore it.
-            ini_set('error_reporting', $old_errors);
+            ini_set('error_reporting', (string) $old_errors);
             return $last_comment_block_token + 1;
         }
-        ini_set('error_reporting', $old_errors);
+        ini_set('error_reporting', (string) $old_errors);
         $num_tokens = count($string_tokens);
         /*
             We know what the first two and last two tokens should be

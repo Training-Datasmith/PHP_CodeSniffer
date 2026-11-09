@@ -16,9 +16,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer;
+namespace Php_code_Sniffer;
 
-if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
+if (class_exists('Php_code_Sniffer\Autoload', false) === false) {
     class Autoload
     {
         /**
@@ -97,9 +97,7 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
             $ds   = DIRECTORY_SEPARATOR;
             $path = false;
 
-            if (substr($class, 0, 16) === 'PHP_CodeSniffer\\'
-                || substr($class, 0, 17) === 'Php_code_Sniffer\\'
-            ) {
+            if (substr($class, 0, 17) === 'Php_code_Sniffer\\') {
                 $path = self::resolvePhpcsClassPath($class);
             }
 
@@ -127,7 +125,6 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
 
             if ($path !== false && is_file($path) === true) {
                 self::loadFile($path);
-                self::aliasLegacyNamespace($class);
 
                 return class_exists($class, false)
                     || interface_exists($class, false)
@@ -265,23 +262,9 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
         {
             $ds = DIRECTORY_SEPARATOR;
 
-            if (substr($class, 0, 22) === 'PHP_CodeSniffer\\Tests\\') {
-                $suffix = substr($class, 22);
-                $root   = __DIR__.$ds.'tests';
-
-                return self::resolvePathForSuffix($root, str_replace('\\', $ds, $suffix).'.php');
-            }
-
             if (substr($class, 0, 23) === 'Php_code_Sniffer\\Tests\\') {
                 $suffix = substr($class, 23);
                 $root   = __DIR__.$ds.'tests';
-
-                return self::resolvePathForSuffix($root, str_replace('\\', $ds, $suffix).'.php');
-            }
-
-            if (substr($class, 0, 16) === 'PHP_CodeSniffer\\') {
-                $suffix = substr($class, 16);
-                $root   = __DIR__.$ds.'src';
 
                 return self::resolvePathForSuffix($root, str_replace('\\', $ds, $suffix).'.php');
             }
@@ -383,49 +366,6 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
         }
 
         /**
-         * Register a class_alias between Php_code_Sniffer and PHP_CodeSniffer.
-         *
-         * @param string $requestedClass The class the caller asked to load.
-         *
-         * @return void
-         */
-        private static function aliasLegacyNamespace($requestedClass)
-        {
-            if (class_exists($requestedClass, false)
-                || interface_exists($requestedClass, false)
-                || trait_exists($requestedClass, false)
-            ) {
-                return;
-            }
-
-            if (substr($requestedClass, 0, 16) === 'PHP_CodeSniffer\\') {
-                $suffix = substr($requestedClass, 16);
-                $parts  = explode('\\', $suffix);
-                $last   = array_pop($parts);
-                $modern = 'Php_code_Sniffer\\';
-                if ($parts !== []) {
-                    $modern .= implode('\\', $parts).'\\';
-                }
-                $modern .= self::studlySnake($last);
-                if ((class_exists($modern, false) || interface_exists($modern, false) || trait_exists($modern, false))
-                    && $requestedClass !== $modern
-                ) {
-                    class_alias($modern, $requestedClass);
-                }
-            } elseif (substr($requestedClass, 0, 17) === 'Php_code_Sniffer\\') {
-                $legacy = 'PHP_CodeSniffer\\'.substr($requestedClass, 17);
-                if ((class_exists($requestedClass, false) || interface_exists($requestedClass, false) || trait_exists($requestedClass, false))
-                    && $legacy !== $requestedClass
-                    && !class_exists($legacy, false)
-                    && !interface_exists($legacy, false)
-                    && !trait_exists($legacy, false)
-                ) {
-                    class_alias($requestedClass, $legacy);
-                }
-            }
-        }
-
-        /**
          * Retrieve the namespaces and paths registered by external standards.
          *
          * @return array
@@ -500,8 +440,4 @@ if (class_exists('PHP_CodeSniffer\Autoload', false) === false) {
     // it gets a chance to hear about every autoload request, and record
     // the file and class name for it.
     spl_autoload_register(__NAMESPACE__.'\Autoload::load', true, true);
-
-    if (class_exists('Php_code_Sniffer\Autoload', false) === false) {
-        class_alias(__NAMESPACE__.'\Autoload', 'Php_code_Sniffer\Autoload');
-    }
 }//end if

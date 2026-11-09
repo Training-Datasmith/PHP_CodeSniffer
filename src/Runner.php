@@ -26,19 +26,19 @@ class Runner
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var \Php_code_Sniffer\Config
      */
     public $config;
     /**
      * The ruleset used for the run.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var \Php_code_Sniffer\Ruleset
      */
     public $ruleset;
     /**
      * The reporter used for generating reports after the run.
      *
-     * @var \PHP_CodeSniffer\Reporter
+     * @var \Php_code_Sniffer\Reporter
      */
     public $reporter;
     /**
@@ -88,7 +88,7 @@ class Runner
                 foreach ($standards as $standard) {
                     $this->config->standards = [$standard];
                     $ruleset = new Ruleset($this->config);
-                    $class = 'PHP_CodeSniffer\Generators\\' . $this->config->generator;
+                    $class = 'Php_code_Sniffer\Generators\\' . $this->config->generator;
                     $generator = new $class($ruleset);
                     $generator->generate();
                 }
@@ -218,7 +218,7 @@ class Runner
      * Exits if the minimum requirements of PHP_CodeSniffer are not met.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the requirements are not met.
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException If the requirements are not met.
      */
     public function check_requirements()
     {
@@ -250,7 +250,7 @@ class Runner
      * Init the rulesets and other high-level settings.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If a referenced standard is not installed.
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException If a referenced standard is not installed.
      */
     public function init()
     {
@@ -303,8 +303,8 @@ class Runner
      * Performs the run.
      *
      * @return int The number of errors and warnings found.
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException
      */
     private function run()
     {
@@ -506,7 +506,7 @@ class Runner
      * @param int    $line    The line number the error was raised at.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException
      */
     public function handle_errors($code, $message, $file, $line)
     {
@@ -520,10 +520,10 @@ class Runner
     /**
      * Processes a single file, including checking and fixing.
      *
-     * @param \PHP_CodeSniffer\Files\File $file The file to be processed.
+     * @param \Php_code_Sniffer\Files\File $file The file to be processed.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException
      */
     public function process_file(\Php_code_Sniffer\Files\File $file)
     {
@@ -689,7 +689,7 @@ class Runner
     /**
      * Print progress information for a single processed file.
      *
-     * @param \PHP_CodeSniffer\Files\File $file         The file that was processed.
+     * @param \Php_code_Sniffer\Files\File $file         The file that was processed.
      * @param int                         $numFiles     The total number of files to process.
      * @param int                         $numProcessed The number of files that have been processed,
      *                                                  including this one.

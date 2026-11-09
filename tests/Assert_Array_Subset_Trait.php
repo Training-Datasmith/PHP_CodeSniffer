@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHP_CodeSniffer\Tests;
+namespace Php_code_Sniffer\Tests;
 
 /**
  * Polyfill for PHPUnit assertArraySubset() removed in PHPUnit 9+.

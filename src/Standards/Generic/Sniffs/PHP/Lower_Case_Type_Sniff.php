@@ -40,7 +40,7 @@ class Lower_Case_Type_Sniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *
@@ -125,7 +125,7 @@ class Lower_Case_Type_Sniff implements Sniff
     /**
      * Processes a union type declaration.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile     The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile     The file being scanned.
      * @param int                         $typeDeclStart The position of the start of the type token.
      * @param int                         $typeDeclEnd   The position of the end of the type token.
      * @param string                      $error         Error message template.
@@ -166,7 +166,7 @@ class Lower_Case_Type_Sniff implements Sniff
     /**
      * Processes a type cast or a singular type declaration.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the type token.
      * @param string                      $type      The type found.
      * @param string                      $error     Error message template.

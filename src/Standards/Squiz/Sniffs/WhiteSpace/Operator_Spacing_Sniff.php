@@ -82,7 +82,7 @@ class Operator_Spacing_Sniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being checked.
      * @param int                         $stackPtr  The position of the current token in
      *                                               the stack passed in $tokens.
      *
@@ -236,7 +236,7 @@ class Operator_Spacing_Sniff implements Sniff
     /**
      * Checks if an operator is actually a different type of token in the current context.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being checked.
      * @param int                         $stackPtr  The position of the operator in
      *                                               the stack.
      *

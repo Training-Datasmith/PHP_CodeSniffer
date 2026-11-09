@@ -448,7 +448,7 @@ final class Tokens
 
     /**
      * @var array<string, string|int>
-     * @deprecated Use $empty_tokens. Kept for test/back-compat accessors on PHP_CodeSniffer\Util\Tokens.
+     * @deprecated Use $empty_tokens. Kept for test/back-compat accessors on Php_code_Sniffer\Util\Tokens.
      */
     public static $emptyTokens;
 

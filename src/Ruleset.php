@@ -168,7 +168,7 @@ class Ruleset
      * The key is the fully qualified name of the sniff class
      * and the value is the sniff object.
      *
-     * @var array<string, \PHP_CodeSniffer\Sniffs\Sniff>
+     * @var array<string, \Php_code_Sniffer\Sniffs\Sniff>
      */
     public $sniffs = [];
     /**
@@ -186,7 +186,7 @@ class Ruleset
      * The key is the token name being listened for and the value
      * is the sniff object.
      *
-     * @var array<int, \PHP_CodeSniffer\Sniffs\Sniff>
+     * @var array<int, \Php_code_Sniffer\Sniffs\Sniff>
      */
     public $token_listeners = [];
     /**
@@ -207,15 +207,15 @@ class Ruleset
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var \Php_code_Sniffer\Config
      */
     private $config;
     /**
      * Initialise the ruleset that the run will use.
      *
-     * @param \PHP_CodeSniffer\Config $config The config data for the run.
+     * @param \Php_code_Sniffer\Config $config The config data for the run.
      *
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If no sniffs were registered.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If no sniffs were registered.
      */
     public function __construct(Config $config)
     {
@@ -369,7 +369,7 @@ class Ruleset
      *                            is only used for debug output.
      *
      * @return string[]
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException - If the ruleset path is invalid.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException - If the ruleset path is invalid.
      *                                                      - If a specified autoload file could not be found.
      */
     public function process_ruleset($ruleset_path, $depth = 0)
@@ -678,7 +678,7 @@ class Ruleset
      *                           is only used for debug output.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the reference is invalid.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the reference is invalid.
      */
     private function expand_ruleset_reference($ref, $ruleset_dir, $depth = 0)
     {
@@ -842,7 +842,7 @@ class Ruleset
      *                                     This is only used for debug output.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If rule settings are invalid.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If rule settings are invalid.
      */
     private function process_rule(\SimpleXMLElement $rule, array $new_sniffs, $depth = 0)
     {
@@ -1123,7 +1123,7 @@ class Ruleset
      * Populates the array of PHP_CodeSniffer_Sniff objects for this file.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If sniff registration fails.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If sniff registration fails.
      */
     public function populate_token_listeners()
     {
@@ -1213,7 +1213,7 @@ class Ruleset
      *
      * @return void
      *
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException When attempting to set a non-existent property on a sniff
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException When attempting to set a non-existent property on a sniff
      *                                                      which doesn't declare the property or explicitly supports
      *                                                      dynamic properties.
      */

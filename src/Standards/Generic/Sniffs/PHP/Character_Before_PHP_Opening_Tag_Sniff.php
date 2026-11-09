@@ -35,7 +35,7 @@ class Character_Before_Php_Opening_Tag_Sniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in
      *                                               the stack passed in $tokens.
      *

@@ -36,12 +36,12 @@ class Java_Script_Lint_Sniff implements Sniff
     /**
      * Processes the tokens that this sniff is interested in.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where the token was found.
      * @param int                         $stackPtr  The position in the stack where
      *                                               the token was found.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If Javascript Lint ran into trouble.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If Javascript Lint ran into trouble.
      */
     public function process(File $phpcs_file, $stack_ptr)
     {

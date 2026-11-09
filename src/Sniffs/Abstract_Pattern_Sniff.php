@@ -131,7 +131,7 @@ abstract class Abstract_Pattern_Sniff implements Sniff
      *
      * @return int The position in the pattern that this test should register
      *             as the listener.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If we could not determine a token to listen for.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If we could not determine a token to listen for.
      */
     private function get_listener_token_pos($pattern)
     {
@@ -149,7 +149,7 @@ abstract class Abstract_Pattern_Sniff implements Sniff
     /**
      * Processes the test.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where the
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where the
      *                                               token occurred.
      * @param int                         $stackPtr  The position in the tokens stack
      *                                               where the listening token type
@@ -210,7 +210,7 @@ abstract class Abstract_Pattern_Sniff implements Sniff
      *                                                 for checking, which includes are
      *                                                 parsed token representation of the
      *                                                 pattern.
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The PHP_CodeSniffer file where the
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The PHP_CodeSniffer file where the
      *                                                 token occurred.
      * @param int                         $stackPtr    The position in the tokens stack where
      *                                                 the listening token type was found.
@@ -576,7 +576,7 @@ abstract class Abstract_Pattern_Sniff implements Sniff
     /**
      * Processes any tokens registered with registerSupplementary().
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where to
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where to
      *                                               process the skip.
      * @param int                         $stackPtr  The position in the tokens stack to
      *                                               process.

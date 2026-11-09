@@ -9,12 +9,12 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\DummyFile;
-use PHP_CodeSniffer\Ruleset;
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\Dummy_File;
+use Php_code_Sniffer\Ruleset;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 /**
  * Heredoc/nowdoc closer token test.
@@ -24,7 +24,7 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
 class HeredocNowdocCloserTest extends AbstractMethodUnitTest
 {
     /**
-     * Initialize & tokenize \PHP_CodeSniffer\Files\File with code from the test case file.
+     * Initialize & tokenize \Php_code_Sniffer\Files\File with code from the test case file.
      *
      * {@internal This is a near duplicate of the original method. Only difference is that
      * tab replacement is enabled for this test.}
@@ -48,7 +48,7 @@ class HeredocNowdocCloserTest extends AbstractMethodUnitTest
         $contents  = 'phpcs_input_file: '.$pathToTestFile.PHP_EOL;
         $contents .= file_get_contents($pathToTestFile);
 
-        self::$phpcsFile = new DummyFile($contents, $ruleset, $config);
+        self::$phpcsFile = new Dummy_File($contents, $ruleset, $config);
         self::$phpcsFile->process();
 
     }//end setUpBeforeClass()
@@ -60,7 +60,7 @@ class HeredocNowdocCloserTest extends AbstractMethodUnitTest
      * @param array  $expected   Expectations for the token array.
      *
      * @dataProvider dataHeredocNowdocCloserTabReplacement
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */

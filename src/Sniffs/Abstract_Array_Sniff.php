@@ -27,7 +27,7 @@ abstract class Abstract_Array_Sniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being checked.
      * @param int                         $stackPtr  The position of the current token in
      *                                               the stack passed in $tokens.
      *
@@ -80,7 +80,7 @@ abstract class Abstract_Array_Sniff implements Sniff
     /**
      * Find next separator in array - either: comma or double arrow.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being checked.
      * @param int                         $ptr       The position of current token.
      * @param int                         $arrayEnd  The token that ends the array definition.
      *
@@ -108,7 +108,7 @@ abstract class Abstract_Array_Sniff implements Sniff
     /**
      * Processes a single-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.
@@ -122,7 +122,7 @@ abstract class Abstract_Array_Sniff implements Sniff
     /**
      * Processes a multi-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.

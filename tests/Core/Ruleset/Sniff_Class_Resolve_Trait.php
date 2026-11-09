@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PHP_CodeSniffer\Tests\Core\Ruleset;
+namespace Php_code_Sniffer\Tests\Core\Ruleset;
 
 /**
  * Resolve legacy sniff class names to registered Php_code_Sniffer classes.
@@ -10,7 +10,7 @@ namespace PHP_CodeSniffer\Tests\Core\Ruleset;
 trait SniffClassResolveTrait
 {
     /**
-     * @param \PHP_CodeSniffer\Ruleset $ruleset Ruleset under test.
+     * @param \Php_code_Sniffer\Ruleset $ruleset Ruleset under test.
      * @param string                   $legacyFqcn Legacy sniff FQCN.
      *
      * @return string

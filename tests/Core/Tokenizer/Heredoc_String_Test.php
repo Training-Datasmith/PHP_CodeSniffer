@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class HeredocStringTest extends AbstractMethodUnitTest
 {
@@ -23,7 +23,7 @@ class HeredocStringTest extends AbstractMethodUnitTest
      * @param string $expectedContent The expected content of the heredoc string.
      *
      * @dataProvider dataHeredocString
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -43,7 +43,7 @@ class HeredocStringTest extends AbstractMethodUnitTest
      * @param string $expectedContent The expected content of the heredoc string.
      *
      * @dataProvider dataHeredocString
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

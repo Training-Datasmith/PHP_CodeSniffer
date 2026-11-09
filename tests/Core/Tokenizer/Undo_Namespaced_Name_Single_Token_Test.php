@@ -19,9 +19,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
 {
@@ -32,7 +32,7 @@ class UndoNamespacedNameSingleTokenTest extends AbstractMethodUnitTest
      * @param array  $expectedTokens The tokenization expected.
      *
      * @dataProvider dataIdentifierTokenization
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

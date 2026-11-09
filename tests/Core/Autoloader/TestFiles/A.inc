@@ -1,3 +1,3 @@
 <?php
-namespace PHP_CodeSniffer\Tests\Core\Autoloader;
+namespace Php_code_Sniffer\Tests\Core\Autoloader;
 class A {}

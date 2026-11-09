@@ -31,7 +31,7 @@ class Function_Comment_Sniff extends PEARFunctionCommentSniff
     /**
      * Process the return comment of this function comment.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
      * @param int                         $commentStart The position in the stack where the comment started.
@@ -163,7 +163,7 @@ class Function_Comment_Sniff extends PEARFunctionCommentSniff
     /**
      * Process any throw tags that this function comment has.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
      * @param int                         $commentStart The position in the stack where the comment started.
@@ -231,7 +231,7 @@ class Function_Comment_Sniff extends PEARFunctionCommentSniff
     /**
      * Process the function parameter comments.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
      * @param int                         $commentStart The position in the stack where the comment started.
@@ -522,7 +522,7 @@ class Function_Comment_Sniff extends PEARFunctionCommentSniff
     /**
      * Check the spacing after the type of a parameter.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param array                       $param     The parameter to be checked.
      * @param int                         $maxType   The maxlength of the longest parameter type.
      * @param int                         $spacing   The number of spaces to add after the type.
@@ -570,7 +570,7 @@ class Function_Comment_Sniff extends PEARFunctionCommentSniff
     /**
      * Check the spacing after the name of a parameter.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param array                       $param     The parameter to be checked.
      * @param int                         $maxVar    The maxlength of the longest parameter name.
      * @param int                         $spacing   The number of spaces to add after the type.
@@ -618,7 +618,7 @@ class Function_Comment_Sniff extends PEARFunctionCommentSniff
     /**
      * Determines whether the whole comment is an inheritdoc comment.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
      * @param int                         $commentStart The position in the stack where the comment started.

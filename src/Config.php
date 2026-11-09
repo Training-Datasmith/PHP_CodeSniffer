@@ -151,7 +151,7 @@ class Config
      * @param string $name The name of the property.
      *
      * @return mixed
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the setting name is invalid.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the setting name is invalid.
      */
     public function __get($name)
     {
@@ -168,7 +168,7 @@ class Config
      * @param mixed  $value The value of the property.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the setting name is invalid.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the setting name is invalid.
      */
     public function __set($name, $value)
     {
@@ -488,7 +488,7 @@ class Config
      * @param int    $pos The position of the argument on the command line.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException
      */
     public function process_short_argument($arg, $pos)
     {
@@ -589,7 +589,7 @@ class Config
      * @param int    $pos The position of the argument on the command line.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException
      */
     public function process_long_argument($arg, $pos)
     {
@@ -1046,7 +1046,7 @@ class Config
      * @param int    $pos The position of the argument on the command line.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException
      */
     public function process_unknown_argument($arg, $pos)
     {
@@ -1068,7 +1068,7 @@ class Config
      * @param string $path The path to the file to add.
      *
      * @return void
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException
      */
     public function process_file_path($path)
     {
@@ -1325,7 +1325,7 @@ class Config
      *
      * @return bool
      * @see    getConfigData()
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the config file can not be written.
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException If the config file can not be written.
      */
     public static function set_config_data($key, $value, $temp = false)
     {
@@ -1388,7 +1388,7 @@ class Config
      *
      * @return array<string, string>
      * @see    getConfigData()
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the config file could not be read.
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException If the config file could not be read.
      */
     public static function get_all_config_data()
     {

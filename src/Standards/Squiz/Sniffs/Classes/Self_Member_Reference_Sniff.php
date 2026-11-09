@@ -31,7 +31,7 @@ class Self_Member_Reference_Sniff extends Abstract_Scope_Sniff
     /**
      * Processes the function tokens within the class.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The position where the token was found.
      * @param int                         $currScope The current scope opener token.
      *
@@ -141,7 +141,7 @@ class Self_Member_Reference_Sniff extends Abstract_Scope_Sniff
      * Processes a token that is found within the scope that this test is
      * listening to.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The position in the stack where this
      *                                               token was found.
      *
@@ -178,7 +178,7 @@ class Self_Member_Reference_Sniff extends Abstract_Scope_Sniff
     /**
      * Returns the namespace declaration of a file.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The position where the search for the
      *                                               namespace declaration will start.
      *

@@ -45,7 +45,7 @@ class Object_Operator_Indent_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile All the tokens found in the document.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile All the tokens found in the document.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *

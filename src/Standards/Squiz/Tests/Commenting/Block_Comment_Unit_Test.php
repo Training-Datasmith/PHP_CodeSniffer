@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Standards\Squiz\Tests\Commenting;
+namespace Php_code_Sniffer\Standards\Squiz\Tests\Commenting;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use Php_code_Sniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class BlockCommentUnitTest extends AbstractSniffUnitTest
 {
@@ -19,7 +19,7 @@ class BlockCommentUnitTest extends AbstractSniffUnitTest
      * Get a list of CLI values to set before the file is tested.
      *
      * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+     * @param \Php_code_Sniffer\Config $config   The config data for the test run.
      *
      * @return void
      */

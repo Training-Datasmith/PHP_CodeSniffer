@@ -20,13 +20,13 @@ class Anon_Class_Declaration_Sniff extends Class_Declaration_Sniff
     /**
      * The PSR2 MultiLineFunctionDeclarations sniff.
      *
-     * @var \PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff
+     * @var \Php_code_Sniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff
      */
     private $multi_line_sniff;
     /**
      * The Generic FunctionCallArgumentSpacing sniff.
      *
-     * @var \PHP_CodeSniffer\Standards\Generic\Sniffs\Functions\FunctionCallArgumentSpacingSniff
+     * @var \Php_code_Sniffer\Standards\Generic\Sniffs\Functions\FunctionCallArgumentSpacingSniff
      */
     private $function_call_sniff;
     /**
@@ -42,7 +42,7 @@ class Anon_Class_Declaration_Sniff extends Class_Declaration_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -113,7 +113,7 @@ class Anon_Class_Declaration_Sniff extends Class_Declaration_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -187,7 +187,7 @@ class Anon_Class_Declaration_Sniff extends Class_Declaration_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *

@@ -60,10 +60,10 @@ class JS extends Tokenizer
      * Pre-checks the content to see if it looks minified.
      *
      * @param string                  $content The content to tokenize,
-     * @param \PHP_CodeSniffer\Config $config  The config data for the run.
+     * @param \Php_code_Sniffer\Config $config  The config data for the run.
      * @param string                  $eolChar The EOL char used in the content.
      *
-     * @throws \PHP_CodeSniffer\Exceptions\TokenizerException If the file appears to be minified.
+     * @throws \Php_code_Sniffer\Exceptions\TokenizerException If the file appears to be minified.
      */
     public function __construct($content, Config $config, $eol_char = '\n')
     {

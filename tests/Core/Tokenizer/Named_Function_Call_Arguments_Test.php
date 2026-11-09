@@ -9,10 +9,10 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
-use PHP_CodeSniffer\Util\Tokens;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Util\Tokens;
 
 class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
 {
@@ -24,7 +24,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
      * @param array  $parameters The token content for each parameter label to look for.
      *
      * @dataProvider dataNamedFunctionCallArguments
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -263,7 +263,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
      * @param string $content    The token content to look for.
      *
      * @dataProvider dataOtherTstringInFunctionCall
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -320,7 +320,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
      * Verify whether the colons are tokenized correctly when a ternary is used in a mixed
      * positional and named arguments function call.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -371,7 +371,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
      * Verify whether the colons are tokenized correctly when a ternary is used
      * in a named arguments function call.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -467,7 +467,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
      * Verify whether the colons are tokenized correctly when named arguments
      * function calls are used in a ternary.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -546,7 +546,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
     /**
      * Verify whether the colons are tokenized correctly when constants are used in a ternary.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -575,7 +575,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
     /**
      * Verify whether the colons are tokenized correctly in a switch statement.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -636,7 +636,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
     /**
      * Verify that a variable parameter label (parse error) is still tokenized as T_VARIABLE.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -687,7 +687,7 @@ class NamedFunctionCallArgumentsTest extends AbstractMethodUnitTest
      * @param string $tokenContent The token content to look for.
      *
      * @dataProvider dataReservedKeywordsAsName
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

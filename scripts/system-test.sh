@@ -5,10 +5,9 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 USE_SUDO_DOCKER="${USE_SUDO_DOCKER:-0}"
-# 7.2.34-cli-buster lints and loads autoload.php, but populate_token_listeners() fatals on
-# Php_code_Sniffer\Files\File::__construct() arity (ArgumentCountError at Ruleset.php:1134).
-# Lowest digest-pinned image that runs the full patched suite: PHP 8.2 + PHPUnit ^9.6.33.
-PHP_IMAGE='php:8.2-cli-bookworm@sha256:26b388d187a5e592ef5e02c14d0f92dd9c761894ff0a5fe338183196471c4b4e'
+# Lowest digest-pinned image probed from PHP 7.2-cli-buster upward (see PHP_IMAGE_REASON).
+PHP_IMAGE='php:7.3-cli-buster@sha256:36ddae37e12040100b77ed3054b6a43e4c68e3149553983d6025b5824e7c3c62'
+PHP_IMAGE_REASON='PHP 7.2-cli-buster finishes with Warnings: 148 and Skipped: 11 (suite gate requires Skipped: 10 and no summary warnings). PHP 7.3+ runs the full 1847-test suite green with Commented_Out_Code_Sniff ini_set error_reporting passed as strings.'
 COMPOSER_URL='https://github.com/composer/composer/releases/download/2.11.1/composer.phar'
 COMPOSER_SHA256='6f1b891e1d4927d62740276c540fb490e47689e19e102c49e8da849794882f8c'
 LOG_FILE="${ROOT}/.system-test/phpunit.out"
@@ -29,6 +28,32 @@ export DEBIAN_FRONTEND=noninteractive
 export COMPOSER_ALLOW_SUPERUSER=1
 export COMPOSER_NO_INTERACTION=1
 
+configure_apt_https() {
+  if [[ -f /etc/apt/sources.list.d/debian.sources ]]; then
+    sed -i \
+      -e 's|http://deb.debian.org|https://deb.debian.org|g' \
+      -e 's|http://security.debian.org|https://security.debian.org|g' \
+      /etc/apt/sources.list.d/debian.sources
+  fi
+  if [[ -f /etc/apt/sources.list ]]; then
+    sed -i \
+      -e 's|http://deb.debian.org|https://deb.debian.org|g' \
+      -e 's|http://security.debian.org|https://security.debian.org|g' \
+      /etc/apt/sources.list
+  fi
+  if [[ -f /etc/os-release ]]; then
+    # shellcheck source=/dev/null
+    . /etc/os-release
+    if [[ "${VERSION_ID:-}" == "10" ]]; then
+      cat >/etc/apt/sources.list <<'SOURCES'
+deb https://archive.debian.org/debian buster main
+deb https://archive.debian.org/debian-security buster/updates main
+SOURCES
+    fi
+  fi
+}
+
+configure_apt_https
 apt-get update
 apt-get install -y --no-install-recommends git unzip ca-certificates curl
 rm -rf /var/lib/apt/lists/*
@@ -43,6 +68,7 @@ cd /workspace
 git config --global --add safe.directory /workspace
 
 php scripts/check-cluster-pins.php
+php scripts/check-rename-consistency.php
 
 composer update --no-interaction --prefer-dist --no-progress
 composer audit --no-interaction
@@ -75,4 +101,5 @@ docker_cmd run --rm \
   "${PHP_IMAGE}" \
   php /workspace/scripts/check-phpunit-gate.php /workspace/.system-test/phpunit.out
 
-echo "System test passed."
+echo "System test passed. PHP image: ${PHP_IMAGE}"
+echo "Reason: ${PHP_IMAGE_REASON}"

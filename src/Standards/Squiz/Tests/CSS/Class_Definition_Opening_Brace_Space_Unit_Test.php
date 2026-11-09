@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Standards\Squiz\Tests\CSS;
+namespace Php_code_Sniffer\Standards\Squiz\Tests\CSS;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use Php_code_Sniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class ClassDefinitionOpeningBraceSpaceUnitTest extends AbstractSniffUnitTest
 {

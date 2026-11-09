@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Autoload::determineLoadedClass method.
+ * Tests for the \Php_code_Sniffer\Autoload::determineLoadedClass method.
  *
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Autoloader;
+namespace Php_code_Sniffer\Tests\Core\Autoloader;
 
-use PHP_CodeSniffer\Autoload;
+use Php_code_Sniffer\Autoload;
 use PHPUnit\Framework\TestCase;
 
 class DetermineLoadedClassTest extends TestCase
@@ -42,17 +42,17 @@ class DetermineLoadedClassTest extends TestCase
 
         $classesAfterLoad = [
             'classes'    => [
-                'PHP_CodeSniffer\Tests\Core\Autoloader\A',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\B',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\C',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\A',
+                'Php_code_Sniffer\Tests\Core\Autoloader\B',
+                'Php_code_Sniffer\Tests\Core\Autoloader\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\Sub\C',
             ],
             'interfaces' => [],
             'traits'     => [],
         ];
 
         $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
-        $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
+        $this->assertEquals('Php_code_Sniffer\Tests\Core\Autoloader\Sub\C', $className);
 
     }//end testOrdered()
 
@@ -71,45 +71,45 @@ class DetermineLoadedClassTest extends TestCase
 
         $classesAfterLoad = [
             'classes'    => [
-                'PHP_CodeSniffer\Tests\Core\Autoloader\A',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\C',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\B',
+                'Php_code_Sniffer\Tests\Core\Autoloader\A',
+                'Php_code_Sniffer\Tests\Core\Autoloader\Sub\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\B',
             ],
             'interfaces' => [],
             'traits'     => [],
         ];
 
         $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
-        $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
+        $this->assertEquals('Php_code_Sniffer\Tests\Core\Autoloader\Sub\C', $className);
 
         $classesAfterLoad = [
             'classes'    => [
-                'PHP_CodeSniffer\Tests\Core\Autoloader\A',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\C',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\B',
+                'Php_code_Sniffer\Tests\Core\Autoloader\A',
+                'Php_code_Sniffer\Tests\Core\Autoloader\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\Sub\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\B',
             ],
             'interfaces' => [],
             'traits'     => [],
         ];
 
         $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
-        $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
+        $this->assertEquals('Php_code_Sniffer\Tests\Core\Autoloader\Sub\C', $className);
 
         $classesAfterLoad = [
             'classes'    => [
-                'PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\A',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\C',
-                'PHP_CodeSniffer\Tests\Core\Autoloader\B',
+                'Php_code_Sniffer\Tests\Core\Autoloader\Sub\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\A',
+                'Php_code_Sniffer\Tests\Core\Autoloader\C',
+                'Php_code_Sniffer\Tests\Core\Autoloader\B',
             ],
             'interfaces' => [],
             'traits'     => [],
         ];
 
         $className = Autoload::determineLoadedClass($classesBeforeLoad, $classesAfterLoad);
-        $this->assertEquals('PHP_CodeSniffer\Tests\Core\Autoloader\Sub\C', $className);
+        $this->assertEquals('Php_code_Sniffer\Tests\Core\Autoloader\Sub\C', $className);
 
     }//end testUnordered()
 

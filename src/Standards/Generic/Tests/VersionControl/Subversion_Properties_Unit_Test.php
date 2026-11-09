@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Standards\Generic\Tests\VersionControl;
+namespace Php_code_Sniffer\Standards\Generic\Tests\VersionControl;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use Php_code_Sniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class SubversionPropertiesUnitTest extends AbstractSniffUnitTest
 {

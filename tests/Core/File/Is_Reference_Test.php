@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Files\File:isReference method.
+ * Tests for the \Php_code_Sniffer\Files\File:isReference method.
  *
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\File;
+namespace Php_code_Sniffer\Tests\Core\File;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class IsReferenceTest extends AbstractMethodUnitTest
 {

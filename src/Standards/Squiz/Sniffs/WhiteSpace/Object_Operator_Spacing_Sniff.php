@@ -33,7 +33,7 @@ class Object_Operator_Spacing_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -68,7 +68,7 @@ class Object_Operator_Spacing_Sniff implements Sniff
     /**
      * Check the spacing before the operator.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param mixed                       $before    The number of spaces found before the
@@ -99,7 +99,7 @@ class Object_Operator_Spacing_Sniff implements Sniff
     /**
      * Check the spacing after the operator.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param mixed                       $after     The number of spaces found after the

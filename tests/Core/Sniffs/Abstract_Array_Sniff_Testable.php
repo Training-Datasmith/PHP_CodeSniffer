@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 /**
- * A testable implementation of \PHP_CodeSniffer\Sniffs\AbstractArraySniff.
+ * A testable implementation of \Php_code_Sniffer\Sniffs\Abstract_Array_Sniff.
  *
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2020 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Sniffs;
+namespace Php_code_Sniffer\Tests\Core\Sniffs;
 
-use PHP_CodeSniffer\Sniffs\AbstractArraySniff;
+use Php_code_Sniffer\Sniffs\Abstract_Array_Sniff;
 
-class AbstractArraySniffTestable extends AbstractArraySniff
+class AbstractArraySniffTestable extends Abstract_Array_Sniff
 {
     /**
      * The array indicies that were found during processing.
@@ -25,7 +25,7 @@ class AbstractArraySniffTestable extends AbstractArraySniff
     /**
      * Processes a single-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.
@@ -44,7 +44,7 @@ class AbstractArraySniffTestable extends AbstractArraySniff
     /**
      * Processes a multi-line array definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The current file being checked.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile  The current file being checked.
      * @param int                         $stackPtr   The position of the current token
      *                                                in the stack passed in $tokens.
      * @param int                         $arrayStart The token that starts the array definition.

@@ -23,8 +23,8 @@ declare(strict_types=1);
  *
  * --- PHP API usage ---
  *
- * use PHP_CodeSniffer\Config;
- * use PHP_CodeSniffer\Runner;
+ * use Php_code_Sniffer\Config;
+ * use Php_code_Sniffer\Runner;
  *
  * // Set up configuration
  * $config = new Config(['--standard=PSR12', 'src/']);
@@ -42,8 +42,8 @@ declare(strict_types=1);
  *
  * namespace MyStandard\Sniffs\Commenting;
  *
- * use PHP_CodeSniffer\Files\File;
- * use PHP_CodeSniffer\Sniffs\Sniff;
+ * use Php_code_Sniffer\Files\File;
+ * use Php_code_Sniffer\Sniffs\Sniff;
  *
  * class RequireFileHeaderSniff implements Sniff
  * {

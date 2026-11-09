@@ -9,11 +9,11 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core;
+namespace Php_code_Sniffer\Tests\Core;
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\DummyFile;
-use PHP_CodeSniffer\Ruleset;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\Dummy_File;
+use Php_code_Sniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractMethodUnitTest extends TestCase
@@ -29,14 +29,14 @@ abstract class AbstractMethodUnitTest extends TestCase
     protected static $fileExtension = 'inc';
 
     /**
-     * The \PHP_CodeSniffer\Files\File object containing the parsed contents of the test case file.
+     * The \Php_code_Sniffer\Files\File object containing the parsed contents of the test case file.
      *
-     * @var \PHP_CodeSniffer\Files\File
+     * @var \Php_code_Sniffer\Files\File
      */
     protected static $phpcsFile;
 
     /**
-     * Initialize & tokenize \PHP_CodeSniffer\Files\File with code from the test case file.
+     * Initialize & tokenize \Php_code_Sniffer\Files\File with code from the test case file.
      *
      * The test case file for a unit test class has to be in the same directory
      * directory and use the same file name as the test class, using the .inc extension.
@@ -59,7 +59,7 @@ abstract class AbstractMethodUnitTest extends TestCase
         $contents  = 'phpcs_input_file: '.$pathToTestFile.PHP_EOL;
         $contents .= file_get_contents($pathToTestFile);
 
-        self::$phpcsFile = new DummyFile($contents, $ruleset, $config);
+        self::$phpcsFile = new Dummy_File($contents, $ruleset, $config);
         self::$phpcsFile->process();
 
     }//end setUpBeforeClass()

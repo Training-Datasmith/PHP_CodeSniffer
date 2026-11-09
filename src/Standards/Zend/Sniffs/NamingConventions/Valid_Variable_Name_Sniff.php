@@ -19,7 +19,7 @@ class Valid_Variable_Name_Sniff extends Abstract_Variable_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *
@@ -95,7 +95,7 @@ class Valid_Variable_Name_Sniff extends Abstract_Variable_Sniff
     /**
      * Processes class member variables.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *
@@ -139,7 +139,7 @@ class Valid_Variable_Name_Sniff extends Abstract_Variable_Sniff
     /**
      * Processes the variable found within a double quoted string.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the double quoted
      *                                               string.
      *

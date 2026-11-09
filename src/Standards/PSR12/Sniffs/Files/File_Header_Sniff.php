@@ -28,7 +28,7 @@ class File_Header_Sniff implements Sniff
     /**
      * Processes this sniff when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current
      *                                               token in the stack.
      *
@@ -101,7 +101,7 @@ class File_Header_Sniff implements Sniff
     /**
      * Gather information about the statements inside a possible file header.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current
      *                                               token in the stack.
      *
@@ -214,7 +214,7 @@ class File_Header_Sniff implements Sniff
     /**
      * Check the spacing and grouping of the statements inside each header block.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param array                       $headerLines Header information, as sourced
      *                                                 from getHeaderLines().
      *

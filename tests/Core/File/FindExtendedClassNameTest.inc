@@ -1,6 +1,6 @@
 <?php
 
-namespace PHP_CodeSniffer\Tests\Core\File;
+namespace Php_code_Sniffer\Tests\Core\File;
 
 class testFECNClass {}
 
@@ -8,7 +8,7 @@ class testFECNClass {}
 class testFECNExtendedClass extends testFECNClass {}
 
 /* testNamespacedClass */
-class testFECNNamespacedClass extends \PHP_CodeSniffer\Tests\Core\File\testFECNClass {}
+class testFECNNamespacedClass extends \Php_code_Sniffer\Tests\Core\File\testFECNClass {}
 
 /* testNonExtendedClass */
 class testFECNNonExtendedClass {}
@@ -20,7 +20,7 @@ interface testFECNInterface {}
 interface testInterfaceThatExtendsInterface extends testFECNInterface{}
 
 /* testInterfaceThatExtendsFQCNInterface */
-interface testInterfaceThatExtendsFQCNInterface extends \PHP_CodeSniffer\Tests\Core\File\testFECNInterface{}
+interface testInterfaceThatExtendsFQCNInterface extends \Php_code_Sniffer\Tests\Core\File\testFECNInterface{}
 
 /* testNestedExtendedClass */
 class testFECNNestedExtendedClass {

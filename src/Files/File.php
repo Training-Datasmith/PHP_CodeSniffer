@@ -33,13 +33,13 @@ class File
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var \Php_code_Sniffer\Config
      */
     public $config;
     /**
      * The ruleset used for the run.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var \Php_code_Sniffer\Ruleset
      */
     public $ruleset;
     /**
@@ -57,13 +57,13 @@ class File
     /**
      * The Fixer object to control fixing errors.
      *
-     * @var \PHP_CodeSniffer\Fixer
+     * @var \Php_code_Sniffer\Fixer
      */
     public $fixer;
     /**
      * The tokenizer being used for this file.
      *
-     * @var \PHP_CodeSniffer\Tokenizers\Tokenizer
+     * @var \Php_code_Sniffer\Tokenizers\Tokenizer
      */
     public $tokenizer;
     /**
@@ -170,7 +170,7 @@ class File
     /**
      * An array of sniffs listening to this file's processing.
      *
-     * @var \PHP_CodeSniffer\Sniffs\Sniff[]
+     * @var \Php_code_Sniffer\Sniffs\Sniff[]
      */
     protected $listeners = [];
     /**
@@ -197,8 +197,8 @@ class File
      * Constructs a file.
      *
      * @param string                   $path    The absolute path to the file to process.
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+     * @param \Php_code_Sniffer\Ruleset $ruleset The ruleset used for the run.
+     * @param \Php_code_Sniffer\Config  $config  The config data for the run.
      */
     public function __construct($path, Ruleset $ruleset, Config $config)
     {
@@ -487,7 +487,7 @@ class File
             return;
         }
         try {
-            $tokenizer_class = 'PHP_CodeSniffer\Tokenizers\\' . $this->tokenizer_type;
+            $tokenizer_class = 'Php_code_Sniffer\Tokenizers\\' . $this->tokenizer_type;
             $this->tokenizer = new $tokenizer_class($this->content, $this->config, $this->eol_char);
             $this->tokens = $this->tokenizer->get_tokens();
         } catch (Tokenizer_Exception $e) {
@@ -1012,7 +1012,7 @@ class File
      *
      * @return string|null The name of the class, interface, trait, or function;
      *                     or NULL if the function or class is anonymous.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified token is not of type
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the specified token is not of type
      *                                                      T_FUNCTION, T_CLASS, T_ANON_CLASS,
      *                                                      T_CLOSURE, T_TRAIT, T_ENUM, or T_INTERFACE.
      */
@@ -1088,7 +1088,7 @@ class File
      *                      to acquire the parameters for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified $stackPtr is not of
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the specified $stackPtr is not of
      *                                                      type T_FUNCTION, T_CLOSURE, T_USE,
      *                                                      or T_FN.
      */
@@ -1349,7 +1349,7 @@ class File
      *                      acquire the properties for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position is not a
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the specified position is not a
      *                                                      T_FUNCTION, T_CLOSURE, or T_FN token.
      */
     public function get_method_properties($stack_ptr)
@@ -1465,7 +1465,7 @@ class File
      *                      acquire the properties for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position is not a
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the specified position is not a
      *                                                      T_VARIABLE token, or if the position is not
      *                                                      a class member variable.
      */
@@ -1583,7 +1583,7 @@ class File
      *                      acquire the properties for.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position is not a
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the specified position is not a
      *                                                      T_CLASS token.
      */
     public function get_class_properties($stack_ptr)
@@ -1716,7 +1716,7 @@ class File
      *                          content should be used.
      *
      * @return string The token contents.
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException If the specified position does not exist.
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException If the specified position does not exist.
      */
     public function get_tokens_as_string($start, $length, $orig_content = false)
     {

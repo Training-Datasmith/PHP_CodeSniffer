@@ -20,7 +20,7 @@ abstract class Generator
     /**
      * The ruleset used for the run.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var \Php_code_Sniffer\Ruleset
      */
     public $ruleset;
     /**
@@ -32,7 +32,7 @@ abstract class Generator
     /**
      * Constructs a doc generator.
      *
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
+     * @param \Php_code_Sniffer\Ruleset $ruleset The ruleset used for the run.
      *
      * @see generate()
      */

@@ -39,9 +39,9 @@ abstract class Abstract_Variable_Sniff extends Abstract_Scope_Sniff
     }
     //end __construct()
     /**
-     * Processes the token in the specified PHP_CodeSniffer\Files\File.
+     * Processes the token in the specified Php_code_Sniffer\Files\File.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
      *                                               token was found.
      * @param int                         $stackPtr  The position where the token was found.
      * @param int                         $currScope The current scope opener token.
@@ -111,7 +111,7 @@ abstract class Abstract_Variable_Sniff extends Abstract_Scope_Sniff
     /**
      * Processes the token outside the scope in the file.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
      *                                               token was found.
      * @param int                         $stackPtr  The position where the token was found.
      *
@@ -139,7 +139,7 @@ abstract class Abstract_Variable_Sniff extends Abstract_Scope_Sniff
     /**
      * Called to process class member vars.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
      *                                               token was found.
      * @param int                         $stackPtr  The position where the token was found.
      *
@@ -152,7 +152,7 @@ abstract class Abstract_Variable_Sniff extends Abstract_Scope_Sniff
     /**
      * Called to process normal member vars.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
      *                                               token was found.
      * @param int                         $stackPtr  The position where the token was found.
      *
@@ -168,7 +168,7 @@ abstract class Abstract_Variable_Sniff extends Abstract_Scope_Sniff
      * Note that there may be more than one variable in the string, which will
      * result only in one call for the string or one call per line for heredocs.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where this
      *                                               token was found.
      * @param int                         $stackPtr  The position where the double quoted
      *                                               string was found.

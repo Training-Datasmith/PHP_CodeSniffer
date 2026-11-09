@@ -1,6 +1,6 @@
 <?php
 
-namespace PHP_CodeSniffer\Tests\Core\File;
+namespace Php_code_Sniffer\Tests\Core\File;
 
 /* testBitwiseAndA */
 error_reporting( E_NOTICE & E_STRICT );

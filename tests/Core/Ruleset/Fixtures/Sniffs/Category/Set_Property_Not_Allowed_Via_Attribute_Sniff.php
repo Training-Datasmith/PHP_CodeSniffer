@@ -4,14 +4,14 @@ declare(strict_types=1);
 /**
  * Test fixture.
  *
- * @see \PHP_CodeSniffer\Tests\Core\Ruleset\SetSniffPropertyTest
+ * @see \Php_code_Sniffer\Tests\Core\Ruleset\SetSniffPropertyTest
  */
 
 namespace Fixtures\Sniffs\Category;
 
 use AllowDynamicProperties;
-use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\Sniff;
+use Php_code_Sniffer\Files\File;
+use Php_code_Sniffer\Sniffs\Sniff;
 
 #[AllowDynamicProperties]
 class SetPropertyNotAllowedViaAttributeSniff implements Sniff

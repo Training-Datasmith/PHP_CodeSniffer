@@ -10,9 +10,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class DefaultKeywordTest extends AbstractMethodUnitTest
 {
@@ -26,8 +26,8 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to look for.
      *
      * @dataProvider dataMatchDefault
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::recurseScopeMap
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::recurseScopeMap
      *
      * @return void
      */
@@ -105,7 +105,7 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      * @param string   $testContent   The token content to look for.
      *
      * @dataProvider dataSwitchDefault
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::recurseScopeMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::recurseScopeMap
      *
      * @return void
      */
@@ -214,7 +214,7 @@ class DefaultKeywordTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to look for.
      *
      * @dataProvider dataNotDefaultKeyword
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */

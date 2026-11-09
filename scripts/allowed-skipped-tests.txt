@@ -1,13 +1,13 @@
 # External-tool sniffs (Config::getExecutablePath unavailable in the system-test image).
-PHP_CodeSniffer\Standards\Generic\Tests\Debug\CSSLintUnitTest::testSniff
-PHP_CodeSniffer\Standards\Generic\Tests\Debug\ClosureLinterUnitTest::testSniff
-PHP_CodeSniffer\Standards\Generic\Tests\Debug\ESLintUnitTest::testSniff
-PHP_CodeSniffer\Standards\Generic\Tests\Debug\JSHintUnitTest::testSniff
-PHP_CodeSniffer\Standards\Squiz\Tests\Debug\JSLintUnitTest::testSniff
-PHP_CodeSniffer\Standards\Squiz\Tests\Debug\JavaScriptLintUnitTest::testSniff
-PHP_CodeSniffer\Standards\Zend\Tests\Debug\CodeAnalyzerUnitTest::testSniff
+Php_code_Sniffer\Standards\Generic\Tests\Debug\CSSLintUnitTest::testSniff
+Php_code_Sniffer\Standards\Generic\Tests\Debug\ClosureLinterUnitTest::testSniff
+Php_code_Sniffer\Standards\Generic\Tests\Debug\ESLintUnitTest::testSniff
+Php_code_Sniffer\Standards\Generic\Tests\Debug\JSHintUnitTest::testSniff
+Php_code_Sniffer\Standards\Squiz\Tests\Debug\JSLintUnitTest::testSniff
+Php_code_Sniffer\Standards\Squiz\Tests\Debug\JavaScriptLintUnitTest::testSniff
+Php_code_Sniffer\Standards\Zend\Tests\Debug\CodeAnalyzerUnitTest::testSniff
 # Subversion sniff (no SVN metadata in CI).
-PHP_CodeSniffer\Standards\Generic\Tests\VersionControl\SubversionPropertiesUnitTest::testSniff
+Php_code_Sniffer\Standards\Generic\Tests\VersionControl\SubversionPropertiesUnitTest::testSniff
 # OS-specific ruleset path / comment tokenization (skipped by design on non-Windows hosts).
-PHP_CodeSniffer\Tests\Core\Ruleset\RuleInclusionAbsoluteWindowsTest::testWindowsStylePathRuleInclusion
-PHP_CodeSniffer\Tests\Core\Tokenizer\StableCommentWhitespaceWinTest::testCommentTokenization
+Php_code_Sniffer\Tests\Core\Ruleset\RuleInclusionAbsoluteWindowsTest::testWindowsStylePathRuleInclusion
+Php_code_Sniffer\Tests\Core\Tokenizer\StableCommentWhitespaceWinTest::testCommentTokenization

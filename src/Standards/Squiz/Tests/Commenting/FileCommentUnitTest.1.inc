@@ -25,7 +25,7 @@
 * @author
 * @copyright  1997~1994 The PHP Group
 * @copyright  1994-1997 The PHP Group
-* @copyright  2023 The PHP Group
+* @copyright  The PHP Group
 * @license    http://www.php.net/license/3_0.txt
 * @summary    An unknown summary tag
 *

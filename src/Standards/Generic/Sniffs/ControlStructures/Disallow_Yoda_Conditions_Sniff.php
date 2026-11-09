@@ -29,7 +29,7 @@ class Disallow_Yoda_Conditions_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *
@@ -91,7 +91,7 @@ class Disallow_Yoda_Conditions_Sniff implements Sniff
     /**
      * Determines if an array is a static definition.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile  The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile  The file being scanned.
      * @param int                         $arrayToken The position of the array token.
      *
      * @return bool

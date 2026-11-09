@@ -34,7 +34,7 @@ class Switch_Declaration_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      *
@@ -178,7 +178,7 @@ class Switch_Declaration_Sniff implements Sniff
      *
      * Note that nested switches are ignored.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position to start looking at.
      * @param int                         $end       The position to stop looking at.
      *
@@ -203,7 +203,7 @@ class Switch_Declaration_Sniff implements Sniff
      *
      * Returns false if no terminating statement was found.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position to start looking at.
      * @param int                         $end       The position to stop looking at.
      *

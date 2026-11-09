@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Filters\Filter::accept method.
+ * Tests for the \Php_code_Sniffer\Filters\Filter::accept method.
  *
  * @author    Willington Vega <wvega@wvega.com>
  * @author    Juliette Reinders Folmer <phpcs_nospam@adviesenzo.nl>
@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Filters\Filter;
+namespace Php_code_Sniffer\Tests\Core\Filters\Filter;
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Filters\Filter;
-use PHP_CodeSniffer\Ruleset;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Filters\Filter;
+use Php_code_Sniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
 
 class AcceptTest extends TestCase
@@ -22,14 +22,14 @@ class AcceptTest extends TestCase
     /**
      * The Config object.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var \Php_code_Sniffer\Config
      */
     protected static $config;
 
     /**
      * The Ruleset object.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var \Php_code_Sniffer\Ruleset
      */
     protected static $ruleset;
 

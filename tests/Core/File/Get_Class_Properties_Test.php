@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Files\File:getClassProperties method.
+ * Tests for the \Php_code_Sniffer\Files\File:getClassProperties method.
  *
  * @author    Juliette Reinders Folmer <phpcs_nospam@adviesenzo.nl>
  * @copyright 2022 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\File;
+namespace Php_code_Sniffer\Tests\Core\File;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class GetClassPropertiesTest extends AbstractMethodUnitTest
 {
@@ -27,7 +27,7 @@ class GetClassPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNotAClassException($testMarker, $tokenType)
     {
-        $this->expectException(\PHP_CodeSniffer\Exceptions\RuntimeException::class);
+        $this->expectException(\Php_code_Sniffer\Exceptions\RuntimeException::class);
         $this->expectExceptionMessage('$stackPtr must be of type T_CLASS');
 
         $target = $this->getTargetToken($testMarker, $tokenType);

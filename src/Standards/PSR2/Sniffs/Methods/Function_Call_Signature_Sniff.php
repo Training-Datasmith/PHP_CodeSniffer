@@ -24,7 +24,7 @@ class Function_Call_Signature_Sniff extends PEARFunctionCallSignatureSniff
     /**
      * Processes single-line calls.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token
      *                                                 in the stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket

@@ -35,13 +35,13 @@ class File_List implements \Iterator, \Countable
     /**
      * The config data for the run.
      *
-     * @var \PHP_CodeSniffer\Config
+     * @var \Php_code_Sniffer\Config
      */
     public $config;
     /**
      * The ruleset used for the run.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var \Php_code_Sniffer\Ruleset
      */
     public $ruleset;
     /**
@@ -53,8 +53,8 @@ class File_List implements \Iterator, \Countable
     /**
      * Constructs a file list and loads in an array of file paths to process.
      *
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
+     * @param \Php_code_Sniffer\Config  $config  The config data for the run.
+     * @param \Php_code_Sniffer\Ruleset $ruleset The ruleset used for the run.
      */
     public function __construct(Config $config, Ruleset $ruleset)
     {
@@ -91,7 +91,7 @@ class File_List implements \Iterator, \Countable
      * If it is left NULL, it will be created when accessed.
      *
      * @param string                      $path The path to the file being added.
-     * @param \PHP_CodeSniffer\Files\File $file The file being added.
+     * @param \Php_code_Sniffer\Files\File $file The file being added.
      *
      * @return void
      */
@@ -118,13 +118,13 @@ class File_List implements \Iterator, \Countable
      * Get the class name of the filter being used for the run.
      *
      * @return string
-     * @throws \PHP_CodeSniffer\Exceptions\DeepExitException If the specified filter could not be found.
+     * @throws \Php_code_Sniffer\Exceptions\DeepExitException If the specified filter could not be found.
      */
     private function get_filter_class()
     {
         $filter_type = $this->config->filter;
         if ($filter_type === null) {
-            $filter_class = '\PHP_CodeSniffer\Filters\Filter';
+            $filter_class = '\Php_code_Sniffer\Filters\Filter';
         } else if (strpos($filter_type, '.') !== false) {
             // This is a path to a custom filter class.
             $filename = realpath($filter_type);
@@ -134,7 +134,7 @@ class File_List implements \Iterator, \Countable
             }
             $filter_class = Autoload::loadFile($filename);
         } else {
-            $filter_class = '\PHP_CodeSniffer\Filters\\' . $filter_type;
+            $filter_class = '\Php_code_Sniffer\Filters\\' . $filter_type;
         }
         return $filter_class;
     }
@@ -153,7 +153,7 @@ class File_List implements \Iterator, \Countable
     /**
      * Get the file that is currently being processed.
      *
-     * @return \PHP_CodeSniffer\Files\File
+     * @return \Php_code_Sniffer\Files\File
      */
     #[\ReturnTypeWillChange]
     public function current()

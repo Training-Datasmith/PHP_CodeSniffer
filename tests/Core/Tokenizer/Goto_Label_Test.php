@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class GotoLabelTest extends AbstractMethodUnitTest
 {
@@ -22,7 +22,7 @@ class GotoLabelTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to expect.
      *
      * @dataProvider dataGotoStatement
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class GotoLabelTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to expect.
      *
      * @dataProvider dataGotoDeclaration
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -110,7 +110,7 @@ class GotoLabelTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to expect.
      *
      * @dataProvider dataNotAGotoDeclaration
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

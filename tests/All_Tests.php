@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests;
+namespace Php_code_Sniffer\Tests;
 
 if ($GLOBALS['PHP_CODESNIFFER_PEAR'] === false) {
     include_once 'Core/All_Tests.php';

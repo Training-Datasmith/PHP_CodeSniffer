@@ -18,7 +18,7 @@ class Camel_Caps_Method_Name_Sniff extends GenericCamelCapsFunctionNameSniff
     /**
      * Processes the tokens within the scope.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being processed.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being processed.
      * @param int                         $stackPtr  The position where this token was
      *                                               found.
      * @param int                         $currScope The position of the current scope.
@@ -65,7 +65,7 @@ class Camel_Caps_Method_Name_Sniff extends GenericCamelCapsFunctionNameSniff
     /**
      * Processes the tokens outside the scope.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being processed.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being processed.
      * @param int                         $stackPtr  The position where this token was
      *                                               found.
      *

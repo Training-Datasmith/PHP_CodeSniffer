@@ -8,9 +8,9 @@ declare(strict_types=1);
  * @license https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Standards\Generic\Tests\NamingConventions;
+namespace Php_code_Sniffer\Standards\Generic\Tests\NamingConventions;
 
-use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
+use Php_code_Sniffer\Tests\Standards\AbstractSniffUnitTest;
 
 class InterfaceNameSuffixUnitTest extends AbstractSniffUnitTest
 {

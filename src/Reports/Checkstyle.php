@@ -22,7 +22,7 @@ class Checkstyle implements Report
      * its data should be counted in the grand totals.
      *
      * @param array                       $report      Prepared report data.
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being reported on.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being reported on.
      * @param bool                        $showSources Show sources?
      * @param int                         $width       Maximum allowed line width.
      *

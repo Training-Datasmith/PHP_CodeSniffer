@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Files\File::getMemberProperties method.
+ * Tests for the \Php_code_Sniffer\Files\File::getMemberProperties method.
  *
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2015 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\File;
+namespace Php_code_Sniffer\Tests\Core\File;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class GetMemberPropertiesTest extends AbstractMethodUnitTest
 {
@@ -812,7 +812,7 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNotClassPropertyException($identifier)
     {
-        $this->expectException(\PHP_CodeSniffer\Exceptions\RuntimeException::class);
+        $this->expectException(\Php_code_Sniffer\Exceptions\RuntimeException::class);
         $this->expectExceptionMessage('$stackPtr is not a class member var');
 
         $variable = $this->getTargetToken($identifier, T_VARIABLE);
@@ -848,7 +848,7 @@ class GetMemberPropertiesTest extends AbstractMethodUnitTest
      */
     public function testNotAVariableException()
     {
-        $this->expectException(\PHP_CodeSniffer\Exceptions\RuntimeException::class);
+        $this->expectException(\Php_code_Sniffer\Exceptions\RuntimeException::class);
         $this->expectExceptionMessage('$stackPtr must be of type T_VARIABLE');
 
         $next   = $this->getTargetToken('/* testNotAVariable */', T_RETURN);

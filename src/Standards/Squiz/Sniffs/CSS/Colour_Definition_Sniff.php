@@ -33,7 +33,7 @@ class Colour_Definition_Sniff implements Sniff
     /**
      * Processes the tokens that this sniff is interested in.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where the token was found.
      * @param int                         $stackPtr  The position in the stack where
      *                                               the token was found.
      *

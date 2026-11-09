@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Config reportWidth value.
+ * Tests for the \Php_code_Sniffer\Config reportWidth value.
  *
  * @author    Juliette Reinders Folmer <phpcs_nospam@adviesenzo.nl>
  * @copyright 2006-2023 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Config;
+namespace Php_code_Sniffer\Tests\Core\Config;
 
-use PHP_CodeSniffer\Config;
+use Php_code_Sniffer\Config;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
@@ -281,7 +281,7 @@ class ReportWidthTest extends TestCase
      */
     public static function setStaticProperty($name, $value)
     {
-        $property = new ReflectionProperty('PHP_CodeSniffer\Config', $name);
+        $property = new ReflectionProperty('Php_code_Sniffer\Config', $name);
         $property->setAccessible(true);
         $property->setValue($value);
         $property->setAccessible(false);

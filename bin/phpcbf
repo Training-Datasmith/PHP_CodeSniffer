@@ -14,6 +14,6 @@ if (is_file(__DIR__.'/../autoload.php') === true) {
     include_once 'PHP/CodeSniffer/autoload.php';
 }
 
-$runner   = new PHP_CodeSniffer\Runner();
-$exitCode = $runner->runPHPCBF();
+$runner   = new Php_code_Sniffer\Runner();
+$exitCode = $runner->run_phpcbf();
 exit($exitCode);

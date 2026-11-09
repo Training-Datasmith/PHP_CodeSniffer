@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class EnumCaseTest extends AbstractMethodUnitTest
 {
@@ -21,8 +21,8 @@ class EnumCaseTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment which prefaces the target token in the test file.
      *
      * @dataProvider dataEnumCases
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::recurseScopeMap
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::recurseScopeMap
      *
      * @return void
      */
@@ -68,8 +68,8 @@ class EnumCaseTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment which prefaces the target token in the test file.
      *
      * @dataProvider dataNotEnumCases
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::recurseScopeMap
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::recurseScopeMap
      *
      * @return void
      */
@@ -115,7 +115,7 @@ class EnumCaseTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment which prefaces the target token in the test file.
      *
      * @dataProvider dataKeywordAsEnumCaseNameShouldBeString
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

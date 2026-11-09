@@ -28,7 +28,7 @@ class Side_Effects_Sniff implements Sniff
     /**
      * Processes this sniff, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token in
      *                                               the token stack.
      *
@@ -57,7 +57,7 @@ class Side_Effects_Sniff implements Sniff
      * side effect in the file. A NULL value for either indicates nothing was
      * found.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $start     The token to start searching from.
      * @param int                         $end       The token to search to.
      * @param array                       $tokens    The stack of tokens that make up

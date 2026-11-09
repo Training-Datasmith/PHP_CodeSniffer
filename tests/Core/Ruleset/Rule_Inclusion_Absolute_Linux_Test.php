@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Ruleset class using a Linux-style absolute path to include a sniff.
+ * Tests for the \Php_code_Sniffer\Ruleset class using a Linux-style absolute path to include a sniff.
  *
  * @author    Juliette Reinders Folmer <phpcs_nospam@adviesenzo.nl>
  * @copyright 2019 Juliette Reinders Folmer. All rights reserved.
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Ruleset;
+namespace Php_code_Sniffer\Tests\Core\Ruleset;
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Ruleset;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
 
 class RuleInclusionAbsoluteLinuxTest extends TestCase
@@ -20,7 +20,7 @@ class RuleInclusionAbsoluteLinuxTest extends TestCase
     /**
      * The Ruleset object.
      *
-     * @var \PHP_CodeSniffer\Ruleset
+     * @var \Php_code_Sniffer\Ruleset
      */
     protected $ruleset;
 

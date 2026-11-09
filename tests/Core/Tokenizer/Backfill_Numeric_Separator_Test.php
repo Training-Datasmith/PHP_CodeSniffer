@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
 {
@@ -21,7 +21,7 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
      * @param array $testData The data required for the specific test case.
      *
      * @dataProvider dataTestBackfill
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -164,7 +164,7 @@ class BackfillNumericSeparatorTest extends AbstractMethodUnitTest
      * @param array  $expectedTokens The token type and content of the expected token sequence.
      *
      * @dataProvider dataNoBackfill
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

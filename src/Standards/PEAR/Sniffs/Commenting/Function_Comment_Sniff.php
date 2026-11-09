@@ -42,7 +42,7 @@ class Function_Comment_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -128,7 +128,7 @@ class Function_Comment_Sniff implements Sniff
     /**
      * Process the return comment of this function comment.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
      * @param int                         $commentStart The position in the stack where the comment started.
@@ -171,7 +171,7 @@ class Function_Comment_Sniff implements Sniff
     /**
      * Process any throw tags that this function comment has.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
      * @param int                         $commentStart The position in the stack where the comment started.
@@ -202,7 +202,7 @@ class Function_Comment_Sniff implements Sniff
     /**
      * Process the function parameter comments.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile    The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile    The file being scanned.
      * @param int                         $stackPtr     The position of the current token
      *                                                  in the stack passed in $tokens.
      * @param int                         $commentStart The position in the stack where the comment started.

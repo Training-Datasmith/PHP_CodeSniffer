@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
-use PHP_CodeSniffer\Util\Tokens;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Util\Tokens;
 
 class BackfillMatchTokenTest extends AbstractMethodUnitTest
 {
@@ -26,7 +26,7 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      * @param string $testContent  The token content to look for.
      *
      * @dataProvider dataMatchExpression
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */
@@ -204,8 +204,8 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to look for.
      *
      * @dataProvider dataNotAMatchStructure
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -320,8 +320,8 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      * @param int    $closerOffset The expected offset of the scope closer in relation to the testMarker.
      *
      * @dataProvider dataSwitchExpression
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -372,8 +372,8 @@ class BackfillMatchTokenTest extends AbstractMethodUnitTest
      * @param int    $closerOffset The expected offset of the scope closer in relation to the testMarker.
      *
      * @dataProvider dataSwitchCaseVersusMatch
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */

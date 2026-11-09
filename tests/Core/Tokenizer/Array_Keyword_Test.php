@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class ArrayKeywordTest extends AbstractMethodUnitTest
 {
@@ -22,8 +22,8 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      * @param string $testContent Optional. The token content to look for.
      *
      * @dataProvider dataArrayKeyword
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createTokenMap
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createTokenMap
      *
      * @return void
      */
@@ -72,8 +72,8 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      * @param string $testContent Optional. The token content to look for.
      *
      * @dataProvider dataArrayType
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createTokenMap
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createTokenMap
      *
      * @return void
      */
@@ -121,8 +121,8 @@ class ArrayKeywordTest extends AbstractMethodUnitTest
      * @param string $testContent The token content to look for.
      *
      * @dataProvider dataNotArrayKeyword
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createTokenMap
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createTokenMap
      *
      * @return void
      */

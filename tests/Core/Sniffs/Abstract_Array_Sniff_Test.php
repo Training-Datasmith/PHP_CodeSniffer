@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 /**
- * Tests for the \PHP_CodeSniffer\Sniffs\AbstractArraySniff.
+ * Tests for the \Php_code_Sniffer\Sniffs\Abstract_Array_Sniff.
  *
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006-2020 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Sniffs;
+namespace Php_code_Sniffer\Tests\Core\Sniffs;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class AbstractArraySniffTest extends AbstractMethodUnitTest
 {
     /**
      * The sniff objects we are testing.
      *
-     * This extends the \PHP_CodeSniffer\Sniffs\AbstractArraySniff class to make the
+     * This extends the \Php_code_Sniffer\Sniffs\Abstract_Array_Sniff class to make the
      * internal workings of the sniff observable.
      *
-     * @var \PHP_CodeSniffer\Sniffs\AbstractArraySniffTestable
+     * @var \Php_code_Sniffer\Sniffs\AbstractArraySniffTestable
      */
     protected static $sniff;
 
     /**
-     * Initialize & tokenize \PHP_CodeSniffer\Files\File with code from the test case file.
+     * Initialize & tokenize \Php_code_Sniffer\Files\File with code from the test case file.
      *
      * The test case file for a unit test class has to be in the same directory
      * directory and use the same file name as the test class, using the .inc extension.

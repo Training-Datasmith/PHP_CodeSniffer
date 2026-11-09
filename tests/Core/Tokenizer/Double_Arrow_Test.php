@@ -11,9 +11,9 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
 
 class DoubleArrowTest extends AbstractMethodUnitTest
 {
@@ -106,7 +106,7 @@ class DoubleArrowTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment prefacing the target token.
      *
      * @dataProvider dataMatchArrow
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */
@@ -191,7 +191,7 @@ class DoubleArrowTest extends AbstractMethodUnitTest
      * @param string $testMarker The comment prefacing the target token.
      *
      * @dataProvider dataFnArrow
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+     * @covers Php_code_Sniffer\Tokenizers\PHP::processAdditional
      *
      * @return void
      */

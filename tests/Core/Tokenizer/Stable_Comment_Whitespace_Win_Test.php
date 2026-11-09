@@ -12,10 +12,10 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core\Tokenizer;
+namespace Php_code_Sniffer\Tests\Core\Tokenizer;
 
-use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
-use PHP_CodeSniffer\Util\Tokens;
+use Php_code_Sniffer\Tests\Core\AbstractMethodUnitTest;
+use Php_code_Sniffer\Util\Tokens;
 
 /**
  * @requires OS WINNT
@@ -29,7 +29,7 @@ class StableCommentWhitespaceWinTest extends AbstractMethodUnitTest
      * @param array  $expectedTokens The tokenization expected.
      *
      * @dataProvider dataCommentTokenization
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+     * @covers Php_code_Sniffer\Tokenizers\PHP::tokenize
      *
      * @return void
      */

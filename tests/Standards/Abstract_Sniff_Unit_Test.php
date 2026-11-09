@@ -13,14 +13,14 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Standards;
+namespace Php_code_Sniffer\Tests\Standards;
 
-use PHP_CodeSniffer\Autoload;
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Exceptions\RuntimeException;
-use PHP_CodeSniffer\Files\LocalFile;
-use PHP_CodeSniffer\Ruleset;
-use PHP_CodeSniffer\Util\Common;
+use Php_code_Sniffer\Autoload;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Exceptions\RuntimeException;
+use Php_code_Sniffer\Files\Local_File;
+use Php_code_Sniffer\Ruleset;
+use Php_code_Sniffer\Util\Common;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractSniffUnitTest extends TestCase
@@ -190,7 +190,7 @@ abstract class AbstractSniffUnitTest extends TestCase
 
             try {
                 $this->setCliValues($filename, $config);
-                $phpcsFile = new LocalFile($testFile, $ruleset, $config);
+                $phpcsFile = new Local_File($testFile, $ruleset, $config);
                 $phpcsFile->process();
             } catch (RuntimeException $e) {
                 $this->fail('An unexpected exception has been caught: '.$e->getMessage());
@@ -232,12 +232,12 @@ abstract class AbstractSniffUnitTest extends TestCase
     /**
      * Generate a list of test failures for a given sniffed file.
      *
-     * @param \PHP_CodeSniffer\Files\LocalFile $file The file being tested.
+     * @param \Php_code_Sniffer\Files\Local_File $file The file being tested.
      *
      * @return array
-     * @throws \PHP_CodeSniffer\Exceptions\RuntimeException
+     * @throws \Php_code_Sniffer\Exceptions\RuntimeException
      */
-    public function generateFailureMessages(LocalFile $file)
+    public function generateFailureMessages(Local_File $file)
     {
         $testFile = $file->get_filename();
 
@@ -444,7 +444,7 @@ abstract class AbstractSniffUnitTest extends TestCase
      * Get a list of CLI values to set before the file is tested.
      *
      * @param string                  $filename The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the run.
+     * @param \Php_code_Sniffer\Config $config   The config data for the run.
      *
      * @return void
      */

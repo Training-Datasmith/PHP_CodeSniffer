@@ -34,7 +34,7 @@ class Object_Member_Comma_Sniff implements Sniff
     /**
      * Process the tokens that this sniff is listening for.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where the token was found.
      * @param int                         $stackPtr  The position in the stack where
      *                                               the token was found.
      *

@@ -23,7 +23,7 @@ class Multi_Line_Function_Declaration_Sniff extends PEARFunctionDeclarationSniff
     /**
      * Determine if this is a multi-line function declaration.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token
      *                                                 in the stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket
@@ -83,7 +83,7 @@ class Multi_Line_Function_Declaration_Sniff extends PEARFunctionDeclarationSniff
      *
      * Just uses the Generic BSD-Allman brace sniff.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param array                       $tokens    The stack of tokens that make up
@@ -123,7 +123,7 @@ class Multi_Line_Function_Declaration_Sniff extends PEARFunctionDeclarationSniff
     /**
      * Processes multi-line declarations.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param array                       $tokens    The stack of tokens that make up
@@ -151,7 +151,7 @@ class Multi_Line_Function_Declaration_Sniff extends PEARFunctionDeclarationSniff
     /**
      * Processes the contents of a single set of brackets.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $openBracket The position of the open bracket
      *                                                 in the stack passed in $tokens.
      * @param array                       $tokens      The stack of tokens that make up

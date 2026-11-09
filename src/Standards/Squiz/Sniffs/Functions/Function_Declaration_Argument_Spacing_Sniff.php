@@ -46,7 +46,7 @@ class Function_Declaration_Argument_Spacing_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack.
      *
@@ -74,7 +74,7 @@ class Function_Declaration_Argument_Spacing_Sniff implements Sniff
     /**
      * Processes the contents of a single set of brackets.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $openBracket The position of the open bracket
      *                                                 in the stack.
      *

@@ -32,7 +32,7 @@ class Include_System_Sniff extends Abstract_Scope_Sniff
     /**
      * Processes the function tokens within the class.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param integer                     $stackPtr  The position where the token was found.
      * @param integer                     $currScope The current scope opener token.
      *
@@ -155,7 +155,7 @@ class Include_System_Sniff extends Abstract_Scope_Sniff
     /**
      * Processes a token within the scope that this test is listening to.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where the token was found.
      * @param int                         $stackPtr  The position in the stack where
      *                                               this token was found.
      *
@@ -228,7 +228,7 @@ class Include_System_Sniff extends Abstract_Scope_Sniff
     /**
      * Determines the included class name from given token.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param array                       $tokens    The array of file tokens.
      * @param int                         $stackPtr  The position in the tokens array of the
      *                                               potentially included class.

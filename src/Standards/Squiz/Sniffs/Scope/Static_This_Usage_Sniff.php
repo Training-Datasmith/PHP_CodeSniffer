@@ -26,7 +26,7 @@ class Static_This_Usage_Sniff extends Abstract_Scope_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being scanned.
      * @param int                         $stackPtr  The position of the current token in the
      *                                               stack passed in $tokens.
      * @param int                         $currScope A pointer to the start of the scope.
@@ -64,7 +64,7 @@ class Static_This_Usage_Sniff extends Abstract_Scope_Sniff
     /**
      * Check for $this variable usage between $next and $end tokens.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being scanned.
      * @param int                         $next      The position of the next token to check.
      * @param int                         $end       The position of the last token to check.
      *
@@ -95,7 +95,7 @@ class Static_This_Usage_Sniff extends Abstract_Scope_Sniff
      * Processes a token that is found within the scope that this test is
      * listening to.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The position in the stack where this
      *                                               token was found.
      *

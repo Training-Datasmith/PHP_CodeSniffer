@@ -9,11 +9,11 @@ declare(strict_types=1);
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
 
-namespace PHP_CodeSniffer\Tests\Core;
+namespace Php_code_Sniffer\Tests\Core;
 
-use PHP_CodeSniffer\Config;
-use PHP_CodeSniffer\Files\DummyFile;
-use PHP_CodeSniffer\Ruleset;
+use Php_code_Sniffer\Config;
+use Php_code_Sniffer\Files\Dummy_File;
+use Php_code_Sniffer\Ruleset;
 use PHPUnit\Framework\TestCase;
 
 class ErrorSuppressionTest extends TestCase
@@ -27,7 +27,7 @@ class ErrorSuppressionTest extends TestCase
      *                               Defaults to 0.
      *
      * @dataProvider dataSuppressError
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -44,7 +44,7 @@ class ErrorSuppressionTest extends TestCase
         }
 
         $content = '<?php '.PHP_EOL.$before.'$var = FALSE;'.PHP_EOL.$after;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());
@@ -158,7 +158,7 @@ class ErrorSuppressionTest extends TestCase
      *                               Defaults to 1.
      *
      * @dataProvider dataSuppressSomeErrors
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -181,7 +181,7 @@ $before
 $between
 \$var = TRUE;
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());
@@ -249,7 +249,7 @@ EOD;
      *                                 Defaults to 0.
      *
      * @dataProvider dataSuppressWarning
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -271,7 +271,7 @@ $before
 //TODO: write some code.
 $after
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedWarnings, $file->get_warning_count());
@@ -332,7 +332,7 @@ EOD;
      *                               Defaults to 1.
      *
      * @dataProvider dataSuppressLine
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -354,7 +354,7 @@ $before
 \$var = FALSE;$after
 \$var = FALSE;
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());
@@ -417,7 +417,7 @@ EOD;
     /**
      * Test suppressing a single error using a single line ignore in the middle of a line.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -430,7 +430,7 @@ EOD;
         $ruleset = new Ruleset($config);
 
         $content = '<?php '.PHP_EOL.'$var = FALSE; /* @phpcs:ignore */ $var = FALSE;';
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame(0, $file->get_error_count());
@@ -441,7 +441,7 @@ EOD;
     /**
      * Test suppressing a single error using a single line ignore within a docblock.
      *
-     * @covers PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -463,7 +463,7 @@ EOD;
  * $comment
  */
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame(0, $file->get_error_count());
@@ -478,7 +478,7 @@ EOD;
      * @param string $after  Annotation to place after the code.
      *
      * @dataProvider dataNestedSuppressLine
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -501,7 +501,7 @@ $before
 \$var = TRUE;
 $after
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame(0, $file->get_error_count());
@@ -567,7 +567,7 @@ EOD;
      *                               Defaults to 0.
      *
      * @dataProvider dataSuppressScope
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -594,7 +594,7 @@ class MyClass() {
     }
 }
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());
@@ -663,7 +663,7 @@ EOD;
      *                                 Defaults to 0.
      *
      * @dataProvider dataSuppressFile
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -687,7 +687,7 @@ class MyClass {}
 //TODO: write some code
 $after
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedWarnings, $file->get_warning_count());
@@ -756,7 +756,7 @@ EOD;
      *                                 Defaults to 0.
      *
      * @dataProvider dataDisableSelected
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -781,7 +781,7 @@ $before
 \$var = FALSE;
 //TODO: write some code
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());
@@ -866,7 +866,7 @@ EOD;
      * @param int    $expectedWarnings Number of warnings expected.
      *
      * @dataProvider dataEnableSelected
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -886,7 +886,7 @@ EOD;
         }
 
         $content = '<?php '.$code;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());
@@ -1039,7 +1039,7 @@ EOD;
      * @param int    $expectedWarnings Number of warnings expected.
      *
      * @dataProvider dataIgnoreSelected
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -1064,7 +1064,7 @@ $before
 \$var = FALSE; //TODO: write some code
 \$var = FALSE; //TODO: write some code
 EOD;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());
@@ -1129,7 +1129,7 @@ EOD;
      * @param int    $expectedWarnings Number of warnings expected.
      *
      * @dataProvider dataCommenting
-     * @covers       PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
+     * @covers Php_code_Sniffer\Tokenizers\Tokenizer::createPositionMap
      *
      * @return void
      */
@@ -1149,7 +1149,7 @@ EOD;
         }
 
         $content = '<?php '.$code;
-        $file    = new DummyFile($content, $ruleset, $config);
+        $file    = new Dummy_File($content, $ruleset, $config);
         $file->process();
 
         $this->assertSame($expectedErrors, $file->get_error_count());

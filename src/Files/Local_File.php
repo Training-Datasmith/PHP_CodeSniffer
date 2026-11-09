@@ -20,8 +20,8 @@ class Local_File extends File
      * Creates a LocalFile object and sets the content.
      *
      * @param string                   $path    The absolute path to the file.
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+     * @param \Php_code_Sniffer\Ruleset $ruleset The ruleset used for the run.
+     * @param \Php_code_Sniffer\Config  $config  The config data for the run.
      */
     public function __construct($path, Ruleset $ruleset, Config $config)
     {

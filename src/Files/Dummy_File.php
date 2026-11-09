@@ -23,8 +23,8 @@ class Dummy_File extends File
      * Creates a DummyFile object and sets the content.
      *
      * @param string                   $content The content of the file.
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+     * @param \Php_code_Sniffer\Ruleset $ruleset The ruleset used for the run.
+     * @param \Php_code_Sniffer\Config  $config  The config data for the run.
      */
     public function __construct($content, Ruleset $ruleset, Config $config)
     {

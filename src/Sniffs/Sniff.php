@@ -52,14 +52,14 @@ interface Sniff
      * </code>
      *
      * If the sniff discovers an anomaly in the code, they can raise an error
-     * by calling addError() on the \PHP_CodeSniffer\Files\File object, specifying an error
+     * by calling addError() on the \Php_code_Sniffer\Files\File object, specifying an error
      * message and the position of the offending token:
      *
      * <code>
      *    $phpcsFile->addError('Encountered an error', $stackPtr);
      * </code>
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The PHP_CodeSniffer file where the
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The PHP_CodeSniffer file where the
      *                                               token was found.
      * @param int                         $stackPtr  The position in the PHP_CodeSniffer
      *                                               file's token stack where the token

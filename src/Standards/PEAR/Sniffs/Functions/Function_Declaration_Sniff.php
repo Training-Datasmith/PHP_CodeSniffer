@@ -42,7 +42,7 @@ class Function_Declaration_Sniff implements Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      *
@@ -177,7 +177,7 @@ class Function_Declaration_Sniff implements Sniff
     /**
      * Determine if this is a multi-line function declaration.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile   The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile   The file being scanned.
      * @param int                         $stackPtr    The position of the current token
      *                                                 in the stack passed in $tokens.
      * @param int                         $openBracket The position of the opening bracket
@@ -214,7 +214,7 @@ class Function_Declaration_Sniff implements Sniff
      *
      * Just uses the Generic BSD-Allman brace sniff.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param array                       $tokens    The stack of tokens that make up
@@ -236,7 +236,7 @@ class Function_Declaration_Sniff implements Sniff
     /**
      * Processes multi-line declarations.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param array                       $tokens    The stack of tokens that make up
@@ -315,7 +315,7 @@ class Function_Declaration_Sniff implements Sniff
     /**
      * Processes multi-line argument list declarations.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param int                         $indent    The number of spaces code should be indented.

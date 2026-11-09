@@ -36,7 +36,7 @@ class Fixer
     /**
      * The file being fixed.
      *
-     * @var \PHP_CodeSniffer\Files\File
+     * @var \Php_code_Sniffer\Files\File
      */
     private $current_file;
     /**
@@ -97,7 +97,7 @@ class Fixer
     /**
      * Starts fixing a new file.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being fixed.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file being fixed.
      *
      * @return void
      */
@@ -369,7 +369,7 @@ class Fixer
         if (empty($this->changeset) === false) {
             if (PHP_CODESNIFFER_VERBOSITY > 1) {
                 $bt = debug_backtrace();
-                if ($bt[1]['class'] === 'PHP_CodeSniffer\Fixer') {
+                if ($bt[1]['class'] === 'Php_code_Sniffer\Fixer') {
                     $sniff = $bt[2]['class'];
                     $line = $bt[1]['line'];
                 } else {
@@ -415,7 +415,7 @@ class Fixer
         }
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-            if ($bt[1]['class'] === 'PHP_CodeSniffer\Fixer') {
+            if ($bt[1]['class'] === 'Php_code_Sniffer\Fixer') {
                 $sniff = $bt[2]['class'];
                 $line = $bt[1]['line'];
             } else {
@@ -507,7 +507,7 @@ class Fixer
         }
         if (PHP_CODESNIFFER_VERBOSITY > 1) {
             $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-            if ($bt[1]['class'] === 'PHP_CodeSniffer\Fixer') {
+            if ($bt[1]['class'] === 'Php_code_Sniffer\Fixer') {
                 $sniff = $bt[2]['class'];
                 $line = $bt[1]['line'];
             } else {

@@ -41,7 +41,7 @@ class Constructor_Name_Sniff extends Abstract_Scope_Sniff
     /**
      * Processes this test when one of its tokens is encountered.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being scanned.
      * @param int                         $stackPtr  The position of the current token
      *                                               in the stack passed in $tokens.
      * @param int                         $currScope A pointer to the start of the scope.
@@ -101,7 +101,7 @@ class Constructor_Name_Sniff extends Abstract_Scope_Sniff
      * Processes a token that is found within the scope that this test is
      * listening to.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The file where this token was found.
      * @param int                         $stackPtr  The position in the stack where this
      *                                               token was found.
      *
@@ -114,7 +114,7 @@ class Constructor_Name_Sniff extends Abstract_Scope_Sniff
     /**
      * Extracts all the function names found in the given scope.
      *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being scanned.
+     * @param \Php_code_Sniffer\Files\File $phpcsFile The current file being scanned.
      * @param int                         $currScope A pointer to the start of the scope.
      *
      * @return void
